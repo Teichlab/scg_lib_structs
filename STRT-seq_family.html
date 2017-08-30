@@ -105,12 +105,16 @@ h3 {font-family:verdana;}
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX -5'
 
+<br></br>
+
 <i>Product 2 (3'-end of cDNA):</i>
 
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCTG(pA)XXXXXXXXXX...XXXXXXXXXX -5'
 </seq>
 </pre>
+
+<br></br>
 
 <h3>(6) A tailing:</h3>
 <pre>
@@ -120,12 +124,16 @@ h3 {font-family:verdana;}
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX*A
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX   -5'
 
+<br></br>
+
 <i>Product 2 (3'-end of cDNA):</i>
 
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX*A
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCTG(pA)XXXXXXXXXX...XXXXXXXXXX   -5'
 </seq>
 </pre>
+
+<br></br>
 
 <h3>(7) Ligation with doube stranded P2 adapter with T overhang, and at the same time, SalI digestion:</h3>
 <pre>
@@ -135,12 +143,16 @@ h3 {font-family:verdana;}
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX*AGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX TCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 
+<br></br>
+
 <i>Product 2 (3'-end of cDNA, will be cut by SalI, this product is omitted later since it cannot be amplified:):</i>
 
 |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAG   T</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX*AGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
            <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCT   G(pA)XXXXXXXXXX...XXXXXXXXXX TCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
+
+<br></br>
 
 <h3>(8) Add Library PCR Primers 1&2 for amplification:</h3>
 <pre>
@@ -285,7 +297,7 @@ h3 {font-family:verdana;}
 <seq>
 5'- <p5>AATGATACGGCGACCACCGA</p5>T<umi>NNNNN</umi>GGGXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>NNNNNNNN</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
     <p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>NNNNN</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
-        <p5>Solexa P1</p5>       <umi>UMI</umi>          cDNA                   <me>ME</me>                    <cbc>8bp</cbc>        <p7>Solexa P2</p7>
+        <p5>Solexa P1</p5>          <umi>UMI</umi>          cDNA                   <me>ME</me>                 <cbc>8bp</cbc>        <p7>Solexa P2</p7>
                                                                                   <cbc>cell</cbc>
                                                                                  <cbc>barcode</cbc>
 </seq>
@@ -315,7 +327,9 @@ h3 {font-family:verdana;}
 <br></br>
 
 <h1><a href="http://www.biorxiv.org/content/early/2017/04/20/126268" target="_blank" name="STRT-seq-2i"><span style="color:red;">STRT-seq-2i</span></a></h1>
-<p>This method is similar to STRT-seq-C1, but with nanowell capture and different oigo design, and there probably a mistake in the sequence of DI-Read1-Seq at this time of the preprint (29-08-2017), where there should be only five Ns in DI-Read1-Seq. There are currently six Ns in it.</p>
+<p><span style="font-family:verdana; font-size:1.1em">This method is similar to STRT-seq-C1, but with nanowell capture and different oigo design, and there probably a mistake in the sequence of DI-Read1-Seq at this time of the preprint (29-08-2017), where there should be only five Ns in DI-Read1-Seq. There are currently six Ns in it.</span></p>
+
+<br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
@@ -391,12 +405,16 @@ h3 {font-family:verdana;}
 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
         <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 
+<br></br>
+
 <i>Product 2 (3'-end of cDNA):</i>
 
 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>TCG(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
         <p5>TTACTATGCCGCTGGTGGCT</p5>AGC(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
+
+<br></br>
 
 <h3>(7) Streptavidin binding and PvuI digestion:</h3>
 <pre>
@@ -406,12 +424,16 @@ h3 {font-family:verdana;}
 |--5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>[8-bp subarray barcode]</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
            <p5>AATGATACGGCGACCACCGA</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 
+<br></br>
+
 <i>Product 2 (3'-end of cDNA) will be cut by PvuI (this product is omitted later since it cannot be amplified):</i>
 
 |--5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>T   CG(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
            <p5>TTACTATGCCGCTGGTGGC   T</p5>AGC(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
 </seq>
 </pre>
+
+<br></br>
 
 <h3>(8) Library amplification using P1_2nd_PCR and P2_2nd_PCR priers:</h3>
 <pre>
@@ -423,7 +445,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(8) Final library structure:</h3>
+<h3>(9) Final library structure:</h3>
 <pre>
 <seq>
 5'- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>NNNNN</cbc>CTACACGACGCTCTTCCGATCT<umi>NNNNNN</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>NNNNNNNN</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
