@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco;
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco;
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco;
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Drop-seq</title>
+</head>
+<body>
+
+<h1><a href="http://www.cell.com/abstract/S0092-8674(15)00549-8" target="_blank"><span style="color:red;">Drop-seq</span></a></h1>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligo-dT: |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>Library PCR primer 2 (this is basically Nextera N7xx): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>i7 index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) mRNA capture using Beads-oligo-dT in the droplets:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <----NV(T)<sub>30</sub><umi>[8-bp UMI]</umi><cbc>[12-bp cell barcode]</cbc>TGCA<tso>TGAGACGCAACTATGGTGACGAA</tso>TTTTTTTT -5'--|
+</seq>
+</pre>
+
+<h3>(2) Break droplets (i.e. droplets are merely used as a cell capture chamber), reverse transcription for all cells in one reaction, the terminal tranferase acitivity of MMLV adds extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+ CCCXXXXXXXXXXXXXXXXXXNV(T)<sub>30</sub><umi>[8-bp UMI]</umi><cbc>[12-bp cell barcode]</cbc>TGCA<tso>TGAGACGCAACTATGGTGACGAA</tso>TTTTTTTT -5'--|
+</seq>
+</pre>
+
+<h3>(3) Adding TSO for second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>---->
+                               CCCXXXXXXXXXXXXXXXXXXXX(T)<sub>30</sub><umi>[8-bp UMI]</umi><cbc>[12-bp cell barcode]</cbc>TGCA<tso>TGAGACGCAACTATGGTGACGAA</tso>TTTTTTTT -5'--|
+</seq>
+</pre>
+
+<h3>(4) Adding ISPCR for single primer cDNA amplification:<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR )</a></h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---->
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXXXX...XXXXX(pA)<umi>[8-bp UMI]</umi><cbc>[12-bp cell barcode]</cbc>ACGT<tso>ACTCTGCGTTGATACCACTGCTT</tso>AAAAAAAA
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTTACCCXXXXX...XXXXX(dT)<umi>[8-bp UMI]</umi><cbc>[12-bp cell barcode]</cbc>TGCA<tso>TGAGACGCAACTATGGTGACGAA</tso>TTTTTTTT -5'--|
+                                                                                <----<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(5) Nextera tagmentation on amplified cDNA (will create 9-bp gap):</h3>
+<img src="data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA, with s5 sequence, not amplifiable due to the use of Nextera N7xx for library amplification, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTTACCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (5'-end of cDNA, with s7 sequence, not amplifiable due to Library PCR Primer 1 ends with "AC" which cannot to be annealed to the template, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTTACCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (3'-end of cDNA, with s5 sequence, not amplifiable due to the use of Nextera N7xx for library amplification, see step 6):</i>
+
+
+|--5'- TTTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+       AAAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 4 (3'-end of cDNA, with s7 sequence, the only amplifiable fragment which will be used for library prep and sequencing, see step 6):</i>
+
+
+|--5'- TTTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+       AAAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+</seq>
+</pre>
+
+<h3>(6) Add Library PCR Primer 1 & 2 to amplify library:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC-------->
+                              |--5'- TTTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                     AAAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                               <s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+              <p5>Illumina P5</p5>                           <tso>ISPCR/TSO</tso>            <cbc>12bp cell</cbc>     <umi>8bp</umi>        cDNA           <me>ME</me>             <s7>s7</s7>            i7          <p7>Illumina P7</p7>
+                                                                          <cbc>barcode</cbc>      <umi>UMI</umi>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 sequencing primer to sequence the first read (bottom strand as template, sequence 12-bp cell barcode and 8-bp UMI):</h3>
+<pre>
+<align class="long">
+                             5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add i7 index sequencing primer to sequence the i7 index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                                                                                                     5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCA<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Read 2 sequencing primer to sequence the second read (top strand as template, sequence cDNA):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGT<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                 <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
