@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco;
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco;
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco;
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>STRT-seq/STRT-seq-C1/STRT-seq-2i</title>
+</head>
+<body>
+
+<h1><a href="#STRT-seq" target="_self">STRT-seq</a>
+/ <a href="#STRT-seq-C1" target="_self">STRT-seq-C1</a>
+/ <a href="#STRT-seq-2i" target="_self">STRT-seq-2i</a></h1>
+
+<br></br>
+
+<h1><a href="http://genome.cshlp.org/content/21/7/1160.full" target="_blank" name="STRT-seq"><span style="color:red">STRT-seq</span></a></h1>
+<p>STRT-seq was originally pulished in Genome Res. 21: 1160-1167 (2011). One year after that, the authors published the detailed protocol in Nature Protocols 7, 813–828 (2012), which is only slightly different from the orginal paper. The workflow shown here is based on the protocol in Nature Protocols 7, 813–828 (2012).</p>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>oligo-dTVN: 5'-Bio- TT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>CGACTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN -3'</p>
+<p>Barcoded Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>rGrGrG -3'</p>
+<p>ISPCR: 5′-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p><b><sup>*</sup></b>Solexa P1 adapter: 5'- <p5>AATGATACGGCGACCACCGA</p5> -3'</p>
+<p><b><sup>*</sup></b>Solexa P2 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGA</p7> -3'</p>
+<p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGA</p5>GATCT<tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
+<p>Library PCR primer 2: 5'- <p7>CAAGCAGAAGACGGCATACGA</p7>G -3'</p>
+<p>Doube stranded P2 adapter with T overhang:</p>
+<pre><seq>5'- <p7>CAAGCAGAAGACGGCATACGA</p7>GCTCTTCCGATC*T -3'
+     3'- <p7>GTTCGTCTTCTGCCGTATGCT</p7>CGAGAAGGCTAG  -5'</seq></pre>
+<p><b><span style="color:red">*</span></b> Recent sequencing libraries use Illumina P5/P7 adapters, instead of Solexa P1/P2 adapters.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal oligo-dTVN to mRNA and reverse transcription using MMLV:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <----NV(T)<sub>30</sub>CAGC<tso>TGAGACGCAACTATGGTGACGAA</tso>TT -Bio-5'
+</seq>
+</pre>
+
+<h3>(2) After reverse transcription, the terminal tranferase acitivity of MMLV add extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+ CCCXXXXXXXXXXXXXXXXXXNV(T)<sub>30</sub>CAGC<tso>TGAGACGCAACTATGGTGACGAA</tso>TT -Bio-5'
+</seq>
+</pre>
+
+<h3>(3) Adding Barcoded TSO for second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>
+                                                      CCCXXXXXXXXXXXXXXXXXXXX(T)<sub>30</sub>CAGC<tso>TGAGACGCAACTATGGTGACGAA</tso>TT -Bio-5'
+</seq>
+</pre>
+
+<h3>(4) Adding ISPCR for single primer cDNA amplification:<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR )</a></h3>
+<pre>
+<seq>
+5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---->
+5'-     <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX(pA)GTCG<tso>ACTCTGCGTTGATACCACTGCTT</tso>AA
+        <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX(dT)CAGC<tso>TGAGACGCAACTATGGTGACGAA</tso>TT -Bio-5'
+                                                                                 <----<tso>TGAGACGCAACTATGGTGACGAA</tso> -Bio-5'
+</seq>
+</pre>
+
+<h3>(5) Streptavidin beads binding, and cDNA fragmentation using DNase I in the presence of Mn<sup>2+</sup>, which preferentially causes double-stranded breaks:</h3>
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX -5'
+
+<i>Product 2 (3'-end of cDNA):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCTG(pA)XXXXXXXXXX...XXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(6) A tailing:</h3>
+<pre>
+<seq>
+<i>Prodcut 1 (5'-end of cDNA):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX*A
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX   -5'
+
+<i>Product 2 (3'-end of cDNA):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX*A
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCTG(pA)XXXXXXXXXX...XXXXXXXXXX   -5'
+</seq>
+</pre>
+
+<h3>(7) Ligation with doube stranded P2 adapter with T overhang, and at the same time, SalI digestion:</h3>
+<pre>
+<align class="small">
+<i>Product 1 (5'-end of cDNA, will not be affected by SalI):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXX*AGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXX TCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Product 2 (3'-end of cDNA, will be cut by SalI, this product is omitted later since it cannot be amplified:):</i>
+
+|--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAG   T</tso>CGAC(dT)XXXXXXXXXX...XXXXXXXXXX*AGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
+           <tso>TTCGTCACCATAGTTGCGTCTCA</tso>GCT   G(pA)XXXXXXXXXX...XXXXXXXXXX TCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Add Library PCR Primers 1&2 for amplification:</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGA</p5>GATCT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>----->
+                  |--5'-Bio- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>[6-bp cell barcode]</cbc>GGGXXXXXXX...XXXXXXXAGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
+                             <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>[6-bp cell barcode]</cbc>CCCXXXXXXX...XXXXXXXTCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                        <------G<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(9) Final library structure:</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGA</p5>GATCT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>NNNNNN</cbc>GGGXXXXXXX...XXXXXXXAGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>NNNNNN</cbc>CCCXXXXXXX...XXXXXXXTCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Solexa P1</p5>                <tso>ISPCR/TSO</tso>                  <cbc>6bp</cbc>                                       <p7>Solexa P2</p7>
+                                                             <cbc>cell</cbc>
+                                                            <cbc>barcode</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, the first 6-bp of the read will be the cell barcode):</h3>
+<pre>
+<align class="small">
+                    5'- GATCT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT--------->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>CGTCACGA<cbc>NNNNNN</cbc>CCCXXXXXXX...XXXXXXXTCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template, not sure whether this step is actually perfromed):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGA</p5>GATCT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>GCAGTGCT<cbc>NNNNNN</cbc>GGGXXXXXXX...XXXXXXXAGATCGGAAGAGC<p7>TCGTATGCCGTCTTCTGCTTG</p7>
+                                                                              <-------TCTAGCCTTCTCG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<br></br>
+<br></br>
+
+<h1><a href="http://www.nature.com/nmeth/journal/v11/n2/full/nmeth.2772.html" target="_blank" name="STRT-seq-C1"><span style="color:red">STRT-seq-C1</span></a></h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>C1-P1-T31: 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>TCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>C1-P1-RNA-TSO: 5'-Bio- <p5>AAUGAUACGGCGACCACCGA</p5>U<umi>[5-bp UMI]</umi>GGG -3'</p>
+<p>C1-P1-PCR-2 primer: 5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>T -3'</p>
+<p>Barcoded C1-Tn5 top (including 19-bp Mosaic End (ME)): 5'- <p7>CAAGCAGAAGACGGCATACGA</p7><cbc>[8-bp cell barcode]</cbc>GCGTC<me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Universal C1-Tn5 bottom: 5'- <me>CTGTCTCTTATACACATCT</me>GACGC -3'</p>
+<p>Annealed Tn5 oligos for Tn5 transposome assembly:</p>
+<pre><seq>5'- <p7>CAAGCAGAAGACGGCATACGA</p7><cbc>[8-bp cell barcode]</cbc>GCGTC<me>AGATGTGTATAAGAGACAG</me> -3'
+                                                  3'- <me>TCTACACATATTCTCTGTC</me> -5'</seq></pre>
+<p><b><sup>*</sup></b>Solexa P1 adapter: 5'- <p5>AATGATACGGCGACCACCGA</p5> -3'</p>
+<p><b><sup>*</sup></b>Solexa P2 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGA</p7> -3'</p>
+<p><b><span style="color:red">*</span></b> Recent sequencing libraries use Illumina P5/P7 adapters, instead of Solexa P1/P2 adapters.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal C1-P1-T31 to mRNA and reverse transcription using MMLV:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <----NV(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(2) After reverse transcription, the terminal tranferase acitivity of MMLV add extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+ CCCXXXXXXXXXXXXXXXXXXNV(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(3) Adding C1-P1-RNA-TSO for second strand synthesis:</h3>
+<pre>
+<seq>
+5'-Bio- <p5>AAUGAUACGGCGACCACCGA</p5>U<umi>[5-bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>
+                                       CCCXXXXXXXXXXXXXXXXXXXX(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(4) cDNA amplification using single C1-P1-PCR-2 primer:<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR )</a></h3>
+<pre>
+<seq>
+5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>T---->
+5'-Bio-  <p5>AAUGAUACGGCGACCACCGA</p5>U<umi>[5-bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(pA)CGA<p5>TCGGTGGTCGCCGTATCATT</p5>
+         <p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>[5-bp UMI]</umi>CCCXXXXXXXXXXXXXXXXXXXX(dT)GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+                                                                <----T<p5>AGCCACCAGCGGCATAGTAA</p5>G -Bio-5'
+</seq>
+</pre>
+
+<h3>(5) Homemade Tn5 homodimers using C1-Tn5_top/bottom tagmentation on amplified cDNA (will create 9-bp gap):</h3>
+<img src="data/tn5_strt_homodimer.svg" alt="Tn5 strt homodimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA):</i>
+
+5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>T<umi>[5-bp UMI]</umi>GGGXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+        C<p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>[5-bp UMI]</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp cell barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Product 2 (3'-end of cDNA):</i>
+
+5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>TCG(dT)XXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+        C<p5>TTACTATGCCGCTGGTGGCT</p5>AGC(pA)XXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp cell barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(6) Streptavidin beads binding. and PvuI cleavage (5'...CGATCG...3')</h3>
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA) will not be affected:</i>
+
+|--5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>T<umi>[5-bp UMI]</umi>GGGXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+           C<p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>[5-bp UMI]</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp cell barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Product 2 (3'-end of cDNA) will be cut by PvuI (this product is omitted later since it cannot be amplified):</i>
+
+|--5'-Bio- G<p5>AATGATACGGCGACCACCGA</p5>T   CG(dT)XXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+           C<p5>TTACTATGCCGCTGGTGGC   T</p5>AGC(pA)XXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp cell barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(7) NaOH denature Product 1 (5'-end of cDNA), and library amplification with P1 and P2 adapters using bottom strand as template:</h3>
+<pre>
+<seq>
+5'-  <p5>AATGATACGGCGACCACCGA</p5>T-------->
+3'- C<p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>[5-bp UMI]</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp cell barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                              <---------<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGA</p5>T<umi>NNNNN</umi>GGGXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>NNNNNNNN</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>NNNNN</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+        <p5>Solexa P1</p5>       <umi>UMI</umi>          cDNA                   <me>ME</me>                    <cbc>8bp</cbc>        <p7>Solexa P2</p7>
+                                                                                  <cbc>cell</cbc>
+                                                                                 <cbc>barcode</cbc>
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, the first 5-bp of the read will be UMI):</h3>
+<pre>
+<align class="small">
+5'- <p5>TTACTATGCCGCTGGTGGCT</p5>A-------->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>NNNNN</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add index sequencing primer to sequence cell barcodes (bottom strand as template):</h3>
+<pre>
+<align class="small">
+                                                   5'- <me>CTGTCTCTTATACACATCT</me>GACGC------->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>A<umi>NNNNN</umi>CCCXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<br></br>
+<br></br>
+
+<h1><a href="http://www.biorxiv.org/content/early/2017/04/20/126268" target="_blank" name="STRT-seq-2i"><span style="color:red;">STRT-seq-2i</span></a></h1>
+<p>This method is similar to STRT-seq-C1, but with nanowell capture and different oigo design, and there probably a mistake in the sequence of DI-Read1-Seq at this time of the preprint (29-08-2017), where there should be only five Ns in DI-Read1-Seq. There are currently six Ns in it.</p>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>C1-P1-T31: 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>TCGTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>P1B-UMI-RNA-TSO: 5'-Bio- CUACACGACGCUCUUCCGAUCU<umi>[6-bp UMI]</umi>rGrGrG -3'</p>
+<p>DI-PCR-P1A: 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5> -3'</p>
+<p>DI-P1A-idx[1-32]-P1B: 5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATC -3'</p>
+<p>Barcoded STRT-Tn5-Idx[1-96] top (including 19-bp Mosaic End (ME)): 5'- <p7>CAAGCAGAAGACGGCATACGA</p7><cbc>[8-bp subarray barcode]</cbc>GCGTC<me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Universal Tn5 bottom (STRT-TN5-U): 5'- <me>CTGTCTCTTATACACATCT</me>GACGC -3'</p>
+<p>Annealed Tn5 oligos for Tn5 transposome assembly:</p>
+<pre><seq>5'- <p7>CAAGCAGAAGACGGCATACGA</p7><cbc>[8-bp subarray barcode]</cbc>GCGTC<me>AGATGTGTATAAGAGACAG</me> -3'
+                                                      3'- <me>TCTACACATATTCTCTGTC</me> -5'</seq></pre>
+<p><b><sup>*</sup></b>P1_2nd_PCR: 5'- <p5>AATGATACGGCGACCACCGA</p5>GATC -3'</p>
+<p><b><sup>*</sup></b>P2_2nd_PCR: 5'- <p7>CAAGCAGAAGACGGCATACGA</p7>GAT -3'</p>
+<p>DI-Read1-Seq: 5'- <p5>ATGATACGGCGACCACCGA</p5>GATCTACACNNNNNNCTACACGACGCTCTTCCGATCT -3'</p>
+<p>DI_idxP1A-Seq: 5'- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC -3'</p>
+<p></p>
+<p></p>
+<p><b><span style="color:red">*</span></b> Recent sequencing libraries use Illumina P5/P7 adapters, instead of Solexa P1/P2 adapters.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal C1-P1-T31 to mRNA and reverse transcription using MMLV:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <----NV(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(2) After reverse transcription, the terminal tranferase acitivity of MMLV add extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+ CCCXXXXXXXXXXXXXXXXXXNV(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(3) Adding P1B-UMI-RNA-TSO for second strand synthesis:</h3>
+<pre>
+<seq>
+5'-Bio- CUACACGACGCUCUUCCGAUCU<umi>[6-bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>
+                                        CCCXXXXXXXXXXXXXXXXXXXX(T)<sub>31</sub>GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(4) cDNA amplification using single DI-PCR-P1A and DI-P1A-idx[1-32]-P1B primers to index the wells within each subarray:</h3>
+<pre>
+<seq>
+5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATC---->
+                                               5'-Bio-  CUACACGACGCUCUUCCGAUCU<umi>[6-bp UMI]</umi>GGGXXXXX...XXXXXX(pA)CGA<p5>TCGGTGGTCGCCGTATCATT</p5>
+                                                        GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXXXX...XXXXXX(dT)GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+                                                                                                           <----<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(5) Amplified double stranded and indexed cDNA looks like this:</h3>
+<pre>
+<seq>
+5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX(pA)CGA<p5>TCGGTGGTCGCCGTATCATT</p5>
+        <p5>AATGATACGGCGACCACCGA</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXX(dT)GCT<p5>AGCCACCAGCGGCATAGTAA</p5> -Bio-5'
+</seq>
+</pre>
+
+<h3>(6) Homemade Tn5 homodimers using annealed Barcoded STRT-Tn5-Idx[1-96] top/bottom tagmentation on amplified cDNA (will create 9-bp gap):</h3>
+<img src="data/tn5_strt_seq_2i.svg" alt="Tn5 strt seq 2i" style="width:800px;height:450px;">
+<pre>
+<align class="long">
+<i>Product 1 (5'-end of cDNA):</i>
+
+5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+        <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Product 2 (3'-end of cDNA):</i>
+
+5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>TCG(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+        <p5>TTACTATGCCGCTGGTGGCT</p5>AGC(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(7) Streptavidin binding and PvuI digestion:</h3>
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA) will not be affected:</i>
+
+|--5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>[8-bp subarray barcode]</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
+           <p5>AATGATACGGCGACCACCGA</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Product 2 (3'-end of cDNA) will be cut by PvuI (this product is omitted later since it cannot be amplified):</i>
+
+|--5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>T   CG(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+           <p5>TTACTATGCCGCTGGTGGC   T</p5>AGC(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(8) Library amplification using P1_2nd_PCR and P2_2nd_PCR priers:</h3>
+<pre>
+<seq>
+       5'- <p5>AATGATACGGCGACCACCGA</p5>GATC-------->
+|--5'-Bio- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>[5-bp well barcode]</cbc>CTACACGACGCTCTTCCGATCT<umi>[6-bp UMI]</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>[8-bp subarray barcode]</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
+           <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>[5-bp well barcode]</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>[6-bp UMI]</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>[8-bp subarray barcode]</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                         <---------TAG<p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC<cbc>NNNNN</cbc>CTACACGACGCTCTTCCGATCT<umi>NNNNNN</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me>GACGC<cbc>NNNNNNNN</cbc><p7>TCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>NNNNN</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>NNNNNN</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+        <p5>Solexa P1</p5>                 <cbc>5bp</cbc>                        <umi>UMI</umi>       cDNA           <me>ME</me>                 <cbc>8bp</cbc>         <p7>Solexa P2</p7>
+                                  <cbc>well</cbc>                                                                 <cbc>subarray</cbc>
+                                <cbc>barcode</cbc>                                                                <cbc>barcode</cbc>
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add DI-Read1-Seq sequencing primer to sequence the first read (bottom strand as template, the first 6-bp of the read will be UMI):</h3>
+<pre>
+<align class="small">
+ 5'- <p5>ATGATACGGCGACCACCGA</p5>GATCTACACNNNNNCTACACGACGCTCTTCCGATCT-------->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>NNNNN</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>NNNNNN</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add STRT-Tn5-U primer to sequence subarray barcodes (bottom strand as template):</h3>
+<pre>
+<align class="small">
+                                                                          5'- <me>CTGTCTCTTATACACATCT</me>GACGC------->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>NNNNN</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>NNNNNN</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Add DI_idxP1A-Seq primer to sequence well barcodes (bottom strand as template):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGA</p5>GATCTACAC---->
+3'- <p5>TTACTATGCCGCTGGTGGCT</p5>CTAGATGTG<cbc>NNNNN</cbc>GATGTGCTGCGAGAAGGCTAGA<umi>NNNNNN</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTGCG<cbc>NNNNNNNN</cbc><p7>AGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+</body>
+</html>
