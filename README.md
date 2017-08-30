@@ -9,6 +9,10 @@ I was a little bit bombarded with all the single cell methods and got completely
 
 If I cannot re-construct the library on paper, I don't understand it.
 
+## How to use?
+
+Download/Clone the whole repository, and open the html file with a web browser.
+
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
