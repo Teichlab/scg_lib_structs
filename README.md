@@ -7,7 +7,9 @@ I was a little bit bombarded with all the single cell methods and got completely
 
 ## Why bother?
 
-What I cannot create on paper, I don't understand. Know how to re-construct every library that has been invented.
+Here I burrow from Feyman:
+
+**What I cannot create on paper, I do not understand. Know how to re-construct every library that has been invented.**
 
 ![](data/feyman.jpeg)
 
