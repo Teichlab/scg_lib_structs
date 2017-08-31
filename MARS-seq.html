@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>MARS-seq</title>
+</head>
+<body>
+
+<h1><a href="http://science.sciencemag.org/content/343/6172/776" target="_blank">MARS-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;"> (1) I think the sequence of "2nd RT Primer" in Supplementary Table S7 in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;"> (2) The author claimed in the Supplementary Method (Page 8) that UMIs are 4-8 bp in length, but from the oligo sequence in Supplementary Table 7, they are only 4 bp in length. 4 bp were drawn in this workflow here.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>1st RT primer: 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTN -3'</p>
+<p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
+<p>Lig_NNNX4_ix[1-8]: 5'/5Phos/- <cbc>[7-bp plate barcode]</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'</p>
+<p>2nd RT primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>P5_Rd1_PCR primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>P7_Rd2_PCR primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina Truse Read1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Truse Read2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<h4>Sequence of Lig_NNNX4_ix[1-8]:</h4>
+<pre>
+<seq>
+    lig_NNNX4_ix1 5'-/5Phos/ <cbc>GACTNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix2 5'-/5Phos/ <cbc>CATGNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix3 5'-/5Phos/ <cbc>CCAANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix4 5'-/5Phos/ <cbc>CTGTNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix5 5'-/5Phos/ <cbc>GTAGNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix6 5'-/5Phos/ <cbc>TGATNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix7 5'-/5Phos/ <cbc>ATCANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_NNNX4_ix8 5'-/5Phos/ <cbc>TAGANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Step-by-step library generation (the 5'-/acrydite/iSpPC/ is omitted for simplicity)</h2>
+<h3>(1) Anneal 1st RT primer to mRNA and reverse transcription:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>
+                 <-----N(T)<sub>20</sub><umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+</seq>
+</pre>
+
+<h3>(2) Pool all single cells, and RNaseH and DNA Pol I based second strand synthesis:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXX(pA)<umi>[4-bp UMI]</umi><cbc>[6-bp barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7>GC<t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG
+    XXXXXXXXXXXXXXXXXXXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+</seq>
+</pre>
+
+<h3>(3) T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
+<pre>
+<seq>
+5'- <t7>G</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>(dT)XXXXXXXXXXXXXXXXXXXXX -3'
+</seq>
+</pre>
+
+<h3>(4) Heat fragment the amplified RNA (aRNA), and perform ssDNA/RNA ligation (T4 RNA ligase I) with lig_NNNX4_ix[1-8] with plate barcode:</h3>
+<pre>
+<seq>
+<i>Due to the 3' block of the lig_NNNX4_ix[1-8], there is only one ligation possibility,
+which is the 5' end of the lig_NNNX4_ix[1-8] ligating to 3' of aRNA:</i>
+
+3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>G</t7> -5'
+</seq>
+</pre>
+
+<h3>(5) Add 2nd RT primer to revesrse transcribe the aRNA: </h3>
+<pre>
+<seq>
+5'- <s5>CTACACGACGCTCTTCCGATCT</s5>-------->
+3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>G</t7> -5'
+</seq>
+</pre>
+
+<h3>(6) Resulting first strand cDNA looks like this:</h3>
+<pre>
+<seq>
+5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(pA)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7>GC<t7>C</t7> -3'
+</seq>
+</pre>
+
+<h3>(7) Add P5_Rd1_PCR & P7_Rd2_PCR primers for library preparation and amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------------->
+                                    5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(pA)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7>GC<t7>C</t7> -3'
+                                                                                                              <-------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Final library structure (not sure what NNN between Partial Rd1 and 4bp plate barcode is):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNN</cbc>XXX...XXX(pA)<umi>NNNN</umi><cbc>NNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNN</cbc>XXX...XXX(dT)<umi>NNNN</umi><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>              <s5>Illumina Truseq Read1</s5>      <cbc>7bp</cbc>     cDNA      <umi>4bp</umi>   <cbc>6bp</cbc>       <s7>Illumina Truseq Read2</s7>              <p7>Illumina P7</p7>
+                                                               <cbc>plate</cbc>              <umi>UMI</umi>   <cbc>cell</cbc>
+                                                              <cbc>barcode</cbc>                  <cbc>barcode</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Illumina Truseq Read1 sequencing primer to sequence the first read (bottom strand as template, the first 6 - 7 bp are plate barcode, then followed by cDNA sequence):</h3>
+<pre>
+<align class="long">
+                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>----------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNN</cbc>XXX...XXX(dT)<umi>NNNN</umi><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>ACTTGAGGTCAGTG<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Cluster regeneration, and add Illumina Truseq Read2 sequencing primer to sequence read 2 (top strand as template, these are the cell barcodes and UMI reads, with some dT at the end depending on the cycle numbers):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNN</cbc>XXX...XXX(pA)<umi>NNNN</umi><cbc>NNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                             <--------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'           
+</align>
+</pre>
+
+</body>
+</html>

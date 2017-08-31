@@ -23,6 +23,7 @@ Click the following links to veiw the methods. Note: the default alignment font 
 - [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
 - [Drop-seq](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
+- [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
 
 ## TODO:
 
