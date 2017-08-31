@@ -20,8 +20,11 @@ Here I borrow from Feyman:
 Click the following links to veiw the methods. Note: the default alignment font is Monaco. Courier New font will be used in Monaco is not available.
 
 [STRT-seq family (including STRT-seq, STRT-seq-C1, STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
+
 [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
+
 [Drop-seq](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
+
 [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 
 ## TODO:
