@@ -28,7 +28,6 @@ Click the following links to veiw the methods. Note: the default alignment font 
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
-- MARS-seq
 - 10x Chromium
 - CEL-seq/CEL-seq2
 - Seq-Well
