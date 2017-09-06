@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>CEL-seq/CEL-seq2</title>
+</head>
+<body>
+
+<h1><a href="#CEL-seq" target="_self">CEL-seq</a> / <a href="#CEL-seq2" target="_self">CEL-seq2</a></h1>
+
+<span style="font-family:verdana; font-size:1.1em;"><p>CEL-seq2 is an improved version of CEL-seq, the main differences are:</p>
+<p> (1) CEL-seq2 uses UMI; CEL-seq does not.</p>
+<p> (2) CEL-seq2 uses random priming for reverse transcription after IVT amplification; CEL-seq uses RNA adapter ligation and then uses the primer annealed to the ligated adapter for reverse transcription after IVT amplification.</p>
+<p>CEL-seq used some homemade oligo sequence design and one of Illumina's kit. The protocol in the publication was not entirely clear, so I guess it was Illumina Truseq Small RNA-seq kit based on the oligo names (In the CEL-seq2 publication, they confirmed this is the case). I still put CEL-seq here to get a historic view of how methods evolve.</p></span>
+
+<br></br>
+
+<h1><a href="http://www.cell.com/cell-reports/abstract/S2211-1247(12)00228-8" target="_blank" name="CEL-seq"><span style="color:red">CEL-seq</span></a><h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Barcoded RT primer: 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><cbc>[8-bp cell barcode]</cbc>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
+<p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
+<p>Illumina RA5 adapter (Truseq Small RNA kit): 5'- <s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5> -3'</p>
+<p>Illumina RA3 adapter (Truseq Small RNA kit): 5'- <s7>TGGAATTCTCGGGTGCCAAGG</s7> -3'</p>
+<p>Illumina RTP primer (Truseq Small RNA kit): 5'- G<s7>CCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Illumina RP1 primer (Truseq Small RNA kit): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5> -3'</p>
+<p>Illumina RPI[1-48] primers (Truseq Small RNA kit): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp RPI]GTGACTGGAGTT<s7>CCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5> -3'</p>
+<p>Index read primer: 5'- <s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCAC -3'</p>
+<p>Read 2 sequencing primer: 5'- GTGACTGGAGTT<s7>CCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<h3>6-bp RPI sequences:</h3>
+<pre>
+     RPI1 : CGTGAT
+     RPI2 : ACATCG
+     RPI3 : GCCTAA
+     RPI4 : TGGTCA
+     RPI5 : CACTGT
+     RPI6 : ATTGGC
+     RPI7 : GATCTG
+     RPI8 : TCAAGT
+     RPI9 : CTGATC
+    RPI10 : AAGCTA
+    RPI11 : GTAGCC
+    RPI12 : TACAAG
+    RPI13 : TTGACT
+    RPI14 : GGAACT
+    RPI15 : TGACAT
+    RPI16 : GGACGG
+    RPI17 : CTCTAC
+    RPI18 : GCGGAC
+    RPI19 : TTTCAC
+    RPI20 : GGCCAC
+    RPI21 : CGAAAC
+    RPI22 : CGTACG
+    RPI23 : CCACTC
+    RPI24 : GCTACC
+    RPI25 : ATCAGT
+    RPI26 : GCTCAT
+    RPI27 : AGGAAT
+    RPI28 : CTTTTG
+    RPI29 : TAGTTG
+    RPI30 : CCGGTG
+    RPI31 : ATCGTG
+    RPI32 : TGAGTG
+    RPI33 : CGCCTG
+    RPI34 : GCCATG
+    RPI35 : AAAATG
+    RPI36 : TGTTGG
+    RPI37 : ATTCCG
+    RPI38 : AGCTAG
+    RPI39 : GTATAG
+    RPI40 : TCTGAG
+    RPI41 : GTCGTC
+    RPI42 : CGATTA
+    RPI43 : GCTGTA
+    RPI44 : ATTATA
+    RPI45 : GAATGA
+    RPI46 : TCGGGA
+    RPI47 : CTTCGA
+    RPI48 : TGCCGA
+</pre>
+
+<br></br>
+
+<h2>Step-by-step library generation (the 5'-/acrydite/iSpPC/ is omitted for simplicity)</h2>
+<h3>(1) Anneal oligo-dT19V to mRNA and reverse transcription using MMLV inside droplets:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <-----V(T)<sub>24</sub><cbc>[8-bp cell barcode]</cbc><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+</seq>
+</pre>
+
+<h3>(2) RNaseH and DNA Pol I based second strand synthesis:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(pA)<cbc>[8-bp cell barcode]</cbc><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG -3'
+3'- XXXXXXXXXXXXXXXXXXXV(dT)<cbc>[8-bp cell barcode]</cbc><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+</seq>
+</pre>
+
+<h3>(3) Pool cells and T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5><cbc>[8-bp cell barcode]</cbc>(dU)VXXX...XXX -3'
+</seq>
+</pre>
+
+<h3>(4) Fragmentaion of amplified RNA (aRNA), ligation of Illumina RA3 adapter to aRNA. The 3' end of RA3 is probably blocked so that only one possible ligtation product is produced (3' of aRNA ligated to 5' of RA3):</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5><cbc>[8-bp cell barcode]</cbc>(dU)VXXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7> -3'
+</seq>
+</pre>
+
+<h3>(5) Adding Illumina RTP primer to perform reverse transcription of ligagted aRNA:</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5><cbc>[8-bp cell barcode]</cbc>(dU)VXXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7> -3'
+                                                         <------<s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+</seq>
+</pre>
+
+<h3>(6) First strand cDNA of aRNA looks like this:</h3>
+<pre>
+<seq>
+3'- <t7>C</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>[8-bp cell barcode]</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+</seq>
+</pre>
+
+<h3>(7) Adding Illumina RP1 and PRI[1-48] primers to amplify library:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5>--------->
+                            3'- <t7>C</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>[8-bp cell barcode]</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+                                                                                   <-------<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTG[6-bp RPI]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><cbc>NNNNNNNN</cbc>(dT)XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCACNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                    <s5>RA5</s5>              <cbc>8bp</cbc>         cDNA             <s7>RA3</s7>                      6bp      <p7>Illumina P7</p7>
+                                                             <cbc>cell</cbc>                                                 sample
+                                                            <cbc>barcode</cbc>                                               barcode
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the cell barcodes and dT):</h3>
+<pre>
+<seq>
+                             5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5>---------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<seq>
+                                                                            5'- <s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCAC----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, and add read 2 sequencing primer to sequence read 2 (top strand as template, these are the cDNA reads):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><cbc>NNNNNNNN</cbc>(dT)XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCACNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                        <-------<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTG -5'
+</seq>
+</pre>
+
+<br></br>
+
+<h1><a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0938-8" target="_blank" name="CEL-seq2"><span style="color:red">CEL-seq2</span></a><h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Barcoded RT primer: 5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>6-bp UMI</umi><cbc>[6-bp cell barcode]</cbc>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
+<p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
+<p>randomhexRT primer: 5'- G<s7>CCTTGGCACCCGAGAATTCCA<s7>NNNNNN -3'</p>
+<p>Illumina RP1 primer (Truseq Small RNA kit): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5> -3'</p>
+<p>Illumina RPI[1-48] primers (Truseq Small RNA kit): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp RPI]GTGACTGGAGTT<s7>CCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5> -3'</p>
+<p>Index read primer: 5'- <s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCAC -3'</p>
+<p>Read 2 sequencing primer: 5'- GTGACTGGAGTT<s7>CCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation (the 5'-/acrydite/iSpPC/ is omitted for simplicity)</h2>
+<h3>(1) Anneal oligo-dT19V to mRNA and reverse transcription using MMLV inside droplets:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <-----V(T)<sub>24</sub><cbc>[6-bp cell barcode]</cbc><umi>[6-bp UMI]</umi><s5>CTAGCAGCCTGACATCTTGA</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCG -5'
+</seq>
+</pre>
+
+<h3>(2) RNaseH and DNA Pol I based second strand synthesis:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(pA)<cbc>[6-bp cell barcode]</cbc><umi>[6-bp UMI]</umi><s5>GATCGTCGGACTGTAGAACT</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGC -3'
+3'- XXXXXXXXXXXXXXXXXXXV(dT)<cbc>[6-bp cell barcode]</cbc><umi>[6-bp UMI]</umi><s5>CTAGCAGCCTGACATCTTGA</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCG -5'
+</seq>
+</pre>
+
+<h3>(3) Pool cells and T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><s5>AGUUCUACAGUCCGACGAUC</s5><umi>[6-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc>(dU)VXXX...XXX -3'
+</seq>
+</pre>
+
+<h3>(4) Fragmentaion of amplified RNA (aRNA), add randomhexRT primer to perform reverse transcription to convert aRNA back to cDNA:</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><s5>AGUUCUACAGUCCGACGAUC</s5><umi>[6-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc>(dU)VXXX...XXX -3'
+                                                  <---------NNNNNN
+                                                                  <s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+</seq>
+</pre>
+
+<h3>(5) The first strand cDNA of aRNA looks like this:</h3>
+<pre>
+<seq>
+3'- <t7>C</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[6-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+</seq>
+</pre>
+
+<h3>(6) Adding Illumina RP1 and PRI[1-48] primers to amplify library:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5>--------->
+                                  3'- <t7>C</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[6-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>G -5'
+                                                                                             <-------<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTG[6-bp RPI]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>NNNNNN</umi><cbc>NNNNNN</cbc>(dT)XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCACNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNNNNN</umi><cbc>NNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                    <s5>RA5</s5>             <umi>6bp</umi>   <cbc>6bp</cbc>        cDNA             <s7>RA3</s7>                      6bp      <p7>Illumina P7</p7>
+                                                            <umi>UMI</umi>   <cbc>cell</cbc>                                                sample
+                                                                 <cbc>barcode</cbc>                                              barcode
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the UMI, cell barcodes and dT):</h3>
+<pre>
+<seq>
+                             5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5>---------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNNNNN</umi><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<seq>
+                                                                                  5'- <s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCAC----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNNNNN</umi><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, and add read 2 sequencing primer to sequence read 2 (top strand as template, these are the cDNA reads):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>NNNNNN</umi><cbc>NNNNNNNN</cbc>(dT)XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCACNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                              <-------<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTG -5'
+</seq>
+</pre>
+
+</body>
+</html>

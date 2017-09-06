@@ -24,12 +24,12 @@ Click the following links to veiw the methods. Note: the default alignment font 
 - [Drop-seq](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
+- [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
 
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
 - 10x Chromium
-- CEL-seq/CEL-seq2
 - Seq-Well
 - SPLiT-seq
 - sci-RNA-seq
