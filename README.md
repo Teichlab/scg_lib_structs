@@ -21,10 +21,10 @@ Click the following links to veiw the methods. Note: the default alignment font 
 
 - [STRT-seq family (including STRT-seq, STRT-seq-C1, STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
 - [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
+- [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
 - [Drop-seq](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
-- [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
 
 ## TODO:
 
@@ -34,3 +34,10 @@ Click the following links to veiw the methods. Note: the default alignment font 
 - SPLiT-seq
 - sci-RNA-seq
 - sci-ATAC-seq
+
+## Feedback
+
+I would be very happy if you go through them and let me know what you think. If you spot some errors/mistakes, or I've missed some key methods. Feel free to contact me:
+
+Xi Chen
+xc1@sanger.ac.uk
