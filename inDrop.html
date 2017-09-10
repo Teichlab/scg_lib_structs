@@ -147,20 +147,22 @@ h3 {font-family:verdana;}
 <align class="long">
 5'- XXX...XXXB(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>CCCTATAGTGAGTCGTATTA</t7>CGTCATCG
     XXX...XXXV(dT)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>GGTACCACCATA<t7>GGGATATCACTCAGCATAAT</t7>GCAGTAGC -5'--|
+                                                                                                                    &crarr;
+                                                                                                             IVT starts from here
 </align>
 </pre>
 
 <h3>(3) Break droplets and T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
 <pre>
 <seq>
-5'- <t7>G</t7>ATACCACCATGG<pe1>CTCTTTCCCTACACGACGCTCTTC</pe1>CGATCT<cbc>[barcode1]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dT)VXXX...XXX -3'
+5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>AAGGCGUCACAAGCAAUCACUC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
 </seq>
 </pre>
 
 <h3>(4) Reverse transcription on amplified RNA (aRNA) using random priming (PE2-N6)</h3>
 <pre>
 <align class="long">
-5'- <t7>G</t7>ATACCACCATGG<pe1>CTCTTTCCCTACACGACGCTCTTC</pe1>CGATCT<cbc>[barcode1]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dT)VXXX...XXX -3'
+5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>AAGGCGUCACAAGCAAUCACUC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
                                                                                                       <-------NNNNNN
                                                                                                                     <pe2>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCT</pe2> -5'
 </align>

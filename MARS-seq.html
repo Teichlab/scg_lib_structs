@@ -94,13 +94,15 @@ h3 {font-family:verdana;}
 <seq>
 5'- XXXXXXXXXXXXXXXXXXXX(pA)<umi>[4-bp UMI]</umi><cbc>[6-bp barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7>GC<t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG
     XXXXXXXXXXXXXXXXXXXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+                                                                         &crarr;
+                                                                    IVT starts from here
 </seq>
 </pre>
 
 <h3>(3) T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
 <pre>
 <seq>
-5'- <t7>G</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>(dT)XXXXXXXXXXXXXXXXXXXXX -3'
+5'- <t7>G</t7>GC<s7>GACGUGUGCUCUUCCGAUCU</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>(dU)XXXXXXXXXXXXXXXXXXXXX -3'
 </seq>
 </pre>
 
@@ -110,7 +112,7 @@ h3 {font-family:verdana;}
 <i>Due to the 3' block of the lig_NNNX4_ix[1-8], there is only one ligation possibility,
 which is the 5' end of the lig_NNNX4_ix[1-8] ligating to 3' of aRNA:</i>
 
-3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>G</t7> -5'
+3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dU)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>UCUAGCCUUCUCGUGUGCAG</s7>CG<t7>G</t7> -5'
 </seq>
 </pre>
 
@@ -118,7 +120,7 @@ which is the 5' end of the lig_NNNX4_ix[1-8] ligating to 3' of aRNA:</i>
 <pre>
 <seq>
 5'- <s5>CTACACGACGCTCTTCCGATCT</s5>-------->
-3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dT)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>CG<t7>G</t7> -5'
+3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[7-bp plate barcode]</cbc>XXX...XXX(dU)<umi>[4-bp UMI]</umi><cbc>[6-bp cell barcode]</cbc><s7>UCUAGCCUUCUCGUGUGCAG</s7>CG<t7>G</t7> -5'
 </seq>
 </pre>
 
