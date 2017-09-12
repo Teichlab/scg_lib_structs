@@ -22,6 +22,7 @@ Click the following links to veiw the methods. Note: the default alignment font 
 - [STRT-seq family (including STRT-seq, STRT-seq-C1, STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
 - [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
 - [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
+- [10x Chromium Single Cell 3' Solution v2](https://teichlab.github.io/scg_lib_structs/10xChromium.html)
 - [Drop-seq](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
