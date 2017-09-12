@@ -30,7 +30,6 @@ Click the following links to veiw the methods. Note: the default alignment font 
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
-- 10x Chromium
 - Seq-Well
 - SPLiT-seq
 - sci-RNA-seq
