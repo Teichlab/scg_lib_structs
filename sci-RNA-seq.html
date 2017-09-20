@@ -142,7 +142,7 @@ h3 {font-family:verdana;}
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNNACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNNTGTGAGAAAGGGATG<w1>TGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-             <p5>Illumina P5</p5>              i5                                    <umi>8bp UMI</umi>   <cbc>10bp RT</cbc>        cDNA             <me>ME</me>              <s7>s7</s7>           i7        <p7>Illumina P7</p7>
+             <p5>Illumina P5</p5>              i5     This bit <w1>is Truseq adapter</w1>     <umi>8bp UMI</umi>   <cbc>10bp RT</cbc>        cDNA             <me>ME</me>              <s7>s7</s7>           i7        <p7>Illumina P7</p7>
                                                                                       <cbc>barcode</cbc>
 </align>
 </pre>
@@ -150,7 +150,7 @@ h3 {font-family:verdana;}
 
 <h2>Library sequencing:</h2>
 
-<h3>(1) (1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the UMI and RT barcodes, 18 cycles):</h3>
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the UMI and RT barcodes, 18 cycles):</h3>
 <pre>
 <align class="long">
                                        5'- ACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1>----------------->
