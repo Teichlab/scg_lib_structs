@@ -1,4 +1,4 @@
-# scg_lib_structs
+# Single Cell RNA-seq (scRNA-seq) Library Structure
 Collections of library structure and sequence of popular single cell genomic methods
 
 ## Motivation
