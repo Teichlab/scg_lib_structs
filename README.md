@@ -1,5 +1,5 @@
 # Single Cell RNA-seq (scRNA-seq) Library Structure
-Collections of library structure and sequence of popular single cell genomic methods
+Collections of library structure and sequence of popular single cell genomic methods (mainly scRNA-seq).
 
 ## Motivation
 
