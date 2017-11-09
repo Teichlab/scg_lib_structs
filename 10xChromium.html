@@ -37,26 +37,26 @@ h3 {font-family:verdana;}
 <body>
 
 <h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium</span></a></h1>
-<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution v2 chemistry is shown here.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution v2 chemistry is shown here. Oligo sequence information is taken from <a href="data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
-<p>Beads-oligo-dT: |--5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>n</sub>VN -3'</p>
-<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACATrGrGrG -3'</p>
-<p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p>Beads-oligo-dT: |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN -3'</p>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
+<p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso> -3′</p>
 <p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Truseq adapter (double stranded DNA with a T overhang):</p>
 <pre>
 <align class="small">
-        5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATC*T</s7> -3'
-        3'- <s7>CACTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>   -5'
+        5'-  <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+        3'- <s7>TCTAGCCTTCTCG</s7> -5'
 </align>
 </pre>
-<p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
-<p>Library PCR primer 2: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5> -3'</p>
+<p>Library PCR primer 2: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTGACTGGAGTTCAGACGTGT</s7> -3'</p>
 <p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
@@ -68,34 +68,34 @@ h3 {font-family:verdana;}
 <h3>(1) mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV:</h3>
 <pre>
 <seq>
-|--5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>n</sub>VN-------->
-                                                                   (A)<sub>n</sub>BXXXXXXXXXXXXXXXXXXXXX -5'
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN-------->
+                                                            (A)<sub>30</sub>BXXXXXXXXXXXXXXXXXXXXX -5'
 </seq>
 </pre>
 
 <h3>(2) The terminal tranferase acitivity of MMLV adds extra Cs:</h3>
 <pre>
 <seq>
-|--5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCC -3'
-                                                                   (pA)BXXXXXXXXX...XXXXXXXXX    -5'
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCC -3'
+                                                            (pA)BXXXXXXXXX...XXXXXXXXX    -5'
 </seq>
 </pre>
 
 <h3>(3) Adding TSO for second strand synthesis:</h3>
 <pre>
 <seq>
-|--5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCC------->
-                                                          <--------(pA)BXXXXXXXXX...XXXXXXXXXGGGTACA<tso>TGAGACGCAACTATGGTGACGAA</tso>    -5'
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCC------->
+                                                   <--------(pA)BXXXXXXXXX...XXXXXXXXXGGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso>    -5'
 </seq>
 </pre>
 
-<h3>(4) Adding Illumina Truseq Read 1 and ISPCR primers to amplify full length cDNA:</h3>
+<h3>(4) Adding Illumina Truseq Read 1 (Partial) and ISPCR primers to amplify full length cDNA:</h3>
 <pre>
 <seq>
-   5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------->
-|--5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCCATGT<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
-   3'- <s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXX...XXXXXXXXXGGGTACA<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
-                                                                                           <--------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+   5'- <s5>CTACACGACGCTCTTCCGATCT</s5>-------->
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXXCCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+   3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXX...XXXXXXXXXGGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                <--------<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
 </seq>
 </pre>
 
@@ -105,8 +105,8 @@ h3 {font-family:verdana;}
 <i>Product 1 (TSO plus 5'-end of cDNA):</i>
 
 
-5'-   <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACATGGGXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX*A -3'
-3'- A*<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGTACCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX   -5'
+5'-   <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>GGGXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX*A -3'
+3'- A*<tso>TTCGTCACCATAGTTGCGTCTCATGTA</tso>CCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX   -5'
 
 
 <i>Product 2 (middle of cDNA):</i>
@@ -119,8 +119,8 @@ h3 {font-family:verdana;}
 <i>Product 3 (Illumina Read 1 sequence, cell barcode, UMI plus 3' of cDNA):</i>
 
 
-5'-   <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXX*A -3'
-3'- A*<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXX...XXXXXXXXX   -5'
+5'-   <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXX...XXXXXXXXX*A -3'
+3'- A*<s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXX...XXXXXXXXX   -5'
 
 </seq>
 </pre>
@@ -133,22 +133,22 @@ h3 {font-family:verdana;}
 
 
 5'-   <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACATGGGXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
-3'- A*<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGTACCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+3'- A*<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGTACCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX<s7>TCTAGCCTTCTCG</s7> -5'
 
 
-<i>Product 2 (not amplifiable, the same reason as Product 1, see the next step):</i>
+<i>Product 2 (will not amplify efficiently due to semi-suppressive PCR??? not really sure about this):</i>
 
 
-5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>XXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
-3'- <s7>CACTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>AXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+5'- <s7>                     GCTCTTCCGATCT</s7>XXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- <s7>CACTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>AXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXX<s7>TCTAGCCTTCTCG</s7> -5'
 
 
 <i>Product 3 (I assume the 5' end of Illumina Read1 Primer is blocked, so the adapter can only be ligated</i>
 <i>to the cDNA end. This is the only ampliable fragment):</i>
 
 
-5'-   <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
-3'- A*<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+5'-   <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- A*<s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCG</s7> -5'
 
 
 </seq>
@@ -157,10 +157,10 @@ h3 {font-family:verdana;}
 <h3>(7) Add Library PCR Primers 1 & 2 to amplify library:</h3>
 <pre>
 <align class="long">
-5'-  <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------->
-                            5'-   <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
-                            3'- A*<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
-                                                                                                <-----------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'-  <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5>--------->
+                                   5'-   <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+                                   3'- A*<s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCG</s7>                      -5'
+                                                                                                             <-----------<s7>TGTGCAGACTTGAGGTCAGTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
