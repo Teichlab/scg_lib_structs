@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Illumina Bio-Rad SureCell 3' WTA for ddSEQ</title>
+</head>
+<body>
+
+<h1><a href="https://support.illumina.com/sequencing/sequencing_kits/surecell-wta-3-kit.html" target="_blank">Illumina Bio-Rad SureCell 3' WTA for ddSEQ</a></h1>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p><sup>*</sup>Beads-read1-oligo-dTV: |--5'- <tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[6-bp barcode1]</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>[6-bp barcode2]</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>[6-bp barcode3]</cbc>ACG<umi>[8-bp UMI]</umi>GAC(dT)V -3'</p>
+<p>Spacer 1: 5'- <pe1>TAGCCATCGCATTGC</pe1> -3'</p>
+<p>Spacer 2: 5'- <pe2>TACCTCTGAGCTGAA</pe2> -3'</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>DNA Aapters (N7xx): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Tagment PCR Adapter (TPP1): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p>Read 1 sequencing primer: 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>Index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p><b><span style="color:red">*</span></b> The cell barcode in this protocol is based on the combination of the barcode1+barcode2+barcode3. 6-bp each, and 18-bp in total. The full oligos are generated in a split-pool manner. The 6-bp barcode can be found at <a href="https://github.com/vals/umis/tree/master/examples/SureCell" target="_blank">the umis GitHub page</a>.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation:</h2>
+<h3>(1) Anneal oligo-dTV to mRNA and reverse transcription inside droplets:</h3>
+<pre>
+<seq>
+|--5'- <tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[6-bp barcode1]</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>[6-bp barcode2]</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>[6-bp barcode3]</cbc>ACG<umi>[8-bp UMI]</umi>GAC(dT)V --->
+                                                                                                                           (pA)BXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(2) Break emulsion, clean up and RNaseH and DNA Pol I based second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[6-bp barcode1]</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>[6-bp barcode2]</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>[6-bp barcode3]</cbc>ACG<umi>[8-bp UMI]</umi>GAC(dT)VXXX...XXX -3'
+3'- <tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[6-bp barcode1]</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>[6-bp barcode2]</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>[6-bp barcode3]</cbc>TGC<umi>[8-bp UMI]</umi>CTG(pA)BXXX...XXX -5'
+</seq>
+</pre>
+
+<h3>(3) Clean double stranded cDNA, and tagmentation using Nextera SureCell transposome (highly likely a Tn5 homodimer with s7-ME oligo):</h3>
+<img src="data/tn5_surecell.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<align class="long">
+5'- <tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[6-bp barcode1]</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>[6-bp barcode2]</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>[6-bp barcode3]</cbc>ACG<umi>[8-bp UMI]</umi>GAC(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT<me>
+3'- <tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[6-bp barcode1]</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>[6-bp barcode2]</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>[6-bp barcode3]</cbc>TGC<umi>[8-bp UMI]</umi>CTG(pA)BXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<h3>(4) Add DNA Adapter (N7xx) and TPP1 to amplify tagmented cDNA for library preparation:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>-------->
+                                         5'- <tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[6-bp barcode1]</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>[6-bp barcode2]</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>[6-bp barcode3]</cbc>ACG<umi>[8-bp UMI]</umi>GAC(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                         3'- <tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[6-bp barcode1]</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>[6-bp barcode2]</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>[6-bp barcode3]</cbc>TGC<umi>[8-bp UMI]</umi>CTG(pA)BXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                                  <--------<s7>GGCTCGGGTGCTCTG</s7>[8bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(5) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>NNNNNN</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>NNNNNN</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>NNNNNN</cbc>ACG<umi>NNNNNNNN</umi>GAC(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNN</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>NNNNNN</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>NNNNNN</cbc>TGC<umi>NNNNNNNN</umi>CTG(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                                              <cbc>barcode1</cbc>             <cbc>barcode2</cbc>             <cbc>barcode3</cbc>     <umi>8bp</umi>            cDNA           <me>ME</me>               <s7>s7</s7>          8bp          <p7>Illumina P7</p7>
+                                                                                                                            <umi>UMI</umi>                                                    sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 sequencing primer to sequence the first read (68 cycles, bottom strand as template, sequence barcode1+barcode2+barcode3, UMI and a bit dT):</h3>
+<pre>
+<align class="long">
+                             5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNN</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>NNNNNN</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>NNNNNN</cbc>TGC<umi>NNNNNNNN</umi>CTG(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                                                                                                                                              5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNN</cbc><pe1>ATCGGTAGCGTAACG</pe1><cbc>NNNNNN</cbc><pe2>ATGGAGACTCGACTT</pe2><cbc>NNNNNN</cbc>TGC<umi>NNNNNNNN</umi>CTG(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add read 2 sequencing primer to sequence read 2 (75 cycles, top strand as template, these are cDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>NNNNNN</cbc><pe1>TAGCCATCGCATTGC</pe1><cbc>NNNNNN</cbc><pe2>TACCTCTGAGCTGAA</pe2><cbc>NNNNNN</cbc>ACG<umi>NNNNNNNN</umi>GAC(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                              <-------------------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>
