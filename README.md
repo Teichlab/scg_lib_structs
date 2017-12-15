@@ -26,6 +26,7 @@ Click the following links to veiw the methods. Notes:
 - [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
 - [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
 - [10x Chromium Single Cell 3' Solution v2](https://teichlab.github.io/scg_lib_structs/10xChromium.html)
+- [Illumina Bio-Rad SureCell 3' WTA for ddSEQ](https://teichlab.github.io/scg_lib_structs/SureCell.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
