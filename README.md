@@ -36,6 +36,9 @@ Click the following links to veiw the methods. Notes:
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
+- 10x Chromium Single Cell 5' kit
+- Microwell-seq
+- mcSCRB-seq
 
 ## Feedback
 
