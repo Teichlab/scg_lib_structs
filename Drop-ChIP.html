@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Drop-ChIP</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nbt.3383" target="_blank">Drop-ChIP</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Drop-ChIP was pulished in Nature Biotechnology 33, 165–1172 (2015), by Assaf Rotem, Oren Ram and Noam Shoresh in the labs of David Weitz and Bradely Bernstein. This page will only demonstrate the molecular biology of library construction. To look at the real equipment and how the experiments were carried out, see the Supplementary Information from the original publication and the <a href="https://pubs.broadinstitute.org/drop-chip/index.php" target="_blank">Drop-ChIP webpage</a>.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<p style="font-size:1.2em;">Barcoded adapters (BA). These are double stranded DNA and there are 1,152 of them. Click <a href="data/drop_chip_barcode_adapters.txt" target="_blank">here</a> to see all of them:</p>
+<pre>
+<seq>
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> -5'
+    <w1>half</w1>  BC    <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>  BC    <w1>half</w1>
+    <w1>PacI</w1>                                                    <w1>PacI</w1>
+</seq>
+</pre>
+
+<p style="font-size:1.2em;"><sup>*</sup>Illumina Truseq forked adapters:</p>
+<pre>
+<seq>
+        5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGAC</tso>
+                                                         <tso>GCTCTTCCGATCT</tso> -3'
+                                                         <cbc>CGAGAAGGCTAGp</cbc> -5'
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNN<cbc>CACTGACCTCAAGTCTGCACA</cbc>
+</seq>
+</pre>
+
+<p style="font-size:1.2em;">Other adapters/primers used:</p>
+
+<seq>
+<p>SC-PCR1: 5'- <w1>TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7> -3'</p>
+<p>SC-PCR2: 5'- <w1>TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7> -3'</p>
+<p>Illumina Truseq Read 1 primer: 5'- <tso>TCTTTCCCTACACGACGCTCTTCCGATCT</tso> -3'</p>
+<p>Illumina Truseq Read 2 primer: 5'- <cbc>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</cbc> -3'</p>
+<p>Sample Index sequencing primer: 5'- <cbc>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+
+<p style="color:red;font-size:1.3em;"><b>*</b> It was not entirely clear what adapters were used in the protocol. These are educational guess, not confirmed!!! However, based on the sequenicng data, these are likely to be the case. See the sequence immediately after the 'grep'ed sequence, one of them (GATCGGAAGAGCACA...) that's Truseq adapters (the others are probably bacoded adapters (BA) concatemers):</p>
+<img src="data/grep.png" alt="grep sequence" style="width:804px;height:628px;">
+
+<br></br>
+
+<h2>Step-by-step library generation:</h2>
+<h3>(1) MNase digestion to fragment DNA, end repair, and blunt ligation of BA in the droplet:</h3>
+<pre>
+<seq>
+<i>Product 1 (BA at both ends of genomic DNA, these have four possibilities based on the orientation of BAs):</i>
+
+Orientation 1:
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> -5'
+    <w1>half</w1>   BC   <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>   BC   <w1>half</w1> genomic <w1>half</w1>   BC    <s7>BciVI</s7>          <w1>PacI</w1>          <s7>BciVI</s7>    BC   <w1>half</w1>
+    <w1>PacI</w1>                                                    <w1>PacI</w1>   DNA   <w1>PacI</w1>                                                    <w1>PacI</w1>
+
+Orientation 2:
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAATTAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AATTAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1> -5'
+    <w1>half</w1>   BC   <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>   BC   <w1>half</w1> genomic <w1>half</w1>   BC    <s7>BciVI</s7>          <w1>PacI</w1>          <s7>BciVI</s7>    BC   <w1>half</w1>
+    <w1>PacI</w1>                                                    <w1>PacI</w1>   DNA   <w1>PacI</w1>                                                    <w1>PacI</w1>
+
+Orientation 3:
+5'- <w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAATTAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AATTAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> -5'
+    <w1>half</w1>   BC   <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>   BC   <w1>half</w1> genomic <w1>half</w1>   BC    <s7>BciVI</s7>          <w1>PacI</w1>          <s7>BciVI</s7>    BC   <w1>half</w1>
+    <w1>PacI</w1>                                                    <w1>PacI</w1>   DNA   <w1>PacI</w1>                                                    <w1>PacI</w1>
+
+Orientation 4:
+5'- <w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAATTAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAATTAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AATTAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AATTAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1> -5'
+    <w1>half</w1>   BC   <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>   BC   <w1>half</w1> genomic <w1>half</w1>   BC    <s7>BciVI</s7>          <w1>PacI</w1>          <s7>BciVI</s7>    BC   <w1>half</w1>
+    <w1>PacI</w1>                                                    <w1>PacI</w1>   DNA   <w1>PacI</w1>                                                    <w1>PacI</w1>
+
+<i>Product 2 (BA self concatemers):</i>
+
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1><w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> ......-3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1><w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AATTAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> ......-5'
+    <w1>half</w1>   BC   <s7>BciVI</s7>           <w1>PacI</w1>           <s7>BciVI</s7>   BC     <w1>PacI</w1>     BC   <s7>BciVI</s7>           <w1>PacI</w1>          <s7>BciVI</s7>    BC   <w1>half</w1>
+    <w1>PacI</w1>                                                                                                                <w1>PacI</w1>
+
+<i>Product 3: BA is ligated to only one end genomic DNA (not amplifiable, not drawn here)</i>
+
+<i>Product 4: single or multiple BAs are ligated to genomic DNA and form a circular DNA (not drawn here, see Figure 3a from the original publication)</i>
+</seq>
+</pre>
+
+<h3>(2) Merge drops, immunoprecipitation (IP), wash IP, and PacI digestion</h3>
+<pre>
+<seq>
+<i>Product 1 (four orientation, amplifiable):</i>
+
+Orientation 1:
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> -5'
+
+Orientation 2:
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT    TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT    TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1> -5'
+
+Orientation 3:
+5'- <w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT    TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT    TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> -5'
+
+Orientation 4:
+5'- <w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT    TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT    TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1> -3'
+3'- <w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT    TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT    TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1> -5'
+
+<i>Product 2 (chopped into pieces, not amplifiable):</i>
+
+5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1><w1>T    TAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT    TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> ......-3'
+3'- <w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AAT    T</w1><w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT    TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1> ......-5'
+
+</seq>
+</pre>
+
+<h3>(3) Elution, DNA purification, adding SC-PCR1 and SC-PCR2 for pre-amplifcation:</h3>
+<pre>
+<seq>
+Orientation 1:
+
+  5'- <w1>TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>------>
+5'- <w1>  TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT</w1> -3'
+3'- <w1>TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT</w1>   -5'
+                                                 <------<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT</w1> -5'
+
+Orientation 2 (the same adapter at both ends, may not be amplified efficiently due to suppressive PCR):
+
+  5'- <w1>TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>------>
+5'- <w1>  TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT</w1> -3'
+3'- <w1>TAATT</w1><s5>CCACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT</w1>   -5'
+                                                 <------<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT</w1> -5'
+
+Orientation 3 (the same adapter at both ends, may not be amplified efficiently due to suppressive PCR):
+
+  5'- <w1>TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>------>
+5'- <w1>  TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAAT</w1> -3'
+3'- <w1>TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT</w1>   -5'
+                                                 <------<s7>CATAGG</s7><t7>CCCCCTGG</t7><w1>AAT</w1> -5'
+Orientation 4:
+
+  5'- <w1>TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>------>
+5'- <w1>  TAA</w1><t7>GGTCCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCACC</s5><w1>TTAAT</w1> -3'
+3'- <w1>TAATT</w1><t7>CCAGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT</w1>   -5'
+                                                 <------<s7>CATAGG</s7><s5>GGGGGTGG</s5><w1>AAT</w1> -5'
+</seq>
+</pre>
+
+<h3>(4) DNA purification, and BciVI digestion, resulting in A overhang:</h3>
+<pre>
+<seq>
+Orientation 1 pre-amplification product:
+
+5'- <w1>TAA</w1><s5>GGT    GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA    CC</t7><w1>TTA</w1> -3'
+3'- <w1>ATT</w1><s5>CC    ACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCC    TGG</t7><w1>AAT</w1> -5'
+
+Orientation 2 pre-amplification product:
+
+5'- <w1>TAA</w1><s5>GGT    GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA    CC</s5><w1>TTA</w1> -3'
+3'- <w1>ATT</w1><s5>CC    ACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGG    TGG</s5><w1>AAT</w1> -5'
+
+Orientation 3 pre-amplification product:
+
+5'- <w1>TAA</w1><t7>GGT    CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA    CC</t7><w1>TTA</w1> -3'
+3'- <w1>ATT</w1><t7>CC    AGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCC    TGG</t7><w1>AAT</w1> -5'
+
+Orientation 4 pre-amplification product:
+
+5'- <w1>TAA</w1><t7>GGT    CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA    CC</s5><w1>TTA</w1> -3'
+3'- <w1>ATT</w1><t7>CC    AGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGG    TGG</s5><w1>AAT</w1> -5'
+
+</seq>
+</pre>
+
+<h3>(5) DNA purification, and ligate Illumina forked adpters:</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+        5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGAC</tso>                                                                                 <cbc>ACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                         <tso>GCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGC</cbc>
+                                                         <cbc>CGAGAAGGCTAG</cbc><s5>ACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCC</t7><tso>TCTAGCCTTCTCG</tso>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNN<cbc>CACTGACCTCAAGTCTGCACA</cbc>                                                                                 <tso>CAGCACATCCCTTTCTC</tso><p5>ACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+
+Orientation 2
+
+        5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGAC</tso>                                                                                 <cbc>ACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                         <tso>GCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGC</cbc>
+                                                         <cbc>CGAGAAGGCTAG</cbc><s5>ACCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGG</s5><tso>TCTAGCCTTCTCG</tso>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNN<cbc>CACTGACCTCAAGTCTGCACA</cbc>                                                                                 <tso>CAGCACATCCCTTTCTC</tso><p5>ACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+
+Orientation 3
+
+        5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGAC</tso>                                                                                 <cbc>ACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                         <tso>GCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGC</cbc>
+                                                         <cbc>CGAGAAGGCTAG</cbc><t7>AGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCC</t7><tso>TCTAGCCTTCTCG</tso>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNN<cbc>CACTGACCTCAAGTCTGCACA</cbc>                                                                                 <tso>CAGCACATCCCTTTCTC</tso><p5>ACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+
+Orientation 4
+
+        5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGAC</tso>                                                                                 <cbc>ACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                         <tso>GCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGC</cbc>
+                                                         <cbc>CGAGAAGGCTAG</cbc><t7>AGGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGG</s5><tso>TCTAGCCTTCTCG</tso>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNN<cbc>CACTGACCTCAAGTCTGCACA</cbc>                                                                                 <tso>CAGCACATCCCTTTCTC</tso><p5>ACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+</align>
+</pre>
+
+<h3>(6) DNA purfication --> PacI digestion --> DNA purfication --> and adding Illumina P5 & P7 adapters for library amplification (use top strand as demonstration here):</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>----->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                        <------<p7>TAGAGCATACGGCAGAAGACGAAC</p7>-5'
+Orientation 2
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>----->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                        <------<p7>TAGAGCATACGGCAGAAGACGAAC</p7>-5'
+Orientation 3
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>----->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                        <------<p7>TAGAGCATACGGCAGAAGACGAAC</p7>-5'
+Orientation 4
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>----->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                        <------<p7>TAGAGCATACGGCAGAAGACGAAC</p7>-5'
+</align>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 2
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 3
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 4
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                  <tso>Truseq read 1</tso>              <s7>BciVI</s7>   Cell       Genomic       Cell  <s7>BciVI</s7>                 <cbc>Truseq read 2</cbc>           sample        <p7>Illumina P7</p7>
+                                                                          barcode       DNA        barcode                                              index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing (three steps):</h2>
+
+<h3>(1) Add Truseq Read 1 sequencing primer to sequence the first read (bottom strand as template, first 11 cycles are dark cycles):</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+                             5'- <tso>TCTTTCCCTACACGACGCTCTTCCGATCT</tso><pe2>___________</pe2>----------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 2
+
+                             5'- <tso>TCTTTCCCTACACGACGCTCTTCCGATCT</tso><pe2>___________</pe2>----------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 3
+
+                             5'- <tso>TCTTTCCCTACACGACGCTCTTCCGATCT</tso><pe2>___________</pe2>----------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 4
+
+                             5'- <tso>TCTTTCCCTACACGACGCTCTTCCGATCT</tso><pe2>___________</pe2>----------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+                                                                                                                 5'- <cbc>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 2
+
+                                                                                                                 5'- <cbc>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><s5>CCCCC</s5><s7>CCTATG</s7>nnnnnnnn<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 3
+
+                                                                                                                 5'- <cbc>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>nnnnnnnn<s7>CATAGG</s7><t7>CCCCCT</t7><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Orientation 4
+
+                                                                                                                 5'- <cbc>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5><tso>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</tso><t7>GGGGG</t7><s7>CCTATG</s7>NNNNNNNN<w1>AATT</w1>XXX...XXX<w1>AATT</w1>NNNNNNNN<s7>CATAGG</s7><s5>GGGGGT</s5><cbc>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add Truseq Read 2 sequencing primer to sequence read 2 (top strand as template, first 11 cycles are dark cycles):</h3>
+<pre>
+<align class="long">
+Orientation 1
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                   <----------------------<pe2>___________</pe2><cbc>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc> -5'
+
+Orientation 2
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><s5>GGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                   <----------------------<pe2>___________</pe2><cbc>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc> -5'
+
+Orientation 3
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGA</t7><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                   <----------------------<pe2>___________</pe2><cbc>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc> -5'
+
+Orientation 4
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5><tso>CTCTTTCCCTACACGACGCTCTTCCGATCT</tso><t7>CCCCC</t7><s7>GGATAC</s7>nnnnnnnn<w1>TTAA</w1>XXX...XXX<w1>TTAA</w1>nnnnnnnn<s7>GTATCC</s7><s5>CCCCCA</s5><cbc>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</cbc>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                   <----------------------<pe2>___________</pe2><cbc>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</cbc> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>
