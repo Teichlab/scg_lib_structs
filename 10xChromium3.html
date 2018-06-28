@@ -32,11 +32,11 @@ h3 {font-family:verdana;}
 </style>
 
 <head>
-<title>10x Chromium</title>
+<title>10x Chromium Single Cell 3' Solution v2</title>
 </head>
 <body>
 
-<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium</span></a></h1>
+<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' Solution v2</span></a></h1>
 <p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution v2 chemistry is shown here. Oligo sequence information is taken from <a href="data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>.</span></p>
 
 <br></br>
@@ -125,7 +125,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(6) Add doub stranded Illumina Truseq adapter (with a T overhang) for ligation:</h3>
+<h3>(6) Add double stranded Illumina Truseq adapter (with a T overhang) for ligation:</h3>
 <pre>
 <seq>
 <i>Product 1 (I assume the 5' end of TSO is blocked, so the adapter can only be ligated to the cDNA end.</i>
@@ -170,7 +170,7 @@ h3 {font-family:verdana;}
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
           <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>               <cbc>16 bp</cbc>       <umi>10 bp</umi>          cDNA          <s7>Truseq Read 2</s7>                8 bp        <p7>Illumina P7</p7>
-                                                                <cbc>cell barcode</cbc>     <umi>UMI</umi>
+                                                                <cbc>cell barcode</cbc>     <umi>UMI</umi>                                                  Sample Index
 </align>
 </pre>
 

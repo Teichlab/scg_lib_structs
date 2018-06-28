@@ -25,7 +25,8 @@ Click the following links to veiw the methods. Notes:
 - [STRT-seq family (including STRT-seq, STRT-seq-C1, STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
 - [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
 - [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
-- [10x Chromium Single Cell 3' Solution v2](https://teichlab.github.io/scg_lib_structs/10xChromium.html)
+- [10x Chromium Single Cell 3' Solution v2](https://teichlab.github.io/scg_lib_structs/10xChromium3.html)
+- [10x Chromium Single Cell 5' Gene Expression](https://teichlab.github.io/scg_lib_structs/10xChromium5.html)
 - [Illumina Bio-Rad SureCell 3' WTA for ddSEQ](https://teichlab.github.io/scg_lib_structs/SureCell.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
@@ -37,7 +38,6 @@ Click the following links to veiw the methods. Notes:
 ## TODO:
 
 - Quartz-seq/Quartz-seq2
-- 10x Chromium Single Cell 5' kit
 - Microwell-seq
 - mcSCRB-seq
 
