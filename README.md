@@ -30,6 +30,7 @@ Click the following links to veiw the methods. Notes:
 - [10x Chromium Single Cell 5' Gene Expression](https://teichlab.github.io/scg_lib_structs/10xChromium5.html)
 - [Illumina Bio-Rad SureCell 3' WTA for ddSEQ](https://teichlab.github.io/scg_lib_structs/SureCell.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
+- [SCRB-seq / mcSCRB-seq](https://teichlab.github.io/scg_lib_structs/SCRB-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
 - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/sci-RNA-seq.html)
@@ -39,7 +40,6 @@ Click the following links to veiw the methods. Notes:
 ## TODO:
 
 - Microwell-seq
-- mcSCRB-seq
 
 ## Feedback
 
