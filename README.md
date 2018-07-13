@@ -40,7 +40,7 @@ Click the following links to veiw the methods. Notes:
 
 ## TODO:
 
-- Let's see ...
+- Waiting for new methods ...
 
 ## Feedback
 
