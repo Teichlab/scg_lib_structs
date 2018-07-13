@@ -34,8 +34,8 @@ Click the following links to veiw the methods. Notes:
 - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/Microwell-seq.html)
 - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/sci-RNA-seq.html)
 - [Drop-ChIP](https://teichlab.github.io/scg_lib_structs/Drop-ChIP.html)
-- [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/SPLiT-seq.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
+- [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/SPLiT-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/inDrop.html)
 
 ## TODO:
