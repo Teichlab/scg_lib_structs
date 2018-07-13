@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Microwell-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.cell.com/cell/abstract/S0092-8674(18)30116-8" target="_blank">Microwell-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Microwell-seq is like a well-based inDrop system. According to their Supplementary Table S2, there are two batches of beads-oligos: indexed bead seqA and indexed bead seqB. There are only two bases difference. Based on the sequence of A1-A96 in their Supplementary Table S1, it seems indexed bead seqA was used.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<h3>Sequence used during the experiment:</h3>
+<seq>
+<p>Indexed-Beads-seqA: |--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(T)<sub>30</sub> -3'</p>
+<p>Indexed-Beads-seqB: |--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>T<sub>30</sub> -3'</p>
+<p>TSO_LNA: 5'- <tso>AAGCAGTGGTATCAACGCAGAGTGAATrGrGrG</tso> -3'</p>
+<p>TSO_PCR: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
+<p>Microwell_P5: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>Nextera (XT) N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p>Read1 SeqA-GT primer (used with Indexed-Beads-seqA): 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT -3'</p>
+<p>Read1 SeqB-TAC primer (used with Indexed-Beads-seqB): 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>Illumina Nextera Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Illunima Nextera Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+</seq>
+
+<h3>Sequence used for Indexed-Beads-seqA/B generation before the experiment:</h3>
+<seq>
+<p>A1-A96 (96 of them in 96 individual wells): 5'- TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1> -3', for the sequences of 96 different barcode1, see <a href="data/Microwell_A1-A96.txt" target="_blank">Microwell_A1-A96.txt</a>.</p>
+<p>B1-B96 (96 of them in 96 individual wells): 5'- <pe2>CGATCGTGTCACCGA</pe2><cbc>[barcode2]</cbc><pe1>CCCTGTAGTGAGTCG</pe1> -3', for the sequences of 96 different barcode2, see <a href="data/Microwell_B1-B96.txt" target="_blank">Microwell_B1-B96.txt</a>.</p>
+<p>C1-C96 (96 of them in 96 individual wells): 5'- (A)<sub>30</sub><umi>[6-bp UMI]</umi><cbc>[barcode3]</cbc><pe2>CGATCGTGTCACCGA</pe2> -3', for the sequences of 96 different barcode3, see <a href="data/Microwell_C1-C96.txt" target="_blank">Microwell_C1-C96.txt</a>.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step generation of Indexed-Beads-seqA:</h2>
+<h3>(1) Bind A1-A96 oligos to magnetic beads by mixing in individual wells in a 96 well plate:</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1> -3'
+</seq>
+</pre>
+
+<h3>(2) Pool and split to a second 96-well plate containing B1-B96, perform PCR extention:</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1>---------->
+                                                    <----------<pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2> -5'
+</seq>
+</pre>
+
+<h3>(3) This is the product after the addition of B1-B96:</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2>
+      AAATCCCTATTGTCCCATTA<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2> -5'
+</seq>
+</pre>
+
+<h3>(4) Pooling and split to a third 96-well plate containing C1-C96: perform PCR extention</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2>---------->
+                                                                             <----------<pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(A)<sub>30</sub> -5'
+</seq>
+</pre>
+
+<h3>(5) This is the final product after all split-pool steps:</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(T)<sub>30</sub>
+      AAATCCCTATTGTCCCATTA<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(A)<sub>30</sub> -5'
+</seq>
+</pre>
+
+<h3>(6) Remove the bottom strand by heat to 95 C and quickly remove the supernatant (why not using NaOH here??), and the beads are ready to use:</h3>
+<pre>
+<seq>
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(T)<sub>30</sub>
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Capture cells, lyse cells, anneal Indexed-Beads-seqA to mRNA, collect and pool beads and reverse transcription using MMLV inside:</h3>
+<pre>
+<align class="long">
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(T)<sub>30</sub>---------->
+                                                                                                                           (A)<sub>n</sub>XXXXXXXXX...XXXXXXXXX -5'
+</align>
+</pre>
+
+<h3>(2) The terminal tranferase acitivity of MMLV adds extra Cs:</h3>
+<pre>
+<align class="long">
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXXXXXXXX...XXXXXXXXXCCC
+                                                                                                                           (pA)XXXXXXXXX...XXXXXXXXX   -5'
+</align>
+</pre>
+
+<h3>(3) Add TSO_LNA for template switching and second strand synthesis:</h3>
+<pre>
+<align class="long">
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXX...XXXCCC---------->
+                                                                                                                <----------(pA)XXX...XXX<tso>GGGTAAGTGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(4) Add TSO_PCR for full-length cDNA amplification:</h3>
+<pre>
+<align class="long">
+                      5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---------->
+|--5'-TTTAGGGATAACAGGGTAAT<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXX...XXXCCC<tso>ATTCACTCTGCGTTGATACCACTGCTT</tso>
+      AAATCCCTATTGTCCCATTA<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(pA)XXX...XXX<tso>GGGTAAGTGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                                                                    <----------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(5) Purfify amplified full-length double stranded cDNAs and they look like this:</h3>
+<pre>
+<align class="long">
+5'-<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXX...XXXCCC<tso>ATTCACTCTGCGTTGATACCACTGCTT</tso>
+   <tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(pA)XXX...XXX<tso>GGGTAAGTGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(6) Tagmentation using a transposase Tn5 with two identical insertion sequences (it was not explicitly mentioned what sequences were used in the original paper, but based on the PCR oligo sequences, it is highly likely a Tn5 homodimer with s7-ME oligo):</h3>
+<img src="data/tn5_surecell_homodimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq><i>Product 1: right hand side of above cDNA (5'-end transcript), not amplifiable due to primer used (see next step):</i></seq>
+
+<align class="long">
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXCCC<tso>ATTCACTCTGCGTTGATACCACTGCTT</tso>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXX<tso>GGGTAAGTGAGACGCAACTATGGTGACGAA</tso> -5'
+
+</align>
+
+<seq><i> Product 2: middle of cDNA, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressive PCR</a>:</i></seq>
+
+<align class="long">
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+</align>
+
+<seq><i>Product 3: left hand side of above cDNA (3'-end transcript), the only amplifiable fragments (see next step):</i></seq>
+
+<align class="long">
+5'-<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+   <tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+</align>
+</pre>
+
+<h3>(7) Adding Microwell_P5 and Nextera N7xx for library amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>---------->
+                                          5'-<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>[barcode1]</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>[barcode2]</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                             <tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>[barcode1]</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>[barcode2]</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>[barcode3]</cbc><umi>[6-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                            <----------<s7>GGCTCGGGTGCTCTG</s7>[8-bp i7 index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>NNNNNN</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>NNNNNN</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>NNNNNN</cbc><umi>NNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>NNNNNN</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>NNNNNN</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>NNNNNN</cbc><umi>NNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                               <tso>TSO</tso>                <cbc>6bp</cbc>       <pe1>linker1</pe1>     <cbc>6bp</cbc>     <pe2>linker2</pe2>      <cbc>6bp</cbc>   <umi>6bp</umi>       cDNA           <me>ME</me>               <s7>s7</s7>          8bp         <p7>Illumina P7</p7>
+                                                                      <cbc>barcode1</cbc>              <cbc>barcode2</cbc>             <cbc>barcode3</cbc> <umi>UMI</umi>                                              sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read1 SeqA-GT primer to sequence the first read (bottom strand as template, these are the cell barcodes: the combination of barcode1/2/3):</h3>
+<pre>
+<align class="long">
+                             5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT----------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>NNNNNN</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>NNNNNN</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>NNNNNN</cbc><umi>NNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Illumina Nextera Index 1 sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                                                                                                                                       5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso>CA<cbc>NNNNNN</cbc><pe1>GCTGAGTGATGTCCC</pe1><cbc>NNNNNN</cbc><pe2>AGCCACTGTGCTAGC</pe2><cbc>NNNNNN</cbc><umi>NNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add Illunima Nextera Read 2 sequencing primer to sequence read 2 (top strand as template, these are the cDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>GT<cbc>NNNNNN</cbc><pe1>CGACTCACTACAGGG</pe1><cbc>NNNNNN</cbc><pe2>TCGGTGACACGATCG</pe2><cbc>NNNNNN</cbc><umi>NNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                   <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
