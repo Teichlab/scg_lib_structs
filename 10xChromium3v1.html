@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>10x Chromium Single Cell 3' Solution v1</title>
+</head>
+<body>
+
+<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' Solution v1</span></a></h1>
+<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution v1 chemistry is obsolete and superseded by the v2 chemistry. I cannot find the exact sequence information from the website, so sequences shown here is based on educational guess. Based on their <a href="data/CG00026_Chromium_Single_Cell_3__Reagent_Kits_User_Guide_RevB.PDF" target="_blank">the v1 manual PDF</a> and <a href="https://www.nature.com/articles/ncomms14049" target="_blank">actual data</a>, I think the information in this page is accurate. You can find out all the cell barcodes (14 bp) here: <a href="data/737K-april-2014_rc.txt" target="_blank">737K-april-2014_rc.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" target="blank">Cell Ranger</a> (using Cell Ranger v2.1.0 as an example) /path/to/cellranger-2.1.0/cellranger-cs/2.1.0/tenkit/lib/python/tenkit/barcodes.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligo-dT: |--5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><cbc>[14-bp cell barcode]</cbc><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN -3'</p>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
+<p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso> -3′</p>
+<p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Truseq adapter (double stranded DNA with a T overhang):</p>
+<pre>
+<align class="small">
+        5'-  <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'
+                         3'- <s5>CGAGAAGGCTAG</s5>  -5'
+</align>
+</pre>
+<p>SI-PCR Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Cell barcode (i7 index) sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) mRNA capture using Beads-oligo-dT in the droplets, and reverse transcription using MMLV:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXXXB(A)<sub>30</sub>
+               <--------NV(T)<sub>30</sub><umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'--|
+</seq>
+</pre>
+
+<h3>(2) The terminal tranferase acitivity of MMLV adds extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXXXB(A)<sub>30</sub>
+ CCCXXXXXXXXXXXXXXXXXXXXNV(T)<sub>30</sub><umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'--|
+</seq>
+</pre>
+
+<h3>(3) Adding TSO for second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>GGGXXXXXXXXXXXXXXXXXXXXXB(pA)---------->
+                    <----------CCCXXXXXXXXXXXXXXXXXXXXNV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'--|
+</seq>
+</pre>
+
+<h3>(4) Adding ISPCR and Illumina P7 primers (this is presumably called "cDNA Primer Mix" in the PDF manual) to amplify full length cDNA:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>-------->
+5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>GGGXXXXXXXXXXXXXXXXXXXXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <tso>TTCGTCACCATAGTTGCGTCTCATGTA</tso>CCCXXXXXXXXXXXXXXXXXXXXNV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'--|
+                                                                                                                    <--------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(5) Use Covaris to shear cDNA and perform A-tailing:</h3>
+<pre>
+<seq>
+<i>Product 1 (TSO plus 5'-end of cDNA):</i>
+
+
+5'-   <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>GGGXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX*A -3'
+3'- A*<tso>TTCGTCACCATAGTTGCGTCTCATGTA</tso>CCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX   -5'
+
+
+<i>Product 2 (middle of cDNA):</i>
+
+
+5'-   XXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXX*A -3'
+3'- A*XXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXX   -5'
+
+
+<i>Product 3 (3' of cDNA, UMI, Illumina Truseq Read 2 sequence, cell barcode and Illumina P7 sequence):</i>
+
+
+5'-   XXXXX...XXXXXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>*A -3'
+3'- A*XXXXX...XXXXXNV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</seq>
+</pre>
+
+<h3>(6) Add double stranded Illumina Truseq adapter (with a T overhang) for ligation:</h3>
+<pre>
+<seq>
+<i>Product 1 (I assume the 5' end of TSO is blocked, so the adapter can only be ligated to the cDNA end.</i>
+<i>This product is not amplifiable due to the use of the specific primers for amplification, see the next step):</i>
+
+
+5'-   <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACATGGGXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXA<s5>GATCGGAAGAGC</s5> -3'
+3'- A*<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGTACCCXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5> -5'
+
+
+<i>Product 2 (will not amplify efficiently due to semi-suppressive PCR??? not really sure about this):</i>
+
+
+5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXA<s5>GATCGGAAGAGC</s5> -3'
+3'- <s5>                CGAGAAGGCTAG</s5>AXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXX<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5> -5'
+
+
+<i>Product 3 (I assume the 5' end of Illumina P7 Primer is blocked, so the adapter can only be ligated</i>
+<i>to the cDNA end. This is the only ampliable fragment):</i>
+
+
+5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXXXXX...XXXXXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>*A -3'
+3'- <s5>                CGAGAAGGCTAG</s5>AXXXXXX...XXXXXNV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7>   -5'
+
+</seq>
+</pre>
+
+<h3>(7) Add SI-PCR Primer and Illumina P7 Primer to index and amplify library:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------->
+                                                5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>*A -3'
+                                                3'- <s5>                CGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7>   -5'
+                                                                                                                                                    <-----------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>              8 bp           <s5>Truseq Read 1</s5>          cDNA          <umi>10 bp</umi>             <s7>Truseq Read 2</s7>               <cbc>14 bp</cbc>         <p7>Illumina P7</p7>
+                               Sample Index                                             <umi>UMI</umi>                                      <cbc>cell barcode</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Truseq Read 1 primer to sequence the first read (bottom strand as template, this the cDNA read, 98 cycles):</h3>
+<pre>
+<align class="long">
+                                     5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Cell barcode sequencing primer to sequence the cell barcode (bottom strand as template, in this case, cell barcode = i7 index, 14 cycles):</h3>
+<pre>
+<align class="long">
+                                                                                          5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the sample index (i5) (bottom strand as template, 8 cycles)::</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add Truseq Read 2 primer to sequence the UMI (top strand as template, sequence UMI, 10 cycles):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                    <---------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
