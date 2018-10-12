@@ -27,7 +27,7 @@ Click the following links to veiw the methods. Notes:
 
 ## Technical comparisons
 
-**The basic chemistry is very similar, the main differences among those scRNA-seq methods are:**
+**The basic chemistry is very similar, the main differences among those scRNA-seq methods are summarised in the table below. For a detailed discussion, check the text boxes from our review (open access): [From Tissues to Cell Types and Back: Single-Cell Gene Expression Analysis of Tissue Architecture](https://www.annualreviews.org/doi/10.1146/annurev-biodatasci-080917-013452)**
 
 |                                  | Single cell isolation/capture |        2nd strand synthesis       | Full-length cDNA synthesis |                      Barcode addition                     | Pooling before library |  Library amplification | Gene coverage |
 |:--------------------------------:|:-----------------------------:|:---------------------------------:|:--------------------------:|:---------------------------------------------------------:|:----------------------:|:----------------------:|:-------------:|
