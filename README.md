@@ -58,7 +58,7 @@ I was a little bit bombarded with all the single cell methods and got completely
 
 Here I borrow from Feyman:
 
-**What I cannot create on paper, I do not understand.**
+**What I cannot create, I do not understand.**
 
 ----
 
