@@ -19,6 +19,7 @@ Click the following links to veiw the methods. Notes:
 - [SCRB-seq / mcSCRB-seq](https://teichlab.github.io/scg_lib_structs/SCRB-seq.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/Microwell-seq.html)
+- [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/sci-ATAC-seq.html)
 - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/sci-RNA-seq.html)
 - [Drop-ChIP](https://teichlab.github.io/scg_lib_structs/Drop-ChIP.html)
 - [MARS-seq](https://teichlab.github.io/scg_lib_structs/MARS-seq.html)
