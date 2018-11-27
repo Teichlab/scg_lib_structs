@@ -32,27 +32,47 @@ h3 {font-family:verdana;}
 </style>
 
 <head>
-<title>10x Chromium Single Cell 3' Solution v2</title>
+<title>10x Chromium Single Cell 3' Solution V2 and V3</title>
 </head>
 <body>
 
-<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' Solution v2</span></a></h1>
-<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution v2 chemistry is shown here. Oligo sequence information is taken from <a href="data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>. You can find out all the cell barcodes (16 bp) here: <a href="data/737K-august-2016.txt" target="_blank">737K-august-2016.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" target="blank">Cell Ranger</a> (using Cell Ranger v2.1.0 as an example) /path/to/cellranger-2.1.0/cellranger-cs/2.1.0/tenkit/lib/python/tenkit/barcodes.</span></p>
+<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' Solution V2 and V3</span></a></h1>
+<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell 3’ Solution V2 chemistry is shown here. Oligo sequence information is taken from <a href="data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>. You can find out all the cell barcodes (16 bp) here: <a href="data/737K-august-2016.txt" target="_blank">737K-august-2016.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" target="blank">Cell Ranger</a> (using Cell Ranger v2.1.0 as an example) /path/to/cellranger-2.1.0/cellranger-cs/2.1.0/tenkit/lib/python/tenkit/barcodes.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;"><a href="data/CG000183_ChromiumSingleCell3__v3_UG_Rev-A.pdf" target="_blank">The V3 chemistry</a> gave better sensitivity (detects more genes) comparting to the V2 chemistry. In addition, the oligo beads are modifidied to support feature barcoding. In terms of the 3' gene expression library preparation, there are only a few nucleotide differences for some oligos. The final libary structure is exactly the same, except that the UMI is 10-bp long in V2 but 12-bp in V3. Oligo sequences are provided for both V2 and V3 if they are different. Only V2 library preparation is drawn here.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
-<p>Beads-oligo-dT: |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN -3'</p>
+<p>Beads-oligo-dT:</p>
+<pre>
+<align class="small">
+          V2: |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN -3'
+
+          V3: |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi>(T)<sub>30</sub> -3'
+</align>
+</pre>
 <p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
-<p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso> -3′</p>
+<p>cDNA Forward primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>cDNA Reverse primer:</p>
+<pre>
+<align class="small">
+          V2: 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso> -3'
+
+          V3: 5'- <tso>AAGCAGTGGTATCAACGCAGAG</tso> -3'
+</align>
+</pre>
 <p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Truseq adapter (double stranded DNA with a T overhang):</p>
 <pre>
 <align class="small">
-        5'-  <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
-        3'- <s7>TCTAGCCTTCTCG</s7> -5'
+        V2: 5'-  <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+            3'- <s7>TCTAGCCTTCTCG</s7> -5'
+
+        V3: 5'-  <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCA</s7> -3'
+            3'- <s7>TCTAGCCTTCTCG</s7> -5'
 </align>
 </pre>
 <p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5> -3'</p>
@@ -89,7 +109,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(4) Adding Illumina Truseq Read 1 (Partial) and ISPCR primers to amplify full length cDNA:</h3>
+<h3>(4) Adding cDNA Forward and Reverse primers to amplify full length cDNA:</h3>
 <pre>
 <seq>
    5'- <s5>CTACACGACGCTCTTCCGATCT</s5>-------->
@@ -165,6 +185,7 @@ h3 {font-family:verdana;}
 </pre>
 
 <h3>(8) Final library structure:</h3>
+<h4>V2 library:</h4>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
@@ -174,14 +195,24 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
+<h4>V3 library:</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>               <cbc>16 bp</cbc>         <umi>12 bp</umi>          cDNA          <s7>Truseq Read 2</s7>                8 bp        <p7>Illumina P7</p7>
+                                                                <cbc>cell barcode</cbc>       <umi>UMI</umi>                                                  Sample Index
+</align>
+</pre>
+
 <br></br>
 
 <h2>Library sequencing:</h2>
 
-<h3>(1) Add Truseq Read 1 primer to sequence the first read (bottom strand as template, sequence 16-bp cell barcode and 10-bp UMI, 26 cycles):</h3>
+<h3>(1) Add Truseq Read 1 primer to sequence the first read (bottom strand as template, sequence 16-bp cell barcode and 10-bp UMI, 26 cycles for V2, 28 cycles for V3):</h3>
 <pre>
 <align class="long">
-                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------------------>
+                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------------------->
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
