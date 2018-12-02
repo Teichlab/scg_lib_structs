@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+lstem {color:#b8ddc2;}
+ustem {color:#8fc4eb;}
+bulge {color:#f3b44e;}
+nexus {color:#f0b7a6;}
+hairp {color:#bcb6c9;}
+cs1 {color:#0000ff;}
+cs2 {color:#756bb1;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>10x Chromium Single Cell 3' V3 Feature Barcoding</title>
+</head>
+<body>
+
+<h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' V3 with Feature Barcoding</span></a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;"><a href="https://support.10xgenomics.com/single-cell-gene-expression/library-prep" target="_blank">In the V3 chemistry</a>, the oligo beads are modifidied to support feature barcoding. Each bead has three types of oligos with the same cell barcode, one for gene expression (<a href="https://teichlab.github.io/scg_lib_structs/10xChromium3.html" target="_blank">click here</a> to see how it works) and the other two for feature barcoding. Feature Barcoding allows you to profile <a href="data/CG000185_ChromiumSingleCell3__FeatureBarcode_CellSurfaceProtein_RevA.pdf" target="_blank">surface protein</a> abundance by using oligo-conjugated antibodies (basically <a href="https://www.nature.com/articles/nmeth.4380" target="_blank">CITE-seq</a>) and <a href="data/CG000184_ChromiumSingleCellSingleCell3v3_FeatureBarcodingtechnology_CRISPR_RevA.pdf" target="_blank">CRISPR screening</a> by capture sgRNA on top of gene expression. The antibody part is relatively easy to do and understand. I feel it is necessary to explain a bit more about the CRISPR screening part. At least I did not understand it when I first saw the kit. Now I will try to explain. I'm not an expert on CRISPR, so please correct me if I am wrong.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The sgRNA has two parts: a 17-20 nt so-called Protospacer (or just Spacer) that determines the specificity of the target, followed by a constant region called sgRNA scaffold that forms different loop structures. Your sgRNA structure is like this (picture taken from <a href="https://www.cell.com/molecular-cell/fulltext/S1097-2765(14)00751-5" target="_blank">Briner et al. 2014</a>):</span></p>
+<img src="data/sgRNA_structure.png" alt="sgRNA structure" style="width:600px;">
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Your sgRNA is often driven and transcribed by a U6 promoter from a vector backbone. There are a few different vector backbones for CRISPR screening. The exact sgRNA scaffold sequences vary among them. If you use the following backbones:</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">GeCKOv2 from Feng Zhang's lab, <a href="https://www.nature.com/articles/nmeth.3047" target="_blank">Sanjana et al., 2014</a>, <a href="https://www.addgene.org/52961/" target="_blank">addgene #52961</a></span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">Genome-wide Mouse Lentiviral CRISPR gRNA Library v1 from Kosuke Yusa's lab, <a href="https://www.nature.com/articles/nbt.2800" target="_blank">Koike-Yusa et al., 2014</a>, <a href="https://www.addgene.org/pooled-library/yusa-crispr-knockout-mouse-v1/" target="_blank">addgene #50946</a></span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">CROP-seq from Christoph Bock's lab, <a href="https://www.nature.com/articles/nmeth.4177" target="_blank">Datlinger et al., 2017</a>, <a href="https://www.addgene.org/86708/" target="_blank">addgene #86708</a></span></p>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Then, your sgRNA scaffold sequence will be:</span></p>
+<seq>
+5'- <lstem>GUUUUA</lstem><bulge>GA</bulge><ustem>GCUA</ustem>GAAA<ustem>UAGC</ustem><bulge>AAGU</bulge><lstem>UAAAAU</lstem>AA<nexus>GGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp>UUUUUU -3'
+</seq>
+
+<p><span style="font-family:verdana; font-size:1.1em;">and your final sgRNA transcripts will be like this:</span></p>
+<img src="data/sgRNA_seq1.svg" alt="sgRNA sequence 1" style="width:600px;">
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">However, if you use the Perturb-seq backbone from Jonathan Weissman's lab (<a href="https://www.ncbi.nlm.nih.gov/pubmed/27984733", target="_blank">Adamson et al. 2016</a>, <a href="https://www.addgene.org/85967/">addgene #85967</a>), then your sgRNA scaffold sequence will be:</span></p>
+
+<seq>
+5'- GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp>UUUUUUU -3'
+</seq>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Comapring to other backbones, Perturb-seq has a slighty differnt Lower and Upper stem sequences, and it has a very small bulge. The rest are the same as the others. Your final sgRNA transcripts will be like this:</span></p>
+<img src="data/sgRNA_purterb.svg" alt="sgRNA sequence 2" style="width:800px;">
+
+<p><span style="font-family:verdana; font-size:1.1em;">Based on the <a href="data/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, it seems they assume you are using the Perturb-seq backbone, but I guess other backbones can also work. Here, I will just use the Perturb-seq sgRNA scaffold as an example to be consistent. You need to add a sequence that is reverse complementary (rc) to the Capture Sequence that is on the V3 beads. You have two choices (pick one of them):</span></p>
+
+<pre>
+<seq>
+Capture Sequence 1 rc: 5'- <cs1>GCTTTAAGGCCGGTCCTAGCAA</cs1> -3'
+
+Capture Sequence 2 rc: 5'- <cs2>GCTCACCTATTAGCGGCTAAGG</cs2> -3'
+</seq>
+</pre>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Okay, now, where to put that sequence? Again, in the <a href="data/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, they suggest two locations (pick one location):</span></p>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Choice (1): in the first hairpin structure (called Hairpin 2 in their guide), like this:</span></p>
+<img src="data/sgRNA_purterb_10x_cs_loc1.svg", alt="sgRNA sequence 3", style="width:800px;">
+
+<p><span style="font-family:verdana; font-size:1.1em;">Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</span></p>
+
+<pre>
+<seq>
+5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUU</hairp>GGCC<cs1>GCTTTAAGGCCGGTCCTAGCAA</cs1>GGCC<hairp>AAGUGGCACCGAGUCGGUGC</hairp>UUUUUUU -3'
+
+5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUU</hairp>GGCC<cs2>GCTCACCTATTAGCGGCTAAGG</cs2>GGCC<hairp>AAGUGGCACCGAGUCGGUGC</hairp>UUUUUUU -3'
+</seq>
+</pre>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Choice (2): just before the terminal sequence UUUUUUU, like this:</span></p>
+<img src="data/sgRNA_purterb_10x_cs_loc2.svg", alt="sgRNA sequence 3", style="width:800px;">
+
+<p><span style="font-family:verdana; font-size:1.1em;">Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</span></p>
+
+<pre>
+<seq>
+5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp><cs1>GCTTTAAGGCCGGTCCTAGCAA</cs1>UUUUUUU -3'
+
+5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp><cs2>GCTCACCTATTAGCGGCTAAGG</cs2>UUUUUUU -3'
+</seq>
+</pre>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Okay, now, finally, we are ready to start the experiments ... almost. In this page, I assume you choose to insert the Capture Sequence rc to just before the terminal sequence. I feel this way is easier and safer (but both locations should work). In addition, to make things simpler, I omitted the gene expression libary construction here, because you can find that information on <a href="https://teichlab.github.io/scg_lib_structs/10xChromium3.html" target="_blank">this page</a>. I will also draw the surface protein profiling and CRISPR screening experiments together to make the page a bit shorter, althougth I doubt people do those two things together. If this is too confusing, I will separate them in future.</span></p>
+
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligos (there are three types of sequences):</p>
+</seq>
+
+<pre>
+<seq>
+       TruSeq Partial Read1 dT (for mRNA):
+       |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi>(T)<sub>30</sub> -3'
+
+       Nextera Partial Read1 Capture Sequence 1 (for surface protein & CRISPR screening):
+       |--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1> -3'
+
+       Nextera Partial Read1 Capture Sequence 2 (for CRISPR screening):
+       |--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2> -3'
+</seq>
+</pre>
+
+<seq>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
+<p>DNA oligos from the antibody: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<cs1>GCTTTAAGGCCGGTCCTAGCAA</cs1> -3'</p>
+<p>sgRNA transcripts, two possiblilities depending on the capture sequence of choice (see above explanation):</p>
+<p>&nbsp&nbsp&nbsp5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp><cs1>GCTTTAAGGCCGGTCCTAGCAA</cs1>UUUUUUU -3'</p>
+<p>&nbsp&nbsp&nbsp5'- <cbc>[Protospacer]</cbc>GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp><cs2>GCTCACCTATTAGCGGCTAAGG</cs2>UUUUUUU -3'</p>
+</seq>
+
+<br></br>
+
+<seq>
+<p>Feature cDNA Primers 1 (PN-2000096, for CRISPR screening), this a mixture of the following 3 primers:</p>
+</seq>
+
+<pre>
+<seq>
+       Primers to amplify cDNA from mRNA:
+       Forward primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'
+       Reverse primer: 5'- <tso>AAGCAGTGGTATCAACGCAGAG</tso> -3'
+
+       Primers to amplify cDNA from sgRNA:
+       Forward primer: 5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me> -3'
+       Reverse primer: 5'- <tso>AAGCAGTGGTATCAACGCAGAG</tso> -3'
+
+</seq>
+</pre>
+
+<seq>
+<p>Feature cDNA Primers 2 (PN-2000097, for surface protein), this is a mixture of the following 4 primers:</p>
+</seq>
+
+<pre>
+<seq>
+       Primers to amplify cDNA from mRNA:
+       Forward primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'
+       Reverse primer: 5'- <tso>AAGCAGTGGTATCAACGCAGAG</tso> -3'
+
+       Primers to amplify cDNA from surface protein:
+       Forward primer: 5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me> -3'
+       Reverse primer: 5'- <s7>GTGACTGGAGTTCAGACGT</s7> -3'
+
+</seq>
+</pre>
+
+<seq>
+<p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Nextera Read 1 primer: 5'- <me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+</seq>
+
+<seq>
+<p>Feature SI Primers 1 (PN-2000098, only used for CRISPR screening), this is a mixture of the following two primers:</p>
+</seq>
+
+<pre>
+<seq>
+       Forward primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me> -3'
+       Reverse primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7><tso>AAGCAGTGGTATCAACGCAGAG</tso> -3'
+</seq>
+</pre>
+
+<seq>
+<p>Feature SI Primers 2 (PN-2000099, actually just one primer): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Chromium i7 Sample Index (PN-220103): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTGACTGGAGTTCAGACGTGT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) mRNA, antibody oligo and sgRNA capture by Beads-oligos in the droplets, and reverse transcription using MMLV (MMLV has DNA-dependent DNA polymerase activity, therefore, it will reverse transcribe the antibody oligos as well even they are DNA):</h3>
+<pre>
+<seq>
+mRNA (omitted for the next step):
+
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi>(T)<sub>30</sub>-------->
+                                                            (A)<sub>30</sub>XXXXXXXXXXXXXXXXXXXX -5'
+
+Antibody oligos (assuming the 3' of the antibody oligo is blocked for extension):
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>-------->
+                                                        3'- <cs1>AACGATCCTGGCCGGAATTTCG</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+sgRNA:
+
+If using Capture Sequence 1:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>-------->
+                                                            <cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc> -5'
+                                                 3'- UUUUUUU
+
+If using Capture Sequence 2:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2>-------->
+                                                            <cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc> -5'
+                                                 3'- UUUUUUU
+</seq>
+</pre>
+
+<h3>(2) The terminal tranferase acitivity of MMLV adds extra Cs:</h3>
+<pre>
+<align class="long">
+Antibody oligos:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>CCC -3'
+                                                        3'- <cs1>AACGATCCTGGCCGGAATTTCG</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>    -5'
+
+sgRNA:
+
+If using Capture Sequence 1:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC -3'
+                                                            <cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc>    -5'
+                                                 3'- UUUUUUU
+
+If using Capture Sequence 2:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC -3'
+                                                            <cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc>    -5'
+                                                 3'- UUUUUUU
+</align>
+</pre>
+
+<h3>(3) TSO for template Switching:</h3>
+<pre>
+<align class="long">
+Antibody oligos:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>CCC----------->
+                                                        3'- <cs1>AACGATCCTGGCCGGAATTTCG</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+
+sgRNA:
+
+If using Capture Sequence 1:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC----------->
+                                                            <cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                 3'- UUUUUUU
+
+If using Capture Sequence 2:
+
+|--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC----------->
+                                                            <cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGUGGCUGAGCCACGGUGAAAAAGUUCAACUAU</hairp><nexus>UGCCUGAUCGGAAUAAAUUUGA</nexus>A<lstem>CGAU</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GUCG</ustem><bulge>A</bulge><lstem>AUCG</lstem>AGAAUUUG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                 3'- UUUUUUU
+</align>
+</pre>
+
+<h3>(4) Adding Feature cDNA Primers for cDNA amplification:</h3>
+<pre>
+<align class="long">
+
+<i><h3>(i) For surface protein profiling, add Feature cDNA Primers 2 (PN-2000097) to amplify cDNAs from mRNA (omitted here) and antibody oligos:</h3></i>
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me>--------------->
+  |--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                        <---------------<s7>TGCAGACTTGAGGTCAGTG</s7> -5'
+
+
+<i><h3>(ii) For CRISPR screening, add Feature cDNA Primers 1 (PN-2000096) to amplify cDNAs from mRNA (omitted here) and sgRNA:</h3></i>
+
+If using Capture Sequence 1:
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me>--------------->
+  |--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                                              <----------------<tso>GAGACGCAACTATGGTGACGAA</tso> -5'
+
+If using Capture Sequence 2:
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me>--------------->
+  |--5'- <me>GTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                                              <----------------<tso>GAGACGCAACTATGGTGACGAA</tso> -5'
+
+</align>
+</pre>
+
+<h3>(5) After cDNA amplifcation, the cDNA from mRNA will be mainly >1000 bp, the cDNA from antibody oligos will be 129 bp and the cDNA from sgRNA will be ~210 bp. Separate cDNAs from mRNA and antibody oligos/sgRNA by size selection. This is the amplified cDNA products from antibody oligos and sgRNA:</h3>
+
+<pre>
+<align class="long">
+
+<i><h3>(i) cDNA from antibody oligos, this is ready for library PCR:</h3></i>
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+
+<i><h3>(ii) cDNA from sgRNA, this product needs an extra step (see the next step) before library PCR:</h3></i>
+
+If using Capture Sequence 1:
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+
+If using Capture Sequence 2:
+
+5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+
+</align>
+</pre>
+
+<h3>(6) Perform a Feature PCR (only needed for CRISPR screening) using Feature SI Primers 1, PN-2000098:</h3>
+
+<pre>
+<align class="long">
+
+If using Capture Sequence 1:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>-------------------->
+                                   5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                   3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                                                                                                                                           <----------------------<tso>GAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+If using Capture Sequence 2:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>-------------------->
+                                   5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                   3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                                                                                                                                           <----------------------<tso>GAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+<i><h3>This is the product from the above feature PCR:</h3></i>
+
+If using Capture Sequence 1:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+
+If using Capture Sequence 2 (the product is exactly the same as above, except the Caputure Sequence, so this is omitted from now on):
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>CCTTAGCCGCTAATAGGTGAGC</cs2><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs2>GGAATCGGCGATTATCCACTCG</cs2><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+</align>
+</pre>
+
+<h3>(7) Add Feature SI Primers 2 (PN-2000099) and Chromium i7 Sample Index (PN-220103) for library PCR:</h3>
+
+<pre>
+<align class="long">
+
+<i><h3>(i) cDNA from antibody oligos:</h3></i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>-------------------->
+                                   5'- <me>GCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+                                   3'- <me>CGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1>[random 9-mer]<umi>[15-bp antibody barcodes]</umi>[random 9-mer]<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+                                                                                                                                                                       <-----------------<s7>TGTGCAGACTTGAGGTCAGTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i><h3>(ii) cDNA from sgRNA:</h3></i>
+
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>-------------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>[Protospacer]</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGA</p5><me>TGTGAGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>[Protospacer]</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+                                                                                                                                                                                                                                                   <-----------------<s7>TGTGCAGACTTGAGGTCAGTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+</align>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<h4>(i) mRNA library (<a href="https://teichlab.github.io/scg_lib_structs/10xChromium3.html" target="_blank">click here</a> to see how this is generated):</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>               <cbc>16 bp</cbc>         <umi>12 bp</umi>          cDNA          <s7>Truseq Read 2</s7>                8 bp        <p7>Illumina P7</p7>
+                                                                <cbc>cell barcode</cbc>       <umi>UMI</umi>                                                  Sample Index
+</align>
+</pre>
+
+<h4>(ii) Surface protein library generated from antibody oligos, if successful, this should be 211 bp long:</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>NNNNNNNNN<umi>NNNNNNNNNNNNNNN</umi>NNNNNNNNN<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1>NNNNNNNNN<umi>NNNNNNNNNNNNNNN</umi>NNNNNNNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>               <me>Nextera Read 1</me>                      <cbc>16 bp</cbc>         <umi>12 bp</umi>         <cs1>Capture</cs1>           Random    <umi>Antibody</umi>      Random          <s7>Truseq Read 2</s7>              8 bp         <p7>Illumina P7</p7>
+                                                                    <cbc>cell barcode</cbc>       <umi>UMI</umi>         <cs1>Sequence 1</cs1>          9mer     <umi>barcodes</umi>       9mer                                  Sample Index
+</align>
+</pre>
+
+<h4>(iii) CRISPR screening library generated from sgRNA transcripts, if successful, this should be ~314 bp:</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>NNN...NNN</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>NNN...NNN</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+          <p5>Illumina P5</p5>                   <me>Nextera Read 1</me>                  <cbc>16 bp</cbc>         <umi>12 bp</umi>         <cs1>Capture</cs1>                                             <hairp>sg</hairp><nexus>RNA</nexus> <ustem>scaffold</ustem>                                    <cbc>17-20 bp</cbc>              <tso>TSO</tso>                        <s7>Truseq Read 2</s7>              8 bp         <p7>Illumina P7</p7>
+                                                                    <cbc>cell barcode</cbc>       <umi>UMI</umi>      <cs1>Sequence 1</cs1> <cs2>or 2</cs2>                                                                                          <cbc>Protospacer</cbc>                                                              Sample Index
+                                                                                                                                                                                                  <cbc>(sgRNA target identity)</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 primers to sequence the first read. In the Illumina sequencing kit, the Read 1 primers are a mixture of different Read 1 sequencing primers from different kits, so that you don't need to add the primers yourself (bottom strand as template, sequence 16-bp cell barcode and 12-bp UMI, 28 cycles):</h3>
+<pre>
+<align class="long">
+<h4>(i) For mRNA (TruSeq Read 1 primer):</h4>
+                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<h4>(ii) For surface protein (Nextera Read 1 primer):</h4>
+                             5'- <me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>--------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1>NNNNNNNNN<umi>NNNNNNNNNNNNNNN</umi>NNNNNNNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<h4>(iii) For sgRNA (Nextera Read 1 primer):</h4>
+                             5'- <me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me>--------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>NNN...NNN</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template, the same for all types of libraries, 8 cycles):</h3>
+<pre>
+<align class="long">
+<h4>(i) For mRNA (TruSeq Read 1 primer):</h4>
+                                                                                                    5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<h4>(ii) For surface protein (Nextera Read 1 primer):</h4>
+                                                                                                                                                 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1>NNNNNNNNN<umi>NNNNNNNNNNNNNNN</umi>NNNNNNNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<h4>(iii) For sgRNA (Nextera Read 1 primer):</h4>
+                                                                                                                                                                                                                                             5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><me>AGCAGCCGTCGCAGTCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>AACGATCCTGGCCGGAATTTCG</cs1><hairp>CGTGGCTGAGCCACGGTGAAAAAGTTCAACTAT</hairp><nexus>TGCCTGATCGGAATAAATTTGA</nexus>A<lstem>CGAT</lstem><bulge>A</bulge><ustem>CGAC</ustem>AAAG<ustem>GTCG</ustem><bulge>A</bulge><lstem>ATCG</lstem>AGAATTTG<cbc>NNN...NNN</cbc>GGG<tso>TACATGAGACGCAACTATGGTGACGAA</tso><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Truseq Read 2 primer to sequence the second read (top strand as template, 98 cycles):</h3>
+<pre>
+<align class="long">
+<h4>(i) For mRNA, these are the cDNA reads, measuring gene expression:</h4>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                <-------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+<h4>(ii) For surface protein, the antibody barcodes will be located from base 10 to base 24 (15-bp long), not sure whether the rest of the bases are useful, but at least you can check whether they are the bases you expected:</h4>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1>NNNNNNNNN<umi>NNNNNNNNNNNNNNN</umi>NNNNNNNNN<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                              <------------------------------------------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+
+<h4>(iii) For sgRNA, the first 30 bases will be the same, which is basically the TSO sequence, then from base 31 to base ~50 will be the identify of your sgRNA, after that, the sequences are the same again, which is the sgRNA scaffold:</h4>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><me>TCGTCGGCAGCGTCAGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi><cs1>TTGCTAGGACCGGCCTTAAAGC</cs1><hairp>GCACCGACTCGGTGCCACTTTTTCAAGTTGATA</hairp><nexus>ACGGACTAGCCTTATTTAAACT</nexus>T<lstem>GCTA</lstem><bulge>T</bulge><ustem>GCTG</ustem>TTTC<ustem>CAGC</ustem><bulge>T</bulge><lstem>TAGC</lstem>TCTTAAAC<cbc>NNN...NNN</cbc>CCC<tso>ATGTACTCTGCGTTGATACCACTGCTT</tso><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                                                          <------------------------------------------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
