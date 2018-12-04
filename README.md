@@ -8,15 +8,15 @@ Click the following links to veiw the methods. Notes:
 1. the default alignment font is Monaco. Courier New font will be used if Monaco is not available.
 2. In a dual-index library, how index2 (i5) is sequenced differs from machines to machines. Miseq and Hiseq2000/2500 use the bottom strand as template, which is why the index sequences are the same as the primer sequences in those machines. MiniSeq, NextSeq and Hiseq3000/4000 use the top strand as template, which is why the index sequences are reverse-complementary to the primer sequences in those machines. All methods listed below use Miseq, Hiseq2000/2500 as examples.
 
-- [STRT-seq family (including STRT-seq, STRT-seq-C1, STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
+- [STRT-seq family (including STRT-seq, STRT-seq-C1 and STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/STRT-seq_family.html)
+- [SMART-seq family (including SMART-seq and SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
 - [Quartz-seq family (including Quartz-seq and Quartz-seq2)](https://teichlab.github.io/scg_lib_structs/Quartz-seq_family.html)
-- [SMART-seq family (including SMART-seq, SMART-seq2)](https://teichlab.github.io/scg_lib_structs/SMART-seq_family.html)
-- [CEL-seq family (including CEL-seq, CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
-- [Illumina Bio-Rad SureCell 3' WTA for ddSEQ](https://teichlab.github.io/scg_lib_structs/SureCell.html)
-- [10x Chromium Single Cell 3' V3 Feature Barcoding](https://teichlab.github.io/scg_lib_structs/10xChromium3fb.html)
+- [CEL-seq family (including CEL-seq and CEL-seq2)](https://teichlab.github.io/scg_lib_structs/CEL-seq_family.html)
+- [10x Chromium Single Cell 3' V3 FeatureBarcoding](https://teichlab.github.io/scg_lib_structs/10xChromium3fb.html)
 - [10x Chromium Single Cell 3' V2 and V3 GE](https://teichlab.github.io/scg_lib_structs/10xChromium3.html)
 - [10x Chromium Single Cell 3' V1 GE](https://teichlab.github.io/scg_lib_structs/10xChromium3v1.html)
 - [10x Chromium Single Cell 5' GE](https://teichlab.github.io/scg_lib_structs/10xChromium5.html)
+- [SureCell 3' WTA for ddSEQ](https://teichlab.github.io/scg_lib_structs/SureCell.html)
 - [SCRB-seq / mcSCRB-seq](https://teichlab.github.io/scg_lib_structs/SCRB-seq.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/Drop-seq.html)
 - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/Microwell-seq.html)
