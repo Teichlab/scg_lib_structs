@@ -27,7 +27,7 @@ Click the following links to veiw the methods. Notes:
 - [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html)
 - [inDrop](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html)
 
-## Technical comparisons
+## Technical comparisons (scRNA-seq only)
 
 **The basic chemistry is very similar, the main differences among those scRNA-seq methods are summarised in the table below. For a detailed discussion, check the text boxes from our review (open access): [From Tissues to Cell Types and Back: Single-Cell Gene Expression Analysis of Tissue Architecture](https://www.annualreviews.org/doi/10.1146/annurev-biodatasci-080917-013452)**
 
