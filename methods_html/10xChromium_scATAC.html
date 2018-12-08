@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>10x Chromium Single Cell ATAC</title>
+</head>
+<body>
+
+<h1><a href="https://support.10xgenomics.com/single-cell-atac" target="_blank"><span style="color:red;">10x Chromium Single Cell ATAC</span></a></h1>
+<p><span style="font-family:verdana; font-size:1.1em;">The Chromium Single Cell ATAC chemistry is shown here. Oligo sequence information is taken from <a href="../data/CG000168_ChromiumSingleCellATAC_ReagentKits_UserGuide_RevA.pdf" target="_blank"><span style="color:blue;">Chromium Single Cell ATAC Reagent Kits</span></a>. The cell barcodes used in this method is slightly different from those used in the 3' gene expression assay, although the number of the cell barcodes is the same (737,280). You can find out all the cell barcodes (16 bp) here: <a href="../data/737K-cratac-v1.txt" target="_blank">737K-cratac-v1.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/what-is-cell-ranger-atac" target="blank">Cell Ranger ATAC</a> (using Cell Ranger ATAC v1.0.0 as an example) /path/to/cellranger-atac-1.0.0/1.0.0/lib/python/barcodes/.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;"> According to <a href="https://www.nature.com/articles/ng.3119" target="_blank">Amini <i>et al.</i>, 2014</a>, the Tn5 transposase-mediated tagmentation contains two stages: (1) a tagging stage where the Tn5 transposome binds to DNA, and (2) a fragmentation stage where the Tn5 transposase is released from DNA using heat or denaturing agents, such as sodium dodecyl sulfate (SDS). Since the Tn5 tagging does not fragment DNA, the nuclei would remain intact after incubation with the Tn5 transposome. This provides an opportunity to perform a bulk Tn5 tagging reaction upfront, then each invididual tagged nuclei are captured in the droplet for barcoding and amplification. This is basically how 10x Single Cell ATAC works.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligo-dT: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>SI-PCR Primer B (PN-2000128): 5'- <p5>AATGATACGGCGACCACCGAGA</p5> -3'</p>
+<p>i7 Sample Index Plate N, Set A (PN-3000262): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Nextera left primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera right primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina Nextera Read 1 primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Illumina Nextera Read 2 primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Sample index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Bulk Tn5 tagging by incubation of nuclei and Tn5:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>(2) There are 3 different products after step (1) (will create 9 bp gap):</h3>
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(3) Droplet capture and gap fill-in (the first step of linear PCR, 72 degree), single primer linear PCR, this steps achieves cell barcodes addition:</h3>
+<pre>
+<seq>
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>-------------->
+                                                    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                                        <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(4) Product after single primer linear amplification:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) Add SI-PCR Primer B (PN-2000128) and i7 Sample Index Plate N, Set A (PN-3000262) for library amplification:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>---------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                 <----------------<s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <cbc>16-bp cell</cbc>         <s5>s5</s5>              <me>ME</me>           gDNA           <me>ME</me>               <s7>s7</s7>          8-bp            <p7>Illumina P7</p7>
+                                      <cbc>barcode</cbc>                                                                               sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing (both read 1 and read 2 contain useful information about open chromatin):</h2>
+
+<h3>(1) Add Nextera Read 1 primer to sequence the first read (bottom strand as template, 50 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+                                             5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+                                                                                       5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, 16 cycles, this is cell barcode):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add Nextera Read 2 primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                    <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
