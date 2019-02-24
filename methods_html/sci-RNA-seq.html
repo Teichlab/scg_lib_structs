@@ -52,9 +52,9 @@ h3 {font-family:verdana;}
 <p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>Illumina P5 Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]ACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1> -3'</p>
+<p>Illumina P5 Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
 <p>Illumina P7 Primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>Read 1 sequencing primer: 5'- ACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1> -3'</p>
+<p>Read 1 sequencing primer: 5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
 <p>Index 1 sequencing primer (i7): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
 <p>Read 2 seuquencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 </seq>
@@ -130,7 +130,7 @@ h3 {font-family:verdana;}
 <h3>(5) Adding Illumina P5/P7 Primers for library amplification:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]ACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1>------>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1>------>
                                                 5'- <w1>ACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><cbc>[10-bp RT barcode]</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
                                                 3'- <w1>TGCTGCGAGAAGGCTAGA</w1><umi>[8-bp UMI]</umi><cbc>[10-bp RT barcode]</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
                                                                                                                           <---------<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
@@ -140,9 +140,9 @@ h3 {font-family:verdana;}
 <h3>(6) Final library structure:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNNACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNNTGTGAGAAAGGGATG<w1>TGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-             <p5>Illumina P5</p5>              i5     This bit <w1>is Truseq adapter</w1>     <umi>8bp UMI</umi>   <cbc>10bp RT</cbc>        cDNA             <me>ME</me>              <s7>s7</s7>           i7        <p7>Illumina P7</p7>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>              i5     <w1>This bit is Truseq adapter</w1>     <umi>8bp UMI</umi>   <cbc>10bp RT</cbc>        cDNA             <me>ME</me>              <s7>s7</s7>           i7        <p7>Illumina P7</p7>
                                                                                       <cbc>barcode</cbc>
 </align>
 </pre>
@@ -153,8 +153,8 @@ h3 {font-family:verdana;}
 <h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the UMI and RT barcodes, 18 cycles):</h3>
 <pre>
 <align class="long">
-                                       5'- ACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1>----------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNNTGTGAGAAAGGGATG<w1>TGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                       5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1>----------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -162,7 +162,7 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
                                                                                                          5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>--------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNNTGTGAGAAAGGGATG<w1>TGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -170,14 +170,14 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNNTGTGAGAAAGGGATG<w1>TGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(pA)BXXX...XXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(4) Cluster regeneration, add Read 2 sequencing primer to sequence the second read (top strand as template, this is the cDNA read, 52 cycles):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNNACACTCTTTCCCTAC<w1>ACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
                                                                                                        <-----<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
