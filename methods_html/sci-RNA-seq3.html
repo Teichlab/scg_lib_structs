@@ -104,7 +104,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(3) Perform tagmentation using a Tn5 homodimer with s7-ME oligo (will create 9-bp gap):</h3>
+<h3>(4) Perform tagmentation using a Tn5 homodimer with s7-ME oligo (will create 9-bp gap):</h3>
 <img src="../data/tn5_surecell_homodimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
 <pre>
 <seq>
@@ -123,7 +123,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(4) NEB USER Enzyme treatment to destroy the uracil base (ddU):</h3>
+<h3>(5) NEB USER Enzyme treatment to destroy the uracil base (ddU):</h3>
 <pre>
 <seq>
 5'- <w1>GCTCTG</w1><t7>NNNNNNNNNN</t7> <w1>ACGACGCTCTTCCGATCT</w1><t7>NNNNNNNNNN</t7><w1>CAGAGC</w1><umi>[8-bp UMI]</umi><cbc>[10-bp RT barcode]</cbc>(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
@@ -131,7 +131,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(5) Adding PCR P5/P7 Primers for library amplification:</h3>
+<h3>(6) Adding PCR P5/P7 Primers for library amplification:</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<w1>ACACTCTTTCCCTAC
@@ -142,7 +142,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(6) Final library structure:</h3>
+<h3>(7) Final library structure:</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><t7>NNNNNNNNNN</t7><w1>CAGAGC</w1><umi>NNNNNNNN</umi><cbc>NNNNNNNNNN</cbc>(dT)VXXX...XXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
