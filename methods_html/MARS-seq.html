@@ -36,11 +36,11 @@ h3 {font-family:verdana;}
 </style>
 
 <head>
-<title>MARS-seq</title>
+<title>MARS-seq/MARS-seq2.0</title>
 </head>
 <body>
 
-<h1><a href="http://science.sciencemag.org/content/343/6172/776" target="_blank">MARS-seq</a></h1>
+<h1><a href="http://science.sciencemag.org/content/343/6172/776" target="_blank">MARS-seq</a> / <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a></h1>
 
 <p><span style="font-family:verdana; font-size:1.1em;"> (1) I think the sequence of "2nd RT Primer" in Supplementary Table S7 in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</span></p>
 
@@ -48,13 +48,21 @@ h3 {font-family:verdana;}
 
 <p><span style="font-family:verdana; font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
 
+<p><span style="font-family:verdana; font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;"> (5) Oligos used in the original MARS-seq were shown in this workflow.</span></p>
+
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
 <p>1st RT primer: 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTN -3'</p>
 <p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
-<p>Lig_NNNX4_ix[1-8]: 5'/5Phos/- <cbc>[7-bp plate barcode]</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'</p>
+<p>Barcode plate ligation adaptor:</p>
+<seq>
+  For MARS-seq, they are called Lig_NNNX4_ix[1-8]: 5'/5Phos/- <cbc>[7-bp plate barcode]</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'</p>
+  For MARS-seq2.0, they are called lig_N5X4_ix[1-32]: 5'/5Phos/- <cbc>[9-bp plate barcode]</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'</p>
+</seq>
 <p>2nd RT primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P5_Rd1_PCR primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P7_Rd2_PCR primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
@@ -64,9 +72,10 @@ h3 {font-family:verdana;}
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
 
-<h4>Sequence of Lig_NNNX4_ix[1-8]:</h4>
+<h4>Sequence of Barcode plate ligation adaptor:</h4>
 <pre>
 <seq>
+For MARS-seq:
     lig_NNNX4_ix1 5'-/5Phos/ <cbc>GACTNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
     lig_NNNX4_ix2 5'-/5Phos/ <cbc>CATGNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
     lig_NNNX4_ix3 5'-/5Phos/ <cbc>CCAANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
@@ -75,6 +84,40 @@ h3 {font-family:verdana;}
     lig_NNNX4_ix6 5'-/5Phos/ <cbc>TGATNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
     lig_NNNX4_ix7 5'-/5Phos/ <cbc>ATCANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
     lig_NNNX4_ix8 5'-/5Phos/ <cbc>TAGANNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+
+For MARS-seq 2.0, the are 32 of them, and there 5 Ns in each adaptor:
+    lig_N5X4_ix1 5'-/5Phos/<cbc>GACTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix2 5'-/5Phos/<cbc>CATGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix3 5'-/5Phos/<cbc>CCAANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix4 5'-/5Phos/<cbc>CTGTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix5 5'-/5Phos/<cbc>GTAGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix6 5'-/5Phos/<cbc>TGATNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix7 5'-/5Phos/<cbc>ATCANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix8 5'-/5Phos/<cbc>TAGANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix9 5'-/5Phos/<cbc>AAGTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix10 5'-/5Phos/<cbc>GGCGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix11 5'-/5Phos/<cbc>GTTTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix12 5'-/5Phos/<cbc>GCGCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix13 5'-/5Phos/<cbc>GAAANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix14 5'-/5Phos/<cbc>TACCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix15 5'-/5Phos/<cbc>CGGANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix16 5'-/5Phos/<cbc>CCCTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix17 5'-/5Phos/<cbc>TCAGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix18 5'-/5Phos/<cbc>CTCGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix19 5'-/5Phos/<cbc>CTACNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix20 5'-/5Phos/<cbc>CTTANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix21 5'-/5Phos/<cbc>TGGCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix22 5'-/5Phos/<cbc>AGCTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix23 5'-/5Phos/<cbc>CAGCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix24 5'-/5Phos/<cbc>ACTTNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix25 5'-/5Phos/<cbc>TCTANNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix26 5'-/5Phos/<cbc>ACCGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix27 5'-/5Phos/<cbc>ATGCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix28 5'-/5Phos/<cbc>GATCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix29 5'-/5Phos/<cbc>GGACNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix30 5'-/5Phos/<cbc>GTCCNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix31 5'-/5Phos/<cbc>CGAGNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
+    lig_N5X4_ix32 5'-/5Phos/<cbc>GCATNNNNN</cbc><s5>AGATCGGAAGAGCGTCGTGTAG</s5> /3SpC3/-3'
 </seq>
 </pre>
 
