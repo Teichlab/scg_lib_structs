@@ -22,6 +22,7 @@ Click the following links to veiw the methods. Notes:
 - [SCRB-seq / mcSCRB-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SCRB-seq.html)
 - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html)
 - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html)
+- [BD Rhapsody](https://teichlab.github.io/scg_lib_structs/methods_html/BD_Rhapsody.html)
 - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
 - [sci-RNA-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html)
 - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html)
@@ -37,6 +38,7 @@ Click the following links to veiw the methods. Notes:
 |:--------------------------------:|:-----------------------------:|:---------------------------------:|:--------------------------:|:---------------------------------------------------------:|:----------------------:|:----------------------:|:-------------:|
 |    10x Chromium Single Cell 3'   |            Droplet            |                TSO                |             Yes            |                    Barcoded RT primers                    |           Yes          |           PCR          |       3'      |
 |    10x Chromium Single Cell 5'   |            Droplet            |                TSO                |             Yes            |                    Barcoded TSO primers                   |           Yes          |           PCR          |       5'      |
+|           BD Rhapsody            |           Nanowells           |Random priming and primer extension|             No             |                    Barcoded RT primers                   |           Yes          |           PCR          |       3'      |
 |         CEL-seq/CEL-seq2         |              FACS             |       RNase H and DNA pol I       |             No             |                    Barcoded RT primers                    |           Yes          | In vitro transcription |       3'      |
 |             Drop-seq             |            Droplet            |                TSO                |             Yes            |                    Barcoded RT primers                    |           Yes          |           PCR          |       3'      |
 |             MARS-seq             |              FACS             |       RNase H and DNA pol I       |             No             |                    Barcoded RT primers                    |           Yes          | In vitro transcription |       3'      |
