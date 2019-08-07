@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>dscATAC-seq/dsciATAC-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">dscATAC-seq/dsciATAC-seq (SureCell ATAC-seq)</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">dscATAC-seq and dsciATAC-seq are droplet-based scATAC-seq methods. They were published in Nat Biotechnol. on 2019 Jun 24 (<a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al. Nature Biotechnology 37, 916–924.</a>), and the kit for this method is <a href="http://www.bio-rad.com/en-uk/product/surecell-atac-seq-library-prep-kit?ID=PEXSR1MC1ORV" target="_blank">SureCell ATAC-seq Library Prep Kit</a>.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">For beginners who are new to droplet technology, it might not be clear what improvement dscATAC-seq has made. I will briefly explain here. In the droplet technologies, you have beads with barcodes going into droplets, and this follows a Poisson distribution with a certain mean. You also have cells going into droplets, and this also follows a Poisson distribution with a different mean. These two loading processes are independent, so you will have droplets with no beads no cells, with beads but no cells, with cells but no beads. Only a small proportion of the droplets contain exactly one bead and one cell. That's why in many droplet technologies, you load 100k cells, but eventually only get back 1-2k cells after sequencing.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">In 2009, <a href="https://pubs.rsc.org/en/content/articlelanding/2009/LC/b909386a" target="_blank">Abates et al.</a> showed that if you increase the size of the beads to a point that they are close-packed, you can insert a controllable number of beads into every droplet. <a href="https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html" target="_blank">inDrop</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">10x Genomics</a> used this type of "big" close-packed hydrogel beads to solve the bead loading problem, though the hydrogel beads used by inDrop and 10x Genomics are different. However, for small beads, such as those used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Drop-seq</a>, <a href="https://teichlab.github.io/scg_lib_structs/methods_html/SureCell.html" target="_blank">Bio-Rad SureCell</a> and many other home-made droplet device, this cannot be achieved.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">What <a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al.</a> did was that they load many more (superload) beads than usual to significantly reduce the number of drops without beads. However, this also increase the number of drops with more than one bead. Here is the clever bit, if more than one bead end up in the same drop, they will share the same set of genomic fragments to start with the amplification from that drop. Therefore, those beads from the same drops should have much higher overlap of Tn5 insertion positions among each other than beads from different drops (see Supplementary Fig1 and 2 in the paper). Therefore, one can figure out whether beads are from the same drops by checking the extent of overlap of reads from different bead barcodes. If the cells are loaded at a normal concentration, one can make sure most drops have at most 1 cell as usual.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">dsciATAC-seq takes a step further. It builds on top of dscATAC-seq, but take the idea of combinatorial indexing strategy, like that used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq</a>, and treat cells in different reactions with barcoded Tn5 and pooled all the reactions together before loading onto the machine to make emulsion. In this case, both beads and cells are overloaded. One can use the aformentioned strategy to figure out whether beads are from the same drop, and on top of that, use the Tn5 barcodes to figure out whether the reads are from the same single cells. In this way, the throughput becomes really high.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Huge thanks to <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the following information and make this page possible.</span></p>
+
+<br></br>
+
+<seq>
+<p>ATAC-v2.1 beads-p5-bc-nextera-read1: |--5'- TTTTTTTUUUTTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p><b><span style="color:red">*</span></b> The bead barcode in this protocol is based on the combination of the barcode1+barcode2+barcode3, 7-bp each, and 21-bp in total. The full oligos are generated in a split-pool manner. The Phase Block is there to make sure each sequencing cycle has decent base complexity. The full sequences (including different version history) can be found from <a href="https://github.com/caleblareau/bap/blob/master/tests/fastq_br/dscATAC_dsciATAC_bead_structures.xlsx" target="_blank">this excel file</a> from the <a href="https://github.com/caleblareau/bap" target="_blank">bap GitHub repository</a>.</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>SureCell ddSEQ Sample Index (12009360): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Sample Index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation (only dscATAC-seq is shown here; dsciATAC-seq is the same, but with barcoded Tn5):</h2>
+<h3>(1) Bulk Tn5 tagging by incubation of nuclei and Tn5:</h3>
+<img src="../data/dscATAC_Tn5.svg" alt="Tn5 dimer" style="width:1000px;">
+
+<h3>(2) There are 3 different products after step (1) (will create 9 bp gap):</h3>
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(3) Add SureCell Sample Index, droplet capture, NEB USER Enzyme treatment to cut U to release oligos from the beads into drops (the first step of Barcoding and Amplification of Fragments, 37 degree 30mins), gap fill-in (the third step, 72 degree 5mins), and amplification. This steps achieves bead barcodes and sample index addition:</h3>
+<pre>
+<align class="long">
+|--5'- TTTTTTT   TTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5>------------------>
+                                                                                                                                                                        5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                                                                                                                                                            <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                                                                        <------------------<s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) DNA purification. This is the product from above:</h3>
+<pre>
+<align class="long">
+5'- TTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- AAAAA<p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>ATACGTACTG</pe1><cbc>[7-bp barcode2]</cbc><pe2>TCAGTGACTC</pe2><cbc>[7-bp barcode3]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(5) Second amplification using ATAC Primer Mix (I assume this is the mix of Illumina P5 and P7 primers):</h3>
+<pre>
+<align class="long">
+     5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------->
+5'- TTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- AAAAA<p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>ATACGTACTG</pe1><cbc>[7-bp barcode2]</cbc><pe2>TCAGTGACTC</pe2><cbc>[7-bp barcode3]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                                                                                                                          <-------------------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<h4>dscATAC-seq library:</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>NNNNNNN</cbc>NNNN<pe1>TATGCATGAC</pe1><cbc>NNNNNNN</cbc><pe2>AGTCACTGAG</pe2><cbc>NNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNNN</cbc>NNNN<pe1>ATACGTACTG</pe1><cbc>NNNNNNN</cbc><pe2>TCAGTGACTC</pe2><cbc>NNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                    Re<tso>ad 1 sequence</tso>           <cbc>barcode1</cbc> Phase        <cbc>barcode2</cbc>        <cbc>barcode3</cbc>      <s5>s5</s5>               <me>ME</me>          gDNA          <me>ME</me>                <s7>s7</s7>      8-bp sample      <p7>Illumina P7</p7>
+                                                                              Block                                                                                                             index
+</align>
+</pre>
+
+<h4>dsciATAC-seq library:</h4>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>NNNNNNN</cbc>NNNN<pe1>TATGCATGAC</pe1><cbc>NNNNNNN</cbc><pe2>AGTCACTGAG</pe2><cbc>NNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><umi>NNNNNN</umi><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNNN</cbc>NNNN<pe1>ATACGTACTG</pe1><cbc>NNNNNNN</cbc><pe2>TCAGTGACTC</pe2><cbc>NNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><umi>NNNNNN</umi><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                    Re<tso>ad 1 sequence</tso>           <cbc>barcode1</cbc> Phase        <cbc>barcode2</cbc>        <cbc>barcode3</cbc>      <s5>s5</s5>        <umi>Tn5</umi>          <me>ME</me>          gDNA          <me>ME</me>                <s7>s7</s7>      8-bp sample      <p7>Illumina P7</p7>
+                                                                              Block                                              <umi>barcode</umi>                                                               index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 sequencing primer to sequence the first read (118 cycles, bottom strand as template, the first 74 - 84 bases include barcode1+barcode2+barcode3 and Tn5 barcode if using dsciATAC-seq. After that, it will be gDNA insert):</h3>
+<pre>
+<align class="long">
+                             5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>-------------------------------------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNNN</cbc>NNNN<pe1>ATACGTACTG</pe1><cbc>NNNNNNN</cbc><pe2>TCAGTGACTC</pe2><cbc>NNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                                                                                                                                                         5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>NNNNNNN</cbc>NNNN<pe1>ATACGTACTG</pe1><cbc>NNNNNNN</cbc><pe2>TCAGTGACTC</pe2><cbc>NNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add read 2 sequencing primer to sequence read 2 (40 cycles, top strand as template, these are gDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>NNNNNNN</cbc>NNNN<pe1>TATGCATGAC</pe1><cbc>NNNNNNN</cbc><pe2>AGTCACTGAG</pe2><cbc>NNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                                                                                                                                    <--------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>
