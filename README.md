@@ -73,7 +73,10 @@ Here I borrow from Feyman:
 
 ## TODO:
 
-- Waiting for new methods ...
+- [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
+- [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
+- [CoBATCH](https://www.sciencedirect.com/science/article/pii/S1097276519305453)
+- [itChIP-seq](https://www.nature.com/articles/s41556-019-0383-5)
 
 ## Feedback
 
