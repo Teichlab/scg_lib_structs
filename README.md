@@ -77,6 +77,7 @@ Here I borrow from Feyman:
 - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
 - [CoBATCH](https://www.sciencedirect.com/science/article/pii/S1097276519305453)
 - [itChIP-seq](https://www.nature.com/articles/s41556-019-0383-5)
+- [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
 
 ## Feedback
 
