@@ -73,6 +73,7 @@ Here I borrow from Feyman:
 
 ## TODO:
 
+- [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
 - [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
 - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
 - [CoBATCH](https://www.sciencedirect.com/science/article/pii/S1097276519305453)
