@@ -80,6 +80,7 @@ Here I borrow from Feyman:
 - [itChIP-seq](https://www.nature.com/articles/s41556-019-0383-5)
 - [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
 - [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
+- [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
 
 ## Feedback
 
