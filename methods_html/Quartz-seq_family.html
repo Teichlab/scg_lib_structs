@@ -245,7 +245,7 @@ h3 {font-family:verdana;}
 <seq>
 <p>eMDRT0001 - eMDRT1536: 5'- <tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTT
 <p>Tagging primer: 5'- <tso>TATAGAATTCGCGGCCGCTCGCGA</tso>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
-<p>gM primer (the same as Suppression primer in Quartz-seq): 5′- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T -3′</p>
+<p>gM primer (the same as Suppression primer in Quartz-seq): 5′- G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T -3′</p>
 <p>rYshapeP5: 5'- <s7>GATCGGAAGAGCGTCGTGTA</s7> -3'</p>
 <p>rYshapeP7LT (Sample Index Oligos): 5'- <p5>CAAGCAGAAGACGGCATACGAGAT</p5>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 
@@ -337,10 +337,10 @@ h3 {font-family:verdana;}
 <h3>(6) Adding gM primer for single primer cDNA amplification:<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR )</a></h3>
 <pre>
 <seq>
-5′- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
-       5'- <tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXX(pA)<tso>TCGCGAGCGGCCGCGAATTCTATA</tso>
-           <tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX(dT)<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso> -5'
-					                                      <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G-(NH<sub>2</sub>) -5'
+5′- G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
+ 5'- <tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXX(pA)<tso>TCGCGAGCGGCCGCGAATTCTATA</tso>
+     <tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX(dT)<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso> -5'
+					                                <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G -5'
 </seq>
 </pre>
 
@@ -349,14 +349,14 @@ h3 {font-family:verdana;}
 <seq>
 <i>Product 1 (eMDRT plus 3'-end of cDNA):</i>
 
-5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA
-         AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX -5'
+5'- G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA
+   AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX -5'
 
 
 <i>Product 2 (Tagging primer plus 5'-end cDNA):</i>
 
-5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA -3'
-3'-      AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX  -5'
+5'- G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA -3'
+   AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX  -5'
 
 
 <i>Product 3 (middle of cDNA):</i>
@@ -371,18 +371,20 @@ h3 {font-family:verdana;}
 <seq><i>Product 1 (eMDRT plus 3'-end of cDNA, the only amplifiable fragments, see the next step)</i></seq>
 
 <align class="small">
-                                                                                                      <s7>GTCGTGTA</s7>
-5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
-         AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                                                         <s7>GTCGTGTA</s7>
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
+                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                            <s7>ATGTGCTG</s7>
 
 </align>
 
 <seq><i>Product 2 (Tagging primer plus 5'-end cDNA, cannot be amplified due to primers used, see the next step clarification)</i></seq>
 
 <align class="small">
-                                                                     <s7>GTCGTGTA</s7>
-5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
-         AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                        <s7>GTCGTGTA</s7>
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
+                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                            <s7>ATGTGCTG</s7>
 
 </align>
 
@@ -405,20 +407,22 @@ h3 {font-family:verdana;}
 
 <align class="small">
 
-5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>TT<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso>AC---------->                                                 <s7>GTCGTGTA</s7>
-	                5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
-	                         AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-                                                                                                                                                         <----------<p7>GAGCATACGGCAGAAGACGAAC</p7> -5'
+                                               5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>T
+                                                                                T<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso>AC---------->                                                 <s7>GTCGTGTA</s7>
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>G<tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
+                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'                
+                                                            <s7>ATGTGCTG</s7>                                                                                                                                    <----------<p7>GAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 
 <seq><i>Product 2 (Tagging primer plus 5'-end cDNA) cannot be amplified, note the P5-gMac primer ends with "AC" which will not anneal to the template:</i></seq>
 
 <align class="small">
 
-5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>TT<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso><span style="color:red">AC</span>                           <s7>GTCGTGTA</s7>
-	                5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
-	                         AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-                                                                                                                                   <p7>GAGCATACGGCAGAAGACGAAC</p7> -5'
+                                               5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>T
+                                                                                T<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso><span style="color:red">AC</span>                           <s7>GTCGTGTA</s7>
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
+                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'	                
+                                                            <s7>ATGTGCTG</s7>                                                                                                              <p7>GAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 
 </pre>
