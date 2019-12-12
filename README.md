@@ -81,6 +81,8 @@ Here I borrow from Feyman:
 - [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
 - [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
 - [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
+- [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
+- [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
 
 ## Feedback
 
