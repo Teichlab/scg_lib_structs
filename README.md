@@ -83,6 +83,7 @@ Here I borrow from Feyman:
 - [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
 - [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
 - [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
+- [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
 
 ## Feedback
 
