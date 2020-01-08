@@ -85,6 +85,7 @@ Here I borrow from Feyman:
 - [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
 - [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
 - [MALBAC-DT](https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1)
+- [GRID-seq](https://www.nature.com/articles/nbt.3968)
 
 ## Feedback
 
