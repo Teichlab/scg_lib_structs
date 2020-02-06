@@ -5,8 +5,9 @@ Collections of library structure and sequence of popular single cell genomic met
 
 Click the following links to veiw the methods. Notes:
 
-1. the default alignment font is Monaco. Courier New font will be used if Monaco is not available.
-2. In a pair-end and dual-index library, how index2 (i5) is sequenced differs from machines to machines. According to the [Index Sequencing Guide](data/indexed-sequencing-overview-guide-15057455-05.pdf) from Illumina, Miseq, Hiseq2000/2500 and NovaSeq 6000 use the bottom strand as template, which is why the index sequences are the same as the primer sequences in those machines. iSeq 100, MiniSeq, NextSeq, HiSeq X and HiSeq 3000/4000 use the top strand as template, which is why the index sequences are reverse-complementary to the primer sequences in those machines. All methods listed below use Miseq, Hiseq2000/2500 and NovaSeq as examples.
+1. The default alignment font is Monaco. Courier New font will be used if Monaco is not available.
+2. Index1 (i7) is always sequenced using the bottom strand as template, regardless of the Illumina machine in use. That is why the index sequences are reverse complementary to the primer sequences.
+3. In a dual-index library, how index2 (i5) is sequenced differs from machines to machines. According to the [Index Sequencing Guide](data/indexed-sequencing-overview-guide-15057455-05.pdf) from Illumina, Miseq, Hiseq2000/2500 and NovaSeq 6000 use the bottom strand as template, which is why the index sequences are the same as the primer sequences in those machines. iSeq 100, MiniSeq, NextSeq, HiSeq X and HiSeq 3000/4000 use the top strand as template, which is why the index sequences are reverse-complementary to the primer sequences in those machines. All methods listed below use Miseq, Hiseq2000/2500 and NovaSeq as examples.
 
 - [STRT-seq family (including STRT-seq, STRT-seq-C1 and STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html)
 - [SMART-seq family (including SMART-seq and SMART-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
