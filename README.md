@@ -87,6 +87,10 @@ Here I borrow from Feyman:
 - [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
 - [MALBAC-DT](https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1)
 - [GRID-seq](https://www.nature.com/articles/nbt.3968)
+- [ZipSeq](https://www.biorxiv.org/content/10.1101/2020.02.04.932988v1)
+- [PETRI-seq](https://www.biorxiv.org/content/10.1101/866244v1)
+- [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
+- [Seq-Well S^3](https://www.biorxiv.org/content/10.1101/689273v1)
 
 ## Feedback
 
