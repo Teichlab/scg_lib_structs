@@ -1,0 +1,9 @@
+{
+    "10xchromiumv3fb":{
+        "Description": "10x Chromium Single Cell 3' V3 Feature Barcoding",
+        "adapters": ["adapters/Chromium.fa"],
+        "whitelist": "whitelists/3M-febuary-2018.txt",
+        "html": "../methods_html/10xchromium3fb.html"
+    }
+
+}
