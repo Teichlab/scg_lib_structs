@@ -38,6 +38,7 @@ Click the following links to veiw the methods. Notes:
   - [snATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html)
   - [scTHS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTHS-seq.html)
   - [Drop-ChIP](https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html)
+  - [CoBATCH](https://teichlab.github.io/scg_lib_structs/methods_html/CoBATCH.html)
 
 - ### Genomic DNA and DNA methylation
 
@@ -92,7 +93,6 @@ Here I borrow from Feyman:
 - [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
 - [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
 - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
-- [CoBATCH](https://www.sciencedirect.com/science/article/pii/S1097276519305453)
 - [itChIP-seq](https://www.nature.com/articles/s41556-019-0383-5)
 - [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
 - [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
