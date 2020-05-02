@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.7em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>itChIP-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41556-019-0383-5" target="_blank">itChIP-seq</a></h1>
+
+<span style="font-family:verdana; font-size:1.1em;"><p>The indexing and tagmentation-based ChIP-seq (itChIP-seq) method uses similar strategy as <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html", target="_blank">Drop-ChIP</a>. Instead of using MNase and barcoding in droplets, itChIP-seq uses barcoded Tn5 to tag sorted single nuclei. After pooling all indexed nuclei, an immunoprecipitation is performed using an antibody against a protein of interest.</p>
+
+<p>The oligos used to generate barcoded Tn5 are the same as those used in sci-ATAC-seq. You can follow the step-by-step library construction in the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq webpage</a> for details. However, if you construct the libary in that way, you have to do a customised sequencing run with customised sequencing primers and use an entire flow cell. This can be expensive if you don't have small machines like Miseq or NextSeq. In the itChIP-seq paper, the authors manupilated the oligos and make it compatible with Illumina standard workflow, which makes the sequeuncing more flexible. In this page, this new design is shown below. The detailed experimental procedures can be found from <a href="https://protocolexchange.researchsquare.com/article/pex-555/v1" target="_blank">Protocol Exchange</a>.</p></span>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Barcoded Tn5 sequence s5: 5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p><sup>*</sup> There are a total of 24 s5 Tn5 barcodes, check the <a href="../data/itChIP-seq_Table3.xlsx" target="_blank">Table 3</a> from their Protocol Exchange webpage.</p>
+<p>Barcoded Tn5 sequence s7: 5'- <s7>GTCTCGTGGGCTCGGCTGTCCCTGTCC</s7><cbc>[8-bp Tn5 index]</cbc>CACCGTCTCCGCCTC<me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p><sup>*</sup> There are a total of 25 s7 Tn5 barcodes, check the <a href="../data/itChIP-seq_Table3.xlsx" target="_blank">Table 3</a> from their Protocol Exchange webpage.</p>
+<p>Mosaic End (ME) bottom: 5'- /Phos/<me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Connector Primer F: 5'- <p5>ACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5> -3'</p>
+<p>Connector Primer R: 5'- <t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7><s7>GTCTCGTGGGCTCGGCTGTCCCTGT</s7> -3'</p>
+<p><b><span style="color:red">*</span></b> This sequence is from their Protocol Exchange webpage. I think for the library to work on current Illumina system, there should be an extra GT at the 5'end of this oligo:</p>
+<pre>
+<seq>
+         5'- <t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7><s7>GTCTCGTGGGCTCGGCTGTCCCTGT</s7> -3', this is drawn in this page.
+</seq>
+</pre>
+<p>Universal P5 primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC<umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi> -3'</p>
+<p>Indexed P7 primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
+<p><b><span style="color:red">*</span></b> This sequence is from their Protocol Exchange webpage. I think for the library to work on current Illumina system, there should be an extra GT after i7:</p>
+<pre>
+<seq>
+         5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3', this is drawn in this page.
+</seq>
+</pre>
+<p>TruSeq Read 1 sequencing primer: 5'- <umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7> -3'</p>
+<p>TruSeqRead 2 seuquencing primer: 5'- <t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
+</seq>
+
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal Barcoded Tn5 sequences s5/s7 and Tn5 binding site 19-bp Mosaic End (ME) bottom strand to assemble the barcoded Tn5 transposome, sort single nulcei into well plates, perform tagmentation to barcode each nulcei:</h3>
+<img src="../data/sci-ATAC-seq_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>(2) Sort limited nulcei into wells, and perform tagmentation using barcoded Tn5 transposome:</h3>
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressive PCR</a>:</i>
+
+5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CGGCAGGAGCTAGCG<cbc>[8-bp Tn5 index]</cbc><s5>CGCACCTCTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends, not amplifiable due to semi-suppressiev PCR):</i>
+
+5'- <s7>GTCTCGTGGGCTCGGCTGTCCCTGTCC</s7><cbc>[8-bp Tn5 index]</cbc>CACCGTCTCCGCCTC<me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                              <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>[8-bp Tn5 index]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>[8-bp Tn5 index]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(3) Pool all wells of barcoded nulcei, perform immunoprecipitations, reverse crosslinking, DNA purfication, and the use Connector Primers F and R to perform amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>ACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5>------>
+                                 5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                                                         <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>[8-bp Tn5 index]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                    <------<s7>TGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
+</align>
+</pre>
+
+<h3>(4) Purify DNA:</h3>
+<pre>
+<align class="long">
+5'- <p5>ACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG<cbc>[8-bp Tn5 index]</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7> -3'
+3'- <p5>TGTG</p5><umi>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</umi><s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>[8-bp Tn5 index]</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>[8-bp Tn5 index]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
+</align>
+</pre>
+
+<h3>(5) Making sequencing libary by doing another PCR using Universal P5 Primer and the Indexed P7 Primer:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC<umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi>---------->
+                         5'- <p5>ACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>[8-bp Tn5 index]</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG<cbc>[8-bp Tn5 index]</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7> -3'
+                         3'- <p5>TGTG</p5><umi>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</umi><s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>[8-bp Tn5 index]</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>[8-bp Tn5 index]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
+                                                                                                                                                                                                                 <---------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>NNNNNNNN</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG<cbc>NNNNNNNN</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><umi>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</umi><s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>NNNNNNNN</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                <umi>TruSeq Read 1</umi>                   <s5>s5</s5>           <cbc>8 bp s5</cbc>                        <me>ME</me>           gDNA          <me>ME</me>                         <cbc>8 bp s7</cbc>             <s7>s7</s7>                       <t7>TruSeq Read 2</t7>            i7          <p7>Illumina P7</p7>
+                                                                                  <cbc>Tn5 barcode</cbc>                                                                         <cbc>Tn5 barcode</cbc>                                                         sample index
+</align>
+</pre>
+
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add TruSeq read 1 sequencing primer to sequence the first read (bottom strand as template, 150 cycles, this contains the s5 Tn5 barcode and gDNA):</h3>
+<pre>
+<align class="long">
+                             5'- <umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi>-------------------------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><umi>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</umi><s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>NNNNNNNN</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 sequencing primer to sequence the i7 Sample Index (bottom strand as template, 6 cycles):</h3>
+<pre>
+<align class="long">
+                                                                                                                                                                                                       5'- <t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><umi>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</umi><s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>NNNNNNNN</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 sequencing primer to sequence the second read (top strand as template, 150 cycles, this contains the s7 Tn5 barcode and gDNA. Single cells can be identified as the combination of s5 and s7 Tn5 barcodes):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>NNNNNNNN</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG<cbc>NNNNNNNN</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                    <----------------------------------------------------------------------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>
