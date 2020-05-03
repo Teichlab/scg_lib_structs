@@ -11,8 +11,8 @@ Click the following links to veiw the methods. Notes:
 
 - ### Gene expression
 
+  - [SMART-seq family (including SMART-seq, SMART-seq2 and SMART-seq3)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
   - [STRT-seq family (including STRT-seq, STRT-seq-C1 and STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html)
-  - [SMART-seq family (including SMART-seq and SMART-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
   - [Quartz-seq family (including Quartz-seq and Quartz-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/Quartz-seq_family.html)
   - [CEL-seq family (including CEL-seq and CEL-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/CEL-seq_family.html)
   - [10x Chromium Single Cell 3' V3 FeatureBarcoding](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3fb.html)
@@ -70,7 +70,7 @@ Click the following links to veiw the methods. Notes:
 | sci-RNA-seq3                     | Not needed                    | In situ                  | RNase H and DNA pol I               | No                         | Barcoded RT primers and hairpin adapters                  | Yes                    | PCR                    | 3'            |
 | SCRB-seq/mcSCRB-seq              | FACS                          | In 96w/384w wells        | TSO                                 | Yes                        | Barcoded RT primers                                       | Yes                    | PCR                    | 3'            |
 | Seq-Well                         | Nanowells                     | In collection tubes      | TSO                                 | Yes                        | Barcoded RT primers                                       | Yes                    | PCR                    | 3'            |
-| SMART-seq/SMART-seq2             | FACS or Fluidigm C1           | In 96w/384w wells        | TSO                                 | Yes                        | Library PCR with barcoded primers                         | No                     | PCR                    | full-length   |
+| SMART-seq/SMART-seq2/SMART-seq3  | FACS or Fluidigm C1           | In 96w/384w wells        | TSO                                 | Yes                        | Library PCR with barcoded primers                         | No                     | PCR                    | full-length   |
 | SPLiT-seq                        | Not needed                    | In situ                  | TSO                                 | Yes                        | Ligation of barcoded RT primers                           | Yes                    | PCR                    | 3'            |
 | STRT-seq                         | FACS                          | In 96w/384w wells        | TSO                                 | Yes                        | Barcoded TSO primers                                      | Yes                    | PCR                    | 5'            |
 | STRT-seq-C1                      | Fluidigm C1                   | In microfluidic chambers | TSO                                 | Yes                        | Barcoded Tn5 transposase                                  | No                     | PCR                    | 5'            |

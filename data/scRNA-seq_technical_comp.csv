@@ -14,7 +14,7 @@ sci-RNA-seq,Not needed,In situ,RNase H and DNA pol I,No,Barcoded RT primers and 
 sci-RNA-seq3,Not needed,In situ,RNase H and DNA pol I,No,Barcoded RT primers and hairpin adapters,Yes,PCR,3'
 "SCRB-seq/mcSCRB-seq	",FACS,In 96w/384w wells,TSO,Yes,Barcoded RT primers,Yes,PCR,3'
 Seq-Well,Nanowells,In collection tubes,TSO,Yes,Barcoded RT primers,Yes,PCR,3'
-SMART-seq/SMART-seq2,FACS or Fluidigm C1,In 96w/384w wells,TSO,Yes,Library PCR with barcoded primers,No,PCR,full-length
+SMART-seq/SMART-seq2/SMART-seq3,FACS or Fluidigm C1,In 96w/384w wells,TSO,Yes,Library PCR with barcoded primers,No,PCR,full-length
 SPLiT-seq,Not needed,In situ,TSO,Yes,Ligation of barcoded RT primers,Yes,PCR,3'
 STRT-seq,FACS,In 96w/384w wells,TSO,Yes,Barcoded TSO primers,Yes,PCR,5'
 STRT-seq-C1,Fluidigm C1,In microfluidic chambers,TSO,Yes,Barcoded Tn5 transposase,No,PCR,5'

@@ -24,24 +24,36 @@ s7 {color:#fc9272;}
 p5 {color:#08519c;}
 p7 {color:#a50f15;}
 me {color:#969696;}
+t7 {color:blue;}
+umi {color:#807dba;}
+cbc {color:#f768a1;}
 tso {color:#2ca25f;}
 h3 {font-family:verdana;}
 
 </style>
 
 <head>
-<title>SMART-seq/SMART-seq2</title>
+<title>SMART-seq/SMART-seq2/SMART-seq3</title>
 </head>
 <body>
 
-<h1><a href="https://www.nature.com/nbt/journal/v30/n8/full/nbt.2282.html" target="_blank">SMART-seq</a>
-/ <a href="https://www.nature.com/nmeth/journal/v10/n11/full/nmeth.2639.html" target="_blank">SMART-seq2</a></h1>
+<h1><a href="#SMART-seq" target="_self">SMART-seq</a>
+/ <a href="#SMART-seq2" target="_self">SMART-seq2</a>
+/ <a href="#SMART-seq3" target="_self">SMART-seq3</a></h1>
 
 <p><span style="font-family:verdana; font-size:1.1em;">The protocols of SMART-seq and SMART-seq2 are almost the same. SMART-seq2 is an improved version of SMART-seq. The authors performed 457 optimisation experiments to test conditions. Two key parameters are: </span></p>
 <p><span style="font-family:verdana; font-size:1.1em;">(1) exchanging the last guanylate for a locked nucleic acid (LNA) at the 3' end of TSO.</span></p>
 <p><span style="font-family:verdana; font-size:1.1em;">(2) Include methyl group donor betaine in combination with higher MgCl<sub>2</sub> concentrations.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">SMART-seq3 is a further improvement comparing to SMART-seq/SMART-seq3, and it has a different oligo design comparing to SMART-seq/SMART-seq2. Major improvements include:</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">(1) Use Maxima H- reverse transcriptase.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">(2) Use NaCl (instead of the common KCl) during reverse transcription.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">(3) Use 5% PEG as a crowding reagent during reverse transcription, like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/SCRB-seq.html" target="_blank">mcSCRB-seq.</a></span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">(4) Use a unique 11-bp tag and UMI in the TSO so that the 5' read can be distinguished from the internal reads.</span></p>
 
 <br></br>
+
+<h1><a href="https://www.nature.com/nbt/journal/v30/n8/full/nbt.2282.html" target="_blank" name="SMART-seq"><span style="color:red">SMART-seq</span></a>
+/ <a href="https://www.nature.com/nmeth/journal/v10/n11/full/nmeth.2639.html" target="_blank" name="SMART-seq2"><span style="color:red">SMART-seq2</span></a></h1>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
@@ -213,6 +225,248 @@ h3 {font-family:verdana;}
 </pre>
 
 <h3>(3) Folds over and sequence the second index (i5) (bottom strand as template):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                                                                      <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+<h1><a href="https://www.biorxiv.org/content/10.1101/817924v1" target="_blank" name="SMART-seq3"><span style="color:red">SMART-seq3</span></a></h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Smartseq3_OligodT30VN: 5'- /5Biosg/<tso>ACGAGCATCAGCAGCATACGA</tso>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN -3'</p>
+<p>Smartseq3_N8_TSO: 5'- /5Biosg/<me>AGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>rGrGrG -3'</p>
+<p>Fwd_PCR_primer: 5′- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAA*T*G</t7> -3′</p>
+<p>Rev_PCR_primer: 5′- <tso>ACGAGCATCAGCAGCATAC*G*A</tso> -3′</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'
+<p>Nextera (XT) N/S5xx Index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera (XT) N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+</seq>
+
+<h3>8-bp i5 & i7 sequences:</h3>
+<pre>
+    N/S502 : CTCTCTAT
+    N/S503 : TATCCTCT
+    N/S505 : GTAAGGAG
+    N/S506 : ACTGCATA
+    N/S507 : AAGGAGTA
+    N/S508 : CTAAGCCT
+    N/S510 : CGTCTAAT
+    N/S511 : TCTCTCCG
+    N/S513 : TCGACTAG
+    N/S515 : TTCTAGCT
+    N/S516 : CCTAGAGT
+    N/S517 : GCGTAAGA
+    N/S518 : CTATTAAG
+    N/S520 : AAGGCTAT
+    N/S521 : GAGCCTTA
+    N/S522 : TTATGCGA
+
+    N701 : TCGCCTTA
+    N702 : CTAGTACG
+    N703 : TTCTGCCT
+    N704 : GCTCAGGA
+    N705 : AGGAGTCC
+    N706 : CATGCCTA
+    N707 : GTAGAGAG
+    N710 : CAGCCTCG
+    N711 : TGCCTCTT
+    N712 : TCCTCTAC
+    N714 : TCATGAGC
+    N715 : CCTGAGAT
+    N716 : TAGCGAGT
+    N718 : GTAGCTCC
+    N719 : TACTACGC
+    N720 : AGGCTCCG
+    N721 : GCAGCGTA
+    N722 : CTGCGCAT
+    N723 : GAGCGCTA
+    N724 : CGCTCAGT
+    N726 : GTCTTAGG
+    N727 : ACTGATCG
+    N728 : TAGCTGCA
+    N729 : GACGTCGA
+</pre>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal Smartseq3_OligodT30VN to mRNA and reverse transcription using Maxima H- MMLV:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+                 <----NV(T)<sub>30</sub><tso>AGCATACGACGACTACGAGCA</tso> -5'
+</seq>
+</pre>
+
+<h3>(2) After reverse transcription, the terminal tranferase acitivity of MMLV add extra Cs:</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
+ CCCXXXXXXXXXXXXXXXXXXXNV(T)<sub>30</sub><tso>AGCATACGACGACTACGAGCA</tso> -5'
+</seq>
+</pre>
+
+<h3>(3) Smartseq3_N8_TSO anneals to the extra Cs for template switching:</h3>
+<pre>
+<seq>
+5'- <me>AGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(A)<sub>n</sub>
+                         <------CCCXXXXXXXXXXXXXXXXXXXX(T)<sub>30</sub><tso>AGCATACGACGACTACGAGCA</tso> -5'
+</seq>
+</pre>
+
+<h3>(4) Adding Fwd_PCR_primer and Rev_PCR_primer for cDNA amplification:</h3>
+<pre>
+<seq>
+5′- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7>------>
+                         5'- <me>AGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(pA)<tso>TCGTATGCTGCTGATGCTCGT</tso>
+                             <me>TCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXXXXXXXXXXXXXXXXXXX(dT)<tso>AGCATACGACGACTACGAGCA</tso> -5'
+                                                                             <------<tso>AGCATACGACGACTACGAGCA</tso> -5'
+</seq>
+</pre>
+
+<h3>(5) Purify amplified cDNA:</h3>
+<pre>
+<seq>
+5′- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXXXXXXXXXXXXXXXXXXX(pA)<tso>TCGTATGCTGCTGATGCTCGT</tso> -3'
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXXXXXXXXXXXXXXXXXXX(dT)<tso>AGCATACGACGACTACGAGCA</tso> -5'
+</seq>
+</pre>
+
+<h3>(6) Nextera tagmentation on amplified cDNA (will create 9-bp gap):</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (5' fragments, s5 at both ends, not amplifiable due to semi-suppressiev PCR):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i><b><span style="color:red">Product 2 (5' fragments, different ends, this is amplifiable):</span></b></i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (internal fragments, s5 at both ends, not amplifiable due to semi-suppressiev PCR):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 4 (internal fragments, s7 at both ends, not amplifiable due to semi-suppressiev PCR):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i><b><span style="color:red">Product 5 (internal fragments, different ends, this is amplifiable):</span></b></i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(7) 72 degree gap fill-in (the first cycle in Nextera PCR):</h3>
+<pre>
+<seq>
+<i>5' fragments:</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+<i>Internal fragments:</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(8) Amplification using N/S5xx and N7xx index primers:</h3>
+<pre>
+<seq>
+<i>5' fragments:</i>
+</seq>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5>---->
+                                 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>[8bp UMI]</umi>GGGXXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+                                 3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>[8bp UMI]</umi>CCCXXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                      <----<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+<seq>
+<i>Internal fragments:</i>
+</seq>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5>---->
+                                 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                     <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                               <----<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(9) Final library structure:</h3>
+<pre>
+<seq>
+<i>5' fragments:</i>
+</seq>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><t7>ATTGCGCAATG</t7><umi>NNNNNNNN</umi>GGGXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><t7>TAACGCGTTAC</t7><umi>NNNNNNNN</umi>CCCXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              i5         <s5>s5</s5>              <me>ME</me>            <t7>11 bp</t7>     <umi>8 bp</umi>       cDNA           <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+                                                                         <t7>5' fragment</t7>   <umi>UMI</umi>
+                                                                              <t7>tag</t7>
+</align>
+<seq>
+<i>Internal fragments:</i>
+</seq>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              i5         <s5>s5</s5>              <me>ME</me>                cDNA                <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, if read1 contains the 11bp 5' fragment tags, then the read pair is from the 5' of the transcript):</h3>
+<pre>
+<align class="small">
+                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template):</h3>
+<pre>
+<align class="small">
+                                                                                         5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, single cells can be identified by the combination of i5 and i7):</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------>
