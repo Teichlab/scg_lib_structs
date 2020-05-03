@@ -23,6 +23,7 @@ Click the following links to veiw the methods. Notes:
   - [MARS-seq / MARS-seq2.0](https://teichlab.github.io/scg_lib_structs/methods_html/MARS-seq.html)
   - [SCRB-seq / mcSCRB-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SCRB-seq.html)
   - [Drop-seq / Seq-Well](https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html)
+  - [scifi-RNA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scifi-RNA-seq.html)
   - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html)
   - [BD Rhapsody](https://teichlab.github.io/scg_lib_structs/methods_html/BD_Rhapsody.html)
   - [sci-RNA-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html)
@@ -68,6 +69,7 @@ Click the following links to veiw the methods. Notes:
 | Quartz-seq2                      | FACS                          | In 96w/384w wells        | PolyA tailing and primer ligation   | Yes                        | Barcoded RT primers                                       | Yes                    | PCR                    | 3'            |
 | sci-RNA-seq                      | Not needed                    | In situ                  | RNase H and DNA pol I               | No                         | Barcoded RT primers and library PCR with barcoded primers | Yes                    | PCR                    | 3'            |
 | sci-RNA-seq3                     | Not needed                    | In situ                  | RNase H and DNA pol I               | No                         | Barcoded RT primers and hairpin adapters                  | Yes                    | PCR                    | 3'            |
+| scifi-RNA-seq                    | Droplet multiple cells        | In situ                  | TSO                                 | Yes                        | Barcoded RT primers and gel bead barcodes                 | Yes                    | PCR                    | 3'            |
 | SCRB-seq/mcSCRB-seq              | FACS                          | In 96w/384w wells        | TSO                                 | Yes                        | Barcoded RT primers                                       | Yes                    | PCR                    | 3'            |
 | Seq-Well                         | Nanowells                     | In collection tubes      | TSO                                 | Yes                        | Barcoded RT primers                                       | Yes                    | PCR                    | 3'            |
 | SMART-seq/SMART-seq2/SMART-seq3  | FACS or Fluidigm C1           | In 96w/384w wells        | TSO                                 | Yes                        | Library PCR with barcoded primers                         | No                     | PCR                    | full-length   |

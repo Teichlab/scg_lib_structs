@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+w1 {color:#f03b20;}
+pe2 {color:#9ebcda;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scifi-RNA-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.biorxiv.org/content/10.1101/2019.12.17.879304v1" target="_blank"><span style="color:red;">scifi-RNA-seq</span></a></h1>
+<p><span style="font-family:verdana; font-size:1.1em;">The single-cell combinatorial fluidic indexing RNA-seq (scifi-RNA-seq) uses similar strategy as the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html" target="_blank">sci-RNA-seq</a>, where combinatorial indexing strategy is used. The difference is after <i>in situ</i> reverse transcription with barcoded oligo-dT primers, cells are loaded onto the 10x Chromium system. Cells are overloaded so that >95% of the droplets contain at least one cells. Single cells can be identified by the combination of the RT barcodes and the 10x barcodes. The interesting thing is that the author uses the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html" target="_blank">10x Chromium scATAC-seq</a> kit for the experiments. This page is basically a recreation of the Supplementary Figure 2 from their <a href="https://www.biorxiv.org/content/10.1101/2019.12.17.879304v1" target="_blank">manuscript</a>.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>SCIFI_LIG384_{001..384}: 5'- /Phos/<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN</p>
+<p><sup>*</sup> There are a tolal of 384 barcodes. Check the <a href="../data/scifi-RNA-seq_suppl_table1.xlsx" target="_blank">Supplementary Table 1</a> from the manuscript for a full list.</p>
+<p>Beads-oligo: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp bead barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Bridge-Oligo_truseq_ddC: 5'- <w1>CGTCGTGTAGGGAAAGAGTGT</w1><s5>GACGCTGCCGACGA</s5>[ddC] -3'</p>
+<p>Template-Switching-Oligo(TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>Partial P5: 5'- <p5>AATGATACGGCGACCACCGAGA</p5> -3'</p>
+<p>TSO_enrichment_primer: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
+<p>Nextera N7 index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Nextera left primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera right primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina Truseq Read 1 primer: 5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
+<p>Illumina Nextera Read 2 primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Sample index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) <i>In situ</i> reverse transcription to index transcripts of bulk cells in individual wells:</h3>
+<pre>
+<seq>
+5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(T)<sub>30</sub>VN-------------->
+                                                                 (A)<sub>n</sub> BXXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(2) After reverse transcription, the terminal tranferase acitivity of MMLV add extra Cs:</h3>
+<pre>
+<seq>
+5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCC
+                                                                 (pA)BXXXXXX...XXXXXX -5'
+</seq>
+</pre>
+
+<h3>(3) Pool nulcei from all wells and load them together with the Bridge-Oligo_truseq_ddC onto the 10x Chromium chip with scATAC-seq beads for ligation to capture cDNA to the gel beads:</h3>
+<pre>
+<seq>
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCC -3'
+                                                       C<s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGC</w1>
+</seq>
+</pre>
+
+<h3>(4) Break the emulsion, purify the cDNA, add TSO for template switching:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCC-------->
+                                                                                                                                                    GGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(5) Purify the product by SPRI beads:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                    GGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(6) Amplify cDNA using the Partial_P5 and TSO_enrichment_primer: </h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>------------>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                    GGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                                                                            <--------------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(7) Purify the amplified cDNA: </h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXXXXX...XXXXXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(pA)BXXXXXX...XXXXXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(8) Tagmentation on the cDNA using a Tn5 homodimer:</h3>
+<img src="../data/s7_Tn5_homodimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>There are 3 different products after tagmentation (will create 9 bp gap):</h3>
+<pre>
+<seq>
+<i>Product 1 (The same ends, not amplifiable due to primers used later in the next step:</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 2 (right part of the above cDNA, not amplifiable due to primers used later in the next step:</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+
+<i>Product 3 (left part of the above cDNA, amplifiable):</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(pA)BXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+
+<h3>(9) Amplify the library using the Partial_P5 and Nextera N7 index primers:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>------------>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>[8-bp UMI]</umi><pe2>[13-bp RT barcode]</pe2>(pA)BXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                           <--------------<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(10) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNV</pe2>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNB</pe2>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <cbc>16-bp bead</cbc>         <s5>s5</s5>              <w1>TruSeq Read 1</w1>              <umi>8-bp</umi>    <pe2>13-bp RT</pe2>           cDNA           <me>ME</me>               <s7>s7</s7>       8-bp i7        <p7>Illumina P7</p7>
+                                      <cbc>barcode</cbc>                                                      <umi>UMI</umi>     <pe2>barcode</pe2>                                                  sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add TruSeq Read 1 primer to sequence the first read (bottom strand as template, 21 cycles, these are UMI + RT barcode):</h3>
+<pre>
+<align class="long">
+                                                           5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1>-------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNB</pe2>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the i7 sample index (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="long">
+                                                                                                                               5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNB</pe2>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, 16 cycles, this is bead barcode. Single cells can be identified by the combination of bead barcodes and RT barcodes):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNB</pe2>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add Nextera Read 2 primer to sequence the second read (top strand as template, 47 cycles, cDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNN</umi><pe2>NNNNNNNNNNNNV</pe2>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                            <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
