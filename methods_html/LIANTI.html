@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+t7 {color:blue;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>LIANTI</title>
+</head>
+<body>
+
+<h1><a href="https://science.sciencemag.org/content/356/6334/189.full" target="_blank">LIANTI</a></h1>
+<p><span style="font-family:verdana; font-size:1.1em;">The Linear Amplification via Transposon Insertion (LIANTI) combines Tn5 transposition and T7 <i>in vitro</i> transcription for linear amplification of genomic DNA from single cells. It does not have the limitaion used in the traditional Tn5 where only fragments with different ends can be amplified. In LIANTI, due to T7 <i>in vitro</i> transcription, every single cutting events are amplifiable. This greatly improves the </span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>LIANTI transposon DNA: 5'- /Phos/<me>CTGTCTCTTATACACATCT</me>GAACAGAATT<t7>TAATACGACTCACTATAGGG</t7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Second strand primer: 5'- <umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>NEBNext Hairpin Adaptor: 5'- /5Phos/<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTC</s7>(dU)<p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATC*T</s5> -3'</p>
+<pre>
+<align class="small">
+          (dU)<p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>
+           |                      <s5>GCTCTTCCGATC*T</s5> -3'
+           |                      <s7>CGAGAAGGCTAG</s7> -5'
+           ----<s7>CTGACCTCAAGTCTGCACA</s7>
+</align>
+</pre>
+<p>NEBNext Universal PCR Primer for Illumina: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>NEBNext Index 1 Primer for Illumina: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina TruSeq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Assemble LIANTI transposon DNA to Tn5 transposase to form a Tn5 homodimer, sort or handpick single cells, tagmentation of single cell gDNA with the LIANTI Tn5.</h3>
+<img src="../data/LIANTI_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>(2) Since a Tn5 homodimer is used, there is only one kind of product (will create 9 bp gap):</h3>
+<pre>
+<seq>
+<t7>CGACTCACTATAGGG</t7>                                                                 GAACAGAATT<t7>TAATA</t7>
+|              <me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX     5'- <me>CTGTCTCTTATACACATCT</me>              |
+|              <me>TCTACACATATTCTCTGTC</me> -5'     XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>              |
+<t7>ATAAT</t7>TTAAGACAAG                                                                 <t7>GGGATATCACTCAGC</t7>
+</seq>
+</pre>
+
+<h3>(3) Gap fill-in and extension by Q5 polymerase:</h3>
+<pre>
+<seq>
+                                             IVT starts from here
+                                                    &#8625;
+5'- <me>CTGTCTCTTATACACATCT</me>GAACAGAATT<t7>TAATACGACTCACTATAGGG</t7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCCTATAGTGAGTCGTATTA</t7>AATTCTGTTC<me>AGATGTGTATAAGAGACAG</me> -3'
+3'- <me>GACAGAGAATATGTGTAGA</me>CTTGTCTTAA<t7>ATTATGCTGAGTGATATCCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGGATATCACTCAGCATAAT</t7>TTAAGACAAG<me>TCTACACATATTCTCTGTC</me> -5'
+                                                                                                    &crarr;
+                                                                                            IVT starts from here  
+</seq>
+</pre>
+
+<h3>(4) <i>in vitro</i> transcription to amplify the tagmented gDNA, and it seems when the IVT from the two symmetric strands clashes, one strand will dominate:</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><me>AGAUGUGUAUAAGAGACAG</me>XXXXXX...XXXXXX<me>CUGUCUCUUAUACACAUCU</me><t7>CCCUAUAGUGAGUCGUAUUA</t7>AAUUCUGUUC<me>AGAUGUGUAUAAGAGACAG</me> -3'
+</seq>
+</pre>
+
+<h3>(5) Self priming at the right hand side and reverse transcription:</h3>
+<pre>
+<seq>
+                                                          CUUGUCUUAA<t7>AUUAU</t7>
+                           <-----------<me>GACAGAGAAUAUGUGUAGA</me>              |
+5'- <t7>G</t7><me>AGAUGUGUAUAAGAGACAG</me>XXXXXX...XXXXXX<me>CUGUCUCUUAUACACAUCU</me>              |
+                                                          <t7>CCCUAUAGUGAGUCG</t7>
+</seq>
+</pre>
+
+<h3>(6) RNase treatment to remove RNA:</h3>
+<pre>
+<seq>
+3'- <t7>C</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(7) Add Second strand primer for the second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>---------->
+          3'- <t7>C</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(8) Purify the double stranded gDNA, and from this point, you can choose your favourite kits for library preparation. In this page, the NEB Ultra DNA Library preparation Kit was used as suggested from the LIANTI paper:</h3>
+<pre>
+<seq>
+5'- <umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX -3'
+3'- <umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(9) A tailing of the double stranded gDNA:</h3>
+<pre>
+<seq>
+5'-  <umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXA -3'
+3'- A<umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(10) NEBNext Hairpin Adaptors ligation:</h3>
+<pre>
+<seq>
+(dU)<p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                                                                           <s7>ACACGTCTGAACTCCAGTC</s7>----
+ |                      <s5>GCTCTTCCGATCT</s5><umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXA<s7>GATCGGAAGAGC</s7>                      |
+ |                      <s7>CGAGAAGGCTAG</s7>A<umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX<s5>TCTAGCCTTCTCG</s5>                      |
+ ----<s7>CTGACCTCAAGTCTGCACA</s7>                                                                                           <s5>CAGCACATCCCTTTCT</s5><p5>CACA</p5>(dU)
+</seq>
+</pre>
+
+<h3>(11) NEB USER Enzyme treatment to destroy dU:</h3>
+<pre>
+<seq>
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                                                                           <s7>ACACGTCTGAACTCCAGTC</s7> -3'
+                        <s5>GCTCTTCCGATCT</s5><umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXA<s7>GATCGGAAGAGC</s7>
+                        <s7>CGAGAAGGCTAG</s7>A<umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX<s5>TCTAGCCTTCTCG</s5>
+ 3'- <s7>CTGACCTCAAGTCTGCACA</s7>                                                                                           <s5>CAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+</seq>
+</pre>
+
+<h3>(12) Add NEBNext Universal PCR Primer and NEBNext Index 1 Primer for library PCR amplification. Note that in the first round, the NEBNext Universal PCR Primer has no place to anneal to:</h3>
+<pre>
+<seq>
+
+<i> (i) First round:</i>
+
+Top strand:
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTC</s7> -3'
+                                                                                        <-------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+Bottom strand: 
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>--------------->                       
+                              3'- <s7>CTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>A<umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXXXXX...XXXXXXXXXXXXXXX<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+
+<i> (ii) Later rounds of PCR: </i>
+
+Product 1:
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------>
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[i7]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                         3'- <p5>TGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                         <-------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+Product 2:
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>--------------->
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7><umi>[8-bp UMI]</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGA</s5><p5>GTGT</p5> -3'
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>[i7]<s7>CACTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>A<umi>[8-bp UMI]</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+                                                                                       <-------------------<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+</seq>
+</pre>
+
+<h3>(13) Final library structure (two orientations):</h3>
+<pre>
+<align class="small">
+<i>Orientation 1:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>NNNNNNNN</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>NNNNNNNN</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                    <s5>TruSeq Read 1</s5>       <umi>8-bp UMI</umi>           <me>ME</me>           gDNA             <s7>TruSeq Read 2</s7>            6-bp        <p7>Illumina P7</p7>
+                                                                                                                                      i7 index
+
+<i>Orientation 2:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCC</t7><umi>NNNNNNNN</umi>A<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGG</t7><umi>NNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                    <s5>TruSeq Read 1</s5>          gDNA          <me>ME</me>            <umi>8-bp UMI</umi>           <s7>TruSeq Read 2</s7>           6-bp        <p7>Illumina P7</p7>
+                                                                                                                                      i7 index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing (only orientation 1 is shown here):</h2>
+
+<h3>(1) Add TruSeq Read 1 primer to sequence the first read (may or may not contain UMI):</h3>
+<pre>
+<align class="small">
+                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>NNNNNNNN</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template, 6 cycles):</h3>
+<pre>
+<align class="small">
+                                                                                                 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>NNNNNNNN</umi><t7>CCC</t7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 primer to sequence the second read (may or may not contain UMI):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>NNNNNNNN</umi><t7>GGG</t7><me>AGATGTGTATAAGAGACAG</me>XXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                        <------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>

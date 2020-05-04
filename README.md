@@ -45,6 +45,7 @@ Click the following links to veiw the methods. Notes:
 - ### Genomic DNA and DNA methylation
 
   - [MALBAC](https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html)
+  - [LIANTI](https://teichlab.github.io/scg_lib_structs/methods_html/LIANTI.html)
 
 - ### Multi-Omics
 

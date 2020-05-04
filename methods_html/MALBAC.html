@@ -39,7 +39,7 @@ h3 {font-family:verdana;}
 
 <h1><a href="https://science.sciencemag.org/content/338/6114/1622.full" target="_blank">MALBAC</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">The Multiple Annealing and Looping Based Amplification Cycles (MALBAC) is actually a method for single-cell genomic DNA preamplification. The final library structure depends on the method of choice after the pre-amplification. MALBAC is a quasilinear preamplification method that reduces the bias associated with nonlinear amplification. During the first 5 cycles of preamplification, only the original genomic DNA and the first round of product are used as the templates, which reduces errors.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">The Multiple Annealing and Looping Based Amplification Cycles (MALBAC) is actually a method for single-cell genomic DNA preamplification. The final library structure depends on the method of choice after the pre-amplification. MALBAC is a quasilinear preamplification method that reduces the bias associated with nonlinear amplification. During the first 5 cycles of preamplification, only the original genomic DNA and the first round of products are used as the templates, which reduces errors.</span></p>
 <img src="../data/MALBAC_outline.png" style="height:700px;">
 
 <br></br>
@@ -85,7 +85,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(4) Again, melt DNA at 94 &#8451;, quench at 0 &#8451; for the MALBAC random primers anealling, and extension at 68 &#8451; (both the original genomic DNA and the Semi-amplicon will be used as template):</h3>
+<h3>(4) Again, melt DNA at 94 &#8451;, quench at 0 &#8451; for the MALBAC random primers anealling, and extension at 68 &#8451; (both the original genomic DNA and the Semi-amplicon will be used as templates):</h3>
 <pre>
 <align class="small">
 <i> Origincal genomic DNA as template (will generate new Semi-amplicon):</i>
@@ -125,14 +125,14 @@ h3 {font-family:verdana;}
 <h3>(6) Looping at 58 &#8451; (only the Full-amplicon will self-anneal to a looped structure to prevent further amplification):</h3>
 <pre>
 <seq>
-  ---XXX...XXX         
-  |           <tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
-  |           <tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
-  ---XXX...XXX<tso>
+  XXX...XXX         
+  X        <tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+  X        <tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+  XXX...XXX
 </seq>
 </pre>
 
-<h3>(6) Repeat the 0 &#8451; quenching, 68 &#8451; extension and 58 &#8451; looping cycles for 5 times. During these cycles, original gDNA will yield Semi-amplicon, and Semi-amplicon will yield Full-amplicon, and Full-amplicon will stay unchanged once generated.</h3>
+<h3>(6) Repeat the 0 &#8451; quenching, 68 &#8451; extension and 58 &#8451; looping cycles for 5 times. During these cycles, the original gDNA will yield Semi-amplicons, and Semi-amplicons will yield Full-amplicons, and Full-amplicons will stay unchanged once generated.</h3>
 
 <h3>(7) Use the MALBAC PCR primer to amplify the Full-amplicon using regular PCR conditions:</h3>
 <pre>
@@ -143,7 +143,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(8) Final product of the amplified gDNA, and this can be used as staring material for the library construction using your favourite kits, such TruSeq or Nextera, to make a sequencing ready library:</h3>
+<h3>(8) Final product of the amplified gDNA, and this can be used as the staring material for the library construction using your favourite kits, such as TruSeq or Nextera, to make a sequencing ready library:</h3>
 <pre>
 <seq>
 5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXXX...XXXXXXXXXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
@@ -151,7 +151,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(9) Final library structure (depends on the library preparation kits used):</h3>
+<h3>(9) Final library structure (depends on the library preparation kits used, two most popular ones are shown below):</h3>
 <pre>
 <align class="small">
 <i>Uisng Nextera:</i>
