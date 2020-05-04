@@ -33,6 +33,7 @@ Click the following links to veiw the methods. Notes:
 
 - ### Chromatin accessibility and protein-DNA interactions
 
+  - [Plate_scATAC-seq and Pi-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/plate_and_piATAC-seq.html)
   - [10x Chromium Single Cell ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html)
   - [dscATAC-seq/dsciATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html)
   - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
@@ -49,7 +50,8 @@ Click the following links to veiw the methods. Notes:
 
 - ### Multi-Omics
 
-  - in progress
+  - [scCAT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scCAT-seq.html)
+  - [G&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/G_and_T_seq.html)
 
 ## Technical comparisons (scRNA-seq only)
 
@@ -103,6 +105,7 @@ Here I borrow from Feyman:
 - [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
 - [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
 - [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
+- [sci-CAR-seq](https://science.sciencemag.org/content/361/6409/1380.full)
 - [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
 - [MALBAC-DT](https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1)
 - [GRID-seq](https://www.nature.com/articles/nbt.3968)
