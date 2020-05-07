@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+	font-size:0.9em;
+	text-indent: 20px;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.7em;
+    line-height:65%;
+}
+
+align.big {
+	font-family:Monaco, "Courier New";
+	font-size:1em;
+	line-height:100%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+t7 {color:blue;}
+umi {color:#807dba;}
+cbc {color:#f768a1;}
+tso {color:#2ca25f;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scDNase-seq and scMNase-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nature15740" target="_blank">scDNase-seq</a>
+/ <a href="https://www.nature.com/articles/s41586-018-0567-3" target="_blank">scMNase-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Both scDNase-seq and scMNase-seq are developed from Keji Zhao's lab. They use almost the same procudures to construct the library. One uses DNase to get DNA from open chromatin and the other uses MNase to get DNA from both open chromatin and nulcesomal regions. The methods utilise the traditional way of making libraries, which is ligating the sequencing adaptors to the DNase/MNase fragmented DNA. The trick is to add circular plasmid as carrier DNA during ligation and purification reduce DNA loss. Therefore, the library structure is just standard Illumina sequencing libraries. Each cells are prepared separately, so the library index is the cell barcode.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Illumina adaptor top: 5'- /Phos/ <s7>GATCGGAAGAGCACACGTCT</s7> -3'</p>
+<p>Illumina adaptor bottom: 5'- <p5>ACAC</p5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Make Illumina adaptors by annealing the top and the bottom sequences:</p>
+<pre>
+<seq>
+            5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>
+                                    <s5>GCTCTTCCGATCT</s5> -3'
+                                    <s7>CGAGAAGGCTAG</s7> -5'
+                        3'- <s7>TCTGCACA</s7>
+</seq>
+</pre>
+<p>Illumina PCR Primer 1.0: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATC*T</s5> -3'</p>
+<p>Illumina Multiplexing PCR Primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATC*T</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'
+<p>Illumina TruSeq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+</seq>
+
+
+<br></br>
+
+<h3>(1) Incubate nulcei with DNase or MNase, and let the enzyme cut the DNA. Then do end repair and A-tailing:</h3>
+<pre>
+<seq>
+5'-  XXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXA -3'
+3'- AXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXX  -5'
+</seq>
+</pre>
+
+<h3>(2) Ligate the Illumina adaptor mix to the DNA:</h3>
+<pre>
+<seq>
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                                 <s7>ACACGTCT</s7> -3'
+                        <s5>GCTCTTCCGATCT</s5>XXXXXXXXXX...XXXXXXXXXXA<s7>GATCGGAAGAGC</s7>
+                        <s7>CGAGAAGGCTAG</s7>AXXXXXXXXXX...XXXXXXXXXX<s5>TCTAGCCTTCTCG</s5>
+            3'- <s7>TCTGCACA</s7>                                                 <s5>CAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+</seq>
+</pre>
+
+<h3>(3) Amplification using Illumina PCR Primer 1.0 and Illumina Multiplexing PCR Primer. Note that in the first round, the Illumina PCR Primer 1.0 has no place to anneal to::</h3>
+<pre>
+<seq>
+
+<i> (i) First round (the product from the top and bottoms strands have the same structure):</i>
+
+Top strand:
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXXXXXXXXX...XXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCT</s7> -3'
+                                                 <----------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Bottom strand:
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>------------>
+                                         3'- <s7>TCTGCACACGAGAAGGCTAG</s7>AXXXXXXXXXX...XXXXXXXXXX<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+
+<i> (ii) Second round and after:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------>
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXXXXXXXXX...XXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[i7]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                         3'- <p5>TGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXXXXXXXXX...XXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                          <----------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(4) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                    <s5>TruSeq Read 1</s5>          gDNA             <s7>TruSeq Read 2</s7>           6-bp        <p7>Illumina P7</p7>
+                                                                                                        i7 index
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add TruSeq Read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<pre>
+<seq>
+                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the i7 index (bottom strand as template, 6 cycles, this is the cell barcode):</h3>
+<pre>
+<seq>
+                                                                   5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                <------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+</body>
+</html>

@@ -36,6 +36,7 @@ Click the following links to veiw the methods. Notes:
   - [Plate_scATAC-seq and Pi-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/plate_and_piATAC-seq.html)
   - [10x Chromium Single Cell ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html)
   - [dscATAC-seq/dsciATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html)
+  - [scDNase-seq/scMNase-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDNase_scMNase.html)
   - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
   - [snATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html)
   - [scTHS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTHS-seq.html)

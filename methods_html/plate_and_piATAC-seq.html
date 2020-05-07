@@ -40,7 +40,7 @@ h3 {font-family:verdana;}
 <h1><a href="https://www.nature.com/articles/s41467-018-07771-0" target="_blank">plate_scATAC-seq</a>
 / <a href="https://www.nature.com/articles/s41467-018-07115-y" target="_blank">Pi-ATAC-seq</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">It has been previously demonstrated that Tn5 transposase-mediated tagmentation contains two stages: (1) a tagging stage where the Tn5 transposome binds to DNA, and (2) a fragmentation stage where the Tn5 transposase is released from DNA using heat or denaturing agents, such as sodium dodecyl sulfate (SDS). As the Tn5 tagging does not fragment DNA, the nuclei would remain intact after incubation with the Tn5 transposome in an bulk ATAC-seq experiment. Both plate_scATAC-seq and Pi-ATAC-seq utilise this property of Tn5 tagmentation, and perform bulk tagging upfront, followed by FACS sorting of single nuclei into wells for library construction. FACS index sorting can also be reported. These methods are simple to follow and work robustly. Since each cells are processed seprately, the library indices are single cell barcodes.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">It has been previously demonstrated that Tn5 transposase-mediated tagmentation contains two stages: (1) a tagging stage where the Tn5 transposome binds to DNA, and (2) a fragmentation stage where the Tn5 transposase is released from DNA using heat or denaturing agents, such as sodium dodecyl sulfate (SDS). As the Tn5 tagging does not fragment DNA, the nuclei would remain intact after incubation with the Tn5 transposome in an bulk ATAC-seq experiment. Both plate_scATAC-seq and Pi-ATAC-seq utilise this property of Tn5 tagmentation, and perform bulk tagging upfront, followed by FACS sorting of single nuclei into wells for library construction. FACS index sorting can also be reported. These methods are simple to follow and work robustly. Since each cells are processed separately, the library indices are single cell barcodes.</span></p>
 
 <br></br>
 
@@ -105,7 +105,7 @@ h3 {font-family:verdana;}
 
 <br></br>
 
-<h3>(1) Optional: stain cells/nulcei. Tagmentation on bulk cells/nulcei (will create 9-bp gap):</h3>
+<h3>(1) Stain cells/nulcei (optional). Tagmentation on bulk cells/nulcei (will create 9-bp gap):</h3>
 <img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
 <pre>
 <seq>
@@ -136,7 +136,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(7) Amplification using N/S5xx and N7xx index primers:</h3>
+<h3>(3) Amplification using N/S5xx and N7xx index primers:</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5>---->
@@ -146,7 +146,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(8) Final library structure:</h3>
+<h3>(4) Final library structure:</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
