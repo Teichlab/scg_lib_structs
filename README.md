@@ -54,6 +54,26 @@ Click the following links to veiw the methods. Notes:
   - [scCAT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scCAT-seq.html)
   - [G&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/G_and_T_seq.html)
 
+- ### TODO list:
+
+ - [DR-seq](https://www.nature.com/articles/nbt.3129)
+ - [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
+ - [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
+ - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
+ - [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
+ - [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
+ - [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
+ - [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
+ - [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
+ - [sci-CAR-seq](https://science.sciencemag.org/content/361/6409/1380.full)
+ - [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
+ - [MALBAC-DT](https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1)
+ - [GRID-seq](https://www.nature.com/articles/nbt.3968)
+ - [ZipSeq](https://www.biorxiv.org/content/10.1101/2020.02.04.932988v1)
+ - [PETRI-seq](https://www.biorxiv.org/content/10.1101/866244v1)
+ - [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
+ - [Seq-Well S^3](https://www.biorxiv.org/content/10.1101/689273v1)
+
 ## Technical comparisons (scRNA-seq only)
 
 **The basic chemistry is very similar, the main differences among those scRNA-seq methods are summarised in the table below. For a detailed discussion, check the text boxes from our review: [From Tissues to Cell Types and Back: Single-Cell Gene Expression Analysis of Tissue Architecture](https://www.annualreviews.org/doi/10.1146/annurev-biodatasci-080917-013452)**
@@ -95,25 +115,6 @@ Here I borrow from Feyman:
 ----
 
 ![](data/feyman.jpeg)
-
-## TODO:
-
-- [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
-- [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
-- [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
-- [SNARE-seq](https://www.nature.com/articles/s41587-019-0290-0)
-- [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
-- [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
-- [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
-- [sci-Plex](https://science.sciencemag.org/content/early/2019/12/04/science.aax6234.full)
-- [sci-CAR-seq](https://science.sciencemag.org/content/361/6409/1380.full)
-- [snmC2T-seq](https://www.biorxiv.org/content/10.1101/2019.12.11.873398v1)
-- [MALBAC-DT](https://www.biorxiv.org/content/10.1101/2019.12.31.892190v1)
-- [GRID-seq](https://www.nature.com/articles/nbt.3968)
-- [ZipSeq](https://www.biorxiv.org/content/10.1101/2020.02.04.932988v1)
-- [PETRI-seq](https://www.biorxiv.org/content/10.1101/866244v1)
-- [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
-- [Seq-Well S^3](https://www.biorxiv.org/content/10.1101/689273v1)
 
 ## Feedback
 
