@@ -56,7 +56,7 @@ h3 {font-family:verdana;}
 <p><sup>*</sup> There are a total of 25 s7 Tn5 barcodes, check the <a href="../data/itChIP-seq_Table3.xlsx" target="_blank">Table 3</a> from their Protocol Exchange webpage.</p>
 <p>Mosaic End (ME) bottom: 5'- /Phos/<me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Connector Primer F: 5'- <p5>ACAC</p5><umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi><s5>TCGTCGGCAGCGTCTCCACGC</s5> -3'</p>
-<p>Connector Primer R: 5'- <t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7><s7>GTCTCGTGGGCTCGGCTGTCCCTGT</s7> -3'</p>
+<p><b><span style="color:red">*</span></b>Connector Primer R: 5'- <t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7><s7>GTCTCGTGGGCTCGGCTGTCCCTGT</s7> -3'</p>
 <p><b><span style="color:red">*</span></b> This sequence is from their Protocol Exchange webpage. I think for the library to work on current Illumina system, there should be an extra GT at the 5'end of this oligo:</p>
 <pre>
 <seq>
@@ -64,8 +64,8 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 <p>Universal P5 primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC<umi>TCTTTCCCTACACGACGCTCTTCCGATCT</umi> -3'</p>
-<p>Indexed P7 primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
-<p><b><span style="color:red">*</span></b> This sequence is from their Protocol Exchange webpage. I think for the library to work on current Illumina system, there should be an extra GT after i7:</p>
+<p><b><span style="color:red">**</span></b>Indexed P7 primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<t7>GACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
+<p><b><span style="color:red">**</span></b> This sequence is from their Protocol Exchange webpage. I think for the library to work on current Illumina system, there should be an extra GT after i7:</p>
 <pre>
 <seq>
          5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3', this is drawn in this page.
