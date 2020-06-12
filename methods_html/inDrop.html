@@ -42,14 +42,14 @@ h3 {font-family:verdana;}
 
 <h1><a href="http://www.cell.com/cell/abstract/S0092-8674(15)00500-0" target="_blank">inDrop</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">inDrop was originally pulished in Cell 161, 1187–1201 (2015). Then, two year after that, the authors published the detailed protocol in Nature Protocols 12, 44–73 (2017), which has different primer design comparing to the orginal paper. The workflow shown here is based on the protocol in Nature Protocols 12, 44–73 (2017), which seems to be the version 2 of the inDrop technology. According to the <a href="https://github.com/indrops/indrops" target="_blank">inDrop github page</a>, there is a version 3, but the oligos and library structures are exactly the same as version 2, except the sequencing mode changed. In version 2, three different reads are generated; in version 3, four different reads are generated. See details below.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">inDrop was originally pulished in Cell 161, 1187–1201 (2015). Then, two years after that, the authors published the detailed protocol in <a href="https://www.nature.com/articles/nprot.2016.154" target="_blank">Nature Protocols 12, 44–73 (2017)</a>, which has different primer design comparing to the orginal paper. The workflow shown here is based on the Nature Protocol paper, which seems to be the version 2 of the inDrop technology. According to the <a href="https://github.com/indrops/indrops" target="_blank">inDrop github page</a>, there is a version 3, but the oligos and library structures are exactly the same as version 2, except the sequencing mode has changed. In version 2, three different reads are generated; in version 3, four different reads are generated. See details below.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <h3>Sequence used during the experiment:</h3>
 <seq>
-<p><sup>*</sup>Beads-oligo-dT19V: |--5'- /5Acryd/iSpPC/CGATGACG<t7>TAATACGACTCACTATAGGG</t7>ATACCACCATGG<pe1>CTCTTTCCCTACACGACGCTCTTC</pe1>CGATCT<cbc>[barcode1]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>TTTTTTTTTTTTTTTTTTV -3'</p>
+<p><sup>*</sup>Beads-oligo-dT19V: |--5'- /5Acryd/iSpPC/CGATGACG<t7>TAATACGACTCACTATAGGG</t7>ATACCACCATGG<pe1>CTCTTTCCCTACACGACGCTCTTC</pe1>CGATCT<cbc>[barcode1]</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>TTTTTTTTTTTTTTTTTTV -3'</p>
 <p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
 <p>PE1 adapter: 5'- <pe1>CTCTTTCCCTACACGACGCTCTTC</pe1> -3'</p>
 <p>PE2 adapter: 5'- <pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2> -3'</p>
@@ -138,15 +138,15 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
 5'- XXXXXXXXXXXXXXXXXXXB(A)<sub>n</sub>
-                 <-----V(T)<sub>19</sub><umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>GGTACCACCATA<t7>GGGATATCACTCAGCATAAT</t7>GCAGTAGC -5'--|
+                 <-----V(T)<sub>19</sub><umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>[barcode1]</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>GGTACCACCATA<t7>GGGATATCACTCAGCATAAT</t7>GCAGTAGC -5'--|
 </align>
 </pre>
 
 <h3>(2) RNaseH and DNA Pol I based second strand synthesis:</h3>
 <pre>
 <align class="long">
-5'- XXX...XXXB(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>CCCTATAGTGAGTCGTATTA</t7>CGTCATCG
-    XXX...XXXV(dT)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>GGTACCACCATA<t7>GGGATATCACTCAGCATAAT</t7>GCAGTAGC -5'--|
+5'- XXX...XXXB(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>CCCTATAGTGAGTCGTATTA</t7>CGTCATCG
+    XXX...XXXV(dT)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>[barcode1]</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>GGTACCACCATA<t7>GGGATATCACTCAGCATAAT</t7>GCAGTAGC -5'--|
                                                                                                                     &crarr;
                                                                                                              IVT starts from here
 </align>
@@ -155,14 +155,14 @@ h3 {font-family:verdana;}
 <h3>(3) Break droplets and T7 <i>in vitro</i> transcription to amplify cDNA (resulting in single stranded RNA):</h3>
 <pre>
 <seq>
-5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>AAGGCGUCACAAGCAAUCACUC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
+5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>GAGUGAUUGCUUGUGACGCCUU</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
 </seq>
 </pre>
 
 <h3>(4) Reverse transcription on amplified RNA (aRNA) using random priming (PE2-N6)</h3>
 <pre>
 <align class="long">
-5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>AAGGCGUCACAAGCAAUCACUC</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
+5'- <t7>G</t7>AUACCACCAUGG<pe1>CUCUUUCCCUACACGACGCUCUUC</pe1>CGAUCU<cbc>[barcode1]</cbc><w1>GAGUGAUUGCUUGUGACGCCUU</w1><cbc>[8-bp barcode2]</cbc><umi>[6-bp UMI]</umi>(dU)VXXX...XXX -3'
                                                                                                       <-------NNNNNN
                                                                                                                     <pe2>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCT</pe2> -5'
 </align>
@@ -171,7 +171,7 @@ h3 {font-family:verdana;}
 <h3>(5) Fist strand cDNA of aRNA looks like this:</h3>
 <pre>
 <align class="long">
-5'- <pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>C</t7> -3'
+5'- <pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>C</t7> -3'
 </align>
 </pre>
 
@@ -179,7 +179,7 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAAC</pe2>---------->
-                                 5'- <pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>C</t7> -3'
+                                 5'- <pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>[6-bp UMI]</umi><cbc>[8-bp barcode2]</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>[barcode1]</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>CCATGGTGGTAT<t7>C</t7> -3'
                                                                                                                                                <----------<pe1>AGCACATCCCTTTCTC</pe1>
                                                                                                                                                                           [6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
@@ -188,8 +188,8 @@ h3 {font-family:verdana;}
 <h3>(9) Final library structure:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(dT)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(dT)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
             <p5>Illumina P5</p5>                           <pe2>PE2</pe2>                   cDNA        <umi>6bp</umi>    <cbc>8bp</cbc>            <w1>W1</w1>           <cbc>barcode1</cbc>               <pe1>PE1</pe1>             6bp         <p7>Illumina P7</p7>
                                                                                     <umi>UMI</umi>  <cbc>barcode2</cbc>                                                          sample index
 </align>
@@ -203,7 +203,7 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
                                    5'- <pe2>GGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>--------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -211,14 +211,14 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
                                                                                                                            5'- AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(3) Cluster regeneration, and add read 2 sequencing primer to sequence read 2 (top strand as template, these are the cell barcodes and UMI reads, at least 51 cycles):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
                                                                                    <-------------------------------------------TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1> -5'
 </align>
 </pre>
@@ -231,15 +231,15 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
                                    5'- <pe2>GGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>--------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(2) Add reverse complement of W1 primer primer to sequence barcode1 (bottom strand as template, 6 cycles):</h3>
 <pre>
 <align class="long">
-                                                                                             5'- <w1>GAGTGATTGCTTGTGACGCCTT</w1>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                             5'- <w1>AAGGCGTCACAAGCAATCACTC</w1>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -247,15 +247,15 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
                                                                                                                            5'- AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>CTCACTAACGAACACTGCGGAA</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(4) Cluster regeneration, and add W1 primer to sequence barcode2 and UMI (top strand as template, seems to be 21 cycles, contain a bit of dT at the end):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>GAGTGATTGCTTGTGACGCCTT</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-                                                                            <--------------------<w1>CTCACTAACGAACACTGCGGAA</w1> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                            <--------------------<w1>TTCCGCAGTGTTCGTTAGTGAG</w1> -5'
 </align>
 </pre>
 
