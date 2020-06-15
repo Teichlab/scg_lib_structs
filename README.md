@@ -3,7 +3,7 @@ Collections of library structure and sequence of popular single cell genomic met
 
 ## How to use?
 
-Click the following links to veiw the methods. Notes:
+Click the following links to view the methods. Notes:
 
 1. The default alignment font is Monaco. Courier New font will be used if Monaco is not available.
 2. Index1 (i7) is always sequenced using the bottom strand as template, regardless of the Illumina machine in use. That is why the index sequences are reverse complementary to the primer sequences.
