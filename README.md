@@ -73,6 +73,7 @@ Click the following links to view the methods. Notes:
   - [PETRI-seq](https://www.biorxiv.org/content/10.1101/866244v1)
   - [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
   - [Seq-Well S^3](https://www.biorxiv.org/content/10.1101/689273v1)
+  - [SHARE-seq](https://www.biorxiv.org/content/10.1101/2020.06.17.156943v1)
 
 ## Technical comparisons (scRNA-seq only)
 
