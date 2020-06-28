@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+	font-size:0.9em;
+	text-indent: 20px;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.8em;
+    line-height:65%;
+}
+
+align.big {
+	font-family:Monaco, "Courier New";
+	font-size:1em;
+	line-height:100%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+t7 {color:blue;}
+umi {color:#807dba;}
+cbc {color:#f768a1;}
+tso {color:#2ca25f;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>MALBAC</title>
+</head>
+<body>
+
+<h1><a href="https://science.sciencemag.org/content/338/6114/1622.full" target="_blank">MALBAC</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The Multiple Annealing and Looping Based Amplification Cycles (MALBAC) is actually a method for single-cell genomic DNA preamplification. The final library structure depends on the method of choice after the pre-amplification. MALBAC is a quasilinear preamplification method that reduces the bias associated with nonlinear amplification. During the first 5 cycles of preamplification, only the original genomic DNA and the first round of products are used as the templates, which reduces errors.</span></p>
+<img src="../data/MALBAC_outline.png" style="height:700px;">
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>MALBAC random primers: 5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>NNNNNNNN -3'</p>
+<p>MALBAC PCR primer: 5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Sort or handpick single cells, melt genomic DNA at 94 &#8451;, quench at 0 &#8451;, and the MALBAC random primers will anneal randomly to single-stranded DNA:</h3>
+<pre>
+<align class="small">
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>
+                               NNNNNNNN                                 NNNNNNNN                                 NNNNNNNN
+3'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXX -5'
+</align>
+</pre>
+
+<h3>(2) Extension using a polylmerase with strand displacement activity such as <i>Bst</i> or <i>Phi29</i> at 68 &#8451; (will kick off the product in front):</h3>
+<pre>
+<align class="small">
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>
+                               NNNNNNNN-------------------------------->NNNNNNNN-------------------------------->NNNNNNNN----------->
+3'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXX -5'
+</align>
+</pre>
+
+<h3>(3) There are two types of templates at this stage:</h3>
+<pre>
+<seq>
+<i> Origincal genomic DNA:</i>
+
+3'- XXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX -5'
+
+
+<i> The Semi-amplicon:</i>
+
+3'- XXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX<tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+</seq>
+</pre>
+
+<h3>(4) Again, melt DNA at 94 &#8451;, quench at 0 &#8451; for the MALBAC random primers anealling, and extension at 68 &#8451; (both the original genomic DNA and the Semi-amplicon will be used as templates):</h3>
+<pre>
+<align class="small">
+<i> Origincal genomic DNA as template (will generate new Semi-amplicon):</i>
+
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>
+                               NNNNNNNN-------------------------------->NNNNNNNN-------------------------------->NNNNNNNN----------->
+3'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXX -5'
+
+
+<i> The Semi-amplicon as template (will generate Full-amplicon):</i>
+
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>          5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>
+                               NNNNNNNN-------------------------------->NNNNNNNN-------------------------------->NNNNNNNN--------------...------------------------------->
+3'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXX<tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+</align>
+</pre>
+
+<h3>(5) There are three types of DNA at this stage:</h3>
+<pre>
+<seq>
+<i> Origincal genomic DNA:</i>
+
+3'- XXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX -5'
+
+
+<i> The Semi-amplicon:</i>
+
+3'- XXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXX<tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+
+
+<i> The Full-amplicon:</i>
+
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXX...XXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+</seq>
+</pre>
+
+<h3>(6) Looping at 58 &#8451; (only the Full-amplicon will self-anneal to a looped structure to prevent further amplification):</h3>
+<pre>
+<seq>
+  XXX...XXX         
+  X        <tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+  X        <tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+  XXX...XXX
+</seq>
+</pre>
+
+<h3>(6) Repeat the 0 &#8451; quenching, 68 &#8451; extension and 58 &#8451; looping cycles for 5 times. During these cycles, the original gDNA will yield Semi-amplicons, and Semi-amplicons will yield Full-amplicons, and Full-amplicons will stay unchanged once generated.</h3>
+
+<h3>(7) Use the MALBAC PCR primer to amplify the Full-amplicon using regular PCR conditions:</h3>
+<pre>
+<seq>
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>------>
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXXX...XXXXXXXXXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+                                                     <------<tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+</seq>
+</pre>
+
+<h3>(8) Final product of the amplified gDNA, and this can be used as the staring material for the library construction using your favourite kits, such as TruSeq or Nextera, to make a sequencing ready library:</h3>
+<pre>
+<seq>
+5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXXX...XXXXXXXXXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+3'- <tso>CTCCACACTACCTCAACCATCACTCAC</tso>XXXXXXXXXXXXX...XXXXXXXXXXXXX<tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso> -5'
+</seq>
+</pre>
+
+<h3>(9) Final library structure (depends on the library preparation kits used, two most popular ones are shown below):</h3>
+<pre>
+<align class="small">
+<i>Uisng Nextera:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              i5         <s5>s5</s5>              <me>ME</me>                gDNA                <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+
+
+<i>Uisng TruSeq:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXX<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>            gDNA          <s7>Truseq Read 2</s7>                8 bp        <p7>Illumina P7</p7>
+                                                                                                            Index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Standard sequencing workflow is used, and you can check any other pages.</span></p>
+
+</body>
+</html>

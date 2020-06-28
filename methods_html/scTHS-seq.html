@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scTHS-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nbt.4038" target="_blank">scTHS-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">THS-seq, originally published by <a href="https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0882-7" target="blank">Sos <i>et al.</i></a>, uses similar principles as ATAC-seq to investigate chromatin accessibility. The key difference is that in THS-seq, a Tn5 transoposome homodimer loaded with T7 promoter sequence is used for the tagmentation, and the resulting fragments are amplified by <i>in vitro</i> transcription. In this way, every Tn5 cutting event is theoretically amplifiable, whereas in the widely used Illumina Tn5 transposomes only 50% of fragments with distinct adapters can be amplified.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The scTHS-seq takes the combinatorial indexing strategy to make the original THS-seq method to work at the single cell level.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>scT7_r5{001..384}_i5_top: 5'- AAT<t7>TAATACGACTCACTATAGGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p><sup>*</sup> There are a total of 384 barcoded scT7_r5 sequences. For the full list, check <a href="../data/41587_2018_BFnbt4038_MOESM11_ESM.xlsx" target="blank">Supplementary Table 12.</a> from the publication.</p>
+<p>nXTv2_i7_top: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>ME_bottom: 5'- /Phos/-<me>CTGTCTCTTATACACATCT</me> -3'</p>
+<p>sss_scnXTv2: 5'- <t7>GGG</t7><pe2>AGATCCACGCGC</pe2> -3'</p>
+<p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
+<p>Random hexamer for reverse transcription: 5'- <pe1>[maybe there is an overhang]</pe1>NNNNNN -3'</p>
+<p>scT7_S5xx: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<t7>GGG</t7><pe2>AGATCCACGCGC</pe2> -3', these are similar to Nextera XT v2 S5xx primers.</p>
+<p><sup>*</sup> There are a total of 16 scT7_S5xx sequences. For the full list, check <a href="../data/41587_2018_BFnbt4038_MOESM11_ESM.xlsx" target="blank">Supplementary Table 12.</a> from the publication.</p>
+<p>Nextera (XT) N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>nXTv2_read1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>nXTv2_i7_index_read sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step generation of oligo-dT19V:</h2>
+<h3>(1) Anneal the scT7_r5{001..384}_i5_top and ME_bottom sequences to assemble the Tn5 tranposome homodimer for the nulcei tagmentation in well plates. Sort ~960 nulcei per well and perform tagmentation:</h3>
+<img src="../data/scTHS_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<align class="long">
+<i>Since it is a Tn5 homodimer, there is only one product:</i>
+
+5'- AAT<t7>TAATACGACTCACTATAGGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
+                                                                   3'- <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5><cbc>[6-bp Tn5 barcode]</cbc><pe2>CGCGCACCTAGA</pe2><t7>GGGATATCACTCAGCATAAT</t7>TAA -5'
+</align>
+</pre>
+
+<h3>(2) Stop tagmentation, pool all nuclei from all wells, redistribute ~100 nulcei per well to a new plate by FACS, destroy nulcei by adding guanidine hydrochloride, purify tagmented DNA by SPRI, and fill in the gaps by Taq enzyme:</h3>
+<pre>
+<align class="long">
+5'- AAT<t7>TAATACGACTCACTATAGGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5><cbc>[6-bp Tn5 barcode]</cbc><pe2>GCGCGTGGATCT</pe2><t7>CCCTATAGTGAGTCGTATTA</t7>ATT -3'
+3'- TTA<t7>ATTATGCTGAGTGATATCCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5><cbc>[6-bp Tn5 barcode]</cbc><pe2>CGCGCACCTAGA</pe2><t7>GGGATATCACTCAGCATAAT</t7>TAA -5'
+</align>
+</pre>
+
+<h3>(3) <i>in vitro</i> transcription to amplify the tagmented DNA which is from the open chromatin regions, and it seems when the IVT from the two symmetric strands clashes, one strand will dominate:</h3>
+<pre>
+<align class="long">
+                  IVT starts from here
+                          &#8625;
+5'- AAT<t7>TAATACGACTCACTATAGGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5><cbc>[6-bp Tn5 barcode]</cbc><pe2>GCGCGTGGATCT</pe2><t7>CCCTATAGTGAGTCGTATTA</t7>ATT -3'
+3'- TTA<t7>ATTATGCTGAGTGATATCCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5><cbc>[6-bp Tn5 barcode]</cbc><pe2>CGCGCACCTAGA</pe2><t7>GGGATATCACTCAGCATAAT</t7>TAA -5'
+                                                                                                                                                                                    &crarr;
+                                                                                                                                                                            IVT starts from here    
+</align>
+</pre>
+
+<h3>(4) Purify the amplified RNA (aRNA) using SPRI beads. This is the product of the IVT, which is the amplified RNA representing open chromatin regions:</h3>
+<pre>
+<align class="long">
+5'- <t7>G</t7><pe2>AGAUCCACGCGC</pe2><cbc>[6-bp Un5 barcode]</cbc><s5>UCGUCGGCAGCGUC</s5><me>AGAUGUGUAUAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CUGUCUCUUAUACACAUCU</me><s5>GACGCUGCCGACGA</s5><cbc>[6-bp Un5 barcode]</cbc><pe2>GCGCGUGGAUCU</pe2><t7>CCCUAUAGUGAGUCGUAUUA</t7>AUU -3'
+</align>
+</pre>
+
+<h3>(5) Reverse transcription of the aRNA back to DNA using a random hexamer primer and MMLV reverse transcriptase:</h3>
+<pre>
+<align class="long">
+5'- <t7>G</t7><pe2>AGAUCCACGCGC</pe2><cbc>[6-bp Un5 barcode]</cbc><s5>UCGUCGGCAGCGUC</s5><me>AGAUGUGUAUAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CUGUCUCUUAUACACAUCU</me><s5>GACGCUGCCGACGA</s5><cbc>[6-bp Un5 barcode]</cbc><pe2>GCGCGUGGAUCU</pe2><t7>CCCUAUAGUGAGUCGUAUUA</t7>AUU -3'
+                                                                          <----------NNNNNN
+                                                                                           <pe1>[maybe there is an overhang]</pe1> -5'
+</align>
+</pre>
+
+<h3>(6) This is the product after RT:</h3>
+<pre>
+<seq>
+5'- <t7>G</t7><pe2>AGAUCCACGCGC</pe2><cbc>[6-bp Un5 barcode]</cbc><s5>UCGUCGGCAGCGUC</s5><me>AGAUGUGUAUAAGAGACAG</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -3'
+3'- <t7>C</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -5'
+</seq>
+</pre>
+
+<h3>(7) RNaseH to degrade the RNA in the DNA-RNA hybrid above:</h3>
+<pre>
+<seq>
+3'- <t7>C</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -5'
+</seq>
+</pre>
+
+<h3>(8) Add the sss_scnXTv2 primer for the second strand synthesis:</h3>
+<pre>
+<seq>
+5'- <t7>GGG</t7><pe2>AGATCCACGCGC</pe2>-------------------->
+  3'- <t7>C</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -5'
+</seq>
+</pre>
+
+<h3>(9) Purify the product uisng SPRI beads:</h3>
+<pre>
+<seq>
+5'- <t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -3'
+3'- <t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<pe1>[maybe there is an overhang]</pe1> -5'
+</seq>
+</pre>
+
+<h3>(10) Anneal the nXTv2_i7_top and ME_bottom sequences to assemble another Tn5 tranposome homodimer for the tagmentation of the above double stranded DNA product:</h3>
+<img src="../data/s7_Tn5_homodimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (s7 at both ends, not amplifiable due to pimers used, see the next step):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 2 (not amplifiable due to pimers used, see the next step):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX<pe1>[maybe there is an overhang]</pe1> -3'
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXX<pe1>[maybe there is an overhang]</pe1> -5'
+
+
+<i>Product 3 (different adapters at the two ends, this will be amplified in the next step):</i>
+
+5'- <t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
+3'- <t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(11) Stop the reaction by adding guanidine hydrochloride, purify by SPRI beads, and use the scT7_S5xx and the Nextera (XT) N7xx Index primer to ampify the product:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<t7>GGG</t7><pe2>AGATCCACGCGC</pe2>--------->
+                                            5'- <t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
+                                            3'- <t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>[6-bp Tn5 barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                            <----------<s7>GGCTCGGGTGCTCTG</s7>[8-bp i7 index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(12) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>NNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>NNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>            i5 index                <cbc>6 bp</cbc>      <s5>s5</s5>               <me>ME</me>           gDNA           <me>ME</me>                <s7>s7</s7>      i7 index       <p7>Illumina P7</p7>
+                                                     <cbc>Tn5 barcode</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add nXTv2_read1 sequencing primerto sequence the first read (bottom strand as template, these are the gDNA reads, 50 cycles):</h3>
+<pre>
+<align class="long">
+                                                          5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>NNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add nXTv2_i7_index_read sequencing primer to sequence the i7 index (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="long">
+                                                                                                          5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>NNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the i5 and Tn5 barcodes (bottom strand as template, 32 cycles, single cells will be identified by the combination of i7, i5 and Tn5 barcodes):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>NNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+</body>
+</html>

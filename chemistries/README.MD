@@ -8,7 +8,7 @@ This folder contains all the data necessary for chemistry definitions.
 
 The adapters folder contains fasta files used in the different protocols. They are also linked in the `definitions.json` file.
 
-## whitelists
+## Whitelists
 
 The whitelists folder contains the list of barcodes used in the protocols defined in the `definitions.json` file.
 

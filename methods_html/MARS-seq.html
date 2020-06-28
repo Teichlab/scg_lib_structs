@@ -48,7 +48,7 @@ h3 {font-family:verdana;}
 
 <p><span style="font-family:verdana; font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The cell barcodes and UMIs are longer in MARS-seq2.0. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
 
 <p><span style="font-family:verdana; font-size:1.1em;"> (5) Oligos used in the original MARS-seq were shown in this workflow.</span></p>
 
@@ -56,7 +56,8 @@ h3 {font-family:verdana;}
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
-<p>1st RT primer: 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTN -3'</p>
+<p>1st RT primer (MARS-seq): 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp cell barcode]</cbc><umi>[4-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTN -3'</p>
+<p>1st RT primer (MARS-seq2.0): 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7>GC<s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[7-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTN -3'</p>
 <p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
 <p>Barcode plate ligation adaptor:</p>
 <pre>
