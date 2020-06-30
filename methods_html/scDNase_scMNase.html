@@ -40,14 +40,14 @@ h3 {font-family:verdana;}
 <h1><a href="https://www.nature.com/articles/nature15740" target="_blank">scDNase-seq</a>
 / <a href="https://www.nature.com/articles/s41586-018-0567-3" target="_blank">scMNase-seq</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">Both scDNase-seq and scMNase-seq are developed from Keji Zhao's lab. They use almost the same procudures to construct the library. One uses DNase to get DNA from open chromatin and the other uses MNase to get DNA from both open chromatin and nulcesomal regions. The methods utilise the traditional way of making libraries, which is ligating the sequencing adaptors to the DNase/MNase fragmented DNA. The trick is to add circular plasmid as carrier DNA during ligation and purification reduce DNA loss. Therefore, the library structure is just standard Illumina sequencing libraries. Each cells are prepared separately, so the library index is the cell barcode.</span></p>
+<p><span style="font-family:verdana; font-size:1.1em;">Both scDNase-seq and scMNase-seq are developed from Keji Zhao's lab. They use almost the same procudures to construct the library. One uses DNase to get DNA from open chromatin and the other uses MNase to get DNA from both open chromatin and nulcesomal regions. The methods utilise the traditional way of making libraries, which is ligating the sequencing adaptors to the DNase/MNase fragmented DNA. The trick is to add circular plasmid as carrier DNA during ligation and purification to reduce DNA loss. Therefore, the library structure is just standard Illumina sequencing libraries. Each cells are prepared separately, so the library index is the cell barcode.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
 <p>Illumina adaptor top: 5'- /Phos/ <s7>GATCGGAAGAGCACACGTCT</s7> -3'</p>
-<p>Illumina adaptor bottom: 5'- <p5>ACAC</p5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina adaptor bottom: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Make Illumina adaptors by annealing the top and the bottom sequences:</p>
 <pre>
 <seq>
