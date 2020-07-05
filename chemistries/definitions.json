@@ -3,7 +3,23 @@
         "Description": "10x Chromium Single Cell 3' V3 Feature Barcoding",
         "adapters": ["adapters/Chromium.fa"],
         "whitelist": "whitelists/3M-febuary-2018.csv.gz",
+        "barcode_structure_indexes": {
+            "cell_barcode":{
+                "R1":{
+                    "start":1,
+                    "stop":16
+                },
+            "umi_barcode":{
+                "R1":{
+                    "start":17,
+                    "stop":28
+                }
+            }
+        },
+        "barcode_structure_string": {
+            "R1": "CCCCCCCCCCCCCCCCUUUUUUUUUUUU"
+        },
         "html": "../methods_html/10xchromium3fb.html"
+        }
     }
-
 }

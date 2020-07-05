@@ -1,5 +1,8 @@
  # Chemistry definitions
 
+**ALPHA version**
+**The format, structure and names are all changing rather rapidly for development purposes. Feel free to have suggestions via PRs**
+
 The purpose of this folder is to give centralized, open source easy access to people who want to automatically pull information relevant to a sequencing protocol.
 
 This folder contains all the data necessary for chemistry definitions.
@@ -26,6 +29,22 @@ Here is a template for a new entry:
         "Description": "",
         "adapters": [],
         "whitelist": "",
+        "barcode_structure_indexes": {
+            "cell_barcode":{
+                "R1":{
+                    "start":,
+                    "stop":
+                },
+            "umi_barcode":{
+                "R1":{
+                    "start":,
+                    "stop":
+                }
+            }
+        },
+        "barcode_structure_string": {
+            "R1": ""
+        },
         "html": ""
     }
 ```
@@ -34,5 +53,7 @@ Here is a template for a new entry:
 * Description is a free field for a longer name of the protocol
 * adapters is a list of paths pointing towards the adapters used in this protocol. The paths are relative to the folder containing the `definitions.json`
 * whitelist is a path towards the whitelisted barcode list of the protocol. The path is relative to the folder containing the `definitions.json`
+* barcode_structure_indexes defines the start and stop positions of the cell barcode and the umi barcode using numerical values. **Index starts at 1**
+* barcode_structure_string defines the start and stop positions of the cell barcode and the umi barcode using a string. `C` defines a cell barcode,  `U` defines a UMI, `N` defines a random base.
 * html is a path towards the html document of the protocol. The path is relative to the folder containing the `definitions.json`
 
