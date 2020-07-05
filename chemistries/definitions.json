@@ -19,6 +19,14 @@
         "barcode_structure_string": {
             "R1": "CCCCCCCCCCCCCCCCUUUUUUUUUUUU"
         },
+        "sequence_structure_indexes":{
+            "R2": {
+                "start": 11
+            }
+        },
+        "sequence_structure_string":{
+            "R2": "NNNNNNNNNN"
+        },
         "html": "../methods_html/10xchromium3fb.html"
         }
     }
