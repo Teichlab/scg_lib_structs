@@ -6,6 +6,8 @@ Naming convention follows the same rule as the `shortname` key for the `definiti
 
 Whitelist files have to be in csv format with a header. The only required header is "whitelist".
 
+Files must be compressed with as `.gz`
+
 Example with the 10x v3 feature barcoding mapping file:
 
 ```
