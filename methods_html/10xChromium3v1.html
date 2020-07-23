@@ -46,7 +46,7 @@ h3 {font-family:verdana;}
 <p>Beads-oligo-dT: |--5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><cbc>[14-bp cell barcode]</cbc><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7><umi>[10-bp UMI]</umi>(T)<sub>30</sub>VN -3'</p>
 <p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
 <p>ISPCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso> -3′</p>
-<p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Truseq Read 1 primer: 5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Truseq adapter (double stranded DNA with a T overhang):</p>
 <pre>
@@ -55,7 +55,7 @@ h3 {font-family:verdana;}
                          3'- <s5>CGAGAAGGCTAG</s5>  -5'
 </align>
 </pre>
-<p>SI-PCR Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>SI-PCR Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Cell barcode (i7 index) sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
@@ -155,20 +155,20 @@ h3 {font-family:verdana;}
 <h3>(7) Add SI-PCR Primer and Illumina P7 Primer to index and amplify library:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------->
-                                                5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>*A -3'
-                                                3'- <s5>                CGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7>   -5'
-                                                                                                                                                    <-----------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------->
+                                                    5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>[14-bp cell barcode]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>*A -3'
+                                                    3'- <s5>                CGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>[10-bp UMI]</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>[14-bp cell barcode]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7>   -5'
+                                                                                                                                                        <-----------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(8) Final library structure:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-          <p5>Illumina P5</p5>              8 bp           <s5>Truseq Read 1</s5>          cDNA          <umi>10 bp</umi>             <s7>Truseq Read 2</s7>               <cbc>14 bp</cbc>         <p7>Illumina P7</p7>
-                               Sample Index                                             <umi>UMI</umi>                                      <cbc>cell barcode</cbc>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>              8 bp           <s5>Truseq Read 1</s5>              cDNA          <umi>10 bp</umi>             <s7>Truseq Read 2</s7>               <cbc>14 bp</cbc>         <p7>Illumina P7</p7>
+                               Sample Index                                                 <umi>UMI</umi>                                      <cbc>cell barcode</cbc>
 </align>
 </pre>
 
@@ -179,16 +179,16 @@ h3 {font-family:verdana;}
 <h3>(1) Add Truseq Read 1 primer to sequence the first read (bottom strand as template, this the cDNA read, 98 cycles):</h3>
 <pre>
 <align class="long">
-                                     5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                     5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(2) Add Cell barcode sequencing primer to sequence the cell barcode (bottom strand as template, in this case, cell barcode = i7 index, 14 cycles):</h3>
 <pre>
 <align class="long">
-                                                                                          5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                          5'-     <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -196,15 +196,15 @@ h3 {font-family:verdana;}
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(4) Cluster regeneration, add Truseq Read 2 primer to sequence the UMI (top strand as template, sequence UMI, 10 cycles):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-                                                                                    <---------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                        <---------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
 </align>
 </pre>
 

@@ -53,7 +53,7 @@ h3 {font-family:verdana;}
         Reverse primer: 5'- <tso>AAGCAGTGGTATCAACGCAG</tso> -3'
 </align>
 </pre>
-<p>Illumina Truseq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Truseq Read 1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Illumina Truseq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Truseq adapter (double stranded DNA with a T overhang, PN-220026):</p>
 <pre>
@@ -188,7 +188,7 @@ h3 {font-family:verdana;}
 <h3>(1) Add Truseq Read 1 primer to sequence the first read (bottom strand as template, sequence 16-bp cell barcode and 10-bp UMI, 26 cycles):</h3>
 <pre>
 <align class="long">
-                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------------------>
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------------------>
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><me>AAAGAATATACCC</me>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>

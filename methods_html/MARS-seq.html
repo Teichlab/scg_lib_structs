@@ -69,7 +69,7 @@ h3 {font-family:verdana;}
 <p>2nd RT primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P5_Rd1_PCR primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P7_Rd2_PCR primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
-<p>Illumina Truse Read1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina Truse Read1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>Illumina Truse Read2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
@@ -204,7 +204,7 @@ which is the 5' end of the lig_NNNX4_ix[1-8] ligating to 3' of aRNA:</i>
 <h3>(1) Add Illumina Truseq Read1 sequencing primer to sequence the first read (bottom strand as template, the first 6 - 7 bp are plate barcode, then followed by cDNA sequence):</h3>
 <pre>
 <align class="long">
-                             5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>----------->
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>----------->
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNN</cbc>XXX...XXX(dT)<umi>NNNN</umi><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7>ACTTGAGGTCAGTG<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
