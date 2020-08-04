@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scBS-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nmeth.3035" target="_blank">scBS-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">scBS-seq is a technique to profile DNA methylation at the single cell level. It is based on the principle of <a href="https://www.neb.com/applications/epigenetics/dna-methylation-analysis/bisulfite-conversion" target="_blank">bisulfite conversion</a>. The trick here is to add sequencing adapters after the bisulfite conversion, because bisulfite treatment is damaing to DNA, which often causes DNA fragmentation. The adapter addition is achieved by random priming, whic is similar to <a href="https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html" target="_blank">MALBAC</a>, wel ... kind of ... .</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">In the original publication in Nature Methods 11, 817–820. The authors uses the iPCRtag primer for indexing. According to the <a href="../data/illumina-adapter-sequences-1000000002694-14.pdf">Illumina Adapter sequence</a>, the sequences used here is obsoltete. Check page 47 in the linked PDF. I still draw it here for historical reasons, but you can change that to modern Truseq structures, which can be easily found in other pages in this repository.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+
+<seq>
+<p>Oligo 1: 5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>NNNNNNNNN -3'</p>
+<p>Oligo 2: 5'- <s7>TGCTGAACCGCTCTTCCGATCT</s7>NNNNNNNNN -3'</p>
+<p>PE1.0 forward primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>iPCRtag reverse primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GAGATCGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT</s7></p>
+<p>Read 1 sequencing primer: 5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Index sequencing primer: 5'- <s7>AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC</s7> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>CGGTCTCGGCATTCCTGCTGAACCGCTCTTCCGATCT</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation:</h2>
+<h3>(1) Cell lysis :</h3>
+<pre>
+<align class="small">
+                                              <cbc>Me</cbc>
+                                              <cbc>|</cbc>
+5'- XXXXXXXXXXXXXXXXXXX<t7>CG</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX -3'
+3'- XXXXXXXXXXXXXXXXXXX<t7>GC</t7>XXXXXXXXX...XXXXXXXXX<cbc>GC</cbc>XXXXXXXXXXXXXXXXXXX -5'
+                                               <cbc>|</cbc>
+                                               <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(2) Bisulfite treatment (which will also fragment DNA):</h3>
+<pre>
+<align class="small">
+                                              <cbc>Me</cbc>
+                                              <cbc>|</cbc>
+5'- XXXXXXXXXXXXXXXXXXX<t7>UG</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX -3'
+3'- XXXXXXXXXXXXXXXXXXX<t7>GU</t7>XXXXXXXXX...XXXXXXXXX<cbc>GC</cbc>XXXXXXXXXXXXXXXXXXX -5'
+                                               <cbc>|</cbc>
+                                               <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(3) Denature, Oligo 1 annealing and Klenow extention. Klenow has strong strand displacement activity, so it will kick the primers at the front off the strand. Only one strand will be shown from now on:</h3>
+<pre>
+<align class="small">
+5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>
+                              NNNNNNNNN----->
+                       3'- XXXXXXXXXXXXXXXXXXX<t7>GU</t7>XXXXXXXXX...XXXXXXXXX<cbc>GC</cbc>XXXXXXXXXXXXXXXXXXX -5'
+                                                                      <cbc>|</cbc>
+                                                                      <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(4) The above step is repeated five times, and products are denatured and purified by Straptavidin beads. Two types of products will be present at this stage:</h3>
+<pre>
+<align class="small">
+<i> Product 1 (one adapter at 5' side):</i>
+
+  |--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXXXXXXXX<t7>CT</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX -3'
+
+
+<i> Product 2 (adapters at both 5' and 3' ends):</i>
+
+  |--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXXXXXXXX<t7>CT</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX<s5>AGATCGGAAGAGCGTCGTGTAG</s5> -3'
+
+</align>
+</pre>
+
+<h3>(5) Random priming with Oligo 2 using similar strategy above:</h3>
+<pre>
+<align class="small">
+|--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXXXXXXXX<t7>CT</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX -3'
+                                                                    <-----NNNNNNNNN
+                                                                                    <s7>TCTAGCCTTCTCGCCAAGTCGT</s7> -5'
+
+
+|--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXXXXXXXX<t7>CT</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXXXXXXXXX<s5>AGATCGGAAGAGCGTCGTGTAG</s5> -3'
+                                                                    <-----NNNNNNNNN
+                                                                                   <s7>TCTAGCCTTCTCGCCAAGTCGT</s7> -5'
+</align>
+</pre>
+
+<h3>(6) Purify products:</h3>
+<pre>
+<align class="small">
+|--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXX...XXX<t7>CT</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<s7>AGATCGGAAGAGCGGTTCAGCA</s7> -3'
+   3'-     <s5>GATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<t7>GA</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<s7>TCTAGCCTTCTCGCCAAGTCGT</s7> -5'
+</align>
+</pre>
+
+<h3>(7) Adding PE1.0 forward primer and iPCRtag reverse primer for library amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------>
+                             |--5'-/Bio/<s5>CTACACGACGCTCTTCCGATCT</s5>XXX...XXX<t7>CT</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<s7>AGATCGGAAGAGCGGTTCAGCA</s7> -3'
+                                    3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<t7>GA</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<s7>TCTAGCCTTCTCGCCAAGTCGT</s7> -5'
+                                                                                      <------<s7>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXX<t7>CT</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<s7>AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<t7>GA</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<s7>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                 <s5>PE Read 1</s5>                        gDNA                               <s7>PE Read 2</s7>                   8-bp          <p7>Illumina P7</p7>
+                                                                                                                                     sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                         5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<t7>GA</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<s7>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template, this is the cell barcode):</h3>
+<pre>
+<align class="long">
+                                                                                         5'- <s7>AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<t7>GA</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<s7>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGCTAGAG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add Read 2 sequencing primer to sequence read 2 (top strand as template):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXX<t7>CT</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<s7>AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                    <--------<s7>TCTAGCCTTCTCGCCAAGTCGTCCTTACGGCTCTGGC</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
