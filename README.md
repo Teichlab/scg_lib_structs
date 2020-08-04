@@ -46,6 +46,7 @@ Click the following links to view the methods. Notes:
 
 - ### Genomic DNA and DNA methylation
 
+  - [scBS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scBS-seq.html)
   - [MALBAC](https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html)
   - [LIANTI](https://teichlab.github.io/scg_lib_structs/methods_html/LIANTI.html)
 
