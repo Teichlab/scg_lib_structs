@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scRRBS</title>
+</head>
+<body>
+
+<h1><a href="https://genome.cshlp.org/content/23/12/2126.long" target="_blank">scRRBS</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The scRRBS method is originally published by <a href="https://genome.cshlp.org/content/23/12/2126.long" target="_blank">Guo <i>et al</i>.</a> in Genome Research. Later on, the authors published a detailed step-by-step protocol in <a href="https://www.nature.com/articles/nprot.2015.039" target="_blank">Nature Protocols 10, 645-659</a>. This web page is created according to their Nature Protocols publication.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">scRRBS is based on reduced representation bisulfite sequencing (RRBS), where the genome is fragmented by a restriction enzyme (often <a href="https://www.neb.com/products/r0106-mspi#Product%20Information" target="_blank">MspI</a>), and methyl-C is investigated in the resulting fragments. It is not whole genome, but it is cost effective and generates high coverage data especiallhy around CpG islands.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+
+<seq>
+<p>Universal Truseq adaptor (cytosines are methylated): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Indexed Truseq adaptor (cytosines are mehtylated): 5'- /phos/<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[6-bp index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'</p>
+<p>Make Y-shaped Illumina adaptors by annealing the above two oligos:</p>
+<pre>
+<seq>
+                      5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>
+                                                                       <s5>GCTCTTCCGATCT</s5> -3'
+                                                                       <s7>CGAGAAGGCTAG</s7> -5'
+          3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>[6-bp index]<s7>CACTGACCTCAAGTCTGCACA</s7>
+</seq>
+</pre>
+<p>Illumina TruSeq Read 1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Illumina P5 (called QP1 in the paper): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 (called QP2 in the paper): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation:</h2>
+<h3>(1) Cell lysis and use MspI to fragment the genome:</h3>
+<pre>
+<align class="small">
+                                                    <cbc>Me</cbc>
+                                                    <cbc>|</cbc>
+5'- XXXXXXX<umi>C  CGG</umi>XXXXXXXXXXXX<t7>CG</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXX<umi>C  CGG</umi>XXXXXXX -3'
+3'- XXXXXXX<umi>GGC  C</umi>XXXXXXXXXXXX<t7>GC</t7>XXXXXXXXX...XXXXXXXXX<cbc>GC</cbc>XXXXXXXXXXXX<umi>GGC  C</umi>XXXXXXX -5'
+                                                     <cbc>|</cbc>
+                                                     <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(2) End repair and A tailing:</h3>
+<pre>
+<align class="small">
+                                           <cbc>Me</cbc>
+                                           <cbc>|</cbc>
+5'-  <umi>CGG</umi>XXXXXXXXXXXX<t7>CG</t7>XXXXXXXXX...XXXXXXXXX<cbc>CG</cbc>XXXXXXXXXXXX<umi>CCG</umi>A -3'
+3'- A<umi>GCC</umi>XXXXXXXXXXXX<t7>GC</t7>XXXXXXXXX...XXXXXXXXX<cbc>GC</cbc>XXXXXXXXXXXX<umi>GGC</umi>  -5'
+                                            <cbc>|</cbc>
+                                            <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(3) Ligate the indexed Y-shaed Illumina adapters:</h3>
+<pre>
+<align class="long">
+                                                                                                 <cbc>Me</cbc>
+            5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                    <cbc>|</cbc>                          <s7>ACACGTCTGAACTCCAGTCAC</s7>[6-bp index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                             <s5>GCTCTTCCGATCT</s5></s5><umi>CGG</umi>XXX...XXX<t7>CG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>CCG</umi>A<s7>GATCGGAAGAGC</s7>
+                                                             <s7>CGAGAAGGCTAG</s7>A<umi>GCC</umi>XXX...XXX<t7>GC</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>GGC</umi><s5>TCTAGCCTTCTCG</s5>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>[6-bp index]<s7>CACTGACCTCAAGTCTGCACA</s7>                                     <cbc>|</cbc>                         <s5>CAGCACATCCCTTTCT</s5><p5>CACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+                                                                                                  <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(4) Bisulfite converstion (cytosines in the adapters are methylated, so they won't be affected):</h3>
+<pre>
+<align class="long">
+                                                                                                 <cbc>Me</cbc>
+            5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                    <cbc>|</cbc>                          <s7>ACACGTCTGAACTCCAGTCAC</s7>[6-bp index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                             <s5>GCTCTTCCGATCT</s5></s5><umi>UGG</umi>XXX...XXX<t7>UG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>UUG</umi>A<s7>GATCGGAAGAGC</s7>
+                                                             <s7>CGAGAAGGCTAG</s7>A<umi>GUU</umi>XXX...XXX<t7>GU</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>GGU</umi><s5>TCTAGCCTTCTCG</s5>
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>[6-bp index]<s7>CACTGACCTCAAGTCTGCACA</s7>                                     <cbc>|</cbc>                         <s5>CAGCACATCCCTTTCT</s5><p5>CACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+                                                                                                  <cbc>Me</cbc>
+</align>
+</pre>
+
+<h3>(5) PCR using Illumina P5 and P7 primers:</h3>
+<pre>
+<align class="long">
+
+<i> (i) The First cycle (the product from the top and bottoms strands have the same structure, and the P5 primer has no place to anneal):</i>
+
+ Top strand:
+                                                                                     <cbc>Me</cbc>
+                                                                                     <cbc>|</cbc>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>UGG</umi>XXX...XXX<t7>UG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>UUG</umi>A<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[6-bp index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                    <------------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+ Bottom strand:
+
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>---------->
+3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>[6-bp index]<s7>CACTGACCTCAAGTCTGCACACGAGAAGGCTAG</s7>A<umi>GUU</umi>XXX...XXX<t7>GU</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>GGU</umi><s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
+                                                                                                  <cbc>|</cbc>
+                                                                                                  <cbc>Me</cbc>
+
+<i> (ii) The second cycle and after (bottom strand ommitted):</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>---------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>TGG</umi>XXX...XXX<t7>TG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>TTG</umi>A<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[6-bp index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>ACC</umi>XXX...XXX<t7>AC</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>AAC</umi>T<s7>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                    <------------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>TGG</umi>XXX...XXX<t7>TG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>TTG</umi>A<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>ACC</umi>XXX...XXX<t7>AC</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>AAC</umi>T<s7>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                 <s5>Truseq Read 1</s5>                        gDNA                           <s7>Truseq Read 2</s7>            6-bp        <p7>Illumina P7</p7>
+                                                                                                                                   sample index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Truseq read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>--------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>ACC</umi>XXX...XXX<t7>AC</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>AAC</umi>T<s7>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index sequencing primer to sequence sample index (bottom strand as template, this is the cell barcode):</h3>
+<pre>
+<align class="long">
+                                                                                               5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><umi>ACC</umi>XXX...XXX<t7>AC</t7>XXX...XXX<cbc>GC</cbc>XXX...XXX<umi>AAC</umi>T<s7>CTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, and add Truseq read 2 sequencing primer to sequence read 2 (top strand as template):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><umi>TGG</umi>XXX...XXX<t7>TG</t7>XXX...XXX<cbc>CG</cbc>XXX...XXX<umi>TTG</umi>A<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                          <--------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
