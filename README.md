@@ -55,6 +55,7 @@ Click the following links to view the methods. Notes:
 - ### Multi-Omics
 
   - [scNOMe-seq/scCOOL-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNOMe_scCOOL.html)
+  - [scTrio-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTrio-seq.html)
   - [scM&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMandT.html)
   - [scCAT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scCAT-seq.html)
   - [scMT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMT-seq.html)
