@@ -28,6 +28,7 @@ Click the following links to view the methods. Notes:
   - [BD Rhapsody](https://teichlab.github.io/scg_lib_structs/methods_html/BD_Rhapsody.html)
   - [sci-RNA-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html)
   - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html)
+  - [Tang 2009](https://teichlab.github.io/scg_lib_structs/methods_html/tang2009.html)
   - [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html)
   - [inDrop](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html)
 
