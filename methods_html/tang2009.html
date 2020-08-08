@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Tang 2009</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nmeth.1315" target="_blank">Tang 2009</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">In 2009, Tang <i>et al.</i> presented the first method to sequence the whole transcriptome (mRNA) of a single cell in <a href="https://www.nature.com/articles/nmeth.1315" target="_blank">Nature Methods 6, 377–382</a>, which marks the start of the single cell genomics era. In 2010, the authors published a detailed step-by-step protocol in <a href="https://www.nature.com/articles/nprot.2009.236" target="_blank">Nature Protocols, 5, 516-535</a>. This webpage is based on the Nature Protocols paper. The method was designed to be sequenced on a SOLiD sequencer, that's why the sequencing adaptors are different from other methods for Illumina.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">I'm not very familiar with SOLiD sequencing, so there might be mistakes. If you spot any, please let me know.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>UP1: 5'- <s5>ATATGGATCCGGCGCGCCGTCGAC</s5>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>UP2: 5'- <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>AUP1: 5'-/NH2/ <s5>ATATGGATCCGGCGCGCCGTCGAC</s5>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>AUP2: 5'-/NH2/ <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>P1-Adaptor upper strand: 5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5> -3'</p>
+<p>P1-Adaptor lower strand: 5'- <p5>ATCACCGACTGCCCATAGAGAGGAAAGCGGAGGCGTAGTGG</p5>TT -3'</p>
+<p>Make the double stranded (ds) P1 adaptors by annealing the above P1 upper/lower sequences:</p>
+<pre>
+<seq>
+        5'-   <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>
+            TT<p5>GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA</p5> -5'
+</seq>
+</pre>
+<p>Barcoded P2-Adaptor upper strand: 5'- <p7>CGCCTTGGCCGTACAGCAG</p7>[6-bp index]<t7>AGAGAATGAGGAACCCGGGGCAG</t7>TT -3'</p>
+<p>Barcoded P2-Adaptor lower strand: 5'- <t7>CTGCCCCGGGTTCCTCATTCTCT</t7>[6-bp index]<p7>CTGCTGTACGGCCAAGGCG</p7> -3'</p>
+<p>Make the double stranded (ds) P2 adaptors by annealing the above P2 upper/lower sequences:</p>
+<pre>
+<seq>
+        5'- <p7>CGCCTTGGCCGTACAGCAG</p7>[6-bp index]<t7>AGAGAATGAGGAACCCGGGGCAG</t7>TT
+            <p7>GCGGAACCGGCATGTCGTC</p7>[6-bp index]<t7>TCTCTTACTCCTTGGGCCCCGTC</t7>  -5'
+</seq>
+</pre>
+<p>16Barcode Library PCR Primer-1: 5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5> -3'</p>
+<p>16Barcode Library PCR Primer-2: 5'- <t7>CTGCCCCGGGTTCCTCATTCT</t7> -3'</p>
+</seq>
+
+<h2>The following Fragment library oligos are not used if you do multiplexing, so they are not included in the step-by-step library generation:</h2>
+<seq>
+<p>Fragment Library P1 PCR Primer: 5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATG</p5> -3'</p>
+<p>Fragment Library P2 PCR Primer: 5'- <p7>CTGCCCCGGGTTCCTCATTCT</p7> -3'</p>
+<p>Fragment Library P1 Adaptor 5' end: 5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5> -3'</p>
+<p>Fragment Library P1 Adaptor 3' end: 5'- <p5>ATCACCGACTGCCCATAGAGAGGAAAGCGGAGGCGTAGTGG</p5>TT -3'</p>
+<p>Fragment Library P2 Adaptor 5' end: 5'- <p7>AGAGAATGAGGAACCCGGGGCAG</p7>TT -3'</p>
+<p>Fragment Library P2 Adaptor 3' end: 5'- <p7>CTGCCCCGGGTTCCTCATTCTCT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Cell lysis, reverse transcription with UP1:</h3>
+<pre>
+<seq>
+5'-  XXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXAAAAAAAAAAAAAAAAAAAAAAAA -3'
+                         <----------------TTTTTTTTTTTTTTTTTTTTTTTT<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+</seq>
+</pre>
+
+<h3>(2) ExoI treatment to remove free primer, RNase H to remove RNA and TdT to add PolyA at the end of the cDNA:</h3>
+<pre>
+<seq>
+3'- AAAAAAAAAA...AAAAAAAAAAAXXXXXXXXX...XXXXXXXXXTTTTTTTTTTTTTTTTTTTTTTTT<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+</pre>
+
+<h3>(3) Second strand synthesis with the UP2 primer:</h3>
+<pre>
+<seq>
+5'- <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>TTTTTTTTTTTTTTTTTTTTTTTT-------------->
+                 <----------AAAAAAAAAA...AAAAAAAAAAAXXXXXXXXX...XXXXXXXXXTTTTTTTTTTTTTTTTTTTTTTTT<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+</seq>
+</pre>
+
+<h3>(4) PCR amplification of the double stranded cDNA with UP1 and UP2 primers:</h3>
+<pre>
+<seq>
+5'- <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>TTTTTTTTTTTTTTTTTTTTTTTT------>
+5'- <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>TTTTTTTTTTTTTTTTTTTTTTTTXXX...XXXAAAAAAAAAAAAAAAAAAAAAAAA<s5>GTCGACGGCGCGCCGGATCCATAT</s5>
+    <s7>TATAGAGCTCCCGCGCGGCCTAGG</s7>AAAAAAAAAA...AAAAAAAAAAAXXX...XXXTTTTTTTTTTTTTTTTTTTTTTTT<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+                                                     <-------TTTTTTTTTTTTTTTTTTTTTTTT<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+</seq>
+</pre>
+
+<h3>(5) cDNA purification and perform 2nd amplification using AUP1 and AUP2:</h3>
+<pre>
+<seq>
+5'-/NH2/ <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>(dT)------>
+     5'- <s7>ATATCTCGAGGGCGCGCCGGATCC</s7>(dT)XXX...XXX(pA)<s5>GTCGACGGCGCGCCGGATCCATAT</s5>
+         <s7>TATAGAGCTCCCGCGCGGCCTAGG</s7>(pA)XXX...XXX(dT)<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> -5'
+                                      <-------(dT)<s5>CAGCTGCCGCGCGGCCTAGGTATA</s5> /NH2/-5'
+</seq>
+</pre>
+
+<h3>(5) cDNA purification, fragmentation, end repair with the End-It kit (the end of the fragments are blocked by NH2, which prevents ligation, so I will only draw the middle parts of cDNA):</h3>
+<pre>
+<seq>
+5'- XXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXX -3'
+3'- XXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(6) Ligation of ds P1 and ds P2 adaptors to the fragmented cDNA (I guess this is blunt end ligation, and there are probably three products, not entirely sure here):</h3>
+<pre>
+<seq>
+<i> Product 1 (P1 at both ends, probably not amplifiable):</i>
+
+  5'-   <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>XXX...XXX<p5>ATCACCGACTGCCCATAGAGAGGAAAGCGGAGGCGTAGTGG</p5>TT -3'
+  3'- TT<p5>GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA</p5>XXX...XXX<p5>TAGTGGCTGACGGGTATCTCTCCTTTCGCCTCCGCATCACC</p5> -5'
+
+<i> Product 2 (P2 at both ends, probably not amplifiable):</i>
+  
+  5'-   <t7>CTGCCCCGGGTTCCTCATTCTCT</t7>[6-bp index]<p7>CTGCTGTACGGCCAAGGCG</p7>XXX...XXX<p7>CGCCTTGGCCGTACAGCAG</p7>[6-bp index]<t7>AGAGAATGAGGAACCCGGGGCAG</t7>TT -3'
+  3'- TT<t7>GACGGGGCCCAAGGAGTAAGAGA</t7>[6-bp index]<p7>GACGACATGCCGGTTCCGC</p7>XXX...XXX<p7>GCGGAACCGGCATGTCGTC</p7>[6-bp index]<t7>TCTCTTACTCCTTGGGCCCCGTC</t7> -5'
+
+<i> Product 3 (I guess this is the proper fragment with P1 and P2):</i>
+
+  5'-   <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>XXX...XXX<p7>CGCCTTGGCCGTACAGCAG</p7>[6-bp index]<t7>AGAGAATGAGGAACCCGGGGCAG</t7>TT -3'
+  3'- TT<p5>GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA</p5>XXX...XXX<p7>GCGGAACCGGCATGTCGTC</p7>[6-bp index]<t7>TCTCTTACTCCTTGGGCCCCGTC</t7> -5'
+</seq>
+</pre>
+
+<h3>(7) Nick translation and library amplification using 16Barcode Library PCR Primer-1 & 2:</h3>
+<pre>
+<seq>
+  5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>------>
+5'-   <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>XXX...XXX<p7>CGCCTTGGCCGTACAGCAG</p7>[6-bp index]<t7>AGAGAATGAGGAACCCGGGGCAG</t7>TT -3'
+3'- TT<p5>GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA</p5>XXX...XXX<p7>GCGGAACCGGCATGTCGTC</p7>[6-bp index]<t7>TCTCTTACTCCTTGGGCCCCGTC</t7> -5'
+                                                                               <---------<t7>TCTTACTCCTTGGGCCCCGTC</t7> -5'
+</seq>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>CCACTACGCCTCCGCTTTCCTCTCTATGGGCAGTCGGTGAT</p5>XXX...XXX<p7>CGCCTTGGCCGTACAGCAG</p7>NNNNNN<t7>AGAGAATGAGGAACCCGGGGCAG</t7> -3'
+3'- <p5>GGTGATGCGGAGGCGAAAGGAGAGATACCCGTCAGCCACTA</p5>XXX...XXX<p7>GCGGAACCGGCATGTCGTC</p7>NNNNNN<t7>TCTCTTACTCCTTGGGCCCCGTC</t7> -5'
+               <p5>SOLiD P1 adaptor</p5>                cDNA          <p7>SOLiD</p7> barcoded <t7>P2 adaptor</t7>
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+<pre>
+<seq>
+ SOLiD sequencing. You can Google SOLiD sequencing by ligation for details.
+</seq>
+</pre>
+
+</body>
+</html>
