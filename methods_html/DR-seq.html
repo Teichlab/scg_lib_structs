@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+	font-size:0.9em;
+	text-indent: 20px;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.8em;
+    line-height:65%;
+}
+
+align.big {
+	font-family:Monaco, "Courier New";
+	font-size:1em;
+	line-height:100%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>DR-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/nbt.3129" target="_blank">DR-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">DR-seq was published by Dey <i>et al</i>. in Nature Biotechnology 33, 285-289. It is a method to simultaneously analyse gDNA and mRNA without upfront physical separation, though it perform library part separately for gDNA and mRNA in the later part of the protocol. It uses <a href="https://science.sciencemag.org/content/338/6114/1622.full" target="_blank">MALBAC</a> type of apmification to preamplify gDNA and cDNA together. Then, PCR is used to construct gDNA library and IVT is used to construct the mRNA library. There will be some mRNA reads in the gDNA portion of the library.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Barcoded RT primer: 5'- CGATTGAGGCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><cbc>[8-bp cell barcode]</cbc>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
+<p>T7 promoter: 5'- <t7>TAATACGACTCACTATAGGG</t7> -3'</p>
+<p>2nd strand primer: 5'- CGATTGAGGCCGG<t7>TAATAC</t7> -3'</p>
+<p>MALBAC random primers: 5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>NNNNNNNN -3'</p>
+<p>MALBAC PCR primer: 5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Lyse cells, and perform reverse transcription using Barcoded RT primer:</h3>
+<pre>
+<seq>
+ gDNA:  5'- XXXXXXXXXXXX...XXXXXXXXXXXX -3'
+        3'- XXXXXXXXXXXX...XXXXXXXXXXXX -5'
+
+ mRNA:  5'- XXXXXXXXXXXX...XXXXXXXXXXXXB(pA) -3'
+                           <-----------V(dT)<cbc>[8-bp cell barcode]</cbc><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+</seq>
+</pre>
+
+<h3>(2) Quasilinear amplilification (MALBAC) of gDNA and cDNA together using the mixture of MALBAC random primers. If you are not familiar with this step, <a href="https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html" target="_blank">click here</a> to check the details of the MALBAC procedure. After the amplification, these are the product you will get:</h3>
+<pre>
+<seq>
+ <i>gDNA Procduct 1 (not amplifiable by PCR in the next step):</i>
+
+     5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXX...XXXXXXXXXXXX -3'
+
+ <i>gDNA Product 2 (amplifiable by PCR in the next step):</i>
+
+     5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXX...XXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+
+ <i>mRNA Product 1 (not ampliable by PCR or IVT in the next step):</i>
+
+     5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXX...XXXXXXXXXXXX -3'
+
+ <i>mRNA Product 2 (ampliable by PCR but not IVT in the next step, this portion will be mistakenly as gDNA):</i>
+
+     5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXX...XXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+
+ <i>mRNA Product 3 (not ampliable by PCR but amplifiable by IVT in the next step):</i>
+
+     5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXX...XXXXXXB(pA)<cbc>[8-bp cell barcode]</cbc><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG -3'
+</seq>
+</pre>
+
+<h3>(3) Divide the reaction into two equal halves:</h3>
+<pre>
+<seq>
+<i>One half is used to amplify gDNA using PCR with MALBAC PCR primer. NOTE mRNA Product 2 from above will also be amplified:</i>
+
+   5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>------>
+   5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXXXXXXXXX...XXXXXXXXXXXXX<tso>CTCCACACTACCTCAACCATCACTCAC</tso> -3'
+                                                        <------<tso>GAGGTGTGATGGAGTTGGTAGTGAGTG</tso> -5'
+
+<i>The other half is used to amplify cDNA using IVT:</i>
+
+   <i>First, 2nd strand synthesis is performed using 2nd strand primer, which aims to capture mRNA Product 3 from above:</i>
+
+   5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXX...XXXXXXB(pA)<cbc>[8-bp cell barcode]</cbc><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG -3'
+                                                                                                      <----------<t7>CATAAT</t7>GGCCGGAGTTAGC -5'
+
+   <i>Then, use IVT to amplify the double stranded cDNA:</i>
+
+   5'- <tso>GTGAGTGATGGTTGAGGTAGTGTGGAG</tso>XXXXXX...XXXXXXB(pA)<cbc>[8-bp cell barcode]</cbc><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGCCTCAATCG -3'
+   3'- <tso>CACTCACTACCAACTCCATCACACCTC</tso>XXXXXX...XXXXXXB(dT)<cbc>[8-bp cell barcode]</cbc><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCGGAGTTAGC -5'
+                                                                                                  &crarr;
+                                                                                          IVT starts from here
+</seq>
+</pre>
+
+<h3>(4) Final library structure:
+<h3>4.1) For gDNA libary prep, you can use your favourite kits to make it. You can either use Nextera (tagmentation), or the traditional fragmentaion - end repair - A tailing - adaptor ligation type of kits (often lead to Truseq structure):</h3>
+<pre>
+<align class="small">
+<i>Uisng Nextera:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              i5         <s5>s5</s5>              <me>ME</me>                gDNA                <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+
+
+<i>Uisng TruSeq:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXX<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>            gDNA          <s7>Truseq Read 2</s7>                8 bp        <p7>Illumina P7</p7>
+                                                                                                           Index
+</align>
+</pre>
+
+<h3>4.2) For mRNA libary, the procedure is the same as <a href="http://www.cell.com/cell-reports/abstract/S2211-1247(12)00228-8" target="_blank">CEL-seq</a>, <a href="https://teichlab.github.io/scg_lib_structs/methods_html/CEL-seq_family.html" target="_blank">click here</a> to see the details:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><cbc>NNNNNNNN</cbc>(dT)XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGG</s7>AACTCCAGTCACNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><cbc>NNNNNNNN</cbc>(pA)XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCC</s7>TTGAGGTCAGTGNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                    <s5>RA5</s5>              <cbc>8bp</cbc>         cDNA             <s7>RA3</s7>                      6bp      <p7>Illumina P7</p7>
+                                                             <cbc>cell</cbc>                                                 sample
+                                                            <cbc>barcode</cbc>                                               barcode
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Standard sequencing workflow is used, and you can check any other pages.</span></p>
+
+</body>
+</html>
