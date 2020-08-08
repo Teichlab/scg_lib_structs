@@ -60,10 +60,10 @@ Click the following links to view the methods. Notes:
   - [scTrio-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTrio-seq.html)
   - [scMT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMT-seq.html)
   - [G&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/G_and_T_seq.html)
+  - [DR-seq](https://teichlab.github.io/scg_lib_structs/methods_html/DR-seq.html)
 
 - ### TODO list:
 
-  - [DR-seq](https://www.nature.com/articles/nbt.3129)
   - [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
   - [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
   - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
