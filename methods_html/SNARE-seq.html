@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>SNARE-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-019-0290-0" target="_blank">SNARE-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em">SNARE-seq was published by Chen <i>et al.</i> in <a href="https://www.nature.com/articles/s41587-019-0290-0" target="_blank">Nature Biotechnology 37, 1452–1457</a>. It was a droplet based technology to profile chromatin accessibility and gene expression from the same cells. The droplet beads are the same as version B of the beads from the <a href="http://www.cell.com/abstract/S0092-8674(15)00549-8" target="_blank">Drop-seq</a> method. After tagmentation, it uses a splint oligo, named "Nextera-R1-rc-polyA" to capture the tagmented open chromatin DNA to the beads. Half of the splint oligo is poly A, which is reverse complementary to the bead oligos (oligo-dT); the other half of the splint oligo is reverse complentary to the tagmentation sequence.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligo-dT-seqB (ChemGenes, cat. no. Macosko2011-10 B): |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>Nextera-R1-rc-polyA: 5'-/phos/ <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -3'</p>
+<p>Nextera-R1-bk: 5'-/phos/ <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> /3InvdT/-3'</p>
+<p>Nextera-Ad2-bk: 5'-/phos <s7>CCGAGCCCACGAGAC</s7> /3InvdT/-3'</p>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>TSO PCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p>P5xx-TSO: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>Ad2.x (this is basically Nextera N7xx): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Read1CustomSeqB: 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>Nextera-R2 primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>i7 index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Collect cells/nuclei and Nextera tagmentation to tag open chromatin DNA. mRNA from the cytoplasma will be lost, but mRNA in the nuclei should be unaffected:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+ <i>mRNA (unaffected):</i>
+
+    5'- XXXXXXXXXXXX...XXXXXXXXXXXX(pA)
+ 
+ <i>Open chromatin DNA product 1 (s5 at both ends:)</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+ 
+ <i>Open chromatin DNA product 2 (s7 at both ends):</i>
+
+    5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+ 
+ <i>Open chromatin DNA product 3 (different ends):</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(2) Droplet encapsulation of nuclei, cell lysis, Tn5 release, mRNA capture and tagmented gDNA capture by adding the splint oligo Nextera-R1-rc-polyA (only products 1 & 3 from above will be captured):</h3>
+<pre>
+<seq>
+ <i>mRNA:</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)
+                                                                          (pA)XXXXXXXXXXXX...XXXXXXXXXXXX -5'
+
+ <i>Open chromatin DNA product 1:</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'     XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+ <i>Open chromatin DNA product 3:</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'     XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+</seq>
+</pre>
+
+<h3>(3) Break droplets (i.e. droplets are merely used as a cell capture chamber), add Nextera-R1-bk and Nextera-Ad2-bk to block free oligos (not shown here), reverse transcription and ligation of chromatin DNA to the beads. Since the reverse transcription and ligation are done in the same reaction, and the reverse transcriptase has intrinsic DNA dependent DNA polymerase activity, the gaps of the captured chromatin DNA will be filled in (I think ... not entirely sure though):</h3>
+<pre>
+<seq>
+ <i>mRNA (the terminal tranferase acitivity of MMLV adds extra Cs, which allows TSO to be incoporated):</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCC----->
+                                                                          (pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+ <i>Open chromatin DNA product 1 (the gap between dT and s5 will be closed by the T7 ligase):</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'
+        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+ <i>Open chromatin DNA product 3 (the gap between dT and s5 will be closed by the T7 ligase):</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+</seq>
+</pre>
+
+<h3>(4) Amplify cDNA and open chromatin using Nextera-R2 and TSO-PCR primers:</h3>
+<pre>
+<seq>
+ <i>mRNA (TSO-PCR single primer amplification):</i>
+
+               5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---------->
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                   <----------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+ <i>Open chromatin DNA (only product 3 will be amplified):</i>
+
+               5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---------->
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+                                                                                                                               <----------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) After the above amplification, these are the products:</h3>
+<pre>
+<seq>
+ <i>mRNA:</i>
+
+     5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+     3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+ <i>Open chromatin DNA:</i>
+
+     5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+     3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(6) Split the amplified product into two equal half, one for cDNA, the other for open chromatin DNA amplification:</h3>
+<pre>
+<align class="long">
+ <i>mRNA:</i>
+
+     <i>Step 1: Amplify with TSO-PCR again, 0.6X SPRI purification and perform tagmentation with Nextera XT.</i>
+             <i>There will be a few different product after tagmentation. Only amplifiable fragment is shown here.</i>
+             <i>Check the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Drop-seq</a> page for more details if you want to know exactly what happens here.</i>
+
+         5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+         3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+     <i>Step 2: Amplify the tagmented product with P5xx-TSO and Ad2.x primers:</i>
+
+         5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC---------->
+                                                                 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                                 3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                          <----------<s7>GGCTCGGGTGCTCTG</s7>[8-bp i7 index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+ <i>Open chromatin DNA (this is the easy part, directly amplify with P5xx-TSO and Ad2.x primers):</i>
+
+         5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC---------->
+                                                                 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+                                                                 3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                                    <----------<s7>GGCTCGGGTGCTCTG</s7>[8-bp i7 index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</align>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<align class="long">
+ <i>mRNA:</i>
+
+     5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+         <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                   <p5>Illumina P5</p5>           i5                       <tso>ISPCR/TSO</tso>          <cbc>12bp cell</cbc>    <umi>8bp</umi>        cDNA           <me>ME</me>             <s7>s7</s7>            i7          <p7>Illumina P7</p7>
+                                                                                       <cbc>barcode</cbc>    <umi>UMI</umi>
+
+ <i>Open chromatin:</i>
+
+     5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+         <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                   <p5>Illumina P5</p5>           i5                       <tso>ISPCR/TSO</tso>          <cbc>12bp cell</cbc>    <umi>8bp</umi>           <s5>s5</s5>               <me>ME</me>            gDNA           <me>ME</me>             <s7>s7</s7>            i7          <p7>Illumina P7</p7>
+                                                                                       <cbc>barcode</cbc>    <umi>UMI</umi> 
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read1CustomSeqB to sequence the first read (bottom strand as template, containing 12-bp cell barcode and 8-bp UMI):</h3>
+<pre>
+<align class="long">
+<i>mRNA:</i>
+                                     5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Open chromatin:</i>
+                                     5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC------------------------------------------------------------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add i7 index sequencing primer to sequence the i7 index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+<i>mRNA:</i>
+                                                                                                           5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Open chromatin:</i>
+                                                                                                                                            5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template):</h3>
+<pre>
+<align class="long">
+<i>mRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+<i>Open chromatin:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNCGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Nextera-R2 sequencing primer to sequence the second read (top strand as template):</h3>
+<pre>
+<align class="long">
+<i>mRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                       <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+<i>Open chromatin:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                                                                                                                        <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
