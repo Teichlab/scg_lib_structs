@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scDamID</title>
+</head>
+<body>
+
+<h1><a href="https://www.sciencedirect.com/science/article/pii/S0092867415010922" target="_blank">scDamID</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The scDamID method was published by Kind <i>et al.</i> in <a href="https://www.sciencedirect.com/science/article/pii/S0092867415010922" target="_blank">Cell 163, 134-147</a>. It was based on the previous method called DamID invented by Bas van Steensel and Steven Henikoff in <a href="https://www.nature.com/articles/nbt0400_424" target="_blank">Nature Biotechnology 18, 424–428</a>. DamID is based on the idea that the sequence GATC occurs frequently enough in the genome, and the methylation of adenine (<sup>m</sup>A) is really really rare in higher eukaryotic cells. Well, I'm not going to comment on whether <sup>m</sup>A really exists naturally in the mammalian genomes, because I'm not an expert on this. Anyway, G<sup>m</sup>ATC is really rare. The idea of DamID is very clever and simple: by tethering <i>E. coli</i> DNA adenine methyltransferase (Dam) to a DNA/chromatin interacting protein, Dam can be targeted <i>in vivo</i> to native binding sites of that protein, resulting in local DNA methylation G<sup>m</sup>ATC. By using the restriction enzyme <a href="https://www.neb.com/products/r0176-dpni#Product%20Information" target="_blank">Dpn I</a> that specifically digest G<sup>m</sup>ATC, one can find out where the protein of interest is bound. scDamID optimises each reaction step and keeps each reaction in one single tube before pre-amplification. Then it just uses standard Illumina library preparation procedures (end repair - A tailing - ligation of adapter - PCR). This enables DamID at the single cell level. It is mostly used to study lamina-DNA contacts.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Illumina adaptor top: 5'- /Phos/ <s7>GATCGGAAGAGCACACGTCT</s7> -3'</p>
+<p>Illumina adaptor bottom: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Make Illumina Y-shaped adaptors by annealing the top and the bottom sequences:</p>
+<pre>
+<seq>
+            5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>
+                                    <s5>GCTCTTCCGATCT</s5> -3'
+                                    <s7>CGAGAAGGCTAG</s7> -5'
+                        3'- <s7>TCTGCACA</s7>
+</seq>
+</pre>
+<p>AdRt: 5'- CTAATACGACTCACTATAGGGCAGC<tso>GTGGTCGCGGCCGAGGA</tso> -3'</p>
+<p>AdRb: 5'- <tso>TCCTCGGCCG</tso> -3' </p>
+<p>Make scDamID adaptors by annealing the AdRt and AdRb sequences:</p>
+<pre>
+<seq>
+            5'- CTAATACGACTCACTATAGGGCAGC<tso>GTGGTCGCGGCCGAGGA</tso> -3'
+                                            3'- <tso>GCCGGCTCCT</tso> -5'
+
+</seq>
+</pre>
+<p>scDamID preAmp PCR primer: 5'- NNNN<tso>GTGGTCGCGGCCGAGGATC</tso> -3' </p>
+<p>* The N at the beginning of the scDamID preAmp PCR primer means nothing. They are there just to keep Illumina sequencer happy.</p>
+<p>Illumina PCR Primer 1.0: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATC*T</s5> -3'</p>
+<p>Illumina Multiplexing PCR Primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATC*T</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'
+<p>Illumina TruSeq Read 1 primer: 5'- <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h3>(1) Harvest cells stably expressing Dam fusion protein, lyse cells, digest protein, and Dpn I digestion:</h3>
+<pre>
+<seq>
+              <w1>Me</w1>                        <w1>Me</w1>
+              <w1>|</w1>                         <w1>|</w1>
+5'- XXXXXXXXX<w1>GA TC</w1>XXXXXXXXX...XXXXXXXXX<w1>GA TC</w1>XXXXXXXXX -3'
+3'- XXXXXXXXX<w1>TC AG</w1>XXXXXXXXX...XXXXXXXXX<w1>CT AG</w1>XXXXXXXXX -5'
+                <w1>|</w1>                         <w1>|</w1>
+                <w1>Me</w1>                        <w1>Me</w1> 
+</seq>
+</pre>
+
+<h3>(2) Ligate the scDamID adaptor to the digested DNA (mehtyl marks will be removed after this step for simplicity):</h3>
+<pre>
+<seq>
+                                                                      <w1>Me</w1>
+                                                                      <w1>|</w1>
+5'- CTAATACGACTCACTATAGGGCAGC<tso>GTGGTCGCGGCCGAGGA</tso><w1>TC</w1>XXXXXXXXX...XXXXXXXXX<w1>GA</w1><tso>TCCTCGGCCG</tso> -3'
+                                3'- <tso>GCCGGCTCCT</tso><w1>AG</w1>XXXXXXXXX...XXXXXXXXX<w1>CT</w1><tso>AGGAGCCGGCGCTGGTG</tso>CGACGGGATATCACTCAGCATAATC -5'
+                                              <w1>|</w1>
+                                              <w1>Me</w1>
+</seq>
+</pre>
+
+<h3>(3) Use scDamID preAmp PCR primer to amplify the ligated DNA (single primer amplification):</h3>
+<pre>
+<seq>
+                     5'- NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>--------->
+5'- CTAATACGACTCACTATAGGGCAGC<tso>GTGGTCGCGGCCGAGGA</tso><w1>TC</w1>XXXXXXXXX...XXXXXXXXX<w1>GA</w1><tso>TCCTCGGCCG</tso> -3'
+                                3'- <tso>GCCGGCTCCT</tso><w1>AG</w1>XXXXXXXXX...XXXXXXXXX<w1>CT</w1><tso>AGGAGCCGGCGCTGGTG</tso>CGACGGGATATCACTCAGCATAATC -5'
+                                                          <----------<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN -5'
+</seq>
+</pre>
+
+<h3>(4) Purify the pre-amplified DNA and perform end repair and A-tailing:</h3>
+<pre>
+<seq>
+5'-  NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA -3'
+3'- ANNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN  -5'
+</seq>
+</pre>
+
+<h3>(5) Ligation of Illumina Y-shaped adaptors:</h3>
+<pre>
+<seq>
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                                                                 <s7>ACACGTCT</s7> -3'
+                        <s5>GCTCTTCCGATCT</s5>NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA<s7>GATCGGAAGAGC</s7>
+                        <s7>CGAGAAGGCTAG</s7>ANNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s5>TCTAGCCTTCTCG</s5>
+            3'- <s7>TCTGCACA</s7>                                                                                 <s5>CAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+</pre>
+
+<h3>(6) Amplification using Illumina PCR Primer 1.0 and Illumina Multiplexing PCR Primer. Note that in the first round, the Illumina PCR Primer 1.0 has no place to anneal to::</h3>
+<pre>
+<seq>
+
+<i>(i) First round (the product from the top and bottoms strands have the same structure):</i>
+
+Top strand:
+5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA<s7>GATCGGAAGAGCACACGTCT</s7> -3'
+                                                                                 <----------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+Bottom strand:
+5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>------------>
+                                         3'- <s7>TCTGCACACGAGAAGGCTAG</s7>ANNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s5>TCTAGCCTTCTCGCAGCACATCCCTTTCT</s5><p5>CACA</p5> -5'
+
+<i>(ii) Second round and after:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------>
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>[i7]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                         3'- <p5>TGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>NNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                          <----------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>NNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                    <s5>TruSeq Read 1</s5>             <tso>scDamID preAmp</tso>     gDNA      <tso>scDamID preAmp</tso>                 <s7>TruSeq Read 2</s7>           6-bp        <p7>Illumina P7</p7>
+                                                                                                                                                      i7 index
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add TruSeq Read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>NNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the i7 index (bottom strand as template, 6 cycles, this is the cell barcode):</h3>
+<pre>
+<align class="long">
+                                                                                                                 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>NNNN<tso>CACCAGCGCCGGCTCCTAG</tso>XXX...XXX<tso>CTAGGAGCCGGCGCTGGTG</tso>NNNN<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>NNNN<tso>GTGGTCGCGGCCGAGGATC</tso>XXX...XXX<tso>GATCCTCGGCCGCGACCAC</tso>NNNNA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                    <----------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
