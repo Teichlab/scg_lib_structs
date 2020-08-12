@@ -44,6 +44,7 @@ Click the following links to view the methods. Notes:
   - [itChIP-seq](https://teichlab.github.io/scg_lib_structs/methods_html/itChIP-seq.html)
   - [Drop-ChIP](https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html)
   - [CoBATCH](https://teichlab.github.io/scg_lib_structs/methods_html/CoBATCH.html)
+  - [scDamID](https://teichlab.github.io/scg_lib_structs/methods_html/scDamID.html)
 
 - ### Genomic DNA or DNA methylation
 
