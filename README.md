@@ -85,6 +85,7 @@ Click the following links to view the methods. Notes:
   - [SHARE-seq](https://www.biorxiv.org/content/10.1101/2020.06.17.156943v1)
   - [scCC](https://www.sciencedirect.com/science/article/pii/S009286742030814X)
   - [scSPRITE](https://www.biorxiv.org/content/10.1101/2020.08.11.242081v1)
+  - [ICICLE-seq](https://www.biorxiv.org/content/10.1101/2020.09.04.283887v1)
 
 ## Technical comparisons (scRNA-seq only)
 
