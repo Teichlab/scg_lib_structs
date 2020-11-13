@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Illumina sequencing</title>
+</head>
+<body>
+
+<h1>About Illumina sequencing libraries</h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The nature of Illumina sequencing is still sequencing by synthesis (SBS). Any SBS method requires the presence of adaptors, which are short double-stranded DNA oligos whose sequences are known to us. The adaptors are designed by scientists, and there are a few popular adaptor sequences that are used in the NGS field. The following three are the most popular ones:</span></p>
+<br></br>
+
+<h3>Truseq Single Index Library:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>                        <s7>Truseq Read 2</s7>                 <t7>i7</t7>        <p7>Illumina P7</p7>
+</seq>
+</pre>
+
+<h3>Truseq Dual Index Library:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>               <t7>i5</t7>            <s5>Truseq Read 1</s5>                          <s7>Truseq Read 2</s7>                 <t7>i7</t7>        <p7>Illumina P7</p7>
+</seq>
+</pre>
+
+<h3>Nextera Dual Index Library:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-insert-<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>-insert-<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <t7>i5</t7>             <s5>Next</s5><me>era Read 1</me>                                <me>Next</me><s7>era Read 2</s7>        <t7>i7</t7>         <p7>Illumina P7</p7>
+</seq>
+</pre>
+
+<br></br>
+
+<p><span style="font-family:verdana; font-size:1.1em;">There are some other adaptors that can be used, but they either become obsolete or not used usually. You can check the <a href='../data/illumina-adapter-sequences-1000000002694-14.pdf' target='_blank'>Illumina adapter sequences document</a> for more details. Basically, the nature of an Illumina library preparation is the process of adding those coloured adaptor seuqences to both sides of the DNA of your interest, which is the "-insert-" bit in the above examples. All the commercial kits you buy for the library preparation do exactly that.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">How to add those adaptors? Well, this is where you can become creative. In this GitHub repository, many single cell genomics methods are shown. They all do one thing: add those adaptors to the sides of the DNA they want to sequence. The "N"s in the above examples are the indices, or barcodes that discriminate different samples. The index at the right hand side is often called "i7", or index1; the index at the left hand side is called "i5", or index2. This is because the index "i7" is sequenced first before "i5" is sequenced.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The only required seqeuences are the following two:</span></p>
+
+<pre>
+<seq>
+<p>Illumina P5 adaptor: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'
+<p>Illumina P7 adaptor: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'
+</seq>
+</pre>
+
+<p><span style="font-family:verdana; font-size:1.1em;">If you use Illumina sequencing, you have to use and make sure they are at the sides of your DNA fragments, like shown in the three examples above. The adaptor sequences in the middle like <s5>Truseq Read 1</s5> can be changed. If you change them, you have to add your own sequencing primers to the machine during sequencing. A few single cell genomic methods listed in this GitHub page used their own sequences.</span></p>
+
+<br></br>
+
+<h1>Library sequencing:</h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Once those adaptors are added propertly, we are ready to sequence them using Illumina machines. In the sequencing reagents provided by Illumina, the seuqencing primers are actually a mixture of different primers, including Truseq, Nextera and even those primers from kits that are obsolete. Therefore, you actually can sequence different types of libraries together. For example, Truseq librareis and Nextera libraries can be mixed together and sequenced together without any problem. There are some slight differences among different Illumina machines, in terms of how they sequence Read 1, Read 2, Index 1 and Index 2. Check <a href='../data/indexed-sequencing-overview-guide-15057455-05.pdf' target='_blank'>this document</a> for more details.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">Here, we just demonstrate how the libraries are sequenced in the NovaSeq 6000:</span></p>
+
+<h3>(Step 1) Add Read 1 sequencing primer mixture to sequence the first read (bottom strand as template):</h3>
+<pre>
+<seq>
+Truseq Single Index Library:
+
+                         5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>---->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Truseq Dual Index Library:
+
+                                     5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>---->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Nextera Dual Index Library:
+
+                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>-insert-<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(Step 2) Add Index 1 sequencing primer mixture to sequence the first index (index 1, i7, bottom strand as template):</h3>
+<pre>
+<seq>
+Truseq Single Index Library:
+
+                                                                  5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Truseq Dual Index Library:
+
+                                                                              5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Nextera Dual Index Library:
+
+                                                                              5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>-insert-<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(Step 3) Folds over and sequence the second index (index 2, i5, bottom strand as template):</h3>
+<pre>
+<seq>
+Truseq Single Index Library (not really needed):
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Truseq Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>-insert-<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Nextera Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>-insert-<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(Step 4) Cluster regeneration, add Read 2 sequencing primer mixture to sequence the second read (top strand as template):</h3>
+<pre>
+<seq>
+Truseq Single Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                               <------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Truseq Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                           <------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Nextera Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-insert-<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                           <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+</body>
+</html>
