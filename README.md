@@ -1,6 +1,10 @@
 # Single Cell Genomics Library Structure
 Collections of library structure and sequence of popular single cell genomic methods (mainly scRNA-seq).
 
+## For NGS newbies
+
+Most single cell sequencing methods are developed to be sequenced on the Illumina platforms. If you are not familiar with the general structure of Illumina sequencing libraries, [click here](https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html) to check some general information about Illumina library structures and the nature of library preparation.
+
 ## How to use?
 
 Click the following links to view the methods. Notes:
