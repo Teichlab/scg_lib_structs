@@ -60,6 +60,7 @@ Click the following links to view the methods. Notes:
 - ### Multi-Omics
 
   - [scNOMe-seq/scCOOL-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNOMe_scCOOL.html)
+  - [scDam&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDamT-seq.html)
   - [SNARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html)
   - [scNMT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNMT-seq.html)
   - [scM&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMandT.html)
@@ -73,7 +74,6 @@ Click the following links to view the methods. Notes:
 
   - [Trac-looping](https://www.nature.com/articles/s41592-018-0107-y)
   - [MATQ-seq](https://www.nature.com/articles/nmeth.4145)
-  - [scDam&T-seq](https://www.nature.com/articles/s41587-019-0150-y)
   - [ASTAR-seq](https://www.biorxiv.org/content/10.1101/829960v1)
   - [Paired-seq](https://www.nature.com/articles/s41594-019-0323-x)
   - [Drop scChIP-seq](https://www.nature.com/articles/s41588-019-0424-9)
