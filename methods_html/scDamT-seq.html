@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.8em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>scDam&T-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-019-0150-y" target="_blank">scDam&T-seq</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The scDam&T-seq method was originally published in <a href="https://www.nature.com/articles/s41587-019-0150-y" target="_blank">Nature Biotechnology 37, 766–772</a>. Later on, a detailed protocol was published in <a href="https://www.nature.com/articles/s41596-020-0314-8" target="_blank">Nature Protocols 15, 1922–1953</a>. The procedures in this web page is based on the Nature Protocol version.</span></p>
+
+<p><span style="font-family:verdana; font-size:1.1em;">The scDam&T-seq method is basically a clever combination of <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scDamID.html" target="_blank">scDamID</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/CEL-seq_family.html" target="_blank">CEL-seq</a> to simualtaneously determine the transcriptional state and protein-DNA interaction in the same single cells.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>CEL-seq2 primer: 5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
+<p><span style="color: red"><b>*</b> UMI1 + UMI2 will be the final UMI (6 bp in total) for counting, and CB1 + CB2 will be the cell barcode (8 bp in total). There are 384 cell barcodes, and the sequences of the cell barcodes can be found in the Supplementary Table 1 of the Nature Protocols paper.</span></p>
+<p>DamID top oligo: 5'- GGTGATCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA -3'</p>
+<p>DamID bottom oligo: 5'- /5Phos/TC<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGGAGCTT -3'</p>
+<p>Prepare the DamID adaptors by annealing the DamID top and bottom oligos:</p>
+<pre>
+<seq>
+         5'- GGTGATCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA -3'
+         3'- TTCGAGGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>CT-/phos/ -5'
+</seq>
+</pre>
+<p><span style="color: red"><b>*</b> UMI1 + UMI2 will be the final UMI (6 bp in total) for counting, and CB1 + CB2 will be the cell barcode (8 bp in total). There are 384 cell barcodes, and the sequences of the cell barcodes can be found in the Supplementary Table 2 of the Nature Protocols paper.</span></p>
+<p>randomhexRT primer: 5'- <s7>GCCTTGGCACCCGAGAATTCCA</s7>NNNNNN -3'</p>
+<p>RNA PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5> -3'</p>
+<p>RNA PCR index primer 1: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp index]<s7>GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p>Illumina TruSeq Small RNA Read 1 primer: 5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5> -3'</p>
+<p>Illumina TruSeq Small RNA Read 2 primer: 5'- <s7>GTGACTGGAGTTCCTTGGCACCCGAGAATTCCA</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h3>(1) Harvest cells after inducing Dam fusion protein expression, sorting cells into lysis buffer and reverse transcription in each well containing CEL-seq2 primer:</h3>
+<pre>
+<seq>
+mRNA:
+
+5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dT)V------->
+                                                                                           (pA)BXXX...XXX -5'
+
+
+gDNA (with protein-DNA interaction information recorded by G<sup>m</sup>ATC) is unaffected at this stage:
+
+              <w1>Me</w1>                       <w1>Me</w1>
+              <w1>|</w1>                        <w1>|</w1>
+5'- XXXXXXXXX<w1>GATC</w1>XXXXXXXXX...XXXXXXXXX<w1>GATC</w1>XXXXXXXXX -3'
+3'- XXXXXXXXX<w1>TCAG</w1>XXXXXXXXX...XXXXXXXXX<w1>CTAG</w1>XXXXXXXXX -5'
+               <w1>|</w1>                        <w1>|</w1>
+               <w1>Me</w1>                       <w1>Me</w1> 
+</seq>
+</pre>
+
+<h3>(2) Perform RNaseH and DNA pol I based second strand synthesis to conver mRNA to double stranded cDNA:</h3>
+<pre>
+<seq>
+mRNA:
+
+5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dT)VXXX...XXX -3'
+3'- CGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX -5'
+
+
+gDNA (unaffected in theory):
+
+              <w1>Me</w1>                       <w1>Me</w1>
+              <w1>|</w1>                        <w1>|</w1>
+5'- XXXXXXXXX<w1>GATC</w1>XXXXXXXXX...XXXXXXXXX<w1>GATC</w1>XXXXXXXXX -3'
+3'- XXXXXXXXX<w1>TCAG</w1>XXXXXXXXX...XXXXXXXXX<w1>CTAG</w1>XXXXXXXXX -5'
+               <w1>|</w1>                        <w1>|</w1>
+               <w1>Me</w1>                       <w1>Me</w1> 
+</seq>
+</pre>
+
+<h3>(3) Proteinase K digenstion to remove proteins, and DpnI digestion:</h3>
+<pre>
+<seq>
+mRNA (unaffected by DpnI):
+
+5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dT)VXXX...XXX -3'
+3'- CGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX -5'
+
+
+gDNA:
+
+              <w1>Me</w1>                        <w1>Me</w1>
+              <w1>|</w1>                         <w1>|</w1>
+5'- XXXXXXXXX<w1>GA TC</w1>XXXXXXXXX...XXXXXXXXX<w1>GA TC</w1>XXXXXXXXX -3'
+3'- XXXXXXXXX<w1>TC AG</w1>XXXXXXXXX...XXXXXXXXX<w1>CT AG</w1>XXXXXXXXX -5'
+                <w1>|</w1>                         <w1>|</w1>
+                <w1>Me</w1>                        <w1>Me</w1> 
+</seq>
+</pre>
+
+<h3>(4) Ligate the DamID adaptor to the digested DNA (methyl marks will be removed after this step for simplicity):</h3>
+<pre>
+<seq>
+mRNA (I suppose the double stranded cDNA can be ligated as well, but it probably won't matter since IVT is used later. I did not draw the ligation here):
+
+5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dT)VXXX...XXX -3'
+3'- CGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX -5'
+
+
+gDNA:
+
+5'- GGTGATCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA<w1>TC</w1>XXX...XXX<w1>GA</w1>TC<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGGAGCTT -3'
+3'- TTCGAGGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>TC<w1>AG</w1>XXX...XXX<w1>CT</w1>AG<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCTAGTGG -5'
+</seq>
+</pre>
+
+<h3>(5) Pool all wells and perform <i>in vitro</i> transcripiton to amplify both mRNA and gDNA:</h3>
+<pre>
+<seq>
+mRNA:
+                      IVT starts from here
+                            &#8625;
+5'- GCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>AGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dT)VXXX...XXX -3'
+3'- CGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX -5'
+
+
+gDNA:
+                           IVT starts from here
+                                 &#8625;
+5'- GGTGATCCGG<t7>TAATACGACTCACTATAGGG</t7><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA<w1>TC</w1>XXX...XXX<w1>GA</w1>TC<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>GATCGTCGGACTGTAGAACTCTGAAC</s5><t7>CCCTATAGTGAGTCGTATTA</t7>CCGGGAGCTT -3'
+3'- TTCGAGGGCC<t7>ATTATGCTGAGTGATATCCC</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>TC<w1>AG</w1>XXX...XXX<w1>CT</w1>AG<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>CTAGCAGCCTGACATCTTGAGACTTG</s5><t7>GGGATATCACTCAGCATAAT</t7>GGCCTAGTGG -5'
+                                                                                                                                                                                           &crarr;
+                                                                                                                                                                                   IVT starts from here 
+</seq>
+</pre>
+
+<h3>(6) Purify amplified RNA (aRNA):</h3>
+<pre>
+<seq>
+Product from mRNA:
+
+5'- <t7>G</t7><s5>AGUUCUACAGUCCGACGAUC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dU)VXXX...XXX -3'
+
+
+Product from gDNA:
+
+5'- <t7>G</t7><s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA<w1>TC</w1>XXX...XXX<w1>GA</w1>TC<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>GAUCGUCGGACUGUAGAACUCUGAAC</s5><t7>CCCUAUAGUGAGUCGUAUUA</t7>CCGGGAGCUU -3'
+</seq>
+</pre>
+
+<h3>(7) Fragment aRNA and reverse transcription using randomhexRT pimer:</h3>
+<pre>
+<seq>
+mRNA:
+
+5'- <t7>G</t7><s5>AGUUCUACAGUCCGACGAUC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(dU)VXXX...XXX -3'
+                                                                  <------NNNNNN
+                                                                               <s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+
+
+gDNA:
+
+5'- <t7>G</t7><s5>GUUCAGAGUUCUACAGUCCGACGAUC</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>GA<w1>TC</w1>XXX...XXX<w1>GA</w1>TC<cbc>[4-bp CB2]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI1]</umi><s5>GAUCGUCGGACUGUAGAACUCUGAAC</s5><t7>CCCUAUAGUGAGUCGUAUUA</t7>CCGGGAGCUU -3'
+                                                                        <------NNNNNN
+                                                                                      <s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+</seq>
+</pre>
+
+<h3>(8) These are the complementary DNA after RT:</h3>
+<pre>
+<seq>
+mRNA:
+
+3'- <t7>C</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+
+
+gDNA:
+
+3'- <t7>C</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>CT<w1>AG</w1>XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+</seq>
+</pre>
+
+<h3>(9) Purify and use RNA PCR primer 1 and RNA PCR index primer to amplify library:</h3>
+<pre>
+<seq>
+mRNA:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5>------>
+                                  3'- <t7>C</t7><s5>TCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>(pA)BXXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+                                                                                                            <------<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>[6-bp index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+gDNA:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGA</s5>------>
+                            3'- <t7>C</t7><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>[3-bp UMI1]</umi><cbc>[4-bp CB1]</cbc><umi>[3-bp UMI2]</umi><cbc>[4-bp CB2]</cbc>CT<w1>AG</w1>XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCG</s7> -5'
+                                                                                                           <------<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>[6-bp index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(10) Final library structure:</h3>
+<pre>
+<seq>
+mRNA:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>(dT)VXXX...XXX<s7>TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>(pA)BXXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+             <p5>Illumina P5</p5>                    <s5>RA5</s5>                <umi>UMI and</umi>          cDNA                  <s7>RA3</s7>                6-bp        <p7>Illumina P7</p7>
+                                                            <cbc>cell barcode</cbc>                                              sample index
+
+
+gDNA:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>GA<w1>TC</w1>XXX...XXX<s7>TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>CT<w1>AG</w1>XXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+             <p5>Illumina P5</p5>                    <s5>RA5</s5>                <umi>UMI and</umi>          gDNA                  <s7>RA3</s7>                6-bp        <p7>Illumina P7</p7>
+                                                            <cbc>cell barcode</cbc>                                              sample index
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing (the structure of mRNA and gDNA libraries are the same, so only mRNA is shown here):</h2>
+
+<h3>(1) Add Truseq Small RNA Read 1 (RA5) sequencing primer to sequence the first read (bottom strand as template):</h3>
+<pre>
+<seq>
+                             5'- <s5>GTTCAGAGTTCTACAGTCCGACGATC</s5>------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>(pA)BXXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+</seq>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the i7 index (bottom strand as template, 6 cycles, this is the cell barcode):</h3>
+<pre>
+<seq>
+                                                                                   5'- <s7>TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>CAAGTCTCAAGATGTCAGGCTGCTAG</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>(pA)BXXX...XXX<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -3'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>GTTCAGAGTTCTACAGTCCGACGATC</s5><umi>NNN</umi><cbc>NNNN</cbc><umi>NNN</umi><cbc>NNNN</cbc>(dT)VXXX...XXX<s7>TGGAATTCTCGGGTGCCAAGGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                   <---<s7>ACCTTAAGAGCCCACGGTTCCTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+</body>
+</html>
