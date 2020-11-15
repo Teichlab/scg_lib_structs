@@ -61,6 +61,7 @@ Click the following links to view the methods. Notes:
 
   - [scNOMe-seq/scCOOL-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNOMe_scCOOL.html)
   - [scDam&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDamT-seq.html)
+  - [SHARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html)
   - [SNARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html)
   - [scNMT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNMT-seq.html)
   - [scM&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMandT.html)
@@ -86,7 +87,6 @@ Click the following links to view the methods. Notes:
   - [PETRI-seq](https://www.biorxiv.org/content/10.1101/866244v1)
   - [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
   - [Seq-Well S^3](https://www.biorxiv.org/content/10.1101/689273v1)
-  - [SHARE-seq](https://www.biorxiv.org/content/10.1101/2020.06.17.156943v1)
   - [scCC](https://www.sciencedirect.com/science/article/pii/S009286742030814X)
   - [scSPRITE](https://www.biorxiv.org/content/10.1101/2020.08.11.242081v1)
   - [ICICLE-seq](https://www.biorxiv.org/content/10.1101/2020.09.04.283887v1)
