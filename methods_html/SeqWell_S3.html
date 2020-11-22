@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>Seq-Well S3</title>
+</head>
+<body>
+
+<h1><a href="https://www.sciencedirect.com/science/article/pii/S107476132030409X" target="_blank"><span style="color:red;">Seq-Well S<sup>3</sup></span></a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em">Seq-Well S<sup>3</sup> is an improved method over the original Seq-Well protocol. The "S<sup>3</sup>" in the name means "Second-Strand Synthesis". In the original <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Seq-Well</a> workflow, the Template Switching Oligo was used for full-length cDNA synthesis and ampification, which may result in the loss of cDNAs that are partially generated (not reaching the 5' end of the gene). The new Seq-Well S<sup>3</sup> method used random priming and primer extension for the second strand synthesis, which seems to improve the sensitivity a lot.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-oligo-dT-seqB: |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
+<p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>dN-Smart Randomer (dN-SMRT): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GANNNGGNNNB -3'</p>
+<p>Smart PCR Primer (TSO_PCR): 5′- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p>New-P5-SMART PCR Hybrid Oligo (P5-TSO_Hybrid):: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>Illumina Nextera N7xx primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Custom Read 1 Primer (Read_1_Custom_SeqB): 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>i7 index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Cell lysis, mRNA hybryidisation/capture using Beads-oligo-dT in the nanowells:</h3>
+<pre>
+<seq>
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)
+                                                                     (pA)XXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(2) Remove beads, reverse transcription for all cells in one reaction, the terminal tranferase acitivity of MMLV adds extra Cs, which makes the incoporation of the TSO:</h3>
+<pre>
+<seq>
+TSO incorporation successful (full length cDNA):
+
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCC---------->
+                                                                     (pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+TSO incorporation failed (partially generated cDNA):
+
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXXXXXXXXX...XXXXXXXXXXXX
+                                                                     (pA)XXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(3) Exonuclease I treatment to remove excess oligos and NaOH denaturation to get rid of RNA:</h3>
+<pre>
+<seq>
+Full-length cDNA:
+
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+
+Partial cDNA:
+
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXXXXXXXXX...XXXXXXXXXXXX
+</seq>
+</pre>
+
+<h3>(4) Second strand synthesis using dN-Smart Randomer (dN-SMRT) and Klenow enzyme for the extension. Both full-length and partial cDNAs will be converted to double-stranded cDNA. Only one is drawn here:</h3>
+<pre>
+<seq>
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXXXXXXXXX...XXXXXXXXXXXXXX
+                                                                              <----------BNNNGGNNN
+                                                                                                  AG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(5) Adding Smart PCR Primer (TSO_PCR) for single primer cDNA amplification<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR ):</a></h3>
+<pre>
+<seq>
+          5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---->
+|--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXVNNNCCNNNTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+   3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXBNNNGGNNNAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                                        <----<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(6) Nextera tagmentation on amplified cDNA (will create 9-bp gap):</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (5'-end of cDNA, with s5 sequence, not amplifiable due to the use of Nextera N7xx for library amplification, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GANNNGGNNNBXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTNNNCCNNNVXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (5'-end of cDNA, with s7 sequence, not amplifiable due to Library PCR Primer 1 ends with "AC" which cannot to be annealed to the template, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GANNNGGNNNBXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTNNNCCNNNVXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (3'-end of cDNA, with s5 sequence, not amplifiable due to the use of Nextera N7xx for library amplification, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 4 (middle part of cDNA, not amplifiable due to the use of Nextera N7xx for library amplification):</i>
+
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+  5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 5 (3'-end of cDNA, with s7 sequence, the only amplifiable fragment which will be used for library prep and sequencing, see step 6):</i>
+
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+</seq>
+</pre>
+
+<h3>(7) Add New-P5-SMART PCR Hybrid Oligo (P5-TSO_Hybrid) and Illumina Nextera N7xx primer for library amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC-------->
+                                         5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                             <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                    <--------<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(7) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+              <p5>Illumina P5</p5>                           <tso>ISPCR/TSO</tso>           <cbc>12bp cell</cbc>    <umi>8bp</umi>        cDNA           <me>ME</me>             <s7>s7</s7>            i7          <p7>Illumina P7</p7>
+                                                                         <cbc>barcode</cbc>     <umi>UMI</umi>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 sequencing primer (seqA) to sequence the first read (bottom strand as template, sequence 12-bp cell barcode and 8-bp UMI):</h3>
+<pre>
+<align class="long">
+                             5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add i7 index sequencing primer to sequence the i7 index (bottom strand as template):</h3>
+<pre>
+<align class="long">
+                                                                                                   5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Read 2 sequencing primer to sequence the second read (top strand as template, sequence cDNA):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                               <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
