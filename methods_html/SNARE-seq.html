@@ -105,12 +105,12 @@ h3 {font-family:verdana;}
  <i>Open chromatin DNA product 1:</i>
 
      |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'     XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>p        XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
 
  <i>Open chromatin DNA product 3:</i>
 
      |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'     XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+                                                                      3'- (pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>p        XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
 </seq>
 </pre>
 
@@ -120,27 +120,56 @@ h3 {font-family:verdana;}
  <i>mRNA (the terminal tranferase acitivity of MMLV adds extra Cs, which allows TSO to be incoporated):</i>
 
      |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCC----->
-                                                                          (pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+                                                                  <-------(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
 
- <i>Open chromatin DNA product 1 (the gap between dT and s5 will be closed by the T7 ligase):</i>
+<i>Open chromatin DNA product 1:</i>
 
-     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'
-        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX----->   <me>CTGTCTCTTATACACATCT</me>------>
+                                                                      <---(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>p   <----XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
 
- <i>Open chromatin DNA product 3 (the gap between dT and s5 will be closed by the T7 ligase):</i>
+<i>Open chromatin DNA product 3:</i>
 
-     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
-        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX----->   <me>CTGTCTCTTATACACATCT</me>------>
+                                                                      <---(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>p   <----XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
 </seq>
 </pre>
 
-<h3>(4) Amplify cDNA and open chromatin using Nextera-R2 and TSO-PCR primers:</h3>
+<h3>(4) Note for the ATAC library, there is no phosphate at the 5' end of s5, so the top strand will have a gap. There is a phosphate at the 5' end of the Nextera-R1-rc-polyA. Therefore, the gap at the bottom strand will be filled by extension and ligation. The bottom strand will serve as the template for PCR in the next step. Thank Luciano Martelotto and Song Chen for the clarification:</h3>
+<pre>
+<seq>
+ <i>mRNA (the terminal tranferase acitivity of MMLV adds extra Cs, which allows TSO to be incoporated):</i>
+
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>
+            AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+
+ <i>Open chromatin DNA product 1 (the gap between XXXXXX and ME will be closed by the T7 ligase):</i>
+
+                                                                            Gap
+                                                                             &darr;
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'
+        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+                                                                                                              &#8681;&#8681;
+                                                                                                        Gap filled by T7
+
+ <i>Open chromatin DNA product 3 (the gap between XXXXXX and ME will be closed by the T7 ligase):</i>
+
+                                                                            Gap
+                                                                             &darr;
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'
+        3'- AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5' 
+                                                                                                              &#8681;&#8681;
+                                                                                                        Gap filled by T7
+</seq>
+</pre>
+
+<h3>(5) Amplify cDNA and open chromatin using Nextera-R2 and TSO-PCR primers:</h3>
 <pre>
 <seq>
  <i>mRNA (TSO-PCR single primer amplification):</i>
 
                5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>---------->
-     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+     |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>
+            AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
                                                                                    <----------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
 
  <i>Open chromatin DNA (only product 3 will be amplified):</i>
@@ -152,7 +181,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(5) After the above amplification, these are the products:</h3>
+<h3>(6) After the above amplification, these are the products:</h3>
 <pre>
 <seq>
  <i>mRNA:</i>
@@ -167,7 +196,7 @@ h3 {font-family:verdana;}
 </seq>
 </pre>
 
-<h3>(6) Split the amplified product into two equal half, one for cDNA, the other for open chromatin DNA amplification:</h3>
+<h3>(7) Split the amplified product into two equal half, one for cDNA, the other for open chromatin DNA amplification:</h3>
 <pre>
 <align class="long">
  <i>mRNA:</i>
@@ -197,7 +226,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(7) Final library structure:</h3>
+<h3>(8) Final library structure:</h3>
 <pre>
 <align class="long">
  <i>mRNA:</i>
