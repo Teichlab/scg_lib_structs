@@ -153,7 +153,7 @@ Nextera Dual Index Library:
 </seq>
 </pre>
 
-<h3>(Step 3) Folds over and sequence the second index (index 2, i5, bottom strand as template):</h3>
+<h3>(Step 3 of Miseq, Hiseq2000/2500 and NovaSeq 6000) Folds over and sequence the second index (index 2, i5, bottom strand as template):</h3>
 <pre>
 <seq>
 Truseq Single Index Library (not really needed):
@@ -178,6 +178,34 @@ Nextera Dual Index Library:
 
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><t7>NNNNNNNN</t7><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>-insert-<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><t7>NNNNNNNN</t7><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(Step 3 of  iSeq 100, MiniSeq, NextSeq, HiSeq X and HiSeq 3000/4000) Add Index 2 sequencing primer mixture to sequence the second index (index 2, i5, top strand as template):</h3>
+<pre>
+<seq>
+Truseq Single Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                     <-------<p5>TGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Truseq Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>-insert-<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5> -5'
+</seq>
+</pre>
+
+<pre>
+<seq>
+Nextera Dual Index Library:
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><t7>NNNNNNNN</t7><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-insert-<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><t7>NNNNNNNN</t7><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </seq>
 </pre>
 
