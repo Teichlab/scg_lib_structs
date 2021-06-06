@@ -96,6 +96,8 @@ Click the following links to view the methods. Notes:
   - [s3-ATAC/WGS/GCC](https://www.biorxiv.org/content/10.1101/2021.01.11.425995v1)
   - [hsrChST-seq](https://www.biorxiv.org/content/10.1101/2021.03.11.434985v1)
   - [TIP-seq](https://www.biorxiv.org/content/10.1101/2021.03.17.435909v1)
+  - [ECCITE-seq](https://www.nature.com/articles/s41592-019-0392-0)
+  - [ASAP-seq/DOGMA-seq](https://www.nature.com/articles/s41587-021-00927-2)
 
 ## Technical comparisons (scRNA-seq only)
 
