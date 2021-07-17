@@ -1,0 +1,9 @@
+Method	Tn5 and adaptors	Staring cell number	Tagmentation	Single-cell/nucleus isolation	Library amplification	Barcode addition	Throughput
+sc-ATAC-seq/snATAC-seq	Custom-made	500,000+	Bulk	FACS or dilution	PCR	Tn5 + PCR barcodes	10,000
+scTHS-seq	Custom-made	500,000+	Bulk	FACS or dilution	IVT and PCR	Tn5 + PCR barcodes	10,000
+Plate_scATAC-seq and Pi-ATAC-seq	Nextera	5,000+	Bulk	FACS	PCR	PCR barcodes	1,000
+Fluidigm C1	Nextera	4,000-20,000	Single cells	Microfluidics	PCR	PCR barcodes	100
+Takara ICELL8	Nextera	16,000	Single cells	Microfluidics	PCR	PCR barcodes	1,000
+10x Chromium Single Cell ATAC	Nextera	800-15,000	Bulk	Droplets	PCR	PCR barcodes	10,000
+Bio-Rad dscATAC-seq	Nextera	60,000+	Bulk	Droplets	PCR	PCR barcodes	10,000
+Bio-Rad dsciATAC-seq	Custom-made	600,000+	Bulk	Droplets	PCR	Tn5 + PCR barcodes	100,000
