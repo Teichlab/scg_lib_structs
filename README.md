@@ -100,7 +100,7 @@ Click the following links to view the methods. Notes:
   - [ASAP-seq/DOGMA-seq](https://www.nature.com/articles/s41587-021-00927-2)
   - [HyDrop](https://www.biorxiv.org/content/10.1101/2021.06.04.447104v1)
 
-## Technical comparisons (scRNA-seq only)
+## scRNA-seq technical comparisons
 
 **The basic chemistry is very similar, the main differences among those scRNA-seq methods are summarised in the table below. For a detailed discussion, check the text boxes from our review: [From Tissues to Cell Types and Back: Single-Cell Gene Expression Analysis of Tissue Architecture](https://www.annualreviews.org/doi/10.1146/annurev-biodatasci-080917-013452)**
 
@@ -129,6 +129,19 @@ Click the following links to view the methods. Notes:
 |            STRT-seq-C1           |          Fluidigm C1          | In microfluidic chambers |                 TSO                 |             Yes            |                  Barcoded Tn5 transposase                 |           No           |           PCR          |       5'      |
 |            STRT-seq-2i           |        FACS or dilution       |      In 9600w wells      |                 TSO                 |             Yes            |          Barcoded PCR primers and Tn5 transposase         |           Yes          |           PCR          |       5'      |
 |             Tang 2009            |         FACS or manual        |     In 96w/384w wells    |  PolyA tailing and primer extension |      Yes in principle      |               Ligation of barcoded adaptors               |           No           |           PCR          |  Biased to 3' |
+
+## scATAC-seq technical comparisons
+
+|                                  | Tn5 and adaptors | Staring cell number | Tagmentation | Single-cell/nucleus isolation | Library amplification |  Barcode addition  | Throughput |
+|:--------------------------------:|:----------------:|:-------------------:|:------------:|:-----------------------------:|:---------------------:|:------------------:|:----------:|
+|      sc-ATAC-seq/snATAC-seq      |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |          PCR          | Tn5 + PCR barcodes |   10,000   |
+|             scTHS-seq            |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |      IVT and PCR      | Tn5 + PCR barcodes |   10,000   |
+| Plate_scATAC-seq and Pi-ATAC-seq |      Nextera     |        5,000+       |     Bulk     |              FACS             |          PCR          |    PCR barcodes    |    1,000   |
+|            Fluidigm C1           |      Nextera     |     4,000-20,000    | Single cells |         Microfluidics         |          PCR          |    PCR barcodes    |     100    |
+|           Takara ICELL8          |      Nextera     |        16,000       | Single cells |         Microfluidics         |          PCR          |    PCR barcodes    |    1,000   |
+|   10x Chromium Single Cell ATAC  |      Nextera     |      800-15,000     |     Bulk     |            Droplets           |          PCR          |    PCR barcodes    |   10,000   |
+|        Bio-Rad dscATAC-seq       |      Nextera     |       60,000+       |     Bulk     |            Droplets           |          PCR          |    PCR barcodes    |   10,000   |
+|       Bio-Rad dsciATAC-seq       |    Custom-made   |       600,000+      |     Bulk     |            Droplets           |          PCR          | Tn5 + PCR barcodes |   100,000  |
 
 ## Motivation
 
