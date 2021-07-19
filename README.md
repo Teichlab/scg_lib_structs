@@ -99,6 +99,7 @@ Click the following links to view the methods. Notes:
   - [ECCITE-seq](https://www.nature.com/articles/s41592-019-0392-0)
   - [ASAP-seq/DOGMA-seq](https://www.nature.com/articles/s41587-021-00927-2)
   - [HyDrop](https://www.biorxiv.org/content/10.1101/2021.06.04.447104v1)
+  - [PHAGE-ATAC](https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1)
 
 ## scRNA-seq technical comparisons
 
