@@ -91,7 +91,7 @@ Click the following links to view the methods. Notes:
   - [microSPLiT](https://www.biorxiv.org/content/10.1101/869248v2)
   - [scCC](https://www.sciencedirect.com/science/article/pii/S009286742030814X)
   - [scSPRITE](https://www.biorxiv.org/content/10.1101/2020.08.11.242081v1)
-  - [ICICLE-seq](https://www.biorxiv.org/content/10.1101/2020.09.04.283887v1)
+  - [TEA-seq/ICICLE-seq](https://www.biorxiv.org/content/10.1101/2020.09.04.283887v2)
   - [sci-ATAC-seq3](https://science.sciencemag.org/content/370/6518/eaba7612.long)
   - [s3-ATAC/WGS/GCC](https://www.biorxiv.org/content/10.1101/2021.01.11.425995v1)
   - [hsrChST-seq](https://www.biorxiv.org/content/10.1101/2021.03.11.434985v1)
