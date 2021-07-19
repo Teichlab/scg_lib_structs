@@ -133,6 +133,8 @@ Click the following links to view the methods. Notes:
 
 ## scATAC-seq technical comparisons
 
+**This is basically Table 1 from our scATAC-seq protocol: [A plate-based single-cell ATAC-seq workflow for fast and robust profiling of chromatin accessibility](https://www.nature.com/articles/s41596-021-00583-5)**
+
 |                                  | Tn5 and adaptors | Staring cell number | Tagmentation | Single-cell/nucleus isolation | Library amplification |  Barcode addition  | Throughput |
 |:--------------------------------:|:----------------:|:-------------------:|:------------:|:-----------------------------:|:---------------------:|:------------------:|:----------:|
 |      sc-ATAC-seq/snATAC-seq      |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |          PCR          | Tn5 + PCR barcodes |   10,000   |
