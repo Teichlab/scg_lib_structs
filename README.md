@@ -100,6 +100,7 @@ Click the following links to view the methods. Notes:
   - [ASAP-seq/DOGMA-seq](https://www.nature.com/articles/s41587-021-00927-2)
   - [HyDrop](https://www.biorxiv.org/content/10.1101/2021.06.04.447104v1)
   - [PHAGE-ATAC](https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1)
+  - [Spatial-ATAC-seq](https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1)
 
 ## scRNA-seq technical comparisons
 
