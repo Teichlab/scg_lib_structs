@@ -163,7 +163,7 @@ Here I borrow from Feyman:
 
 ## Feedback
 
-I would be very happy if you go through them and let me know what you think. If you spot some errors/mistakes, or I've missed some key methods. Feel free to contact me:
+I would be very happy if you go through them and let me know what you think. If you spot some errors/mistakes, or I've missed some key methods. Feel free to raise an issue in the [GitHub repository](https://github.com/Teichlab/scg_lib_structs/issues), or contact me directly:
 
 Xi Chen  
 chenx9@sustech.edu.cn
