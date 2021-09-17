@@ -101,6 +101,7 @@ Click the following links to view the methods. Notes:
   - [HyDrop](https://www.biorxiv.org/content/10.1101/2021.06.04.447104v1)
   - [PHAGE-ATAC](https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1)
   - [Spatial-ATAC-seq](https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1)
+  - [VASA-seq](https://www.biorxiv.org/content/10.1101/2021.09.15.460240v1)
 
 ## scRNA-seq technical comparisons
 
