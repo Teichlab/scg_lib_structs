@@ -103,6 +103,7 @@ Click the following links to view the methods. Notes:
   - [Spatial-ATAC-seq](https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1)
   - [VASA-seq](https://www.biorxiv.org/content/10.1101/2021.09.15.460240v1)
   - [scTEM-seq](https://www.biorxiv.org/content/10.1101/2021.03.25.436351v1)
+  - [DBiT-seq](https://www.sciencedirect.com/science/article/pii/S0092867420313908)
 
 ## scRNA-seq technical comparisons
 
