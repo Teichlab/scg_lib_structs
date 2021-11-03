@@ -107,6 +107,9 @@ Click the following links to view the methods. Notes:
   - [scGET-seq](https://www.nature.com/articles/s41587-021-01031-1)
   - [Multi-CUT&Tag](https://www.sciencedirect.com/science/article/pii/S109727652100753X)
   - [MulTI-Tag](https://www.biorxiv.org/content/10.1101/2021.07.08.451691v1)
+  - [TIME-seq](https://www.biorxiv.org/content/10.1101/2021.10.25.465725v1)
+  - [scSPLAT](https://www.biorxiv.org/content/10.1101/2021.10.14.464375v2)
+  - [EpiDamID](https://www.biorxiv.org/content/10.1101/2021.10.26.465688v1)
 
 ## scRNA-seq technical comparisons
 
