@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+seq {font-family:Monaco, "Courier New";
+  font-size:0.9em;
+  text-indent: 2.7em;
+}
+
+align.small {
+    font-family:Monaco, "Courier New";
+    font-size:0.9em;
+    line-height:65%;
+}
+
+align.long {
+  font-family:Monaco, "Courier New";
+  font-size:0.75em;
+  line-height:70%;
+}
+
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+me {color:#969696;}
+tso {color:#2ca25f;}
+cbc {color:#f768a1;}
+umi {color:#807dba;}
+t7 {color:blue;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+w1 {color:#f03b20;}
+h3 {font-family:verdana;}
+
+</style>
+
+<head>
+<title>ISSAAC-seq</title>
+</head>
+<body>
+
+<h1><a href="#FACS" target="_self">ISSAAC-seq FACS (in plates)</a>
+/ <a href="#Droplet" target="_self">ISSAAC-seq Droplet</a></h1>
+
+<p><span style="font-family:verdana; font-size:1.1em;">ISSAAC-seq (<u>I</u>n <u>S</u>itu <u>S</u>HERRY <u>A</u>fter <u>A</u>TA<u>C</u>-seq) is a multiomics technique that performs ATAC and RNA from the same cells. It combines <a href="https://www.pnas.org/content/117/6/2886" target="_blank">SHERRY</a> and <a href="https://www.nature.com/articles/nmeth.2688" target="_blank">ATAC</a> in situ, followed by single nulcei isolation and library preparation. There are two worflows: FACS and Droplet. The sequence design of FACS and Droplet workflows is extermely similar.</span></p>
+
+<br></br>
+
+<h1><a href="https://github.com/dbrg77/ISSAAC-seq" target="_blank" name="FACS"><span style="color:red">ISSAAC-seq FACS</span></a></h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>TruseqR1_oligo_dT: 5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Nextera N/S5xx Index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Truseq P5 PCR index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
+<p>Truseq Read 1 sequencing primer: 5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
+<p>Nextera Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Perform tagmentation on nuclei with normal Tn5 s5/s7 dimer:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:576px;height:324px;">
+<pre>
+<seq>
+
+<i>chromatin DNA:</i>
+
+  <i>Product 1 (s5 at both ends, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+  <i>Product 2 (s7 at both ends, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+    5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+  <i>Product 3 (different ends, amplifiable):</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA (unchanged):</i>
+
+    AAAAA......AAAAAXXXXXXXXXXXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(2) <i>in situ</i> reverse transcription:</h3>
+<pre>
+<seq>
+
+<i>chromatin DNA:</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>(dT)VN------>
+                                       (pA)BXXXXXXXXXXXX...XXXXXXXXXXXX -5'
+
+  Product after reverse transciption:
+
+  5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXXXXX...XXXXXXXXXXXX -3'
+  3'- <w1>GATGTGCTGCGAGAAGGCTAGA</w1><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXXXXX...XXXXXXXXXXXX -5'
+</seq>
+</pre>
+
+<h3>(3) Second tagmentation using Tn5 s7 homodimer to cut the RT product (DNA/RNA hybryid):</h3>
+<img src="../data/s7_Tn5_homodimer.svg" alt="Tn5 dimer" style="width:576px;height:324px;">
+<pre>
+<seq>
+
+<i>chromatin DNA (protected and should be minimally affected):</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  <i> Product 1 (inner part of mRNA, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+      5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                         <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+  <i> Product 2 (3' of mRNA, amplifiable):</i>
+
+      5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+      3'- <w1>GATGTGCTGCGAGAAGGCTAGA</w1><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(4) Gap fill-in and oligo leftover removal by Exo I:</h3>
+<pre>
+<seq>
+<i>chromatin DNA:</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+      <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>(dT)VXXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+  3'- <w1>GATGTGCTGCGAGAAGGCTAGA</w1><umi>[10-bp UMI]</umi>(pA)BXXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) Adding Nextera N7xx, S5xx and Truseq P5 PCR index primer for library preparation (three primers, independent amplification):</h3>
+<pre>
+<align class="small">
+
+<i>chromatin DNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5>---->
+                                 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                     <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                             <----<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+<i>mRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1>---->
+                                            5'- <w1>CTACACGACGCTCTTCCGATCT</w1><umi>[10-bp UMI]</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                                <w1>GATGTGCTGCGAGAAGGCTAGA</w1><umi>[10-bp UMI]</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                             <----<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              i5         <s5>s5</s5>              <me>ME</me>                gDNA                <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>               i5             <w1>Truseq Read 1</w1>            <umi>10 bp</umi>          cDNA            <me>ME</me>             <s7>s7</s7>           i7        <p7>Illumina P7</p7>
+                                                                             <umi>UMI</umi>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>---------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+                                     5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1>--------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template, this is the well barcode):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+                                                                                         5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>---------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+                                                                                              5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>--------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, this is the plate barcodes and tell the difference between RNA and ATAC):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1> -5'
+</align>
+</pre>
+
+<br></br>
+
+<h1><a href="https://github.com/dbrg77/ISSAAC-seq" target="_blank" name="Droplet"><span style="color:red">ISSAAC-seq FACS</span></a></h1>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>10x Single Cell ATAC beads: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>TruseqR2_oligo_dT: 5'- <tso>CAGACGTGTGCTCTTCCGATCT</tso><umi>[10-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Nextera N/S5xx Index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Truseq P7 PCR index primer: 5'- <p5>CAAGCAGAAGACGGCATACGAGAT</p5>[8-bp i7 index]<tso>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</tso> -3'</p>
+<p>Nextera Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Truseq Index 1 sequencing primer: 5'- <tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso> -3'</p>
+<p>Nextera Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Truseq Read 2 sequencing primer: 5'- <tso>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</tso> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Perform tagmentation on nuclei with normal Tn5 s5/s7 dimer:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:576px;height:324px;">
+<pre>
+<seq>
+
+<i>chromatin DNA:</i>
+
+  <i>Product 1 (s5 at both ends, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+  <i>Product 2 (s7 at both ends, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+    5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+  <i>Product 3 (different ends, amplifiable):</i>
+
+    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA (unchanged):</i>
+
+    5'- XXXXXXXXXXXX...XXXXXXXXXXXXAAAAAA...AAAAAA
+</seq>
+</pre>
+
+<h3>(2) <i>in situ</i> reverse transcription:</h3>
+<pre>
+<seq>
+
+<i>chromatin DNA:</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  5'- XXXXXXXXXXXX...XXXXXXXXXXXXB(pA)
+                   <-------------V(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+
+  Product after reverse transciption:
+
+  5'- XXXXXXXXXXXX...XXXXXXXXXXXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+      XXXXXXXXXXXX...XXXXXXXXXXXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+</seq>
+</pre>
+
+<h3>(3) Second tagmentation using Tn5 s5 homodimer to cut the RT product (DNA/RNA hybryid):</h3>
+<img src="../data/s5_Tn5_dimer.svg" alt="Tn5 dimer" style="width:576px;height:324px;">
+<pre>
+<seq>
+
+<i>chromatin DNA (protected and should be minimally affected):</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  <i> Product 1 (inner part of mRNA, not amplifiable due to semi-suppressiev PCR, will be ommitted):</i>
+
+      5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+  <i> Product 2 (3' of mRNA, amplifiable):</i>
+
+      5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+</seq>
+</pre>
+
+<h3>(4) Gap fill-in and oligo leftover removal by Exo I:</h3>
+<pre>
+<seq>
+<i>chromatin DNA:</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+      <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+  5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+      <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+</seq>
+</pre>
+
+<h3>(5) Put onto the 10X Chromium for Droplet capture on the beads (12 cycles of linear PCR)</h3>
+<pre>
+<seq>
+<i>chromatin DNA:</i>
+
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>--------------->
+                                                    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                                        <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>--------------->
+                                                    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+                                                        <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+</seq>
+</pre>
+
+<h3>(6) Break emulsion and purify the pre-amplified products:</h3>
+<pre>
+<seq>
+<i>chromatin DNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>mRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+</seq>
+</pre>
+
+<h3>(7) Adding Illumina P5, Nextera N7xx and Truseq P7 PCR index primer for library preparation (three primers, independent amplification, or separate amplification):</h3>
+<pre>
+<align class="small">
+
+<i>chromatin DNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>-------------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                             <--------------------<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+<i>mRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>-------------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>[10-bp UMI]</umi><tso>AGATCGGAAGAGCACACGTCTG</tso>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>[10-bp UMI]</umi><tso>TCTAGCCTTCTCGTGTGCAGAC</tso> -5'
+                                                                                                          <----<tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                 <cbc>16 bp</cbc>          <s5>s5</s5>              <me>ME</me>            gDNA           <me>ME</me>               <s7>s7</s7>          i7            <p7>Illumina P7</p7>
+                                   <cbc>cell barcode</cbc>
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>NNNNNNNNNN</umi><tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                  <cbc>16 bp  </cbc>        <s5>s5</s5>              <me>ME</me>            cDNA           <umi>10 bp</umi>             <tso>Truseq Read 2</tso>             i7        <p7>Illumina P7</p7>
+                                   <cbc>cell barcode</cbc>                                                     <umi>UMI</umi>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+                                             5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+                                             5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>NNNNNNNNNN</umi><tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template, this is the sample index):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+                                                                                       5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+                                                                                                      5'- <tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>NNNNNNNNNN</umi><tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, this is the 10x cell barcodes):</h3>
+<<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>NNNNNNNNNN</umi><tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template, in the RNA library, the first 10 bp are UMIs):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                 <---------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                <---------<tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso> -5'
+</align>
+</pre>
+
+</body>
+</html>
