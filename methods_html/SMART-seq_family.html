@@ -68,7 +68,8 @@ h3 {font-family:verdana;}
 <p>Nextera (XT) N/S5xx Index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera (XT) N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
 <p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Index 2 sequencing primer (i5): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
 <p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 </seq>
 
@@ -216,7 +217,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template):</h3>
+<h3>(2) Add Index 1 sequencing primer to sequence the first index (i7) (bottom strand as template):</h3>
 <pre>
 <align class="small">
                                                                                          5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------>
@@ -224,15 +225,15 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template):</h3>
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the seconde index (i5) (top strand as template):</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                 <-------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
-<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<h3>(4) Add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
@@ -258,7 +259,8 @@ h3 {font-family:verdana;}
 <p>Nextera (XT) N/S5xx Index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera (XT) N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
 <p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Index 2 sequencing primer (i5): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
 <p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 </seq>
 
@@ -458,7 +460,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template):</h3>
+<h3>(2) Add Index 1 sequencing primer to sequence the first index (i7) (bottom strand as template):</h3>
 <pre>
 <align class="small">
                                                                                          5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------>
@@ -466,15 +468,15 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, single cells can be identified by the combination of i5 and i7):</h3>
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the second index (i5) (top strand as template, single cells can be identified by the combination of i5 and i7):</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                 <-------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
-<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<h3>(4) Add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>

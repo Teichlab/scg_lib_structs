@@ -52,7 +52,8 @@ h3 {font-family:verdana;}
 <p>Nextera right primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
 <p>Illumina Nextera Read 1 primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Illumina Nextera Read 2 primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Sample index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Sample index sequencing primer (index1): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Cell barcode sequencing primer (index2): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
@@ -134,7 +135,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template, 8 cycles):</h3>
+<h3>(2) Add Sample index sequencing primer (index1) to sequence the sample index (bottom strand as template, 8 cycles):</h3>
 <pre>
 <align class="small">
                                                                                        5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
@@ -142,15 +143,15 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, 16 cycles, this is cell barcode):</h3>
+<h3>(3) Cluster regeneration, add Cell barcode sequencing primer (index2) to sequence the second index (i5) (top strand as template, 16 cycles, this is cell barcode):</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
-<h3>(4) Cluster regeneration, add Nextera Read 2 primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
+<h3>(4) Add Nextera Read 2 primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
 <pre>
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'

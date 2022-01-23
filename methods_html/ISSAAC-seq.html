@@ -60,7 +60,9 @@ h3 {font-family:verdana;}
 <p>Truseq P5 PCR index primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp i5 index]<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
 <p>Truseq Read 1 sequencing primer: 5'- <w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1> -3'</p>
 <p>Nextera Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Nextera i7 sequencing primer (index1): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Nextera i5 sequencing primer (index2, ATAC): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
+<p>Truseq i5 sequencing primer (index2, RNA): 5'- <w1>AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT</w1> -3'</p>
 <p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 </seq>
 
@@ -223,7 +225,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template, this is the well barcode):</h3>
+<h3>(2) Add Nextera i7 sequencing primer (index1) to sequence the first index (i7) (bottom strand as template, this is the well barcode):</h3>
 <h4>Chromatin DNA (chromatin accessibility):</h4>
 <pre>
 <align class="small">
@@ -240,24 +242,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, this is the plate barcodes and tell the difference between RNA and ATAC):</h3>
-<h4>Chromatin DNA (chromatin accessibility):</h4>
-<pre>
-<align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXX...XXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-</align>
-</pre>
-
-<h4>mRNA (gene expression):</h4>
-<pre>
-<align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-</align>
-</pre>
-
-<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<h3>(3) Cluster regeneration, add Nextera/Truseq i5 sequeuncing primer to sequence the second index (i5) (top strand as template, this is the plate barcodes and tell the difference between RNA and ATAC):</h3>
 <h4>Chromatin DNA (chromatin accessibility):</h4>
 <pre>
 <align class="small">
@@ -271,6 +256,23 @@ h3 {font-family:verdana;}
 <align class="small">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
                                  <-------<w1>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</w1> -5'
+</align>
+</pre>
+
+<h3>(4) Add read 2 sequencing primer to sequence the second read (top strand as template):</h3>
+<h4>Chromatin DNA (chromatin accessibility):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXX...XXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                     <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<h4>mRNA (gene expression):</h4>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<w1>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</w1><umi>NNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                          <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
 
@@ -289,8 +291,9 @@ h3 {font-family:verdana;}
 <p>Nextera N7xx Index primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
 <p>Truseq P7 PCR index primer: 5'- <p5>CAAGCAGAAGACGGCATACGAGAT</p5>[8-bp i7 index]<tso>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</tso> -3'</p>
 <p>Nextera Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Nextera Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
-<p>Truseq Index 1 sequencing primer: 5'- <tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso> -3'</p>
+<p>Nextera i7 sequencing primer (index1, ATAC): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Truseq i7 sequencing primer(index1, RNA): 5'- <tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso> -3'</p>
+<p>Nextera i5 sequencing primer (index2): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
 <p>Nextera Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Truseq Read 2 sequencing primer: 5'- <tso>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</tso> -3'</p>
 </seq>
@@ -489,7 +492,7 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(2) Add index 1 sequencing primer to sequence the first index (i7) (bottom strand as template, this is the sample index):</h3>
+<h3>(2) Add Nextera/Truseq i7 sequencing primer to sequence the index1 (i7) (bottom strand as template, this is the sample index and tells the difference between RNA and ATAC):</h3>
 <h4>Chromatin DNA (chromatin accessibility):</h4>
 <pre>
 <align class="small">
@@ -506,24 +509,24 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the second index (i5) (bottom strand as template, this is the 10x cell barcodes):</h3>
+<h3>(3) Cluster regeneration, and add Nextera i5 sequencing primer to sequence the index2 (i5) (top strand as template, this is the 10x cell barcodes, 16 cycles):</h3>
 <<h4>Chromatin DNA (chromatin accessibility):</h4>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
 <h4>mRNA (gene expression):</h4>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>--------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXXV(dT)<umi>NNNNNNNNNN</umi><tso>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</tso>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><tso>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</tso>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
-<h3>(4) Cluster regeneration, add read 2 sequencing primer to sequence the second read (top strand as template, in the RNA library, the first 10 bp are UMIs):</h3>
+<h3>(4) Add Nextera/Trsueq Read 2 sequencing primer to sequence the second read (top strand as template, in the RNA library, the first 10 bp are UMIs):</h3>
 <h4>Chromatin DNA (chromatin accessibility):</h4>
 <pre>
 <align class="small">

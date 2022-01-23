@@ -56,7 +56,8 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 <p>SI-PCR Primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[8-bp sample index]<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
-<p>Cell barcode (i7 index) sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Cell barcode sequencing primer (index1): 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Sample index sequencing primer (index2): 5'- <s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT</s5> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
@@ -192,15 +193,15 @@ h3 {font-family:verdana;}
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the sample index (i5) (bottom strand as template, 8 cycles)::</h3>
+<h3>(3) Cluster regeneration, add Sample index sequencing primer (index2) to sequence the sample index (i5) (top strand as template, 8 cycles)::</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXX...XXXV(dT)<umi>NNNNNNNNNN</umi><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5> -5'
 </align>
 </pre>
 
-<h3>(4) Cluster regeneration, add Truseq Read 2 primer to sequence the UMI (top strand as template, sequence UMI, 10 cycles):</h3>
+<h3>(4) Add Truseq Read 2 primer to sequence the UMI (top strand as template, sequence UMI, 10 cycles):</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXX...XXXB(pA)<umi>NNNNNNNNNN</umi><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7><cbc>NNNNNNNNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
