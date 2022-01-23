@@ -1,9 +1,9 @@
 # Single Cell Genomics Library Structure
 Collections of library structure and sequence of popular single cell genomic methods (mainly scRNA-seq).
 
-## For NGS newbies
+## Before you start
 
-Most single cell sequencing methods are developed to be sequenced on the Illumina platforms. If you are not familiar with the general structure of Illumina sequencing libraries, [click here](https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html) to check some general information about Illumina library structures and the nature of library preparation.
+Make sure you understand the basic configuration of the Illumina libraries, because most single cell sequencing methods are developed to be sequenced on the Illumina platforms. If you are not familiar with the Illumina sequencing libraries, [click here](https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html) to check some general information about Illumina library structures and the nature of library preparation.
 
 ## How to use?
 
@@ -11,7 +11,7 @@ Click the following links to view the methods. Notes:
 
 1. The default alignment font is Monaco. Courier New font will be used if Monaco is not available.
 2. Index1 (i7) is always sequenced using the bottom strand as template, regardless of the Illumina machine in use. That is why the index sequences are reverse complementary to the primer sequences.
-3. In a dual-index library, how index2 (i5) is sequenced differs from machines to machines. According to the [Index Sequencing Guide](data/indexed-sequencing-overview-guide-15057455-05.pdf) from Illumina, Miseq, Hiseq2000/2500 and NovaSeq 6000 (v1.0) use the bottom strand as template, which is why the index sequences are the same as the primer sequences in those machines. iSeq 100, MiniSeq, NextSeq, HiSeq X, HiSeq 3000/4000 and NovaSeq 6000 (v1.5) use the top strand as template, which is why the index sequences are reverse-complementary to the primer sequences in those machines. All methods listed below use Miseq, Hiseq2000/2500 and NovaSeq (v1.0) as examples.
+3. __IMPORTANT:__ In a dual-index library, how index2 (i5) is sequenced differs from machines to machines. According to the [Index Sequencing Guide](data/indexed-sequencing-overview-guide-15057455-05.pdf) from Illumina, Miseq, Hiseq2000/2500 and NovaSeq 6000 (v1.0) use the bottom strand as template, which is why the index sequences are the same as the primer sequences in those machines. iSeq 100, MiniSeq, NextSeq, HiSeq X, HiSeq 3000/4000 and NovaSeq 6000 (v1.5) use the top strand as template, which is why the index sequences are reverse-complementary to the primer sequences in those machines. All methods listed below use iSeq 100, MiniSeq, NextSeq, HiSeq X, HiSeq 3000/4000 and NovaSeq 6000 (v1.5) as examples, because this configuration is more frequently used nowadays.
 
 - ### Gene expression
 
