@@ -1,0 +1,92 @@
+@font-face {
+ font-family: 'Computer Modern';
+ src: url('cmunrm.ttf') format("truetype");
+ font-weight: normal;
+ font-style: normal;
+}
+
+@font-face {
+ font-family: 'Computer Modern';
+ src: url('cmunbi.ttf') format("truetype");
+ font-weight: bold;
+ font-style: italic;
+}
+
+@font-face {
+ font-family: 'Computer Modern';
+ src: url('cmunbx.ttf') format("truetype");
+ font-weight: bold;
+ font-style: normal;
+}
+
+@font-face {
+ font-family: 'Computer Modern';
+ src: url('cmunti.ttf') format("truetype");
+ font-weight: normal;
+ font-style: italic;
+}
+
+@font-face {
+ font-family: 'Fira Code';
+ src: url('FiraCode-Regular.ttf') format("truetype");
+ font-weight: normal;
+ font-style: normal;
+}
+
+@font-face {
+ font-family: 'Fira Code';
+ src: url('FiraCode-Bold.ttf') format("truetype");
+ font-weight: bold;
+ font-style: normal;
+}
+
+body {
+  font-family: 'Computer Modern';
+}
+
+seq {
+    font-family: 'Fira Code';
+    font-size: 0.9em;
+    text-indent: 2.7em;
+}
+
+align.small {
+    font-family: 'Fira Code';
+    font-size: 0.9em;
+    line-height: 65%;
+}
+
+align.long {
+    font-family:'Fira Code';
+    font-size: 0.8em;
+    line-height: 70%;
+}
+
+h1 {font-family: 'Computer Modern';}
+h2 {font-family: 'Computer Modern';}
+h3 {font-family: 'Computer Modern';}
+h4 {font-family: 'Computer Modern';}
+
+bulge {color:#f3b44e;}
+cbc {color:#f768a1;}
+cs1 {color:#0000ff;}
+cs2 {color:#756bb1;}
+hairp {color:#bcb6c9;}
+lstem {color:#b8ddc2;}
+me {color:#969696;}
+nexus {color:#f0b7a6;}
+p5 {color:#08519c;}
+p7 {color:#a50f15;}
+pe1 {color:#bcbddc;}
+pe2 {color:#9ebcda;}
+pe3 {color:#7e331f;}
+r1 {color:#4a1486;}
+r2 {color:#6a51a3;}
+r3 {color:#807dba;}
+s5 {color:#6baed6;}
+s7 {color:#fc9272;}
+t7 {color:blue;}
+tso {color:#2ca25f;}
+umi {color:#807dba;}
+ustem {color:#8fc4eb;}
+w1 {color:#f03b20;}
