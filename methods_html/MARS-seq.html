@@ -1,56 +1,23 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.8em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>MARS-seq/MARS-seq2.0</title>
 </head>
 <body>
 
 <h1><a href="http://science.sciencemag.org/content/343/6172/776" target="_blank">MARS-seq</a> / <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (1) I think the sequence of "2nd RT Primer" in Supplementary Table S7 in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</span></p>
+<p><span style="font-size:1.1em;"> (1) I think the sequence of "2nd RT Primer" in Supplementary Table S7 in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (2) The author claimed in the Supplementary Method (Page 8) that UMIs are 4-8 bp in length, but from the oligo sequence in Supplementary Table 7, they are only 4 bp in length. 4 bp were drawn in this workflow here.</span></p>
+<p><span style="font-size:1.1em;"> (2) The author claimed in the Supplementary Method (Page 8) that UMIs are 4-8 bp in length, but from the oligo sequence in Supplementary Table 7, they are only 4 bp in length. 4 bp were drawn in this workflow here.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
+<p><span style="font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The cell barcodes and UMIs are longer in MARS-seq2.0. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
+<p><span style="font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The cell barcodes and UMIs are longer in MARS-seq2.0. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;"> (5) Oligos used in the original MARS-seq were shown in this workflow.</span></p>
+<p><span style="font-size:1.1em;"> (5) Oligos used in the original MARS-seq were shown in this workflow.</span></p>
 
 <br></br>
 

@@ -1,48 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.8em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>CEL-seq/CEL-seq2</title>
 </head>
 <body>
 
 <h1><a href="#CEL-seq" target="_self">CEL-seq</a> / <a href="#CEL-seq2" target="_self">CEL-seq2</a></h1>
 
-<span style="font-family:verdana; font-size:1.1em;"><p>CEL-seq2 is an improved version of CEL-seq, the main differences are:</p>
+<span style="font-size:1.1em;"><p>CEL-seq2 is an improved version of CEL-seq, the main differences are:</p>
 <p> (1) CEL-seq2 uses UMI; CEL-seq does not.</p>
 <p> (2) CEL-seq2 uses random priming for reverse transcription after IVT amplification; CEL-seq uses RNA adapter ligation and then uses the primer annealed to the ligated adapter for reverse transcription after IVT amplification.</p>
 <p>CEL-seq used some homemade oligo sequence design and one of Illumina's kit. The protocol in the publication was not entirely clear, so I guess it was Illumina Truseq Small RNA-seq kit based on the oligo names (In the CEL-seq2 publication, they confirmed this is the case). I still put CEL-seq here to get a historic view of how methods evolve.</p></span>

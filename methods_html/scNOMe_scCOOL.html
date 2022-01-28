@@ -1,48 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.8em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>scNOMe-seq/scCOOL-seq</title>
 </head>
 <body>
 
 <h1><a href="https://elifesciences.org/articles/23203" target="_blank">scNOMe-seq</a> / <a href="https://www.nature.com/articles/cr201782" target="_blank">scCOOL-seq</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">Both scNOMe-seq and scCOOL-seq use similar principles and strategies. In the mammalian genmoe, CpG methylation (<sup>m</sup>CG) is common, but GpC methylation (G<sup>m</sup>C) is absent. The methods apply a purified GpC methylase (<a href="https://www.neb.com/products/m0227-gpc-methyltransferase-mcv-ipi" target="_blank">M.CviPI</a>) on nuclei. The majority of the DNA is protected by nucleosomes and inaccessible to M.CviPI. Only GpC within accessible regions can be methylated by M.CviPI. After bisulfite conversion and sequencing, one can identify DNA methylation by CpG methylation, and chromatin accessbility by GpC methylation. These two methods differ at the library preparation steps after bisulfite conversion. scNOMe-seq uses a comercial kit (Pico Methyl-seq Library prep Kit) to make libraries, while scCOOL-seq simply uses <a href="https://www.nature.com/articles/nmeth.3035" target="_blank">scBS-seq</a> method to make libraries. <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scBS-seq.html" target="_blank">Click here</a> to see a step-by-step protocol of scBS-seq. The final library structures of scNOMe-seq and scCOOL-seq are the same. scCOOL-seq uses some extra analysis to investigate CNV and ploidy.</span></p>
+<p><span style="font-size:1.1em;">Both scNOMe-seq and scCOOL-seq use similar principles and strategies. In the mammalian genmoe, CpG methylation (<sup>m</sup>CG) is common, but GpC methylation (G<sup>m</sup>C) is absent. The methods apply a purified GpC methylase (<a href="https://www.neb.com/products/m0227-gpc-methyltransferase-mcv-ipi" target="_blank">M.CviPI</a>) on nuclei. The majority of the DNA is protected by nucleosomes and inaccessible to M.CviPI. Only GpC within accessible regions can be methylated by M.CviPI. After bisulfite conversion and sequencing, one can identify DNA methylation by CpG methylation, and chromatin accessbility by GpC methylation. These two methods differ at the library preparation steps after bisulfite conversion. scNOMe-seq uses a comercial kit (Pico Methyl-seq Library prep Kit) to make libraries, while scCOOL-seq simply uses <a href="https://www.nature.com/articles/nmeth.3035" target="_blank">scBS-seq</a> method to make libraries. <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scBS-seq.html" target="_blank">Click here</a> to see a step-by-step protocol of scBS-seq. The final library structures of scNOMe-seq and scCOOL-seq are the same. scCOOL-seq uses some extra analysis to investigate CNV and ploidy.</span></p>
 
 <img src="../data/scNOMe_scCOOL.png" style="width:1000px;">
 

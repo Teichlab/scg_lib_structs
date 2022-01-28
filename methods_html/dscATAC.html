@@ -1,62 +1,29 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.8em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>dscATAC-seq/dsciATAC-seq</title>
 </head>
 <body>
 
 <h1><a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">dscATAC-seq/dsciATAC-seq (SureCell ATAC-seq)</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">dscATAC-seq and dsciATAC-seq are droplet-based scATAC-seq methods. They were published in Nat Biotechnol. on 2019 Jun 24 (<a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al. Nature Biotechnology 37, 916–924.</a>), and the kit for this method is <a href="http://www.bio-rad.com/en-uk/product/surecell-atac-seq-library-prep-kit?ID=PEXSR1MC1ORV" target="_blank">SureCell ATAC-seq Library Prep Kit</a>.</span></p>
+<p><span style="font-size:1.1em;">dscATAC-seq and dsciATAC-seq are droplet-based scATAC-seq methods. They were published in Nat Biotechnol. on 2019 Jun 24 (<a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al. Nature Biotechnology 37, 916–924.</a>), and the kit for this method is <a href="http://www.bio-rad.com/en-uk/product/surecell-atac-seq-library-prep-kit?ID=PEXSR1MC1ORV" target="_blank">SureCell ATAC-seq Library Prep Kit</a>.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;">For beginners who are new to droplet technology, it might not be clear what improvement dscATAC-seq has made. I will briefly explain here. In the droplet technologies, you have beads with barcodes going into droplets, and this follows a Poisson distribution with a certain mean. You also have cells going into droplets, and this also follows a Poisson distribution with a different mean. These two loading processes are independent, so you will have droplets with no beads no cells, with beads but no cells, with cells but no beads. Only a small proportion of the droplets contain exactly one bead and one cell. That's why in many droplet technologies, you load 100k cells, but eventually only get back 1-2k cells after sequencing.</span></p>
+<p><span style="font-size:1.1em;">For beginners who are new to droplet technology, it might not be clear what improvement dscATAC-seq has made. I will briefly explain here. In the droplet technologies, you have beads with barcodes going into droplets, and this follows a Poisson distribution with a certain mean. You also have cells going into droplets, and this also follows a Poisson distribution with a different mean. These two loading processes are independent, so you will have droplets with no beads no cells, with beads but no cells, with cells but no beads. Only a small proportion of the droplets contain exactly one bead and one cell. That's why in many droplet technologies, you load 100k cells, but eventually only get back 1-2k cells after sequencing.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;">In 2009, <a href="https://pubs.rsc.org/en/content/articlelanding/2009/LC/b909386a" target="_blank">Abates et al.</a> showed that if you increase the size of the beads to a point that they are close-packed, you can insert a controllable number of beads into every droplet. <a href="https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html" target="_blank">inDrop</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">10x Genomics</a> used this type of "big" close-packed hydrogel beads to solve the bead loading problem, though the hydrogel beads used by inDrop and 10x Genomics are different. However, for small beads, such as those used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Drop-seq</a>, <a href="https://teichlab.github.io/scg_lib_structs/methods_html/SureCell.html" target="_blank">Bio-Rad SureCell</a> and many other home-made droplet device, this cannot be achieved.</span></p>
+<p><span style="font-size:1.1em;">In 2009, <a href="https://pubs.rsc.org/en/content/articlelanding/2009/LC/b909386a" target="_blank">Abates et al.</a> showed that if you increase the size of the beads to a point that they are close-packed, you can insert a controllable number of beads into every droplet. <a href="https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html" target="_blank">inDrop</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">10x Genomics</a> used this type of "big" close-packed hydrogel beads to solve the bead loading problem, though the hydrogel beads used by inDrop and 10x Genomics are different. However, for small beads, such as those used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Drop-seq</a>, <a href="https://teichlab.github.io/scg_lib_structs/methods_html/SureCell.html" target="_blank">Bio-Rad SureCell</a> and many other home-made droplet device, this cannot be achieved.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;">What <a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al.</a> did was that they load many more (superload) beads than usual to significantly reduce the number of drops without beads. However, this also increase the number of drops with more than one bead. Here is the clever bit, if more than one bead end up in the same drop, they will share the same set of genomic fragments to start with the amplification from that drop. Therefore, those beads from the same drops should have much higher overlap of Tn5 insertion positions among each other than beads from different drops (see Supplementary Fig1 and 2 in the paper). Therefore, one can figure out whether beads are from the same drops by checking the extent of overlap of reads from different bead barcodes. If the cells are loaded at a normal concentration, one can make sure most drops have at most 1 cell as usual.</span></p>
+<p><span style="font-size:1.1em;">What <a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al.</a> did was that they load many more (superload) beads than usual to significantly reduce the number of drops without beads. However, this also increase the number of drops with more than one bead. Here is the clever bit, if more than one bead end up in the same drop, they will share the same set of genomic fragments to start with the amplification from that drop. Therefore, those beads from the same drops should have much higher overlap of Tn5 insertion positions among each other than beads from different drops (see Supplementary Fig1 and 2 in the paper). Therefore, one can figure out whether beads are from the same drops by checking the extent of overlap of reads from different bead barcodes. If the cells are loaded at a normal concentration, one can make sure most drops have at most 1 cell as usual.</span></p>
 
-<p><span style="font-family:verdana; font-size:1.1em;">dsciATAC-seq takes a step further. It builds on top of dscATAC-seq, but take the idea of combinatorial indexing strategy, like that used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq</a>, and treat cells in different reactions with barcoded Tn5 and pooled all the reactions together before loading onto the machine to make emulsion. In this case, both beads and cells are overloaded. One can use the aformentioned strategy to figure out whether beads are from the same drop, and on top of that, use the Tn5 barcodes to figure out whether the reads are from the same single cells. In this way, the throughput becomes really high.</span></p>
+<p><span style="font-size:1.1em;">dsciATAC-seq takes a step further. It builds on top of dscATAC-seq, but take the idea of combinatorial indexing strategy, like that used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq</a>, and treat cells in different reactions with barcoded Tn5 and pooled all the reactions together before loading onto the machine to make emulsion. In this case, both beads and cells are overloaded. One can use the aformentioned strategy to figure out whether beads are from the same drop, and on top of that, use the Tn5 barcodes to figure out whether the reads are from the same single cells. In this way, the throughput becomes really high.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 
-<p><span style="font-family:verdana; font-size:1.1em;">Huge thanks to <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the following information and make this page possible.</span></p>
+<p><span style="font-size:1.1em;">Huge thanks to <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the following information and make this page possible.</span></p>
 
 <br></br>
 

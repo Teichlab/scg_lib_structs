@@ -1,48 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.8em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>scDamID</title>
 </head>
 <body>
 
 <h1><a href="https://www.sciencedirect.com/science/article/pii/S0092867415010922" target="_blank">scDamID</a></h1>
 
-<p><span style="font-family:verdana; font-size:1.1em;">The scDamID method was published by Kind <i>et al.</i> in <a href="https://www.sciencedirect.com/science/article/pii/S0092867415010922" target="_blank">Cell 163, 134-147</a>. It was based on the previous method called DamID invented by Bas van Steensel and Steven Henikoff in <a href="https://www.nature.com/articles/nbt0400_424" target="_blank">Nature Biotechnology 18, 424–428</a>. DamID is based on the idea that the sequence GATC occurs frequently enough in the genome, and the methylation of adenine (<sup>m</sup>A) is really really rare in higher eukaryotic cells. Well, I'm not going to comment on whether <sup>m</sup>A really exists naturally in the mammalian genomes, because I'm not an expert on this. Anyway, G<sup>m</sup>ATC is really rare. The idea of DamID is very clever and simple: by tethering <i>E. coli</i> DNA adenine methyltransferase (Dam) to a DNA/chromatin interacting protein, Dam can be targeted <i>in vivo</i> to native binding sites of that protein, resulting in local DNA methylation G<sup>m</sup>ATC. By using the restriction enzyme <a href="https://www.neb.com/products/r0176-dpni#Product%20Information" target="_blank">Dpn I</a> that specifically digest G<sup>m</sup>ATC, one can find out where the protein of interest is bound. scDamID optimises each reaction step and keeps each reaction in one single tube before pre-amplification. Then it just uses standard Illumina library preparation procedures (end repair - A tailing - ligation of adapter - PCR). This enables DamID at the single cell level. It is mostly used to study lamina-DNA contacts.</span></p>
+<p><span style="font-size:1.1em;">The scDamID method was published by Kind <i>et al.</i> in <a href="https://www.sciencedirect.com/science/article/pii/S0092867415010922" target="_blank">Cell 163, 134-147</a>. It was based on the previous method called DamID invented by Bas van Steensel and Steven Henikoff in <a href="https://www.nature.com/articles/nbt0400_424" target="_blank">Nature Biotechnology 18, 424–428</a>. DamID is based on the idea that the sequence GATC occurs frequently enough in the genome, and the methylation of adenine (<sup>m</sup>A) is really really rare in higher eukaryotic cells. Well, I'm not going to comment on whether <sup>m</sup>A really exists naturally in the mammalian genomes, because I'm not an expert on this. Anyway, G<sup>m</sup>ATC is really rare. The idea of DamID is very clever and simple: by tethering <i>E. coli</i> DNA adenine methyltransferase (Dam) to a DNA/chromatin interacting protein, Dam can be targeted <i>in vivo</i> to native binding sites of that protein, resulting in local DNA methylation G<sup>m</sup>ATC. By using the restriction enzyme <a href="https://www.neb.com/products/r0176-dpni#Product%20Information" target="_blank">Dpn I</a> that specifically digest G<sup>m</sup>ATC, one can find out where the protein of interest is bound. scDamID optimises each reaction step and keeps each reaction in one single tube before pre-amplification. Then it just uses standard Illumina library preparation procedures (end repair - A tailing - ligation of adapter - PCR). This enables DamID at the single cell level. It is mostly used to study lamina-DNA contacts.</span></p>
 
 <br></br>
 

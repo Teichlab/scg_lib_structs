@@ -1,48 +1,15 @@
 <!DOCTYPE html>
 <html>
 
-<style>
-seq {font-family:Monaco, "Courier New";
-  font-size:0.9em;
-  text-indent: 2.7em;
-}
-
-align.small {
-    font-family:Monaco, "Courier New";
-    font-size:0.9em;
-    line-height:65%;
-}
-
-align.long {
-  font-family:Monaco, "Courier New";
-  font-size:0.7em;
-  line-height:70%;
-}
-
-s5 {color:#6baed6;}
-s7 {color:#fc9272;}
-p5 {color:#08519c;}
-p7 {color:#a50f15;}
-me {color:#969696;}
-tso {color:#2ca25f;}
-cbc {color:#f768a1;}
-umi {color:#807dba;}
-t7 {color:blue;}
-pe1 {color:#bcbddc;}
-pe2 {color:#9ebcda;}
-w1 {color:#f03b20;}
-h3 {font-family:verdana;}
-
-</style>
-
 <head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
 <title>itChIP-seq</title>
 </head>
 <body>
 
 <h1><a href="https://www.nature.com/articles/s41556-019-0383-5" target="_blank">itChIP-seq</a></h1>
 
-<span style="font-family:verdana; font-size:1.1em;"><p>The indexing and tagmentation-based ChIP-seq (itChIP-seq) method uses similar strategy as <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html", target="_blank">Drop-ChIP</a>. Instead of using MNase and barcoding in droplets, itChIP-seq uses barcoded Tn5 to tag sorted single nuclei. After pooling all indexed nuclei, an immunoprecipitation is performed using an antibody against a protein of interest.</p>
+<span style="font-size:1.1em;"><p>The indexing and tagmentation-based ChIP-seq (itChIP-seq) method uses similar strategy as <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html", target="_blank">Drop-ChIP</a>. Instead of using MNase and barcoding in droplets, itChIP-seq uses barcoded Tn5 to tag sorted single nuclei. After pooling all indexed nuclei, an immunoprecipitation is performed using an antibody against a protein of interest.</p>
 
 <p>The oligos used to generate barcoded Tn5 are the same as those used in sci-ATAC-seq. You can follow the step-by-step library construction in the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq webpage</a> for details. However, if you construct the libary in that way, you have to do a customised sequencing run with customised sequencing primers and use an entire flow cell. This can be expensive if you don't have small machines like Miseq or NextSeq. In the itChIP-seq paper, the authors manupilated the oligos and make it compatible with Illumina standard workflow, which makes the sequeuncing more flexible. In this page, this new design is shown below. The detailed experimental procedures can be found from <a href="https://protocolexchange.researchsquare.com/article/pex-555/v1" target="_blank">Protocol Exchange</a>.</p></span>
 
