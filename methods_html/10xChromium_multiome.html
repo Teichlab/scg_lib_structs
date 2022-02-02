@@ -19,13 +19,13 @@
 <p>Single Cell Multiome Gel Beads A (PN-2000261). Each individual bead has two types of oligos:</p>
 <pre>
 <seq>
-         For ATAC: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2> -3'
+         For ATAC: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3> -3'
 
           For RNA: |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp cell barcode]</cbc><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTVN -3'
 </seq>
 </pre>
 <p>Template Switching Oligo (TSO) (PN-3000228): 5'- <tso>AAGCAGTGGTATCAACGCAGAGTACAT</tso>rGrGrG -3'</p>
-<p>Pre-Amp Primers (PN-2000271). These should be a mixture of four differen primers (fact check ????????) for pre-amplification:</p>
+<p>Pre-Amp Primers (PN-2000271). These should be a mixture of four different primers (fact check ????????) for pre-amplification:</p>
 <pre>
 <seq>
           ATAC-fwd: 5'- <p5>AATGATACGGCGACCACCGAGA</p5> -3'
@@ -65,7 +65,7 @@
     <i>Product 1 (different ends, the only amplifiable fragments):</i>
 
         5'-         <w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-        3'- <pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>                -5'
+        3'- <pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>                -5'
     
     <ii>Product 2 (same ends, cannot be captured, will be omitted in the next step):</i>
 
@@ -74,8 +74,8 @@
     
     <iii>Product 3 (same ends, can be captured but cannot be amplified, will be omitted):</i>
 
-        5'-         <w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me><w1>GACGCTGCCGACGA</w1><pe2>CAGACGCG</pe2> -3'
-        3'- <pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><w1>CTGCGACGGCTGCT</w1>         -5'
+        5'-         <w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me><w1>GACGCTGCCGACGA</w1><pe3>CAGACGCG</pe3> -3'
+        3'- <pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><w1>CTGCGACGGCTGCT</w1>         -5'
 
 </seq>
 </pre>
@@ -105,8 +105,8 @@
 
 2.2) ATAC: simply beads capture and ligation (????? not entirely sure):
 
-     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-                                                         3'- <pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>                -5'
+     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
+                                                         3'- <pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>                -5'
 </seq>
 </pre>
 
@@ -123,14 +123,14 @@
 
   3.2.1) The first step of the Pre-Amplification is the 72 degree 5 mins to fill in the gap:
 
-     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX--->     <me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-                                               <-------------<pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>    <----XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>------------>
+     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX--->     <me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
+                                               <-------------<pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>    <----XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me>------------>
 
   3.2.2) 7 cycles of amplification:
 
         5'- <p5>AATGATACGGCGACCACCGAGA</p5>------------->
-     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-        3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
+     |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
+        3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
                                                                                                                      <------------<t7>GGCTCGGGTGCTCTG</t7> -5'
 </seq>
 </pre>
@@ -145,8 +145,8 @@
 
 4.2) ATAC:
 
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
 </seq>
 </pre>
 
@@ -161,8 +161,8 @@ Follow Steps (4) to (7) of <b><a href="https://teichlab.github.io/scg_lib_struct
 5.2) ATAC: amplify using SI-PCR Primer B (PN-2000128) and Sample Index Plate N, Set A (PN-3000427):
 
 5'- <p5>AATGATACGGCGACCACCGAGA</p5>------------->
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7> -5'
                                                                                                           <---------------<t7>GGCTCGGGTGCTCTG</t7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7>-5'
 </seq>
 </pre>
@@ -179,9 +179,9 @@ Follow Steps (4) to (7) of <b><a href="https://teichlab.github.io/scg_lib_struct
 
 6.2) ATAC:
 
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><pe2>CGCGTCTG</pe2><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><pe2>GCGCAGAC</pe2><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-           <p5>Illumina P5</p5>              <cbc>16-bp cell</cbc>    <pe2>spacer</pe2>      <w1>s5</w1>              <me>ME</me>            gDNA           <me>ME</me>               <t7>s7</t7>          8-bp         <p7>Illumina P7</p7>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><pe3>CGCGTCTG</pe3><w1>TCGTCGGCAGCGTC</w1><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><t7>CCGAGCCCACGAGAC</t7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><pe3>GCGCAGAC</pe3><w1>AGCAGCCGTCGCAG</w1><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><t7>GGCTCGGGTGCTCTG</t7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <cbc>16-bp cell</cbc>    <pe3>spacer</pe3>      <w1>s5</w1>              <me>ME</me>            gDNA           <me>ME</me>               <t7>s7</t7>          8-bp         <p7>Illumina P7</p7>
                                       <cbc>barcode</cbc>                                                                                       sample index
 </seq>
 </pre>
