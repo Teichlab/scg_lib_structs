@@ -8,7 +8,7 @@
 <body>
 
 <h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' Solution V2 and V3</span></a></h1>
-<p><span style="font-size:1.1em;">The Chromium Single Cell 3’ Solution V2 chemistry is shown here. Oligo sequence information is taken from <a href="../data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>. You can find out all the cell barcodes (16 bp) here: <a href="../data/737K-august-2016.txt" target="_blank">737K-august-2016.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" target="blank">Cell Ranger</a> (using Cell Ranger v2.1.0 as an example) /path/to/cellranger-2.1.0/cellranger-cs/2.1.0/tenkit/lib/python/tenkit/barcodes.</span></p>
+<p><span style="font-size:1.1em;">The Chromium Single Cell 3' Solution V2 chemistry is shown here. Oligo sequence information is taken from <a href="../data/CG000108_AssayConfiguration_SC3v2.pdf" target="_blank"><span style="color:blue;">The 10x Genomics Technical Note</span></a>. You can find out all the cell barcodes (16 bp) here: <a href="../data/737K-august-2016.txt" target="_blank">737K-august-2016.txt</a>. This file is copied from <a href="https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger" target="blank">Cell Ranger</a> (using Cell Ranger v2.1.0 as an example) /path/to/cellranger-2.1.0/cellranger-cs/2.1.0/tenkit/lib/python/tenkit/barcodes.</span></p>
 
 <p><span style="font-size:1.1em;"><a href="../data/CG000183_ChromiumSingleCell3__v3_UG_Rev-A.pdf" target="_blank">The V3 chemistry</a> gave better sensitivity (detects more genes) comparting to the V2 chemistry. In addition, the oligo beads are modifidied to support feature barcoding. In terms of the 3' gene expression library preparation, there are only a few nucleotide differences for some oligos. The final libary structure is exactly the same, except that the UMI is 10-bp long in V2 but 12-bp in V3. The cell barcodes whitelist for the V3 chemistry can be found from the Cell Ranger software (using Cell Ranger v3.1.0 as an example): cellranger-3.1.0/cellranger-cs/3.1.0/lib/python/cellranger/barcodes/3M-february-2018.txt.gz. Oligo sequences are provided for both V2 and V3 if they are different. Only V2 library preparation is drawn here.</span></p>
 
@@ -48,7 +48,7 @@
 </pre>
 <p>Library PCR primer 1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5> -3'</p>
 <p>Library PCR primer 2: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTGACTGGAGTTCAGACGTGT</s7> -3'</p>
-<p>Sample index sequencing primer: 5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
@@ -191,7 +191,7 @@
 <h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template):</h3>
 <pre>
 <align class="long">
-                                                                                                  5'- <s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
+                                                                                                   5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>------->
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi>(pA)BXXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
