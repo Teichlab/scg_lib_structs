@@ -118,6 +118,9 @@ Click the following links to view the methods. Notes:
   - [Slide-seq](https://www.science.org/doi/10.1126/science.aaw1219) / [Slide-seqV2](https://www.nature.com/articles/s41587-020-0739-1) / [Slide-DNA-seq](https://www.nature.com/articles/s41586-021-04217-4)
   - [CoTECH](https://www.nature.com/articles/s41592-021-01129-z)
   - [PairedTag](https://www.nature.com/articles/s41592-021-01060-3)
+  - [GoT-ChA](https://www.biorxiv.org/content/10.1101/2022.05.11.491515v1)
+  - [Methyl-HiC](https://www.nature.com/articles/s41592-019-0502-z)
+  - [SNuBar-ATAC](https://www.sciencedirect.com/science/article/pii/S1097276521007954)
 
 ## scRNA-seq technical comparisons
 
