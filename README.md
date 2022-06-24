@@ -121,6 +121,8 @@ Click the following links to view the methods. Notes:
   - [GoT-ChA](https://www.biorxiv.org/content/10.1101/2022.05.11.491515v1)
   - [Methyl-HiC](https://www.nature.com/articles/s41592-019-0502-z)
   - [SNuBar-ATAC](https://www.sciencedirect.com/science/article/pii/S1097276521007954)
+  - [RAISIN RNA-seq & MIRACL-seq](https://www.sciencedirect.com/science/article/pii/S0092867420309946)
+  - [Microbe-seq](https://www.science.org/doi/10.1126/science.abm1483)
 
 ## scRNA-seq technical comparisons
 
