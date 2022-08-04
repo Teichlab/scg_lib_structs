@@ -88,19 +88,19 @@
 </align>
 </pre>
 
-<h3>(2) Add Index 1 sequencing primer to sequence the Tn5 barcode and i7 index (bottom strand as template, 43 cycles, the first 8 bp are Tn5 barcodes, and the last 8 bp are i7 indices):</h3>
+<h3>(2) Add Index 1 sequencing primer to sequence the Tn5 barcode and i7 index (bottom strand as template, 43 cycles, the first 8 bp are Tn5 barcodes, and the last 8 bp are i7 indices, the middle 27 are dark cycles):</h3>
 <pre>
 <align class="long">
-                                                                                                                   5'- <me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG------------------------------------------>
+                                                                                                                   5'- <me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG--------ooooooooooooooooooooooooooo------->
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAGAGGTGCG</s5><cbc>NNNNNNNN</cbc>CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me>CTCCGCCTCTGCCAC<cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
-<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the second index (i5 index) (top strand as template, 37 cycles??? not entirely sure! The first 8 bp are i5 indices, and the last 8 bp are Tn5 barcodes):</h3>
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the second index (i5 index) (top strand as template, 37 cycles, the first 8 bp are Tn5 barcodes, and the last 8 bp are i5 indices, the middle 21 are dark cycles):</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTCTCCACGC</s5><cbc>NNNNNNNN</cbc>GCGATCGAGGACGGC<me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me>GAGGCGGAGACGGTG<cbc>NNNNNNNN</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-                                 <------------------------------------CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me> -5'
+                                 <-------ooooooooooooooooooooo--------CGCTAGCTCCTGCCG<me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
