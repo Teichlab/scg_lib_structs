@@ -656,7 +656,7 @@ After that, you should have the `matrix.mtx` in the `snATAC-seq/chromap_outs/raw
 
 Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, we could use `starolo`. It is used for scRNA-seq in general, but it does have a cell calling function that takes a directory containing raw mtx and associated files, and return the filtered ones. Since `starsolo` looks for the following three files in the input directory: `matrix.mtx`, `features.tsv` and `barcodes.tsv`. Those are the output from the 10x Genomics scRNA-seq workflow. In this case, we can use `peaks.bed` as our `features.tsv`:
 
-``console
+```console
 # trick starsolo to use peaks.bed as features.tsv by creating symlink
 
 ln -s peaks.bed snATAC-seq/chromap_outs/raw_peak_bc_matrix/features.tsv
