@@ -244,7 +244,7 @@
 </align>
 </pre>
 
-<h3>(3) Cluster regeneration. Then, for RNA library, add i5 index sequencing primer to sequence the second index (i5) (top strand as template, 8 cycles); for ATAC library, add Nextera-R2 sequencing primer to sequence the second read (top strand as template, 75 cycles, this is the right end of ATAC, and by conventional naming, this is index2 read):</h3>
+<h3>(3) Cluster regeneration, add i5 index sequencing primer to sequence the second index (i5) (top strand as template, 8 cycles):</h3>
 <pre>
 <align class="long">
 <i>mRNA:</i>
@@ -256,11 +256,11 @@
 <i>Open chromatin:</i>
 
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
-                                                                                                                                        <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                 <-------CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG -5'
 </align>
 </pre>
 
-<h3>(4) For RNA library, add Nextera-R2 sequencing primer to sequence the second read (top strand as template); for ATAC library, add i5 index sequencing primer to sequence the second index (top strand as template):</h3>
+<h3>(4) Add Nextera-R2 sequencing primer to sequence the second read (top strand as template, 75 cycles); for RNA library, this is the cDNA reads; for ATAC library, this is the right end of ATAC:</h3>
 <pre>
 <align class="long">
 <i>mRNA:</i>
@@ -271,7 +271,7 @@
 <i>Open chromatin:</i>
 
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNGCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>NNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
-                                 <-------CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG -5'
+                                                                                                                                        <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
 
