@@ -54,7 +54,7 @@ You can see each sample actually has four different index sequences. This is bec
   =====  ================  =======  ========================================================
 ```
 
-Look at the order of the sequencing, as you can see, the first (`R1`), the 3rd (`I2`) and the 4th (`R2`) reads are all important for us. Therefore, we would like to get all of them for each sample based on sample index, that is, the 2nd read (`I2`). To do this, you should run `bcl2fastq` in the following way:
+Look at the order of the sequencing, as you can see, the first (`R1`), the 3rd (`I2`) and the 4th (`R2`) reads are all important for us. Therefore, we would like to get all of them for each sample based on sample index, that is, the 2nd read (`I1`). To do this, you should run `bcl2fastq` in the following way:
 
 ```console
 bcl2fastq --use-bases-mask=Y50,I8,Y16,Y50 \
@@ -92,7 +92,7 @@ Sample02_S2_R2_001.fastq.gz
 Sample02_S2_R3_001.fastq.gz
 ```
 
-We can safely ignore the `I1` files, but the naming here is really different from our normal usage. The `R1` files are good. The `R2` files here actually means `I2` in our normal usage. The `R3` files here actually means `R2` in our normal usage. Anyway, __DO NOT get confused__.
+We can safely ignore the `I1` files, but the naming here is really different from our normal usage. The `R1` files are good. The `R2` files here actually mean `I2` in our normal usage. The `R3` files here actually mean `R2` in our normal usage. Anyway, __DO NOT get confused__.
 
 ## Public Data
 
@@ -124,7 +124,7 @@ Like said before, we could safely ignore all the `I1` reads.
 
 ## Prepare Whitelist
 
-The barcodes on the gel beads of the 10x Genomics platform are well defined. We need the information for the Single Cell ATAC kit. If you have `cellranger-atac` in your computer, you will find a file called `737K-cratac-v1.txt.gz` in the `llib/python/atac/barcodes` directory. If you don't have `cellranger-atac`, I have prepared the file for you:
+The barcodes on the gel beads of the 10x Genomics platform are well defined. We need the information for the Single Cell ATAC kit. If you have `cellranger-atac` in your computer, you will find a file called `737K-cratac-v1.txt.gz` in the `lib/python/atac/barcodes` directory. If you don't have `cellranger-atac`, I have prepared the file for you:
 
 ```console
 # download the whitelist
@@ -141,7 +141,7 @@ cat 10xscATAC/pbmc500/737K-cratac-v1.txt | \
 
 ### Explain Whitelist
 
-You may wonder what is the reverse complementary step about. The cell barcodes in the `737K-cratac-v1.txt` are the sequences on the gel beads. These 16 bp cell barcodes are in the `i5` index location, that is, between Illumina P5 and the Nextera Read 1 sequence. It means they will be sequenced as `Index 2` (`I2`). How `i5` or `Index 2` is sequenced depends on the machine. Previously, __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __NovaSeq 6000 (v1.0)__ use the bottom strand as the template, so the index reads will be the same as the barcodes in the `737K-cratac-v1.txt`. However, more recent machines and chemistries, like __iSeq 100__, __MiniSeq__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, use the top strand as the template, so the index reads will be reverse complementary to the barcodes in the `737K-cratac-v1.txt`. Therefore, we need to create a reverse complementary file as the whitelist for some data.
+You may wonder what is the reverse complementary step about. The cell barcodes in the `737K-cratac-v1.txt` are the sequences on the gel beads. These 16 bp cell barcodes are in the `i5` index location, that is, between Illumina P5 and the Nextera Read 1 sequence. It means they will be sequenced as `Index 2` (`I2`). How `i5` or `Index 2` is sequenced depends on the machine. Previously, __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__ use the bottom strand as the template, so the index reads will be the same as the barcodes in the `737K-cratac-v1.txt`. However, more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, use the top strand as the template, so the index reads will be reverse complementary to the barcodes in the `737K-cratac-v1.txt`. Therefore, we need to create a reverse complementary file as the whitelist for some data.
 
 ```{eval-rst}
 .. tip::
@@ -197,11 +197,11 @@ If you understand the __10x Genomics Single Cell ATAC__ experimental procedures 
 
 `-1`, `-2` and `-b`
 
->>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-1`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-2`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist 10xscATAC/pbmc500/737K-cratac-v1.txt`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-atac`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Thefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
+>>> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-atac`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Therefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
 
 `-o 10xscATAC/chromap_outs/fragments.tsv`
 

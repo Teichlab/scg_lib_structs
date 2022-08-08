@@ -13,7 +13,7 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 If you use this assay, you have to run the sequencing by yourself using a custom sequencing recipe or ask your core facility to do this for you. We don't have the proper setup to do this experiment here, so I haven't tried __snATAC-seq__ by myself. This is the educational guess of the sequencing configuration. Spike-in libraries are used in this assay, so that dark cycles are not needed when sequencing the index.
 
-Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
+Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
 
 | Order | Read             | Cycle | Description                                               |
 |-------|------------------|-------|-----------------------------------------------------------|
@@ -22,7 +22,7 @@ Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq__, __Ne
 | 3     | Index 2 (__i5__) | 37    | `I2_001.fastq.gz`, 8-bp T5 + 21-bp linker + 8-bp i5 index |
 | 4     | Read 2           | >50   | `R2_001.fastq.gz`, Genomic insert                         |
 
-Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
+Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
 
 | Order | Read             | Cycle | Description                                               |
 |-------|------------------|-------|-----------------------------------------------------------|

@@ -6,12 +6,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 You sequencing read configuration is like this:
 
-| Order | Read             | Cycle     | Description                                        |
-|-------|------------------|-----------|----------------------------------------------------|
-| 1     | Read 1           | 16        | `R1_001.fastq.gz`, 6 bp cell barcodes + 10 bp UMI  |
-| 2     | Index 1 (__i7__) | 8         | `I1_001.fastq.gz`, Plate barcode                   |
-| 3     | Index 2 (__i5__) | 8 or None | `I2_001.fastq.gz`, Plate index (if any)            |
-| 4     | Read 2           | >50       | `R2_001.fastq.gz`, cDNA reads                      |
+| Order | Read             | Cycle     | Description                                          |
+|-------|------------------|-----------|------------------------------------------------------|
+| 1     | Read 1           | 16        | `R1_001.fastq.gz`, 6 bp cell barcodes + 10 bp UMI    |
+| 2     | Index 1 (__i7__) | 8         | `I1_001.fastq.gz`, Plate barcode                     |
+| 3     | Index 2 (__i5__) | 8 or None | `I2_001.fastq.gz`, Plate index (if using dual index) |
+| 4     | Read 2           | >50       | `R2_001.fastq.gz`, cDNA reads                        |
 
 If you sequence your data via your core facility or a company, you will need to provide the plate index sequence, which is the `N7xx` primer from the Illumina Nextera Index king, to them and they will demultiplex for you. You will get one two `fastq` files per plate. The cell barcode is basically the first 6 bp of Read 1 (`R1_001.fastq.gz`).
 

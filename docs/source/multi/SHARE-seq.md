@@ -1,11 +1,3 @@
 # SHARE-seq
 
-SHARE-seq
-
-## ATAC
-
-Test
-
-## RNA
-
-Test
+SHARE-seq, to be updated.

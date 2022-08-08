@@ -8,12 +8,12 @@ The `V3` chemistry is a significant improvement over the previous `V2` version o
 
 You sequencing read configuration is like this:
 
-| Order | Read             | Cycle           | Description                                        |
-|-------|------------------|-----------------|----------------------------------------------------|
-| 1     | Read 1           | 28              | `R1_001.fastq.gz`, 16 bp cell barcodes + 12 bp UMI |
-| 2     | Index 1 (__i7__) | 8 or 10         | `I1_001.fastq.gz`, Sample index                    |
-| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if any)           |
-| 4     | Read 2           | >50             | `R2_001.fastq.gz`, cDNA reads                      |
+| Order | Read             | Cycle           | Description                                           |
+|-------|------------------|-----------------|-------------------------------------------------------|
+| 1     | Read 1           | 28              | `R1_001.fastq.gz`, 16 bp cell barcodes + 12 bp UMI    |
+| 2     | Index 1 (__i7__) | 8 or 10         | `I1_001.fastq.gz`, Sample index                       |
+| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if using dual index) |
+| 4     | Read 2           | >50             | `R2_001.fastq.gz`, cDNA reads                         |
 
 If you sequence your data via your core facility or a company, you will need to provide the sample index sequence, which is the primer (__PN-1000213/PN-2000240__) taken from the commercial kit from 10x Genomics, to them and they will demultiplex for you. You will get two `fastq` files per sample. Read 1 contains the cell barcodes and UMI and Read 2 contains the reads from cDNA.
 

@@ -11,7 +11,7 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 ## For Your Own Experiments
 
-If you use this assay, you have to run the sequencing by yourself using a custom sequencing recipe or ask your core facility to do this for you. We don't have the proper setup to do this experiment here, so I haven't tried __sci-ATAC-seq__ by myself. This is the educational guess of the sequencing configuration. Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
+If you use this assay, you have to run the sequencing by yourself using a custom sequencing recipe or ask your core facility to do this for you. We don't have the proper setup to do this experiment here, so I haven't tried __sci-ATAC-seq__ by myself. This is the educational guess of the sequencing configuration. Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
 
 | Order | Read             | Cycle                                 | Description                       |
 |-------|------------------|---------------------------------------|-----------------------------------|
@@ -20,7 +20,7 @@ If you use this assay, you have to run the sequencing by yourself using a custom
 | 3     | Index 2 (__i5__) | 8 normal + 21 dark + 10 normal cycles | `I2_001.fastq.gz`, C15 + i5 index |
 | 4     | Read 2           | >50                                   | `R2_001.fastq.gz`, Genomic insert |
 
-Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
+Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
 
 | Order | Read             | Cycle                                 | Description                       |
 |-------|------------------|---------------------------------------|-----------------------------------|
@@ -441,7 +441,7 @@ Normally, we are all set and ready to go now. However ... see below ...
 
 ### Some Extra Work
 
-At this time of writing (31-July-2022), `chromap` only supports cell barcodes with `<32 bp` in length, based on [this thread](https://github.com/haowenz/chromap/issues/103). Therefore, we need a truncated version of the cell barcode and whitelist. We have a total of __884736__ valid cell barcodes with 36 bp. It turns out that the positions 3 - 33 (31 bp) are already unique. We could just use those 31 bp as our cell barcodes and whitelist. To this end, we do:
+At this time of writing (31-July-2022), `chromap` only supports cell barcodes with `<32 bp` in length based on [this thread](https://github.com/haowenz/chromap/issues/103). Therefore, we need a truncated version of the cell barcode and whitelist. We have a total of __884,736__ valid cell barcodes with 36 bp. It turns out that the positions 3 - 33 (31 bp) are already unique. We could just use those 31 bp as our cell barcodes and whitelist. To this end, we do:
 
 ```bash
 # truncate whitelist
@@ -651,7 +651,7 @@ At this stage, we pretty much have all the things needed. Those two files `aggre
 
 Here, I'm using a python script for this purpose. You don't have to do this. Choose whatever works for you. The point here is to just generate similar files as the __peak-barcode matrix__ described from [the 10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/matrices).
 
-First, let's make a directory to hold the output files and generate the `peaks.bed` and `barcodes.tsv` files, which are easy to do:
+First, let's make a directory to hold the output files and generate the `peaks.bed` and `barcodes.tsv` files, which is easy to do:
 
 ```bash
 # create dirctory

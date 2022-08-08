@@ -12,7 +12,7 @@ You sequencing read configuration is like this:
 |-------|------------------|-----------------|---------------------------------------------------------------------------------|
 | 1     | Read 1           | At least 26     | `R1_001.fastq.gz`, 16 bp cell barcodes + 10 bp UMI + TTTCTTATATGGG + 5' of cDNA |
 | 2     | Index 1 (__i7__) | 8 or 10         | `I1_001.fastq.gz`, Sample index                                                 |
-| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if any)                                        |
+| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if using dual index)                           |
 | 4     | Read 2           | >50             | `R2_001.fastq.gz`, cDNA reads                                                   |
 
 Most people just do 26 cycles for Read 1, but sometimes it is good to sequence longer because you will get the transcription start sites information.
