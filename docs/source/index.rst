@@ -15,7 +15,7 @@ As more and more methods are developed, the list in the `scg_lib_structs <https:
 Required softwares
 ------------------
 
-The softwares needed for the preprocessing is very standard. All of them are used routinely in genomics and can be installed via ``conda`` or the like, so I'm not going to talk about software installation. I'm stating the version of each software I'm currently using (24-Jul-2022). Also make sure they are executable and in your ``$PATH``.
+The softwares needed for the preprocessing is very standard. All of them are used routinely in genomics and can be installed via ``conda`` or the like, so I'm not going to talk about software installation. I'm stating the version of each software I'm currently using (08-Aug-2022). Also make sure they are executable and in your ``$PATH``.
 
 * General utilities
 
@@ -42,7 +42,7 @@ The softwares needed for the preprocessing is very standard. All of them are use
 
 .. code-block:: text
 
-   chromap v0.2.1-r369
+   chromap v0.2.3-r424
    MACS2 v2.2.7.1
 
 Note that ``bedClip`` and ``faSize`` are from the `UCSC genome browser executables <http://hgdownload.soe.ucsc.edu/admin/exe/>`_.

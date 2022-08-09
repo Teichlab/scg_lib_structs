@@ -100,7 +100,7 @@ bcl2fastq --use-bases-mask=Y20,Y50,I8,Y50 \
           -r 4 -w 4 -p 4
 ```
 
-You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but I the important bit that needs explanation is `--use-bases-mask=Y20,Y50,I8,Y50`. We have four reads, and that parameter specify how we treat each read in the stated order:
+You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but the important bit that needs explanation is `--use-bases-mask=Y20,Y50,I8,Y50`. We have four reads, and that parameter specify how we treat each read in the stated order:
 
 1. `Y20` at the first position indicates "use the cycle as a real read", so you will get 20-nt sequences, output as `R1_001.fastq.gz`, because this is the 1st real read.
 2. `Y50` at the second position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R2_001.fastq.gz`, because this is the 2nd real read.
