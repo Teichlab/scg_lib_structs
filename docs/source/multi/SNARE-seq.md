@@ -107,7 +107,7 @@ You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/seq
 3. `I8` at the third position indicates "use the cycle as an index read", so you will get 8-nt sequences, output as `I1_001.fastq.gz`, because this is the 1st index read, though it is the 3rd read overall.
 4. `Y50` at the fourth position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R3_001.fastq.gz`, because this is the 3rd real read, though it is the 4th read overall.
 
-Therefore, you will get four fastq file per sample. Using the examples above, these are the files you should get:
+Therefore, you will get four fastq files per sample. Using the examples above, these are the files you should get:
 
 ```bash
 # files for Sample01

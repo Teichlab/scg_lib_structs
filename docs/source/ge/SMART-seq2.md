@@ -4,7 +4,7 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 ## For Your Own Experiments
 
-You sequencing read configuration is like this:
+Your sequencing read configuration is like this:
 
 | Order | Read             | Cycle   | Description                      |
 |-------|------------------|---------|----------------------------------|

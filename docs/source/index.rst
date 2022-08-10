@@ -29,8 +29,6 @@ The softwares needed for the preprocessing is very standard. All of them are use
    bgzip v0.2.5
    bedClip
    faSize
-   bcl2fastq v2.20.0.422 (only if you want to practice generating FastQ)
-   sratoolkit v3.0.0 (only for GEO data)
 
 * scRNA-seq
 
@@ -46,6 +44,15 @@ The softwares needed for the preprocessing is very standard. All of them are use
    MACS2 v2.2.7.1
 
 Note that ``bedClip`` and ``faSize`` are from the `UCSC genome browser executables <http://hgdownload.soe.ucsc.edu/admin/exe/>`_.
+
+In addition, you might also need the following programs in certain cases:
+
+.. code-block:: text
+
+   bcl2fastq v2.20.0.422 (only if you want to practice generating FastQ)
+   sratoolkit v3.0.0 (only for a few GEO data)
+   cutadapt v2.10
+   umi_tools v1.0.1
 
 Before you start:
 -----------------

@@ -4,7 +4,7 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 ## For Your Own Experiments
 
-You sequencing read configuration is like this:
+Your sequencing read configuration is like this:
 
 | Order | Read             | Cycle     | Description                                          |
 |-------|------------------|-----------|------------------------------------------------------|
@@ -45,7 +45,7 @@ Plate04,,,,,,N704,TCCTGAGC,,,,
 Plate05,,,,,,N705,GGACTCCT,,,,
 ```
 
-Then, for each plate, you will get tw `fastq` files:
+Then, for each plate, you will get two `fastq` files:
 
 ```
 R1_001.fastq.gz

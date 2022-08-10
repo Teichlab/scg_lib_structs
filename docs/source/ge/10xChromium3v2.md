@@ -6,7 +6,7 @@ The `V2` chemistry is a significant improvement over the original `V1` version o
 
 ## For Your Own Experiments
 
-You sequencing read configuration is like this:
+Your sequencing read configuration is like this:
 
 | Order | Read             | Cycle           | Description                                           |
 |-------|------------------|-----------------|-------------------------------------------------------|

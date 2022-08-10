@@ -72,7 +72,7 @@ You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/seq
 3. `I8` at the third position indicates "use the cycle as an index read", so you will get 8-nt sequences, output as `I1_001.fastq.gz`, because this is the 1st index read, though it is the 3rd read overall.
 4. `Y50` at the fourth position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R3_001.fastq.gz`, because this is the 3rd real read, though it is the 4th read overall.
 
-Therefore, you will get four fastq file per sample per modality. Using the examples above, these are the files you should get:
+Therefore, you will get four fastq files per sample per modality. Using the examples above, these are the files you should get:
 
 ```bash
 # ATAC
@@ -186,7 +186,7 @@ After that, we are ready to begin the preprocessing.
 
 ## Prepare Whitelist
 
-There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of them. Here is the information from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538):
+There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same set of 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of themselves. Here is the information from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538):
 
 | WellPosition | Name          | Sequence | Reverse complement |
 |--------------|---------------|----------|:------------------:|
@@ -287,13 +287,13 @@ There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode_
 | G12          | Round1/2/3_95 | GATGAATC |      GATTCATC      |
 | H12          | Round1/2/3_96 | GCCAAGAC |      GTCTTGGC      |
 
-Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcoes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can donwload by [__click here__](https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv).
+Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcodes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can donwload by [__click here__](https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv).
 
 ```bash
 # download the ligation barcode file
 wget -P share-seq/data https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv
 
-# generate whitelist for chromap
+# generate whitelist
 for x in $(tail -n +2 share-seq/data/share-seq_ligationBC.csv | cut -f 4 -d,); do
     for y in $(tail -n +2 share-seq/data/share-seq_ligationBC.csv | cut -f 4 -d,); do
         for z in $(tail -n +2 share-seq/data/share-seq_ligationBC.csv | cut -f 4 -d,); do
@@ -392,7 +392,7 @@ If you understand the __SHARE-seq__ experimental procedures described in [this G
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SHARE-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 2 sequence. Therefore, Read 2 consists of cell barcodes and UMI comes from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __SHARE-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SHARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html) if you are not sure.
+>>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SHARE-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 2 sequence. Therefore, Read 2 consists of cell barcodes and UMI come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __SHARE-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SHARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 

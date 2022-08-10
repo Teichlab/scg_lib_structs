@@ -6,7 +6,7 @@ In the 5' strategy, the sequencing configuration of the `V2` chemistry is the sa
 
 ## For Your Own Experiments
 
-You sequencing read configuration is like this:
+Your sequencing read configuration is like this:
 
 | Order | Read             | Cycle           | Description                                                                     |
 |-------|------------------|-----------------|---------------------------------------------------------------------------------|

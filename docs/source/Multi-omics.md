@@ -8,5 +8,6 @@
    multi/ISSAAC-seq.md
    multi/SNARE-seq.md
    multi/SHARE-seq.md
+   multi/Paired-seq.md
 
 ```
