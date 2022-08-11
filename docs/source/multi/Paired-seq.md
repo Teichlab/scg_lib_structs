@@ -325,7 +325,7 @@ tail -n +2 paired-seq/data/paired-seq_bc02-03-04.csv | \
 
 You will see in the later section why we need those additional files for `starsolo`. Now we are ready to start the preprocessing.
 
-## From FastQ To Count Matrices``
+## From FastQ To Count Matrices
 
 Let's map the reads to the genome using `starsolo` for the RNA library and `chromap` for the ATAC library:
 

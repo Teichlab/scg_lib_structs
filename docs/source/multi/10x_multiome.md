@@ -61,21 +61,21 @@ The ATAC library is slightly more complicated than the gene expression library. 
 
 Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
 
-| Order | Read             | Cycle                     | Description                              |
-|-------|------------------|---------------------------|------------------------------------------|
-| 1     | Read 1           | >50                       | `R1_001.fastq.gz`, Genomic insert        |
-| 2     | Index 1 (__i7__) | 8                         | `I1_001.fastq.gz`, Sample index          |
-| 3     | Index 2 (__i5__) | 8 dark + 16 normal cycles | `I2_001.fastq.gz`, Cell barcodes (16 bp) |
-| 4     | Read 2           | >50                       | `R2_001.fastq.gz`, Genomic insert        |
+| Order | Read             | Cycle                     | Description                                                   |
+|-------|------------------|---------------------------|---------------------------------------------------------------|
+| 1     | Read 1           | >50                       | This normally yields `R1_001.fastq.gz`, Genomic insert        |
+| 2     | Index 1 (__i7__) | 8                         | This normally yields `I1_001.fastq.gz`, Sample index          |
+| 3     | Index 2 (__i5__) | 8 dark + 16 normal cycles | This normally yields `I2_001.fastq.gz`, Cell barcodes (16 bp) |
+| 4     | Read 2           | >50                       | This normally yields `R2_001.fastq.gz`, Genomic insert        |
 
 Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
 
-| Order | Read             | Cycle | Description                              |
-|-------|------------------|-------|------------------------------------------|
-| 1     | Read 1           | >50   | `R1_001.fastq.gz`, Genomic insert        |
-| 2     | Index 1 (__i7__) | 8     | `I1_001.fastq.gz`, Sample index          |
-| 3     | Index 2 (__i5__) | 16    | `I2_001.fastq.gz`, Cell barcodes (16 bp) |
-| 4     | Read 2           | >50   | `R2_001.fastq.gz`, Genomic insert        |
+| Order | Read             | Cycle | Description                                                   |
+|-------|------------------|-------|---------------------------------------------------------------|
+| 1     | Read 1           | >50   | This normally yields `R1_001.fastq.gz`, Genomic insert        |
+| 2     | Index 1 (__i7__) | 8     | This normally yields `I1_001.fastq.gz`, Sample index          |
+| 3     | Index 2 (__i5__) | 16    | This normally yields `I2_001.fastq.gz`, Cell barcodes (16 bp) |
+| 4     | Read 2           | >50   | This normally yields `R2_001.fastq.gz`, Genomic insert        |
 
 If you sequence your data via your core facility or a company, you will need to provide the sample index sequence, which is the primer (__PN-1000212__) taken from the commercial kit from 10x Genomics, to them and they will demultiplex for you. Tell them it is 10x Multiome ATAC library and they will know what to do.
 
