@@ -1,6 +1,6 @@
 # Paired-seq
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) to see how __Paired-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing method, where open chromatin DNA are transposed by indexed homodimer Tn5 and mRNA molecules are reverse transcribed by barcoded oligo-dT primers. Then three rounds of ligation are performed to added three 7-bp barcodes. UMI is added at the last round of ligation. After that, the reaction was split into two portion, one for ATAC and the other for RNA library preparations. Single cells can be identified by the combination of the Tn5/RT barcode plus three 7-bp barcodes.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) to see how __Paired-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing method, where open chromatin DNA are transposed by indexed homo-dimer Tn5 and mRNA molecules are reverse transcribed by barcoded oligo-dT primers. Then three rounds of ligation are performed to added three 7-bp barcodes. UMI is added at the last round of ligation. After that, the reaction was split into two portion, one for ATAC and the other for RNA library preparations. Single cells can be identified by the combination of the Tn5/RT barcode plus three 7-bp barcodes.
 
 ## For Your Own Experiments
 
@@ -95,7 +95,7 @@ wget -P paired-seq/data -c \
     ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR898/001/SRR8980191/SRR8980191_2.fastq.gz
 ```
 
-According to the __Paired-seq__ publication, Read 1 should be 53 bp and Read 2 should be 130 bp. However, if you look inside the downloaded files, you will see reads with variable lengths with a maximum 53 bp in Read 1 and 130 bp in Read 2. Not sure what happened, but let's remove the shorter reads. In this case, you need [cutadapt](https://cutadapt.readthedocs.io/en/stable/) or the like. The commands are:
+According to the __Paired-seq__ publication, Read 1 should be 53 bp and Read 2 should be 130 bp. However, if you look inside the downloaded files, you will see reads with variable lengths with a maximum 53 bp in Read 1 and 130 bp in Read 2. Not sure what happened, but let's remove the shorter reads. In this case, you need [Cutadapt](https://cutadapt.readthedocs.io/en/stable/) or the like. The commands are:
 
 ```bash
 # Clean ATAC
@@ -368,7 +368,7 @@ bgzip paired-seq/chromap_outs/fragments.tsv
 tabix -s 1 -b 2 -e 3 -p bed paired-seq/chromap_outs/fragments.tsv.gz
 ```
 
-After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC libray, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
+After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC library, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
 
 ### Explain star and chromap
 
@@ -402,11 +402,11 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 `--soloAdapterSequence ATCCACGTGCTTGAGAGGCCAGAGCATTCGTC`
 
->>> The 0 - 3 random bases in the middle of __Read 2__ makes the situation complicated, because the absolute positions of the cell barcode and UMI in each read will vary. Howevere, by specifying an adapter sequence, we could use this seqeunce as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. I choose this linker sequence as the adaptor because it is the longest. However, the other two linker sequences can be used as well. See below.
+>>> The 0 - 3 random bases in the middle of __Read 2__ makes the situation complicated, because the absolute positions of the cell barcode and UMI in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. I choose this linker sequence as the adaptor because it is the longest. However, the other two linker sequences can be used as well. See below.
 
 `--soloCBposition` and `--soloUMIposition`
 
->>> These opiotn specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
+>>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex.jpg)
 
@@ -416,7 +416,7 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 `--soloCBmatchWLtype 1MM`
 
->>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one for simplicity.
+>>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
 
 `--soloCellFilter EmptyDrops_CR`
 
@@ -450,7 +450,7 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 `-1`, and `-b`
 
->>> They are Read 1 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. However, the Read 2 in __Paired-seq__ only contains cell barcodes and UMI. Therefore, the ATAC-seq is essentailly single-end. `R1` is the genomic Read 1 and should be passed to `-1`; The `CB` file we just prepared contains the cell barcode and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>>> They are Read 1 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. However, the Read 2 in __Paired-seq__ only contains cell barcodes and UMI. Therefore, the ATAC-seq is essentially single-end. `R1` is the genomic Read 1 and should be passed to `-1`; The `CB` file we just prepared contains the cell barcode and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist paired-seq/data/whitelist.txt`
 
@@ -533,7 +533,7 @@ macs2 callpeak -t paired-seq/chromap_outs/reads.bed.gz \
 
 #### Explain MACS2
 
-The reasons of choosing those specific parameters are a bit more complicated. I have dedicated a post for this a while ago. Please have a look at [__this post__](https://dbrg77.github.io/posts/2020-12-09-atac-seq-peak-calling-with-macs2/) if you are still confused. Note the `-g`, which is the genome size parameter, is bascially the sum of human and mouse. The following output files are particularly useful:
+The reasons of choosing those specific parameters are a bit more complicated. I have dedicated a post for this a while ago. Please have a look at [__this post__](https://dbrg77.github.io/posts/2020-12-09-atac-seq-peak-calling-with-macs2/) if you are still confused. Note the `-g`, which is the genome size parameter, is basically the sum of human and mouse. The following output files are particularly useful:
 
 | File                       | Description                                                               |
 |----------------------------|---------------------------------------------------------------------------|
@@ -674,7 +674,7 @@ After that, you should have the `matrix.mtx` in the `paired-seq/chromap_outs/raw
 
 #### Cell Calling (Filter Cell Barcodes)
 
-Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, we could use `starolo`. It is used for scRNA-seq in general, but it does have a cell calling function that takes a directory containing raw mtx and associated files, and return the filtered ones. Since `starsolo` looks for the following three files in the input directory: `matrix.mtx`, `features.tsv` and `barcodes.tsv`. Those are the output from the 10x Genomics scRNA-seq workflow. In this case, we can use `peaks.bed` as our `features.tsv`:
+Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, we could use `starolo`. It is used for scRNA-seq in general, but it does have a cell calling function that takes a directory containing raw `mtx` and associated files, and return the filtered ones. Since `starsolo` looks for the following three files in the input directory: `matrix.mtx`, `features.tsv` and `barcodes.tsv`. Those are the output from the 10x Genomics scRNA-seq workflow. In this case, we can use `peaks.bed` as our `features.tsv`:
 
 ```console
 # trick starsolo to use peaks.bed as features.tsv by creating symlink

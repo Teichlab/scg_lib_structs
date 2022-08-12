@@ -4,7 +4,7 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 ## For Your Own Experiments
 
-If you follow the protocol, you will see that __ISAAC-seq__ leverage the __10x Genomics Single Cell ATAC__ kit for the joint detection of both gene expression (RNA) and chromatin accessibility (ATAC) from the same cell. Therefore, both the RNA and the ATAC libraries have the same configuration, and they are the same as the __10x Genomics Single Cell ATAC__ library configuration.
+If you follow the protocol, you will see that __ISSAAC-seq__ leverage the __10x Genomics Single Cell ATAC__ kit for the joint detection of both gene expression (RNA) and chromatin accessibility (ATAC) from the same cell. Therefore, both the RNA and the ATAC libraries have the same configuration, and they are the same as the __10x Genomics Single Cell ATAC__ library configuration.
 
 If you sequence your data via your core facility or a company, you will need to provide the sample and modality index sequence, which is basically the Illumina Nextera `N7xx` primer, to them and ask they to sequence the library as if they are __10x Genomics Single Cell ATAC__ libraries. They will know what to do and demultiplex for you.
 
@@ -65,12 +65,12 @@ bcl2fastq --use-bases-mask=Y151,I8,Y16,Y151 \
           -r 4 -w 4 -p 4
 ```
 
-You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but I the important bit that needs explanation is `--use-bases-mask=Y151,I8,Y16,Y151`. We have four reads, and that parameter specify how we treat each read in the stated order:
+You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but the important bit that needs explanation is `--use-bases-mask=Y151,I8,Y16,Y151`. We have four reads, and that parameter specify how we treat each read in the stated order:
 
-1. `Y151` at the first position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R1_001.fastq.gz`, because this is the 1st real read.
+1. `Y151` at the first position indicates "use the cycle as a real read", so you will get 151-nt sequences, output as `R1_001.fastq.gz`, because this is the 1st real read.
 2. `I8` at the second position indicates "use the cycle as an index read", so you will get 8-nt sequences, output as `I1_001.fastq.gz`, because this is the 1st index read.
 3. `Y16` at the third position indicates "use the cycle as a real read", so you will get 16-nt sequences, output as `R2_001.fastq.gz`, because this is the 2nd real read, though it is the 3rd read overall.
-4. `Y151` at the fourth position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R3_001.fastq.gz`, because this is the 3rd real read, though it is the 4th read overall.
+4. `Y151` at the fourth position indicates "use the cycle as a real read", so you will get 151-nt sequences, output as `R3_001.fastq.gz`, because this is the 3rd real read, though it is the 4th read overall.
 
 Therefore, you will get four fastq file per sample per modality. Using the examples above, these are the files you should get:
 

@@ -6,7 +6,7 @@ First, we need to get the reference genomes. Here I'm just using human and mouse
 
 For the reference genomes, we are going to use the standard `mm10` build for mouse and the [analysis set sequence files](https://genome.ucsc.edu/FAQ/FAQdownloads.html#downloadAnalysis) of `hg38` for human. In addition, some benchmarking experiments use a mixture of the human and mouse cells together. Therefore, it is also useful for us to create a species mixing genome.
 
-We download them from the [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/downloads.html). Create a directory where you want to hold the data and reference. You can call this directory `scg_prep_test`. Everything we do will be inside this direcory. Do the following:
+We download them from the [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/downloads.html). Create a directory where you want to hold the data and reference. You can call this directory `scg_prep_test`. Everything we do will be inside this directory. Do the following:
 
 ```console
 # download and extract human fasta to the hg38 directory

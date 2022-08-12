@@ -177,7 +177,7 @@ Now, we are ready to begin the preprocessing.
 
 ## Prepare Whitelist
 
-The cell barcodes on the beads are generated using the [Drop-seq](https://www.cell.com/fulltext/S0092-8674(15)00549-8) method. Actually, the beads are the same as the one from __Drop-seq__ (ChemGenes, cat. no. Macosko2011-10 B). Therefore, there is no well-defined cell barcdoes, so no whitelist in this case. The cell barcodes can be any 12-bp DNA sequence.
+The cell barcodes on the beads are generated using the [Drop-seq](https://www.cell.com/fulltext/S0092-8674(15)00549-8) method. Actually, the beads are the same as the one from __Drop-seq__ (ChemGenes, cat. no. Macosko2011-10 B). Therefore, there is no well-defined cell barcodes, so no whitelist in this case. The cell barcodes can be any 12-bp DNA sequence.
 
 ## From FastQ To Count Matrices
 
@@ -222,7 +222,7 @@ bgzip snare-seq/chromap_outs/fragments.tsv
 tabix -s 1 -b 2 -e 3 -p bed snare-seq/chromap_outs/fragments.tsv.gz
 ```
 
-After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC libray, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
+After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC library, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
 
 ### Explain star and chromap
 

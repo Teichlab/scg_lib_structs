@@ -103,7 +103,7 @@ wget -P mereu2020/mcscrb-seq -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR962/007/SR
 
 ## Prepare Whitelist
 
-The data we get from the above paper is already demultiplexed based on plate, which is the same as the output from __Option 1__ desribed above. In this case, the cell barcode is essentially the barcode in the RT primer in the well. The barcoded oligo-dT can be download from [the protocols.io page of mcSCRB-seq](https://www.protocols.io/view/mcscrb-seq-protocol-5qpvo4d7g4o1/v2).
+The data we get from the above paper is already demultiplexed based on plate, which is the same as the output from __Option 1__ described above. In this case, the cell barcode is essentially the barcode in the RT primer in the well. The barcoded oligo-dT can be download from [the protocols.io page of mcSCRB-seq](https://www.protocols.io/view/mcscrb-seq-protocol-5qpvo4d7g4o1/v2).
 
 ```console
 # Download the oligo-dT file from protocols.io
@@ -134,7 +134,7 @@ for pb in TAAGGCGA CGTACTAG AGGCAGAA TCCTGAGC GGACTCCT;
     done > mereu2020/mcscrb-seq/whitelist2.txt
 ```
 
-You should get 1920 lines (well barcodes) in `mereu2020/mcscrb-seq/whitelist2.txt`, and here I'm jsut showing the first five lines:
+You should get 1920 lines (well barcodes) in `mereu2020/mcscrb-seq/whitelist2.txt`, and here I'm just showing the first five lines:
 
 ```
 TAAGGCGAAAAACT
@@ -200,7 +200,7 @@ If you understand the __SCRB-seq/mcSCRB-seq__ experimental procedures described 
 
 `--readFilesIn mereu2020/mcscrb-seq/SRR9621767_2.fastq.gz mereu2020/mcscrb-seq/SRR9621767_1.fastq.gz` or `--readFilesIn /path/to/Undetermined_S0_R2_001.fastq.gz /path/to/Undetermined_S0_CB_UMI.fastq.gz`
 
->>> If you check the manual, we sould put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __SCRB-seq/mcSCRB-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from either Read 1 or the `CB_UMI.fastq.gz` file we created as described above. Check [the mcSCRB-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SCRB-seq.html) if you are not sure.
+>>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __SCRB-seq/mcSCRB-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from either Read 1 or the `CB_UMI.fastq.gz` file we created as described above. Check [the mcSCRB-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SCRB-seq.html) if you are not sure.
 
 `--soloType CB_UMI_Simple`
 

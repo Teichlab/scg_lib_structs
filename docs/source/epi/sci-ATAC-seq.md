@@ -384,7 +384,7 @@ The 36 bp cell barcode consists of the four parts listed above. To construct ful
 |   19 - 26 | 8 bp Tn5 barcode at the `i5` side. This is the barcode in the `C15` primer in Table S12 from the paper |
 |   27 - 36 | 10 bp `i5` index. This is the barcode in the P5 primer in Table S12 from the paper                     |
 
-In this configuration, `D15` and `i7` are sequenced using the bottom strand as the template, and `C15` and `i5` are sequenced using the top strand as the template. Therefore, we should take the reverse complementary (rc) in the fowllowing order:
+In this configuration, `D15` and `i7` are sequenced using the bottom strand as the template, and `C15` and `i5` are sequenced using the top strand as the template. Therefore, we should take the reverse complementary (rc) in the following order:
 
 `D15 rc` + `i7 rc` + `C15 rc` + `i5 rc`
 
@@ -419,7 +419,7 @@ for w in $(tail -n +2 sci-atac/data/sci-ATAC-D15.csv | cut -f 3 -d,); do
 |   19 - 28 | 10 bp `i5` index. This is the barcode in the P5 primer in Table S12 from the paper                     |
 |   29 - 36 | 8 bp Tn5 barcode at the `i5` side. This is the barcode in the `C15` primer in Table S12 from the paper |
 
-In this configuration, `D15` and `i7` are sequenced using the bottom strand as the template, and we should take the reverse complementary (rc) of them. The `C15` and `i5` are sequenced using the bottom strand as the template as well, and we should take the sequence as they are. Therefore, we should take the index sequence in the fowllowing order:
+In this configuration, `D15` and `i7` are sequenced using the bottom strand as the template, and we should take the reverse complementary (rc) of them. The `C15` and `i5` are sequenced using the bottom strand as the template as well, and we should take the sequence as they are. Therefore, we should take the index sequence in the following order:
 
 `D15 rc` + `i7 rc` + `i5` + `C15`
 
@@ -728,7 +728,7 @@ After that, you should have the `matrix.mtx` in the `sci-atac/chromap_outs/raw_p
 
 ### Cell Calling (Filter Cell Barcodes)
 
-Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, we could use `starolo`. It is used for scRNA-seq in general, but it does have a cell calling function that takes a directory containing raw mtx and associated files, and return the filtered ones. Since `starsolo` looks for the following three files in the input directory: `matrix.mtx`, `features.tsv` and `barcodes.tsv`. Those are the output from the 10x Genomics scRNA-seq workflow. In this case, we can use `peaks.bed` as our `features.tsv`:
+Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those barcodes should be much smaller, often orders of magnitude smaller, than those barcodes from real cells. In order to identify true cells from the background, we could use `starolo`. It is used for scRNA-seq in general, but it does have a cell calling function that takes a directory containing raw mtx and associated files, and return the filtered ones. Since `starsolo` looks for the following three files in the input directory: `matrix.mtx`, `features.tsv` and `barcodes.tsv`. Those are the output from the 10x Genomics scRNA-seq workflow. In this case, we can use `peaks.bed` as our `features.tsv`:
 
 ```console
 # trick starsolo to use peaks.bed as features.tsv by creating symlink

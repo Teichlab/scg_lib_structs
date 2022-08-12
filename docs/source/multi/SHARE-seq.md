@@ -1,6 +1,6 @@
 # SHARE-seq
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html) to see how __SHARE-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing method, where open chromatin DNA are transposed by regular Tn5 and mRNA molecules are reverse transcribed by UMI-containing oligo-dT primers labelled by biotin. Then three rounds of ligation are performed to added three 8-bp barcodes. After that, ATAC and RNA molecules are separated by streptavidin pull down, and the two libraries are prepared separately. Single cells can be identified by the combination of the three 8-bp barcodes.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html) to see how __SHARE-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing method, where open chromatin DNA are transposed by regular Tn5 and mRNA molecules are reverse transcribed by UMI-containing oligo-dT primers labelled by biotin. Then three rounds of ligation are performed to added three 8-bp barcodes. After that, ATAC and RNA molecules are separated by Streptavidin pull down, and the two libraries are prepared separately. Single cells can be identified by the combination of the three 8-bp barcodes.
 
 ## For Your Own Experiments
 
@@ -287,7 +287,7 @@ There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode_
 | G12          | Round1/2/3_95 | GATGAATC |      GATTCATC      |
 | H12          | Round1/2/3_96 | GCCAAGAC |      GTCTTGGC      |
 
-Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcodes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can donwload by [__click here__](https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv).
+Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcodes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can download by [__click here__](https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv).
 
 ```bash
 # download the ligation barcode file
@@ -346,7 +346,7 @@ bgzip share-seq/chromap_outs/fragments.tsv
 tabix -s 1 -b 2 -e 3 -p bed share-seq/chromap_outs/fragments.tsv.gz
 ```
 
-After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC libray, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
+After this stage, we are done with the RNA library. The count matrix and other useful information can be found in the `star_outs` directory. For the ATAC library, two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They will be useful and sometimes required for other programs to perform downstream analysis. There are still some extra work.
 
 ### Explain star and chromap
 
@@ -505,7 +505,7 @@ macs2 callpeak -t share-seq/chromap_outs/reads.bed.gz \
 
 #### Explain MACS2
 
-The reasons of choosing those specific parameters are a bit more complicated. I have dedicated a post for this a while ago. Please have a look at [__this post__](https://dbrg77.github.io/posts/2020-12-09-atac-seq-peak-calling-with-macs2/) if you are still confused. Note the `-g`, which is the genome size parameter, is bascially the sum of human and mouse. The following output files are particularly useful:
+The reasons of choosing those specific parameters are a bit more complicated. I have dedicated a post for this a while ago. Please have a look at [__this post__](https://dbrg77.github.io/posts/2020-12-09-atac-seq-peak-calling-with-macs2/) if you are still confused. Note the `-g`, which is the genome size parameter, is basically the sum of human and mouse. The following output files are particularly useful:
 
 | File                       | Description                                                               |
 |----------------------------|---------------------------------------------------------------------------|

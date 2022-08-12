@@ -52,7 +52,7 @@ For the purpose of demonstration, we will use the data from the following paper:
   Hagai T, Chen X, Miragaia RJ, Rostom R, Gomes T, Kunowska N, Henriksson J, Park J- E, Proserpio V, Donati G, Bossini-Castillo L, Braga FAV, Naamati G, Fletcher J, Stephenson E, Vegh P, Trynka G, Kondova I, Dennis M, Haniffa M, Nourmohammad A, Lässig M, Teichmann SA (2018) **Gene expression variability across cells and species shapes innate immunity.** *Nature* 563:197–202. https://doi.org/10.1038/s41586-018-0657-2
 ```
 
-where __SMART-seq2__ was used to investigate the cellular responses of dermal fibroblasts from various species after polyI:C transfection which mimicks virus attack.
+where __SMART-seq2__ was used to investigate the cellular responses of dermal fibroblasts from various species after polyI:C transfection which mimics virus attack.
 
 The whole data can be accessed from ArrayExpress under the accession code [E-MTAB-5920](https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-5920/). There are a lot of cells, and we only focused on the unstimulated human cells that passed quality control. To get the `URL` of the `fastq` files, we could do:
 
@@ -136,7 +136,7 @@ If you understand the __SMART-seq/SMART-seq2__ experimental procedures described
 
 `--soloUMIdedup Exact NoDedup`
 
->>> The __SMART-seq2__ data do not have UMI in the reads. `Exact` means perform the deduplication using the genomic coordiates, that is, fragments with the exact same starts and ends will be treated as duplicates. `NoDedup` means do not perform deduplication. In ChIP-seq, deduplication is standard. In non-UMI RNA-seq, it seems deduplication is not always enforced (I might be wrong). I'm not sure if this makes a huge difference. Putting both options here will generated two versions of count matrices, one with and one without deduplication.
+>>> The __SMART-seq2__ data do not have UMI in the reads. `Exact` means perform the deduplication using the genomic coordinates, that is, fragments with the exact same starts and ends will be treated as duplicates. `NoDedup` means do not perform deduplication. In ChIP-seq, deduplication is standard. In non-UMI RNA-seq, it seems deduplication is not always enforced (I might be wrong). I'm not sure if this makes a huge difference. Putting both options here will generated two versions of count matrices, one with and one without deduplication.
 
 `--soloStrand Unstranded`
 
