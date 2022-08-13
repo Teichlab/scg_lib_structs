@@ -408,7 +408,7 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 >>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
 
-![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex.jpg)
+![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_Paired-seq.jpg)
 
 `--soloCBwhitelist`
 

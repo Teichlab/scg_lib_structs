@@ -1,6 +1,6 @@
 # sci-RNA-seq
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) to see how __sci-RNA-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where fixed cells are used as the reaction chamber. mRNA molecules are marked by oligo-dT primer with distinct barcodes in 96 or 384 minibulk reactions in the plate format (the first plate). Then all cells are pooled and randomly distributed into a new 96- or 384-well plate (the second plate). Library preparation was performed using the Tn5-based Illumina Nextera strategy to add __i5__ and __i7__ indices. Single cells can be identified by the combination of the RT barcode and __i5 + i7__. In addition, another level of barcode can be added during the tagmentation by barcoded Tn5, but this documentation will just focus on two-level barcodes, without the Tn5 index.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) to see how __sci-RNA-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where fixed cells are used as the reaction chamber. mRNA molecules are marked by oligo-dT primer with distinct barcodes in 96 or 384 minibulk reactions in the plate format (the first plate). Then all cells are pooled and randomly distributed into a new 96- or 384-well plate (the second plate). Library preparation is performed using the Tn5-based Illumina Nextera strategy to add __i5__ and __i7__ indices. Single cells can be identified by the combination of the RT barcode and __i5 + i7__. In addition, another level of barcode can be added during the tagmentation by barcoded Tn5, but this documentation will just focus on two-level barcodes, without the Tn5 index.
 
 ## For Your Own Experiments
 
@@ -202,7 +202,7 @@ For the purpose of demonstration, we will use the __sci-RNA-seq__ data from the 
 ```{eval-rst}
 .. note::
 
-  Cao J, Packer JS, Ramani V, Cusanovich DA, Huynh C, Daza R, Qiu X, Lee C, Furlan SN, Steemers FJ, Adey A, Waterston RH, Trapnell C, Shendure J (2017) Comprehensive single-cell transcriptional profiling of a multicellular organism. Science 357:661–667. https://doi.org/10.1126/science.aam8940
+  Cao J, Packer JS, Ramani V, Cusanovich DA, Huynh C, Daza R, Qiu X, Lee C, Furlan SN, Steemers FJ, Adey A, Waterston RH, Trapnell C, Shendure J (2017) **Comprehensive single-cell transcriptional profiling of a multicellular organism.** *Science* 357:661–667. https://doi.org/10.1126/science.aam8940
 
 ```
 
@@ -212,16 +212,16 @@ As the sample name suggested, in this experiment the authors used 96 RT barcodes
 
 ```console
 # get fastq files
-mkdir -p sci-atac/data
+mkdir -p sci-rna-seq/data
 fastq-dump --split-files \
            --origfmt \
-           --outdir sci-atac/data \
+           --outdir sci-rna-seq/data \
            --defline-seq '@rd.$si:$sg:$sn' \
            SRR5509659 SRR5509660 SRR5509661 SRR5509662
 
 # unfortunately, fastq-dump cannot generate gzipped file on the fly
 # compress to save space
-gzip sci-atac/data/*.fastq
+gzip sci-rna-seq/data/*.fastq
 ```
 
 The reason of using the specific options above is a bit complicated. I wrote [__a post__](https://dbrg77.github.io/posts/2022-07-26-getting-index-reads-from-sra/) about this, and you can have a look to see the reason. Once the program finishes running, you will have two `fastq` per accession:
@@ -434,7 +434,7 @@ If you understand the __sci-RNA-seq__ experimental procedures described in [this
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
+>>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
 
 `--soloType CB_UMI_Simple`
 
