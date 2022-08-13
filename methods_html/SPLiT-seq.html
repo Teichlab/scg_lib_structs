@@ -7,62 +7,50 @@
 </head>
 <body>
 
-<h1><a href="https://www.biorxiv.org/content/early/2017/02/02/105163" target="_blank">SPLiT-seq</a></h1>
+<h1><a href="https://www.science.org/doi/10.1126/science.aam8999" target="_blank">SPLiT-seq</a></h1>
 
-<span style="font-size:1.1em;"><p>The SPLiT-seq uses the combinatorial indexing to identify single cells without single cell isolation. Multi-level indexing can be performed by ligations. The workflow described here is based on the version 2 of the protocol (published on their google website on 30-Mar-2017, <a href="https://sites.google.com/uw.edu/splitseq/protocol" target="_blank">click here</a>), and the strand blocking step is omitted here as I haven't figured out what exactly it does. Three-level indexing strategy is used in the protocol (three rounds of ligation).</p></span>
+<span style="font-size:1.1em;"><p>The SPLiT-seq uses the combinatorial indexing to identify single cells without single cell isolation. Multi-level indexing can be performed by ligations. The workflow described here is based on the publication of <a href="https://www.science.org/doi/10.1126/science.aam8999" target="_blank">Science 360, 176-182 (2018)</a>. To be consistent with the publication, all the oligo/primer names are the same as the Science 2018 publication. All oligos can be found in the <a href="../data/aam8999_tables12.xlsx">Supplementary Table S12</a> from the publication. <b>NOTE:</b> The published version in this page is different from the preprint version in the bioRxiv. I have archived the previous Github Page about SPLiT-seq, which was based on the preprint version. If you want to have a look, you can check by <a href="https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq_archive.html">clicking here</a>.
   
-<span style="font-size:1.1em;"><p>There are different verrsions of the protocol, and they use slightly different oligo sequences. The basic idea of the method does not change. Check <a href="https://github.com/Teichlab/scg_lib_structs/issues/13" target="_blank">this thread</a> for more information.</p></span>
-  
+<span style="font-size:1.1em;"><p>Be careful that there are different versions of the protocol, and they use slightly different oligo sequences. The basic idea of the method does not change. Check <a href="https://github.com/Teichlab/scg_lib_structs/issues/13" target="_blank">this thread</a> for more information.</p></span>
+
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
-<p>Oligo-dTVN (BC0055): 5'-/5Phos/ <r1>AGGCCAGAGCATTCG</r1>TTTTTTTTTTTTTTTVN -3'</p>
-<p><sup>*</sup>Round1 barcodes: 5'-/5Phos/ <r2>CGCGCTGCATACTTG</r2><cbc>[8-bp Round1 barcode]</cbc><r1>CCCATGATCGTCCGA</r1> -3'</p>
-<p>Round1 barcode linker (BC0056): 5'- <r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1> -3'</p>
-<p><sup>*</sup>Round2 barcodes: 5'-/5Phos/ <r3>CATCGGCGTACGACT</r3><cbc>[8-bp Round2 barcode]</cbc><r2>ATCCACGTGCTTGAG</r2> -3'</p>
-<p>Round2 barcode linker (BC0124): 5'- <r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2> -3'</p>
-<p><sup>*</sup>Round3 barcodes: 5'-/5Biosg/ <t7>CAGACGTGTGCTCTTCCGATCT</t7><umi>[10-bp UMI]</umi><cbc>[8-bp Round3 barcode]</cbc><r3>GTGGCCGATGTTTCG</r3> -3'</p>
-<p>Round3 barcode linker (BC0060): 5'- <r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3> -3'</p>
-<p>Round1 blocking strand (BC0064): 5'- CCCATGATCGTCCGAAGGCCAGAGCATTCG -3'</p>
-<p>Round2 blocking strand (BC0125): 5'- ATCCACGTGCTTGAGCGCGCTGCATACTTG -3'</p>
-<p>Round3 blocking strand (BC0066): 5'- GTGGCCGATGTTTCGCATCGGCGTACGACT -3'</p>
-<p>Template Switching Oligos (TSO, BC0127): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrG+G -3'</p>
-<p>cDNA Amplification Primer 1 (BC0062): 5'- <t7>CAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
-<p>cDNA Amplification Primer 2 (BC0108): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
+<p>Oligo-dTVN (Round1_01-48): 5'-/5Phos/ <r1>AGGCCAGAGCATTCG</r1><cbc>[8-bp Round1 barcode]</cbc>TTTTTTTTTTTTTTTVN -3'</p>
+<p>Oligo-randN (Round1_49-96): 5'-/5Phos/ <r1>AGGCCAGAGCATTCG</r1><cbc>[8-bp Round1 barcode]</cbc>NNNNNN -3'</p>
+<p>Round2 Ligation Barcodes (Round2_01-96): 5'-/5Phos/ <r3>CATCGGCGTACGACT</r3><cbc>[8-bp Round2 barcode]</cbc><r2>ATCCACGTGCTTGAG</r2> -3'</p>
+<p>Round2 Barcode Linker (BC_0215): 5'- <r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2> -3'</p>
+<p>Round3 Ligation Barcodes (Round3_01-96): 5'-/5Biosg/ <t7>CAGACGTGTGCTCTTCCGATCT</t7><umi>[10-bp UMI]</umi><cbc>[8-bp Round3 barcode]</cbc><r3>GTGGCCGATGTTTCG</r3> -3'</p>
+<p>Round3 Barcode Linker (BC_0060): 5'- <r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3> -3'</p>
+<p>Round2 blocking strand (BC_0216): 5'- ATCCACGTGCTTGAGCGCGCTGCATACTTG -3'</p>
+<p>Round3 blocking strand (BC_0066): 5'- GTGGCCGATGTTTCGCATCGGCGTACGACT -3'</p>
+<p>Template Switching Oligos (TSO, BC_0127): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrG+G -3'</p>
+<p>cDNA Amplification Primer 1 (BC_0062): 5'- <t7>CAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
+<p>cDNA Amplification Primer 2 (BC_0108): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
 <p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>Indexed Library PCR Primer 1 (BC0076-BC0083) : 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp i7 sample index]<t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
-<p>Library PCR Primer 2 (BC0118): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Indexed Library PCR Primer 1 (BC_0076 - BC_0083) : 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp i7 sample index]<t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
+<p>Library PCR Primer 2 (BC_0118): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Index 1 seuencing primer: 5'- <t7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7> -3'</p>
+<p>Index 1 sequencing primer: 5'- <t7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7> -3'</p>
 <p>Read 2 sequencing primer: 5'- <t7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</t7> -3'</p>
-<p><sup>*</sup>Ther are 96 barcodes per round, to see the full sequence, click below:</p>
-<p><a href="../data/Round1_barcodes.txt" target="_blank">Round1_barcodes.txt</a></p>
-<p><a href="../data/Round2_barcodes.txt" target="_blank">Round2_barcodes.txt</a></p>
-<p><a href="../data/Round3_barcodes.txt" target="_blank">Round3_barcodes.txt</a></p>
 </seq>
 
 
 <br></br>
 
 <h2>Step-by-step library generation</h2>
-<h3>(1) Prepare ligation adapters by annealing barcodes with correponding linkers (in three different plates):</h3>
+<h3>(1) Prepare ligation adapters by annealing barcodes with corresponding linkers:</h3>
 <pre>
 <seq>
-<i>Plate1: Round1 barcodes with Round1 barcode linker (BC0056):</i>
+<i>Round2 adapters: anneal Round2 Ligation Barcodes (Round2_01-96) with Round2 Barcode Linker (BC_0215):</i>
 
-5'- <r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1>
-                   <r1>AGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGC</r2> /5Phos/-5'
-
-
-<i>Plate2: Round2 barcodes with Round2 barcode linker (BC0124):</i>
-
-5'- <r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2>
+5'- <r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2>
                    <r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTAC</r3> /5Phos/-5'
 
 
-<i>Plate3: Round3 barcodes with Round3 barcode linker (BC0060):</i>
+<i>Round3 adapters: anneal Round3 Ligation Barcodes (Round3_01-96) with Round3 Barcode Linker (BC_0060):</i>
 
 5'- <r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3>
                    <r3>GCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
@@ -71,64 +59,63 @@
 </seq>
 </pre>
 
-<h3>(2) Anneal Oligo-dTVN primer (BC0055) to mRNA and reverse transcription using Maxima H Minus Reverse Transcriptase <i>in situ</i>:</h3>
+<h3>(2) Anneal Oligo-dTVN and Oligo-randN primers to mRNA and reverse transcription using Maxima H Minus Reverse Transcriptase <i>in situ</i> to add Round 1 barcodes:</h3>
 <pre>
 <seq>
+<i>mRNA 3':</i>
+
 5'- XXX...XXXB(A)<sub>n</sub>
-        <---NV(T)<sub>15</sub><r1>GCTTACGAGACCGGA</r1> /5Phos/-5'
+        <---NV(T)<sub>15</sub><cbc>[8-bp Round 1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1> /5Phos/-5'
+
+<i>mRNA internal (omitted in the rest stages):</i>
+
+5'- XXX...XXX(A)<sub>n</sub>
+    <-NNNNNN<cbc>[8-bp Round 1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1> /5Phos/-5'
 </seq>
 </pre>
 
-<h3>(3) Distritube to Plate1 for Round1 Ligation:</h3>
+<h3>(3) Pool and split to the plate containing Round2 adapters to add Round 2 barcodes:</h3>
 <pre>
 <seq>
-5'- XXX...XXXB(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1>
- CCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGC</r2> /5Phos/-5'
+5'- XXX...XXXB(pA)                     <r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2>
+ CCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTAC</r3> /5Phos/-5'
 </seq>
 </pre>
 
-<h3>(4) Pool and split to Plate2 for Round2 Ligation:</h3>
-<pre>
-<seq>
-5'- XXX...XXXB(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1>                     <r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2>
- CCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTAC</r3> /5Phos/-5'
-</seq>
-</pre>
-
-<h3>(5) Pool and split to Plate3 for Round3 Ligation:</h3>
+<h3>(4) Pool and split to the plate containing Round3 adapters to add Round 3 barcodes:</h3>
 <pre>
 <align class="long">
-5'- XXX...XXXB(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1>                     <r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2>                     <r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3>
- CCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
+5'- XXX...XXXB(pA)                     <r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2>                     <r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3>
+ CCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
 </align>
 </pre>
 
-<h3>(6) Pool, cell lysis, formamide denature DNA/RNA and bind cDNA to streptavidin beads</h3>
+<h3>(5) Pool, cell lysis, formaldehyde denature DNA/RNA and bind cDNA to streptavidin beads</h3>
 <pre>
 <align class="long">
-3'- CCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
+3'- CCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
 </align>
 </pre>
 
-<h3>(7) Add TSO (BC0127) for seconde strand synthesis:</h3>
+<h3>(6) Add TSO (BC_0127) for second strand synthesis:</h3>
 <pre>
 <align class="long">
 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGG---->
-                           <---CCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'--|
+                           <---CCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'--|
 </align>
 </pre>
 
-<h3>(8) Add cDNA Amplification Primers 1 & 2 (BC0062 and BC0108):</h3>
+<h3>(7) Add cDNA Amplification Primers 1 & 2 (BC_0062 and BC_0108):</h3>
 <pre>
 <align class="long">
 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>------>
-5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXX...XXXB(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>[8-bp Round1 barcode]</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
-3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTTACCCXXX...XXXV(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'--|
-                                                                                                                                                                                                             <------<t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGGXXX...XXXB(pA)<cbc>[8-bp Round1 barcode]</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7>
+    <tso>TTCGTCACCATAGTTGCGTCTCA</tso>CTTACCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'--|
+                                                                                                                                                                               <------<t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
 </align>
 </pre>
 
-<h3>(9) Tagmentation with Illumina Nextera XT Kit:</h3>
+<h3>(8) Tagmentation with Illumina Nextera XT Kit:</h3>
 <img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
 <pre>
 <align class="long">
@@ -154,36 +141,37 @@
 
 <i>Product 4 (s7 at one end, 3' of cDNA at the other end, not amplifiable due to PCR primers used, see the next step):</i>
 
-5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>[8-bp Round1 barcode]</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
-                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<cbc>[8-bp Round1 barcode]</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
 
 
 <i>Product 5 (s5 at one end, 3' of cDNA at the other end, the only amplifiable fragment, see the next step):</i>
 
-5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>[8-bp Round1 barcode]</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
-                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<cbc>[8-bp Round1 barcode]</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
 
 
 </align>
 </pre>
 
-<h3>(10) Add Library PCR Primer 1 (one of BC0076-BC0083) and 2 (BC0018):</h3>
+<h3>(9) Add Library PCR Primer 1 (one of BC_0076 - BC_0083) and 2 (BC_0018):</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------->
-                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>[8-bp Round1 barcode]</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
-                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>[8-bp Round1 barcode]</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
-                                                                                                                                                                                                                                                           <--------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX(pA)<cbc>[8-bp Round1 barcode]</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>[8-bp Round2 barcode]</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>AGATCGGAAGAGCACACGTCTG</t7> -3'
+                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXX(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> -5'
+                                                                                                                                                                                                                             <--------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
-<h3>(11) Final library structure:</h3>
+<h3>(10) Final library structure:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>NNNNNNNN</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>NNNNNNNN</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>NNNNNNNN</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-             <p5>Illumina P5</p5>                       <s5>s5</s5>               <me>ME</me>          cDNA               <r1>Round1 linker</r1>           <cbc>8 bp</cbc>           <r2>Round2 linker</r2>          <cbc>8 bp</cbc>          <r3>Round3 linker</r3>           <cbc>8 bp</cbc>    <umi>10 bp</umi>           <t7>Illumina Truseq</t7>           6bp i7      <p7>Illumina P7</p7>
-                                                                                                                  <cbc>Round1 barcode</cbc>                        <cbc>Round2 barcode</cbc>                        <cbc>Round3 barcode</cbc>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX(pA)<cbc>NNNNNNNN</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>NNNNNNNN</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<cbc>NNNNNNNN</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                       <s5>s5</s5>               <me>ME</me>          cDNA         <cbc>8 bp</cbc>           <r2>Round2 linker</r2>          <cbc>8 bp</cbc>          <r3>Round3 linker</r3>           <cbc>8 bp</cbc>    <umi>10 bp</umi>           <t7>Illumina Truseq</t7>           6bp i7      <p7>Illumina P7</p7>
+                                                                                        <cbc>Round1</cbc>                                <cbc>Round2</cbc>                                <cbc>Round3</cbc>    <umi>UMI</umi>
+                                                                                        <cbc>Barcode</cbc>                               <cbc>Barcode</cbc>                               <cbc>Barcode</cbc>
 </align>
 </pre>
 
@@ -191,27 +179,27 @@
 
 <h2>Library sequencing:</h2>
 
-<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, cDNA reads, 60 cycles):</h3>
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, cDNA reads, 66 cycles):</h3>
 <pre>
 <align class="long">
                                      5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>----------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>NNNNNNNN</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<cbc>NNNNNNNN</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(2) Add Index 1 sequencing primer to sequence i7 index (bottom strand as template, 6 cycles):</h3>
 <pre>
 <align class="long">
-                                                                                                                                                                                                                5'- <t7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<r1>GCTTACGAGACCGGAAGCCTGCTAGTACCC</r1><cbc>NNNNNNNN</cbc><r2>GTTCATACGTCGCGCGAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                                                                  5'- <t7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>ATCTAGCG<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX(dT)<cbc>NNNNNNNN</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>NNNNNNNN</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
-<h3>(3) Cluster regeneration, add Read 2 sequencing primer to sequence the second read (top strand as template, UMI and 3 rounds of barcodes, 100 cycles):</h3>
+<h3>(3) Cluster regeneration, add Read 2 sequencing primer to sequence the second read (top strand as template, UMI and 3 rounds of barcodes, 94 cycles):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX(pA)<r1>CGAATGCTCTGGCCTTCGGACGATCATGGG</r1><cbc>NNNNNNNN</cbc><r2>CAAGTATGCAGCGCGCTCAAGCACGTGGAT</r2><cbc>NNNNNNNN</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-                                                                                                               <---------------------------------------------------------------------------------------------------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX(pA)<cbc>NNNNNNNN</cbc><r1>CGAATGCTCTGGCCT</r1><r2>CTCAAGCACGTGGAT</r2><cbc>NNNNNNNN</cbc><r3>AGTCGTACGCCGATGCGAAACATCGGCCAC</r3><cbc>NNNNNNNN</cbc><umi>NNNNNNNNNN</umi><t7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</t7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                       <---------------------------------------------------------------------------------------------<t7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</t7> -5'
 </align>
 </pre>
 
