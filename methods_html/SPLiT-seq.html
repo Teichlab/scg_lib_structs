@@ -90,14 +90,14 @@
 </align>
 </pre>
 
-<h3>(5) Pool, cell lysis, formaldehyde denature DNA/RNA and bind cDNA to streptavidin beads</h3>
+<h3>(5) Pool, count cells, split into sublibraries. Then, for each sublibrary, perform cell lysis, low temperature (55 degree celcius) reverse crosslink and bind cDNA to streptavidin beads</h3>
 <pre>
 <align class="long">
 3'- CCCXXX...XXXV(dT)<cbc>[8-bp Round1 barcode]</cbc><r1>GCTTACGAGACCGGA</r1><r2>GAGTTCGTGCACCTA</r2><cbc>[8-bp Round2 barcode]</cbc><r3>TCAGCATGCGGCTACGCTTTGTAGCCGGTG</r3><cbc>[8-bp Round3 barcode]</cbc><umi>[10-bp UMI]</umi><t7>TCTAGCCTTCTCGTGTGCAGAC</t7> /5Biosg/-5'
 </align>
 </pre>
 
-<h3>(6) Add TSO (BC_0127) for second strand synthesis:</h3>
+<h3>(6) Add TSO (BC_0127) to each sublibrary for second strand synthesis:</h3>
 <pre>
 <align class="long">
 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATGGG---->
@@ -105,7 +105,7 @@
 </align>
 </pre>
 
-<h3>(7) Add cDNA Amplification Primers 1 & 2 (BC_0062 and BC_0108):</h3>
+<h3>(7) Add cDNA Amplification Primers 1 & 2 (BC_0062 and BC_0108) to each sublibrary:</h3>
 <pre>
 <align class="long">
 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>------>
@@ -154,7 +154,7 @@
 </align>
 </pre>
 
-<h3>(9) Add Library PCR Primer 1 (one of BC_0076 - BC_0083) and 2 (BC_0018):</h3>
+<h3>(9) Add Library PCR Primer 1 (one of BC_0076 - BC_0083) and 2 (BC_0018) to index each sublibrary:</h3>
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>TAGATCGC<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------->
