@@ -1,8 +1,6 @@
-# 10x Genomics Single Cell 5' V2
+# 10x Genomics Single Cell 5'
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) to see how __10x Genomics Single Cell 5' V2__ libraries are generated experimentally. This is a droplet-based method, where cells are captured inside droplets. At the same time, gel beads with barcoded Templates Switch Oligo (TSO) primer containing UMIs are also captured inside the droplet. Reverse transcription happens inside the droplet, and the mRNA molecules are captured at the 5' end by the TSO. The cells and gel beads are loaded on the microfluidic device at certain concentrations, such that a fraction of droplets contain only one cell __AND__ one bead.
-
-In the 5' strategy, the sequencing configuration of the `V2` chemistry is the same as the `V1` chemistry. In the 5' kit, both gene expression library and V(D)J library can be generated. We focused on the gene expression preprocessing in this documentation.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) to see how __10x Genomics Single Cell 5' V2__ libraries are generated experimentally. The sequencing configuration of the `V2` chemistry is the same as the `V1` chemistry. In the 5' kit, both gene expression library and V(D)J library can be generated. We focused on the gene expression preprocessing in this documentation. This is a droplet-based method, where cells are captured inside droplets. At the same time, gel beads with barcoded Templates Switch Oligo (TSO) primer containing UMIs are also captured inside the droplet. Reverse transcription happens inside the droplet, and the mRNA molecules are captured at the 5' end by the TSO. The cells and gel beads are loaded on the microfluidic device at certain concentrations, such that a fraction of droplets contain only one cell __AND__ one bead.
 
 ## For Your Own Experiments
 

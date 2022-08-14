@@ -23,7 +23,7 @@ You can think of the 10 bp __RT barcode__ as the well barcode for the 1st plate,
 
 If you sequence the library via your core facility or a company, you need to provide the `i5` and `i7` index sequence you used during the library PCR. Like mentioned previously, they are basically the well barcode for the 3rd plate. Then you will get two `fastq` files (`R1` and `R2`) per well. The total file number will depend on how many wells in the 3rd plate you are processing.
 
-If you sequence the library on your own, you need to get the `fastq` files by running `bcl2fastq` by yourself. In this case it is better to write a `SampleSheet.csv` with `i7` and `i5` indices for each well in the 3rd plate. This will yield the `fastq` files similar to those from your core facility or the company. Here is an example of the `SampleSheet.csv` from a NextSeq run with a full 96-well plate (3rd plate) using standard Nextera Index primers:
+If you sequence the library on your own, you need to get the `fastq` files by running `bcl2fastq` by yourself. In this case it is better to write a `SampleSheet.csv` with `i7` and `i5` indices for each well in the 3rd plate. This will yield the `fastq` files similar to those from your core facility or the company. Here is an example of the `SampleSheet.csv` from a NextSeq run with a full 96-well plate (3rd plate) using some standard Nextera indices:
 
 ```text
 [Header],,,,,,,,,,,
@@ -173,7 +173,7 @@ For the purpose of demonstration, we will use the __sci-RNA-seq3__ data from the
 
 ```
 
-where the authors developed an improved version of sci-RNA-seq, which they called __sci-RNA-seq3__. They used the technology to generate a comprehensive single cell atlas during mouse organogenesis, with > 2 million cells covering E9.5 - E13.5. The data is in GEO under the accession code [GSE119945](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE119945). You can get the `fastq` files directly from [__this ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA490754?show=reads). As you can see, there are a total of 760 accessions. Each accession represents the data from a well in the 3rd plate. This means the authors already demultiplexed the data based on `i7 + i5` index for us. We could just download each accession and process independently. Single cells can be identified by the combination of the 9 or 10 bp __hairpin barcode__ and the 10 bp __RT barcode__
+where the authors developed an improved version of sci-RNA-seq, which they called __sci-RNA-seq3__. They used the technology to generate a comprehensive single cell atlas during mouse organogenesis, with > 2 million cells covering E9.5 - E13.5. The data is in GEO under the accession code [GSE119945](http://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE119945). You can get the `fastq` files directly from [__this ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA490754?show=reads). As you can see, there are a total of 760 accessions. Each accession represents the data from a well in the 3rd plate. This means the authors already demultiplexed the data based on `i7 + i5` index for us. We could just download each accession and process independently. Single cells can be identified by the combination of the 9 or 10 bp __hairpin barcode__ and the 10 bp __RT barcode__.
 
 I'm not going to do all 760 wells. Let's just use the data `SRR7827206` for the demonstration:
 
@@ -222,7 +222,7 @@ wget -P sci-rna-seq3/data \
     https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_hairpin_bc.csv
 ```
 
-Now we need to generate all possible combinations of the __RT barcode__ and the __hairpin barcode__. Those barcodes are sequenced in __Read 1__ using the bottom strand as the template. They are in the same direction of the Illumina TruSeq Read 1 sequence. Therefore, we should take their sequences as they are. In addition, if you check the [__sci-RNA-seq3 GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html), you will see that the __hairpin barcode__ is in front of the __RT barcode__ in the final library. Therefore, we should pass the whitelist to `starsolo` in that order. See the next section for more details.
+Now we need to generate the whitelist of the __RT barcode__ and the __hairpin barcode__. Those barcodes are sequenced in __Read 1__ using the bottom strand as the template. They are in the same direction of the Illumina TruSeq Read 1 sequence. Therefore, we should take their sequences as they are. In addition, if you check the [__sci-RNA-seq3 GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html), you will see that the __hairpin barcode__ is in front of the __RT barcode__ in the final library. Therefore, we should pass the whitelist to `starsolo` in that order. See the next section for more details.
 
 ```bash
 # hairpin barcode whitelist
@@ -301,7 +301,7 @@ If you understand the __sci-RNA-seq3__ experimental procedures described in [thi
 ```{eval-rst}
 .. important::
   
-  This option seems to work for me. Normally, we would choose an adapter sequence with decent length. In this case, we only have a 6-bp constant linker as the adapter ``CAGAGC``. If you look at the sequence in the **hairpin barcode** and the **RT barcode**, ``CAGAGC`` does not exist there. In the random 8-bp UMI, it might appear. When this happens, I'm not entirely sure what will happen. I guess ``starsolo`` will use the first appearance as the anchor ...
+  This option seems to work for me. Normally, we would choose an adapter sequence with decent length. In this case, we only have a short 6-bp constant linker as the adapter: ``CAGAGC``. If you look at the sequence in the **hairpin barcode** and the **RT barcode**, ``CAGAGC`` does not exist there. In the random 8-bp UMI, it might appear. When this happens, I'm not entirely sure how the program will handle this situation. I guess ``starsolo`` will use the first appearance as the anchor ...
 ```
 
 `--soloCBwhitelist`

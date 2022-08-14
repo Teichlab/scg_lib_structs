@@ -12,5 +12,6 @@
    ge/sci-RNA-seq3.md
    ge/sci-RNA-seq.md
    ge/mcSCRB-seq.md
+   ge/SPLiT-seq.md
    
 ```

@@ -21,7 +21,7 @@ If you sequence the library on your own, you need to get the `fastq` files by ru
 
 ### Run bcl2fastq With Strategy 1
 
-I actually prefer this way. Here is an example of the `SampleSheet.csv` from a NextSeq run with a full 96-well plate (2nd plate) using standard Nextera Index primers:
+I actually prefer this way. Here is an example of the `SampleSheet.csv` from a NextSeq run with a full 96-well plate (2nd plate) using some standard indices:
 
 ```text
 [Header],,,,,,,,,,,
