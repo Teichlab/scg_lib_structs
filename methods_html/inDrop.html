@@ -191,42 +191,6 @@
 
 <br></br>
 
-<h2>V3 Library sequencing (four steps), this is just a guess based on the github page description and sample fastq files, not confirmed:</h2>
-
-<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the cDNA reads):</h3>
-<pre>
-<align class="long">
-                                   5'- <pe2>GGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>--------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-</align>
-</pre>
-
-<h3>(2) Add reverse complement of W1 primer primer to sequence barcode1 (bottom strand as template, 8 cycles):</h3>
-<pre>
-<align class="long">
-                                                                                             5'- <w1>AAGGCGTCACAAGCAATCACTC</w1>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-</align>
-</pre>
-
-<h3>(3) Add Index sequencing primer to sequence sample index (bottom strand as template???? not entirely sure, but it has 6 cycles)::</h3>
-<pre>
-<align class="long">
-                                                                                                                           5'- AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>----->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CCAG<pe2>AGCCGTAAGGACGACTTGGCGAGAAGGCTAGA</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>TTCCGCAGTGTTCGTTAGTGAG</w1><cbc>NN....NN</cbc>TCTAGC<pe1>CTTCTCGCAGCACATCCCTTTCTC</pe1>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-</align>
-</pre>
-
-<h3>(4) Cluster regeneration, and add W1 primer to sequence barcode2 and UMI (top strand as template, seems to be 21 cycles, contain a bit of dT at the end):</h3>
-<pre>
-<align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GGTC<pe2>TCGGCATTCCTGCTGAACCGCTCTTCCGATCT</pe2>XXX...XXXV(pA)<umi>NNNNNN</umi><cbc>NNNNNNNN</cbc><w1>AAGGCGTCACAAGCAATCACTC</w1><cbc>NN....NN</cbc>AGATCG<pe1>GAAGAGCGTCGTGTAGGGAAAGAG</pe1>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-                                                                            <--------------------<w1>TTCCGCAGTGTTCGTTAGTGAG</w1> -5'
-</align>
-</pre>
-
-<br></br>
-
 <h1><a href="https://www.nature.com/articles/nprot.2016.154" target="_blank" name="V2"><span style="color:red">inDrop V2&3</span></a></h1>
 
 <h2>Adapter and primer sequences:</h2>
