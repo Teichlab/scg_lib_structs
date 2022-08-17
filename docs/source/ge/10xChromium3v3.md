@@ -8,12 +8,12 @@ The `V3` chemistry is a significant improvement over the previous `V2` version o
 
 Your sequencing read configuration is like this:
 
-| Order | Read             | Cycle           | Description                                           |
-|-------|------------------|-----------------|-------------------------------------------------------|
-| 1     | Read 1           | 28              | `R1_001.fastq.gz`, 16 bp cell barcodes + 12 bp UMI    |
-| 2     | Index 1 (__i7__) | 8 or 10         | `I1_001.fastq.gz`, Sample index                       |
-| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if using dual index) |
-| 4     | Read 2           | >50             | `R2_001.fastq.gz`, cDNA reads                         |
+| Order | Read             | Cycle           | Description                                                       |
+|-------|------------------|-----------------|-------------------------------------------------------------------|
+| 1     | Read 1           | 28              | This yields `R1_001.fastq.gz`, 16 bp cell barcodes + 12 bp UMI    |
+| 2     | Index 1 (__i7__) | 8 or 10         | This yields `I1_001.fastq.gz`, Sample index                       |
+| 3     | Index 2 (__i5__) | 8 or 10 or None | This yields `I2_001.fastq.gz`, Sample index (if using dual index) |
+| 4     | Read 2           | >50             | This yields `R2_001.fastq.gz`, cDNA reads                         |
 
 If you sequence your data via your core facility or a company, you will need to provide the sample index sequence, which is the primer (__PN-1000213/PN-2000240__) taken from the commercial kit from 10x Genomics, to them and they will demultiplex for you. You will get two `fastq` files per sample. Read 1 contains the cell barcodes and UMI and Read 2 contains the reads from cDNA.
 
@@ -48,7 +48,30 @@ Sample02,,,,,,SI-GA-B1_3,AGTTCGGC,,,,
 Sample02,,,,,,SI-GA-B1_4,CAGCATCA,,,,
 ```
 
-You can see each sample actually has four different index sequences. This is because each well from the plate __PN-1000213/PN-2000240__ actually contain four different indices for base balancing. You can also use dual index (__PN-1000215/PN-3000431__), and you should add that to the `SampleSheet.csv` if you use that. After the step is done, for each sample, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz`. You are good to go from here.
+You can see each sample actually has four different index sequences. This is because each well from the plate __PN-1000213/PN-2000240__ actually contain four different indices for base balancing. You can also use dual index (__PN-1000215/PN-3000431__), and you should add that to the `SampleSheet.csv` if you use that. Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each sample:
+
+```bash
+# sample01
+Sample01_S1_R1_001.fastq.gz # 28 bp: cell barcode + UMI
+Sample01_S1_R2_001.fastq.gz # cDNA reads
+
+# sample02
+Sample02_S2_R1_001.fastq.gz # 28 bp: cell barcode + UMI
+Sample02_S2_R2_001.fastq.gz # cDNA reads
+```
+
+You are good to go from here.
 
 ## Public Data
 
@@ -56,7 +79,9 @@ For the purpose of demonstration, we will use the __10x Genomics Single Cell 3' 
 
 ```{eval-rst}
 .. note::
+
   Mereu E, Lafzi A, Moutinho C, Ziegenhain C, McCarthy DJ, Álvarez-Varela A, Batlle E, Sagar, Grün D, Lau JK, Boutet SC, Sanada C, Ooi A, Jones RC, Kaihara K, Brampton C, Talaga Y, Sasagawa Y, Tanaka K, Hayashi T, Braeuning C, Fischer C, Sauer S, Trefzer T, Conrad C, Adiconis X, Nguyen LT, Regev A, Levin JZ, Parekh S, Janjic A, Wange LE, Bagnoli JW, Enard W, Gut M, Sandberg R, Nikaido I, Gut I, Stegle O, Heyn H (2020) **Benchmarking single-cell RNA-sequencing protocols for cell atlas projects.** *Nat Biotechnol* 38:747–755. https://doi.org/10.1038/s41587-020-0469-4
+  
 ```
 
 where the authors benchmarked quite a few different scRNA-seq methods using a standardised sample: a mixture of different human, mouse and dog cells. We are going to use the data from the __10x Genomics Single Cell 3' V3__ method. You can download the `fastq` file from [this ENA page](https://www.ebi.ac.uk/ena/browser/view/PRJNA593571?show=reads). There are two runs, but I'm just downloading the first run for the demonstration.

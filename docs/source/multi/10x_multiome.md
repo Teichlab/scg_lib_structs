@@ -44,7 +44,18 @@ Sample01_GEX,,,,,,SI-TT-A1_i7,GTAACATGCG,SI-TT-A1_i5,AGGTAACACT,,
 Sample02_GEX,,,,,,SI-TT-B1_i7,ACAGTAACTA,SI-TT-B1_i5,AACGAACTGT,,
 ```
 
-You will get two fastq files per sample:
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each sample:
 
 ```bash
 Sample01_GEX_S1_R1_001.fastq.gz # 28 bp: cell barcodes (16 bp) + UMI (12 bp)

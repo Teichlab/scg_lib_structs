@@ -6,12 +6,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 Your sequencing read configuration is like this:
 
-| Order | Read             | Cycle   | Description                      |
-|-------|------------------|---------|----------------------------------|
-| 1     | Read 1           | >50     | `R1_001.fastq.gz`, cDNA reads    |
-| 2     | Index 1 (__i7__) | 8 or 10 | `I1_001.fastq.gz`, Cell barcodes |
-| 3     | Index 2 (__i5__) | 8 or 10 | `I2_001.fastq.gz`, Cell barcodes |
-| 4     | Read 2           | >50     | `R2_001.fastq.gz`, cDNA reads    |
+| Order | Read             | Cycle   | Description                                  |
+|-------|------------------|---------|----------------------------------------------|
+| 1     | Read 1           | >50     | This yields `R1_001.fastq.gz`, cDNA reads    |
+| 2     | Index 1 (__i7__) | 8 or 10 | This yields `I1_001.fastq.gz`, Cell barcodes |
+| 3     | Index 2 (__i5__) | 8 or 10 | This yields `I2_001.fastq.gz`, Cell barcodes |
+| 4     | Read 2           | >50     | This yields `R2_001.fastq.gz`, cDNA reads    |
 
 If you sequence your data via your core facility or a company, you will need to provide the index sequence to them and they will demultiplex for you. You will get one (single-end) or two (pair-end) `fastq` files per cell.
 
@@ -42,6 +42,34 @@ Meso_D3_C03,,,,,,N703,AGGCAGAA,S505,CTCCTTAC,,
 Meso_D3_D04,,,,,,N704,TCCTGAGC,S506,TATGCAGT,,
 Meso_D3_E05,,,,,,N705,GGACTCCT,S507,TACTCCTT,,
 ```
+
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each well:
+
+```bash
+Meso_D3_A01_S1_R1_001.fastq.gz
+Meso_D3_A01_S1_R2_001.fastq.gz
+Meso_D3_B02_S2_R1_001.fastq.gz
+Meso_D3_B02_S2_R2_001.fastq.gz
+Meso_D3_C03_S3_R1_001.fastq.gz
+Meso_D3_C03_S3_R2_001.fastq.gz
+Meso_D3_D04_S4_R1_001.fastq.gz
+Meso_D3_D04_S4_R2_001.fastq.gz
+Meso_D3_E05_S5_R1_001.fastq.gz
+Meso_D3_E05_S5_R2_001.fastq.gz
+```
+
+You are ready to go from here
 
 ## Public Data
 

@@ -67,7 +67,7 @@ bcl2fastq --use-bases-mask=Y50,I8,Y16,Y50 \
           -r 4 -w 4 -p 4
 ```
 
-You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but I the important bit that needs explanation is `--use-bases-mask=Y50,I8,Y16,Y50`. We have four reads, and that parameter specify how we treat each read in the stated order:
+You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but the important bit that needs explanation is `--use-bases-mask=Y50,I8,Y16,Y50`. We have four reads, and that parameter specify how we treat each read in the stated order:
 
 1. `Y50` at the first position indicates "use the cycle as a real read", so you will get 50-nt sequences, output as `R1_001.fastq.gz`, because this is the 1st real read.
 2. `I8` at the second position indicates "use the cycle as an index read", so you will get 8-nt sequences, output as `I1_001.fastq.gz`, because this is the 1st index read.
@@ -76,7 +76,7 @@ You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/seq
 
 Therefore, you will get four fastq file per sample. Using the examples above, these are the files you should get:
 
-```console
+```bash
 # files for Sample01
 
 Sample01_S1_I1_001.fastq.gz

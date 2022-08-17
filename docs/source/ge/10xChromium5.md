@@ -48,7 +48,30 @@ Sample02,,,,,,SI-GA-B1_3,AGTTCGGC,,,,
 Sample02,,,,,,SI-GA-B1_4,CAGCATCA,,,,
 ```
 
-You can see each sample actually has four different index sequences. This is because each well from the plate __PN-1000213__ actually contain four different indices for base balancing. You can also use dual index (__PN-1000215__), and you should add that to the `SampleSheet.csv` if you use that. After the step is done, for each sample, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz`. You are good to go from here.
+You can see each sample actually has four different index sequences. This is because each well from the plate __PN-1000213__ actually contain four different indices for base balancing. You can also use dual index (__PN-1000215__), and you should add that to the `SampleSheet.csv` if you use that. Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each sample:
+
+```bash
+# sample01
+Sample01_S1_R1_001.fastq.gz # 26 bp: cell barcode + UMI
+Sample01_S1_R2_001.fastq.gz # cDNA reads
+
+# sample02
+Sample02_S2_R1_001.fastq.gz # 26 bp: cell barcode + UMI
+Sample02_S2_R2_001.fastq.gz # cDNA reads
+```
+
+You are good to go from here.
 
 ## Public Data
 

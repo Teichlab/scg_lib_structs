@@ -13,21 +13,21 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 If you use this assay, you have to run the sequencing by yourself using a custom sequencing recipe or ask your core facility to do this for you. We don't have the proper setup to do this experiment here, so I haven't tried __sci-ATAC-seq__ by myself. This is the educational guess of the sequencing configuration. Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
 
-| Order | Read             | Cycle                                 | Description                       |
-|-------|------------------|---------------------------------------|-----------------------------------|
-| 1     | Read 1           | >50                                   | `R1_001.fastq.gz`, Genomic insert |
-| 2     | Index 1 (__i7__) | 8 normal + 27 dark + 10 normal cycles | `I1_001.fastq.gz`, D15 + i7 index |
-| 3     | Index 2 (__i5__) | 8 normal + 21 dark + 10 normal cycles | `I2_001.fastq.gz`, C15 + i5 index |
-| 4     | Read 2           | >50                                   | `R2_001.fastq.gz`, Genomic insert |
+| Order | Read             | Cycle                                 | Description                                   |
+|-------|------------------|---------------------------------------|-----------------------------------------------|
+| 1     | Read 1           | >50                                   | This yields `R1_001.fastq.gz`, Genomic insert |
+| 2     | Index 1 (__i7__) | 8 normal + 27 dark + 10 normal cycles | This yields `I1_001.fastq.gz`, D15 + i7 index |
+| 3     | Index 2 (__i5__) | 8 normal + 21 dark + 10 normal cycles | This yields `I2_001.fastq.gz`, C15 + i5 index |
+| 4     | Read 2           | >50                                   | This yields `R2_001.fastq.gz`, Genomic insert |
 
 Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
 
-| Order | Read             | Cycle                                 | Description                       |
-|-------|------------------|---------------------------------------|-----------------------------------|
-| 1     | Read 1           | >50                                   | `R1_001.fastq.gz`, Genomic insert |
-| 2     | Index 1 (__i7__) | 8 normal + 27 dark + 10 normal cycles | `I1_001.fastq.gz`, D15 + i7 index |
-| 3     | Index 2 (__i5__) | 10 normal + 21 dark + 8 normal cycles | `I2_001.fastq.gz`, i5 + C15 index |
-| 4     | Read 2           | >50                                   | `R2_001.fastq.gz`, Genomic insert |
+| Order | Read             | Cycle                                 | Description                                   |
+|-------|------------------|---------------------------------------|-----------------------------------------------|
+| 1     | Read 1           | >50                                   | This yields `R1_001.fastq.gz`, Genomic insert |
+| 2     | Index 1 (__i7__) | 8 normal + 27 dark + 10 normal cycles | This yields `I1_001.fastq.gz`, D15 + i7 index |
+| 3     | Index 2 (__i5__) | 10 normal + 21 dark + 8 normal cycles | This yields `I2_001.fastq.gz`, i5 + C15 index |
+| 4     | Read 2           | >50                                   | This yields `R2_001.fastq.gz`, Genomic insert |
 
 The reason for the dark cycles is to avoid sequencing those common adaptors with exact the same DNA sequences. Again, if you are not sure, check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html) to see the reason.
 

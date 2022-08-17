@@ -6,12 +6,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 The read configuration is the same as a standard library:
 
-| Order | Read             | Cycle   | Description                                       |
-|-------|------------------|---------|---------------------------------------------------|
-| 1     | Read 1           | 18      | `R1_001.fastq.gz`, 8 bp UMI + 10 bp RT barcode    |
-| 2     | Index 1 (__i7__) | 8 or 10 | `I1_001.fastq.gz`, well barcode for the 2nd plate |
-| 3     | Index 2 (__i5__) | 8 or 10 | `I2_001.fastq.gz`, well barcode for the 2nd plate |
-| 4     | Read 2           | >50     | `R2_001.fastq.gz`, cDNA reads                     |
+| Order | Read             | Cycle   | Description                                                   |
+|-------|------------------|---------|---------------------------------------------------------------|
+| 1     | Read 1           | 18      | This yields `R1_001.fastq.gz`, 8 bp UMI + 10 bp RT barcode    |
+| 2     | Index 1 (__i7__) | 8 or 10 | This yields `I1_001.fastq.gz`, well barcode for the 2nd plate |
+| 3     | Index 2 (__i5__) | 8 or 10 | This yields `I2_001.fastq.gz`, well barcode for the 2nd plate |
+| 4     | Read 2           | >50     | This yields `R2_001.fastq.gz`, cDNA reads                     |
 
 You can think of the 10 bp __RT barcode__ as the well barcode for the 1st plate, and __i7 + i5__ are the well barcode for the 2nd plate. For a cell, it can go into a well in the 1st plate, then another well in the 2nd plate. Different cells have very low chance of going through the same combination of wells in the two plates. Therefore, if reads have the same combination of well barcodes (__RT barcode + i7 + i5__), we can safely think they are from the same cell.
 
@@ -140,7 +140,18 @@ H11,,,,,,N714,GCTCATGA,S511,CGGAGAGA,,
 H12,,,,,,N715,ATCTCAGG,S511,CGGAGAGA,,
 ```
 
-Then, you will get the two fastq per well like this:
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each well:
 
 ```bash
 A1_S1_R1_001.fastq.gz # 18 bp: 8 bp UMI + 10 bp RT barcode

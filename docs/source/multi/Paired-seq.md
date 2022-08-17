@@ -8,12 +8,12 @@ If you follow the protocol from the paper, you should have two libraries per sam
 
 Your sequencing read configuration is like this:
 
-| Order | Read             | Cycle   | Description                                                 |
-|-------|------------------|---------|-------------------------------------------------------------|
-| 1     | Read 1           | >50     | `R1_001.fastq.gz`, genomic insert and cDNA reads            |
-| 2     | Index 1 (__i7__) | 8 or 10 | `I1_001.fastq.gz`, Sample and modality index                |
-| 3     | Index 2 (__i5__) | 8 or 10 | `I2_001.fastq.gz`, Sample and modality index                |
-| 4     | Read 2           | 130     | `R2_001.fastq.gz`, UMI + cell barcodes and linker sequences |
+| Order | Read             | Cycle   | Description                                                             |
+|-------|------------------|---------|-------------------------------------------------------------------------|
+| 1     | Read 1           | >50     | This yields `R1_001.fastq.gz`, genomic insert and cDNA reads            |
+| 2     | Index 1 (__i7__) | 8 or 10 | This yields `I1_001.fastq.gz`, Sample and modality index                |
+| 3     | Index 2 (__i5__) | 8 or 10 | This yields `I2_001.fastq.gz`, Sample and modality index                |
+| 4     | Read 2           | 130     | This yields `R2_001.fastq.gz`, UMI + cell barcodes and linker sequences |
 
 The 4th read (__Read 2__) has the following information, which will be used to identify single cells (__NOTE:__ `LB` means __Ligation Barcode__, see later section about whitelist, then you will understand):
 
@@ -51,7 +51,18 @@ Sample02_ATAC,,,,,,P703,TTAGGC,N504,TCTACTCT,,
 Sample02_RNA,,,,,,P704,TGACCA,N505,CTCCTTAC,,
 ```
 
-Therefore, you will get two fastq files per sample per modality. Using the examples above, these are the files you should get:
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` per sample per modality. Using the examples above, these are the files you should get:
 
 ```bash
 # Sample 01 ATAC
@@ -342,6 +353,7 @@ STAR --runThreadN 4 \
      --readFilesIn paired-seq/data/SRR8980191_cleaned_R1.fastq.gz paired-seq/data/SRR8980191_cleaned_R2.fastq.gz \
      --soloType CB_UMI_Complex \
      --soloAdapterSequence ATCCACGTGCTTGAGAGGCCAGAGCATTCGTC \
+     --soloAdapterMismatchesNmax 3 \
      --soloCBposition 0_10_0_16 2_-44_2_-38 2_-7_2_-1 2_32_2_34 \
      --soloUMIposition 0_0_0_9 \
      --soloCBwhitelist paired-seq/data/round234_bc.txt paired-seq/data/round234_bc.txt paired-seq/data/round234_bc.txt paired-seq/data/round1_bc.txt \
@@ -403,6 +415,10 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 `--soloAdapterSequence ATCCACGTGCTTGAGAGGCCAGAGCATTCGTC`
 
 >>> The 0 - 3 random bases in the middle of __Read 2__ makes the situation complicated, because the absolute positions of the cell barcode and UMI in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. I choose this linker sequence as the adaptor because it is the longest. However, the other two linker sequences can be used as well. See below.
+
+`--soloAdapterMismatchesNmax 3`
+
+>>> The number of mismatches are tolerated during the adapter finding. The adapter here is a bit long, so I want a bit relaxed matching, but you may want to try a few different options, like 1 (the default) or 2.
 
 `--soloCBposition` and `--soloUMIposition`
 

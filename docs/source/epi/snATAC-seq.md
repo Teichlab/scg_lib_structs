@@ -15,21 +15,21 @@ If you use this assay, you have to run the sequencing by yourself using a custom
 
 Using more recent machines and chemistries, like __iSeq 100__, __MiniSeq (Standard)__, __NextSeq__, __HiSeq X__, __HiSeq 3000__, __HiSeq 4000__ and __NovaSeq 600 (v1.5)__, it should be (I call this __Configuration 1__):
 
-| Order | Read             | Cycle | Description                                               |
-|-------|------------------|-------|-----------------------------------------------------------|
-| 1     | Read 1           | >50   | `R1_001.fastq.gz`, Genomic insert                         |
-| 2     | Index 1 (__i7__) | 43    | `I1_001.fastq.gz`, 8-bp T7 + 27-bp linker + 8-bp i7 index |
-| 3     | Index 2 (__i5__) | 37    | `I2_001.fastq.gz`, 8-bp T5 + 21-bp linker + 8-bp i5 index |
-| 4     | Read 2           | >50   | `R2_001.fastq.gz`, Genomic insert                         |
+| Order | Read             | Cycle | Description                                                           |
+|-------|------------------|-------|-----------------------------------------------------------------------|
+| 1     | Read 1           | >50   | This yields `R1_001.fastq.gz`, Genomic insert                         |
+| 2     | Index 1 (__i7__) | 43    | This yields `I1_001.fastq.gz`, 8-bp T7 + 27-bp linker + 8-bp i7 index |
+| 3     | Index 2 (__i5__) | 37    | This yields `I2_001.fastq.gz`, 8-bp T5 + 21-bp linker + 8-bp i5 index |
+| 4     | Read 2           | >50   | This yields `R2_001.fastq.gz`, Genomic insert                         |
 
 Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 2500__, __MiniSeq (Rapid)__ and __NovaSeq 6000 (v1.0)__, it should be (I call this __Configuration 2__):
 
-| Order | Read             | Cycle | Description                                               |
-|-------|------------------|-------|-----------------------------------------------------------|
-| 1     | Read 1           | >50   | `R1_001.fastq.gz`, Genomic insert                         |
-| 2     | Index 1 (__i7__) | 43    | `I1_001.fastq.gz`, 8-bp T7 + 27-bp linker + 8-bp i7 index |
-| 3     | Index 2 (__i5__) | 37    | `I2_001.fastq.gz`, 8-bp i5 + 21-bp linker + 8-bp T5 index |
-| 4     | Read 2           | >50   | `R2_001.fastq.gz`, Genomic insert                         |
+| Order | Read             | Cycle | Description                                                           |
+|-------|------------------|-------|-----------------------------------------------------------------------|
+| 1     | Read 1           | >50   | This yields `R1_001.fastq.gz`, Genomic insert                         |
+| 2     | Index 1 (__i7__) | 43    | This yields `I1_001.fastq.gz`, 8-bp T7 + 27-bp linker + 8-bp i7 index |
+| 3     | Index 2 (__i5__) | 37    | This yields `I2_001.fastq.gz`, 8-bp i5 + 21-bp linker + 8-bp T5 index |
+| 4     | Read 2           | >50   | This yields `R2_001.fastq.gz`, Genomic insert                         |
 
 The two configurations are very similar. The only difference is how `I2` is sequenced and generated. Again, if you are not sure, check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html) to see the reason.
 

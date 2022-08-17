@@ -8,12 +8,12 @@ The `V2` chemistry is a significant improvement over the original `V1` version o
 
 Your sequencing read configuration is like this:
 
-| Order | Read             | Cycle           | Description                                           |
-|-------|------------------|-----------------|-------------------------------------------------------|
-| 1     | Read 1           | 26              | `R1_001.fastq.gz`, 16 bp cell barcodes + 10 bp UMI    |
-| 2     | Index 1 (__i7__) | 8 or 10         | `I1_001.fastq.gz`, Sample index                       |
-| 3     | Index 2 (__i5__) | 8 or 10 or None | `I2_001.fastq.gz`, Sample index (if using dual index) |
-| 4     | Read 2           | >50             | `R2_001.fastq.gz`, cDNA reads                         |
+| Order | Read             | Cycle           | Description                                                       |
+|-------|------------------|-----------------|-------------------------------------------------------------------|
+| 1     | Read 1           | 26              | This yields `R1_001.fastq.gz`, 16 bp cell barcodes + 10 bp UMI    |
+| 2     | Index 1 (__i7__) | 8 or 10         | This yields `I1_001.fastq.gz`, Sample index                       |
+| 3     | Index 2 (__i5__) | 8 or 10 or None | This yields `I2_001.fastq.gz`, Sample index (if using dual index) |
+| 4     | Read 2           | >50             | This yields `R2_001.fastq.gz`, cDNA reads                         |
 
 If you sequence your data via your core facility or a company, you will need to provide the sample index sequence, which is the primer (__PN-120262/PN-220103__) taken from the commercial kit from 10x Genomics, to them and they will demultiplex for you. You will get two `fastq` files per sample. Read 1 contains the cell barcodes and UMI and Read 2 contains the reads from cDNA.
 
@@ -48,7 +48,30 @@ Sample02,,,,,,SI-GA-B1_3,AGTTCGGC,,,,
 Sample02,,,,,,SI-GA-B1_4,CAGCATCA,,,,
 ```
 
-You can see each sample actually has four different index sequences. This is because each well from the plate __PN-120262/PN-220103__ actually contain four different indices for base balancing. After this, for each sample, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz`. You are good to go from here.
+You can see each sample actually has four different index sequences. This is because each well from the plate __PN-120262/PN-220103__ actually contain four different indices for base balancing. Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each sample:
+
+```bash
+# sample01
+Sample01_S1_R1_001.fastq.gz # 26 bp: cell barcode + UMI
+Sample01_S1_R2_001.fastq.gz # cDNA reads
+
+# sample02
+Sample02_S2_R1_001.fastq.gz # 26 bp: cell barcode + UMI
+Sample02_S2_R2_001.fastq.gz # cDNA reads
+```
+
+You are ready to go from here.
 
 ## Public Data
 

@@ -6,12 +6,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 The read configuration is the same as a standard library:
 
-| Order | Read             | Cycle   | Description                                           |
-|-------|------------------|---------|-------------------------------------------------------|
-| 1     | Read 1           | 34      | `R1_001.fastq.gz`, Hairpin barcode + UMI + RT barcode |
-| 2     | Index 1 (__i7__) | 8 or 10 | `I1_001.fastq.gz`, well barcode for the 3rd plate     |
-| 3     | Index 2 (__i5__) | 8 or 10 | `I2_001.fastq.gz`, well barcode for the 3rd plate     |
-| 4     | Read 2           | >50     | `R2_001.fastq.gz`, cDNA reads                         |
+| Order | Read             | Cycle   | Description                                                       |
+|-------|------------------|---------|-------------------------------------------------------------------|
+| 1     | Read 1           | 34      | This yields `R1_001.fastq.gz`, Hairpin barcode + UMI + RT barcode |
+| 2     | Index 1 (__i7__) | 8 or 10 | This yields `I1_001.fastq.gz`, well barcode for the 3rd plate     |
+| 3     | Index 2 (__i5__) | 8 or 10 | This yields `I2_001.fastq.gz`, well barcode for the 3rd plate     |
+| 4     | Read 2           | >50     | This yields `R2_001.fastq.gz`, cDNA reads                         |
 
 The content of __Read 1__ is like this:
 
@@ -142,7 +142,18 @@ H11,,,,,,N714,GCTCATGA,S511,CGGAGAGA,,
 H12,,,,,,N715,ATCTCAGG,S511,CGGAGAGA,,
 ```
 
-Then, you will get the two fastq per well like this:
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+After this, you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` for each well:
 
 ```bash
 A1_S1_R1_001.fastq.gz # 34 bp: hairpin barcode + CAGAGC + UMI + RT barcode
@@ -294,14 +305,14 @@ If you understand the __sci-RNA-seq3__ experimental procedures described in [thi
 
 `--soloCBposition` and `--soloUMIposition`
 
->>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 1__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 9 or 10 bp __hairpin barcode__, using Read start as anchor will not work for the __RT barcodes__ and __UMI__ in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
+>>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 1__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 9 or 10 bp __hairpin barcode__, the absolute positions of __RT barcodes__ and __UMI__ in the middle are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_sci-RNA-seq3.jpg)
 
 ```{eval-rst}
 .. important::
   
-  This option seems to work for me. Normally, we would choose an adapter sequence with decent length. In this case, we only have a short 6-bp constant linker as the adapter: ``CAGAGC``. If you look at the sequence in the **hairpin barcode** and the **RT barcode**, ``CAGAGC`` does not exist there. In the random 8-bp UMI, it might appear. When this happens, I'm not entirely sure how the program will handle this situation. I guess ``starsolo`` will use the first appearance as the anchor ...
+  This option seems to work for me. Normally, we would choose an adapter sequence with decent length. In this case, we only have a short 6-bp constant linker as the adapter: ``CAGAGC``. If you look at the sequence in the **hairpin barcode** and the **RT barcode**, ``CAGAGC`` does not exist there. In the random 8-bp UMI, it might appear. When this happens, ``starsolo`` will only use the first appearance as the anchor, which is good here.
 ```
 
 `--soloCBwhitelist`

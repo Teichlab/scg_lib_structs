@@ -13,12 +13,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 The read configuration is the same as a standard library:
 
-| Order | Read             | Cycle    | Description                                    |
-|-------|------------------|----------|------------------------------------------------|
-| 1     | Read 1           | >50      | `R1_001.fastq.gz`, cDNA reads                  |
-| 2     | Index 1 (__i7__) | 6        | `I1_001.fastq.gz`, index for sublibrary        |
-| 3     | Index 2 (__i5__) | Optional | `I2_001.fastq.gz`, not used but can be present |
-| 4     | Read 2           | 94       | `R2_001.fastq.gz`, Cell barcode and UMI        |
+| Order | Read             | Cycle    | Description                                                |
+|-------|------------------|----------|------------------------------------------------------------|
+| 1     | Read 1           | >50      | This yields `R1_001.fastq.gz`, cDNA reads                  |
+| 2     | Index 1 (__i7__) | 6        | This yields `I1_001.fastq.gz`, index for sublibrary        |
+| 3     | Index 2 (__i5__) | Optional | This yields `I2_001.fastq.gz`, not used but can be present |
+| 4     | Read 2           | 94       | This yields `R2_001.fastq.gz`, Cell barcode and UMI        |
 
 The content of __Read 2__ is like this:
 
@@ -57,7 +57,18 @@ Sublib03,,,,,,BC_0078,GATCAG,,,,
 Sublib04,,,,,,BC_0079,TAGCTT,,,,
 ```
 
-Then, you will get the two fastq per sublibrary like this:
+Simply run `bcl2fastq` like this:
+
+```console
+bcl2fastq --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+Then,  you will have `R1_001.fastq.gz` and `R2_001.fastq.gz` per sublibrary like this:
 
 ```bash
 Sublib01_S1_R1_001.fastq.gz # 66 bp: cDNA reads
@@ -499,7 +510,7 @@ If you understand the __SPLiT-seq__ experimental procedures described in [this G
 
 `--soloCBposition` and `--soloUMIposition`
 
->>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __SPLiT-seq__, the UMI and cell barcodes are in fixed position in the __Read 2__. It is relatively straightforward to specify the paramter. See the image:
+>>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __SPLiT-seq__, the UMI and cell barcodes are in fixed position in the __Read 2__. It is relatively straightforward to specify the parameter. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_SPLiT-seq.jpg)
 

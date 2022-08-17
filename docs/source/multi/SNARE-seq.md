@@ -8,12 +8,12 @@ If you follow the protocol from the paper, you should have two libraries per sam
 
 ### RNA Read Configuration
 
-| Order | Read             | Cycle | Description                                                                              |
-|-------|------------------|-------|------------------------------------------------------------------------------------------|
-| 1     | Read 1           | >20   | `R1_001.fastq.gz`, 12 bp cell barcodes + 8 bp UMI, the rest are poly-T and hence ignored |
-| 2     | Index 1 (__i7__) | 10    | `I1_001.fastq.gz`, Sample index                                                          |
-| 3     | Index 2 (__i5__) | 10    | `I2_001.fastq.gz`, Sample index (if using dual index)                                    |
-| 4     | Read 2           | >50   | `R2_001.fastq.gz`, cDNA reads                                                            |
+| Order | Read             | Cycle | Description                                                                                          |
+|-------|------------------|-------|------------------------------------------------------------------------------------------------------|
+| 1     | Read 1           | >20   | This yields `R1_001.fastq.gz`, 12 bp cell barcodes + 8 bp UMI, the rest are poly-T and hence ignored |
+| 2     | Index 1 (__i7__) | 10    | This yields `I1_001.fastq.gz`, Sample index                                                          |
+| 3     | Index 2 (__i5__) | 10    | This yields `I2_001.fastq.gz`, Sample index (if using dual index)                                    |
+| 4     | Read 2           | >50   | This yields `R2_001.fastq.gz`, cDNA reads                                                            |
 
 After sequencing, you need to run `bcl2fastq` by yourself with a `SampleSheet.csv`. Here is an example of `SampleSheet.csv` of a NextSeq run with two different samples using the Illumina Nextera `N701` and `N702` primers as sample index. The `i5` index is not used:
 
@@ -55,12 +55,12 @@ You are ready to go from here.
 
 The ATAC library is slightly more complicated than the RNA library. Make sure you understand how sequencing is done for this assay by checking [the SNARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html). Then it is relatively straightforward to see there are two configurations.
 
-| Order | Read             | Cycle | Description                                                                              |
-|-------|------------------|-------|------------------------------------------------------------------------------------------|
-| 1     | Read 1           | >20   | `R1_001.fastq.gz`, 12 bp cell barcodes + 8 bp UMI, the rest are poly-T and hence ignored |
-| 2     | Index 1 (__i7__) | >50   | `I1_001.fastq.gz`, Genomic insert                                                        |
-| 3     | Index 2 (__i5__) | 8     | `I2_001.fastq.gz`, Sample index                                                          |
-| 4     | Read 2           | >50   | `R2_001.fastq.gz`, Genomic insert                                                        |
+| Order | Read             | Cycle | Description                                                                                                   |
+|-------|------------------|-------|---------------------------------------------------------------------------------------------------------------|
+| 1     | Read 1           | >20   | This normally yields `R1_001.fastq.gz`, 12 bp cell barcodes + 8 bp UMI, the rest are poly-T and hence ignored |
+| 2     | Index 1 (__i7__) | >50   | This normally yields `I1_001.fastq.gz`, Genomic insert                                                        |
+| 3     | Index 2 (__i5__) | 8     | This normally yields `I2_001.fastq.gz`, Sample index                                                          |
+| 4     | Read 2           | >50   | This normally yields `R2_001.fastq.gz`, Genomic insert                                                        |
 
 After sequencing, you need to run `bcl2fastq` with a `SampleSheet.csv` in specific way. Here is an example of `SampleSheet.csv` of a NextSeq run with two different samples using the `P501-Tso` and `P502-Tso` primers from the [Supplementary Table 4](https://teichlab.github.io/scg_lib_structs/data/41587_2019_290_MOESM6_ESM.xlsx) from the [SNARE-seq paper](https://www.nature.com/articles/s41587-019-0290-0) as sample index:
 

@@ -6,12 +6,81 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 The `V1` chemistry is already obsolete, but I'm still providing the preprocessing pipeline for the sake of keeping a record. Although it is highly unlikely that you will do this on your own in future, but just in case, this is the configuration:
 
-| Order | Read             | Cycle | Description                       |
-|-------|------------------|-------|-----------------------------------|
-| 1     | Read 1           | >50   | `R1_001.fastq.gz`, cDNA reads     |
-| 2     | Index 1 (__i7__) | 14    | `I1_001.fastq.gz`, Cell barcodes  |
-| 3     | Index 2 (__i5__) | 8     | `I2_001.fastq.gz`, Sample index   |
-| 4     | Read 2           | 10    | `R2_001.fastq.gz`, UMI            |
+| Order | Read             | Cycle | Description                                           |
+|-------|------------------|-------|-------------------------------------------------------|
+| 1     | Read 1           | >50   | This normally yields `R1_001.fastq.gz`, cDNA reads    |
+| 2     | Index 1 (__i7__) | 14    | This normally yields `I1_001.fastq.gz`, Cell barcodes |
+| 3     | Index 2 (__i5__) | 8     | This normally yields `I2_001.fastq.gz`, Sample index  |
+| 4     | Read 2           | 10    | This normally yields `R2_001.fastq.gz`, UMI           |
+
+Look at the order of the sequencing, as you can see, the first (`R1`), the 2nd (`I1`) and the 4th (`R2`) reads are all important for us. Therefore, you would like to get all of them for each sample based on sample index, that is, the 3rd read (`I2`). You could prepare a `SampleSheet.csv` with the sample index information. Here is an example of `SampleSheet.csv` of a NextSeq run with a sample using standard `i5` indexing primers:
+
+```text
+[Header],,,,,,,,,,,
+IEMFileVersion,5,,,,,,,,,,
+Date,17/12/2019,,,,,,,,,,
+Workflow,GenerateFASTQ,,,,,,,,,,
+Application,NextSeq FASTQ Only,,,,,,,,,,
+Instrument Type,NextSeq/MiniSeq,,,,,,,,,,
+Assay,AmpliSeq Library PLUS for Illumina,,,,,,,,,,
+Index Adapters,AmpliSeq CD Indexes (384),,,,,,,,,,
+Chemistry,Amplicon,,,,,,,,,,
+,,,,,,,,,,,
+[Reads],,,,,,,,,,,
+75,,,,,,,,,,,
+10,,,,,,,,,,,
+,,,,,,,,,,,
+[Settings],,,,,,,,,,,
+,,,,,,,,,,,
+[Data],,,,,,,,,,,
+Sample_ID,Sample_Name,Sample_Plate,Sample_Well,Index_Plate,Index_Plate_Well,I7_Index_ID,index,I5_Index_ID,index2,Sample_Project,Description
+Sample01,,,,,,,,SI-GA-A1_1,AGGCTGGT,,
+Sample01,,,,,,,,SI-GA-A1_2,CACAACTA,,
+Sample01,,,,,,,,SI-GA-A1_3,GTTGGTCC,,
+Sample01,,,,,,,,SI-GA-A1_4,TTGTAAGA,,
+```
+
+You can see each sample actually has four different index sequences. This is because each well from the index plate actually contains four different indices for base balancing. To get the reads you need, you should run `bcl2fastq` in the following way:
+
+```console
+bcl2fastq --use-bases-mask=Y75,Y14,I8,Y10 \
+          --create-fastq-for-index-reads \
+          --no-lane-splitting \
+          --ignore-missing-positions \
+          --ignore-missing-controls \
+          --ignore-missing-filter \
+          --ignore-missing-bcls \
+          -r 4 -w 4 -p 4
+```
+
+You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/sequencing_software/bcl2fastq-conversion-software/documentation.html) for more information, but the important bit that needs explanation is `--use-bases-mask=Y75,Y14,I8,Y10`. We have four reads, and that parameter specify how we treat each read in the stated order:
+
+1. `Y75` at the first position indicates "use the cycle as a real read", so you will get 75-nt sequences, output as `R1_001.fastq.gz`, because this is the 1st real read.
+2. `Y14` at the second position indicates "use the cycle as a real read", so you will get 14-nt sequences, output as `R2_001.fastq.gz`, because this is the 2nd real read.
+3. `I8` at the third position indicates "use the cycle as an index read", so you will get 8-nt sequences, output as `I1_001.fastq.gz`, because this is the 1st index read, though it is the 3rd read overall.
+4. `Y10` at the fourth position indicates "use the cycle as a real read", so you will get 10-nt sequences, output as `R3_001.fastq.gz`, because this is the 3rd real read, though it is the 4th read overall.
+
+Therefore, you will get four fastq file per sample. Using the examples above, these are the files you should get:
+
+```bash
+Sample01_S1_I1_001.fastq.gz # 8 bp: sample index
+Sample01_S1_R1_001.fastq.gz # 75 bp: cDNA reads
+Sample01_S1_R2_001.fastq.gz # 14 bp: cell barcodes
+Sample01_S1_R3_001.fastq.gz # 10 bp: UMI
+```
+
+We can safely ignore the `I1` files, but the naming here is really different from our normal usage. The `R1` files are good. The `R2` files here actually mean `I1` in our normal usage. The `R3` files here actually mean `R2` in our normal usage. Anyway, __DO NOT get confused__.
+
+To run `starsolo`, we need to get the cell barcodes and the UMI into the same fastq file. This can be simply achieved by stitching `R2` and `R3` together:
+
+```bash
+paste <(zcat Sample01_S1_R2_001.fastq.gz) \
+      <(zcat Sample01_S1_R3_001.fastq.gz) | \
+      awk -F '\t' '{ if(NR%4==1||NR%4==3) {print $1} else {print $1 $2} }' | \
+      gzip > Sample01_S1_CB_UMI.fastq.gz
+```
+
+After that, you are ready to go.
 
 ## Public Data
 
