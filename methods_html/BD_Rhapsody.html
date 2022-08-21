@@ -9,17 +9,19 @@
 
 <h1><a href="https://www.nature.com/articles/s41592-018-0255-0" target="_blank">BD Rhapsody WTA</a></h1>
 
-<p><span style="font-size:1.1em;">BD Rhapsody WTA is a nanowell-based commercial system like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html" target="_blank">Microwell-seq</a>. They use similar split-pool approach to generate their oligos on magnetic beads. The first publication is in <i>Nature Methods</i> 16, 75–78 (2019). Note: I don't have the full sequence details from each step of the protocol. Sequences presented here are based on educational guess from the sequencing data. The final libary structure should be accurate though. Click <a href="../data/GMX_BD-Rhapsody-Single-Cell-Analysis-System-Instrument_UG_EN.pdf" target="_blank">here</a> for the guide to use the machine, and click <a href="../data/GMX_BD-Rhapsody-WTA-alpha-Protocol_UG_EN.pdf" target="_blank">here</a> to see the off-machine protocol.</span></p>
+<p><span style="font-size:1.1em;">BD Rhapsody WTA is a nanowell-based commercial system like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html" target="_blank">Microwell-seq</a>. They use similar split-pool approach to generate their oligos on magnetic beads. The first publication (V1 version) is in <i>Nature Methods</i> 16, 75-78 (2019). In 2022, BD introduced a new version of beads , called Enhanced Beads, which have slightly different oilgo design. The barcodes are the same, but the linker sequences are much shorter than the V1 version. Note: I don't have the full sequence details from each step of the protocol. Sequences presented here are based on educational guess from the sequencing data. The final library structure should be accurate though. Click <a href="../data/GMX_BD-Rhapsody-Single-Cell-Analysis-System-Instrument_UG_EN.pdf" target="_blank">here</a> for the guide to use the machine, and click <a href="../data/GMX_BD-Rhapsody-WTA-alpha-Protocol_UG_EN.pdf" target="_blank">here</a> to see the off-machine protocol.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
 <h3>Sequence used during the experiment:</h3>
 <seq>
-<p>Indexed-Bead-oligo: |--5'-<s5>GACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub> -3'</p>
+<p><b>V1 Indexed-Bead-oligo:</b> |--5'-CCCCCCTCTCTCTCT<s5>ACACGACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub> -3'</p>
+<p><b>Enhanced Bead (introduced in 2022):</b> |--5'-CCCCCCTCTCTCTCT<s5>ACACGACGCTCTTCCGATCT</s5>[VB]<cbc>[CLS1]</cbc><pe1>GTGA</pe1><cbc>[CLS2]</cbc><pe2>GACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub> -3'</p>
 <p>-- Cells are determined as different combination of <cbc>[CLS1]</cbc>, <cbc>[CLS2]</cbc> and <cbc>[CLS3]</cbc>, each is 9-bp long.</p>
 <p>-- There are 97 different sequences each, so you have a total of 97x97x97 = 912,673 different combinations.</p>
-<p>-- Clike here to see the sequences of <a href="../data/BD_CLS1.txt", target="_blank">CLS1</a>, <a href="../data/BD_CLS2.txt", target="_blank">CLS2</a>, and <a href="../data/BD_CLS3.txt", target="_blank">CLS3</a>.</p>
+<p>-- Click here to see the sequences of <a href="../data/BD_CLS1.txt", target="_blank">CLS1</a>, <a href="../data/BD_CLS2.txt", target="_blank">CLS2</a>, and <a href="../data/BD_CLS3.txt", target="_blank">CLS3</a>.</p>
+<p>-- VB means "Variable Bases" which only exists in the Enhanced Beads. It has four possible bases: <b>None</b>, <b>A</b>, <b>GT</b> or <b>TCA</b>.</p>
 <p>Randomer in the kit: 5'- <s7>TCAGACGTGTGCTCTTCCGATCT</s7>NNNNNNNNN -3'</p>
 <p>Pre-amp forward primer: 5'- <s5>GACGCTCTTCCGATCT</s5> -3'</p>
 <p>Pre-amp reverse primer: 5'- <s7>TCAGACGTGTGCTCTT</s7> -3'</p>
@@ -35,36 +37,37 @@
 <br></br>
 
 <h2>Step-by-step library generation</h2>
+<span style="color:red"><b>*</b></span> The experimental procedures between V1 and Enhanced Beads are the same. Only procedures for V1 are shown, but the final library structures for both are shown in the end. 
 <h3>(1) Capture cells, load indexed beads, lyse cells, anneal mRNA to indexed-bead-oligo, collect and pool beads into a 1.5 ml Eppendorf tube, and reverse transcription in the tube:</h3>
 <pre>
 <align class="small">
-|--5'-<s5>GACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub>---------->
-                                                                           (A)<sub>n</sub>XXXXXXXXX...XXXXXXXXX -5'
+|--5'-CCCCCCTCTCTCTCT<s5>ACACGACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub>---------->
+                                                                                              (A)<sub>n</sub>XXXXXXXXX...XXXXXXXXX -5'
 </align>
 </pre>
 
 <h3>(2) Heat the beads to get rid of RNA, only keep the cDNA on the beads, then perform second strand synthesis using random priming (the Randomer in the kit) with Klenow at 37 degree. This step is called random priming and extension (RPE) in their off-machine protocol:</h3>
 <pre>
 <align class="small">
-|--5'-<s5>GACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXXXXXXXXX...XXXXXXXXXXXX -3'
-                                                                                       <--------NNNNNNNNN
-                                                                                                         <s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
+|--5'-CCCCCCTCTCTCTCT<s5>ACACGACGCTCTTCCGATCT</s5><cbc>[CLS1]</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>[CLS2]</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXXXXXXXXX...XXXXXXXXXXXX -3'
+                                                                                                <--------NNNNNNNNN
+                                                                                                                  <s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
 </align>
 </pre>
 
 <h3>(3) This is the product after the RPE step:</h3>
 <pre>
 <align class="small">
-3'- <s5>CTGCGAGAAGGCTAGA</s5><cbc>[CLS1]</cbc><pe1>TGACCGGACGCT</pe1><cbc>[CLS2]</cbc><pe2>CCATCGCCACTGT</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXXXXXXXXX...XXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
+3'- GGGGGGAGAGAGAGA<s5>TGTGCTGCGAGAAGGCTAGA</s5><cbc>[CLS1]</cbc><pe1>TGACCGGACGCT</pe1><cbc>[CLS2]</cbc><pe2>CCATCGCCACTGT</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXXXXXXXXX...XXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
 </align>
 </pre>
 
 <h3>(4) Perform RPE PCR using Universal Oligo (I assume this is a mix of Pre-amp forward primer and Pre-amp reverse primer):</h3>
 <pre>
 <align class="small">
-5'- <s5>GACGCTCTTCCGATCT</s5>---------->
-3'- <s5>CTGCGAGAAGGCTAGA</s5><cbc>[CLS1]</cbc><pe1>TGACCGGACGCT</pe1><cbc>[CLS2]</cbc><pe2>CCATCGCCACTGT</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXXXXXXXXX...XXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
-                                                                                                    <----------<s7>TTCTCGTGTGCAGACT</s7> -5'
+                   5'- <s5>GACGCTCTTCCGATCT</s5>---------->
+3'- GGGGGGAGAGAGAGA<s5>TGTGCTGCGAGAAGGCTAGA</s5><cbc>[CLS1]</cbc><pe1>TGACCGGACGCT</pe1><cbc>[CLS2]</cbc><pe2>CCATCGCCACTGT</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXXXXXXXXX...XXXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACT</s7> -5'
+                                                                                                                <----------<s7>TTCTCGTGTGCAGACT</s7> -5'
 </align>
 </pre>
 
@@ -89,10 +92,19 @@
 <h3>(7) Final library structure:</h3>
 <pre>
 <align class="long">
+<b>V1 Library:</b>
+
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNN</cbc><pe1>ACTGGCCTGCGA</pe1><cbc>NNNNNNNNN</cbc><pe2>GGTAGCGGTGACA</pe2><cbc>NNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNN</cbc><pe1>TGACCGGACGCT</pe1><cbc>NNNNNNNNN</cbc><pe2>CCATCGCCACTGT</pe2><cbc>NNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
             <p5>Illumina P5</p5>                 <s5>Truseq Read 1</s5>            <cbc>9bp</cbc>     <pe1>linker1</pe1>      <cbc>9bp</cbc>     <pe2>linker2</pe2>       <cbc>9bp</cbc>      <umi>8bp</umi>        cDNA             <s7>Truseq Read 2</s7>             8bp         <p7>Illumina P7</p7>
                                                                  <cbc>CLS1</cbc>                 <cbc>CLS2</cbc>                  <cbc>CLS3</cbc>     <umi>UMI</umi>                                               sample index
+
+<b>Enhanced Beads Library:</b>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>N...N<cbc>NNNNNNNNN</cbc><pe1>GTGA</pe1><cbc>NNNNNNNNN</cbc><pe2>GACA</pe2><cbc>NNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXX...XXX<s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N...N<cbc>NNNNNNNNN</cbc><pe1>CACT</pe1><cbc>NNNNNNNNN</cbc><pe2>CTGT</pe2><cbc>NNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXX...XXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>                 <s5>Truseq Read 1</s5>           VB    <cbc>9bp</cbc>  <pe1>linker1</pe1>  <cbc>9bp</cbc> <pe2>linker2</pe2> <cbc>9bp</cbc>      <umi>8bp</umi>        cDNA             <s7>Truseq Read 2</s7>             8bp         <p7>Illumina P7</p7>
+                                                                      <cbc>CLS1</cbc>          <cbc>CLS2</cbc>        <cbc>CLS3</cbc>     <umi>UMI</umi>                                               sample index
 </align>
 </pre>
 
