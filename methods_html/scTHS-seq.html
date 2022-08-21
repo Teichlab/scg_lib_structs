@@ -177,11 +177,19 @@
 </align>
 </pre>
 
-<h3>(3) Folds over and sequence the i5 and Tn5 barcodes (bottom strand as template, 32 cycles, single cells will be identified by the combination of i7, i5 and Tn5 barcodes):</h3>
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the i5 and Tn5 barcodes (top strand as template, 32 cycles, single cells will be identified by the combination of i7, i5 and Tn5 barcodes):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<t7>CCC</t7><pe2>TCTAGGTGCGCG</pe2><cbc>NNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>NNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                              <-------------------------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</align>
+</pre>
+
+<h3>(4) Add Read 2 sequencing primer to sequence the second read (top strand as template, these are the gDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<t7>GGG</t7><pe2>AGATCCACGCGC</pe2><cbc>NNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                         <----<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
 
