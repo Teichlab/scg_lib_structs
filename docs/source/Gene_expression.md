@@ -13,6 +13,7 @@
    ge/sci-RNA-seq.md
    ge/mcSCRB-seq.md
    ge/SPLiT-seq.md
+   ge/STRT-seq.md
    ge/inDrop.md
    
 ```

@@ -105,7 +105,7 @@ gunzip masuda2022/10x5p/737K-august-2016.txt.gz
 Now we could start the preprocessing by simply doing:
 
 ```console
-STAR --runThreadN 40 \
+STAR --runThreadN 4 \
      --genomeDir hg38/star_index \
      --readFilesCommand zcat \
      --outFileNamePrefix masuda2022/star_outs/ \
