@@ -37,6 +37,7 @@ Click the following links to view the methods. Notes:
   - [Seq-Well S3](https://teichlab.github.io/scg_lib_structs/methods_html/SeqWell_S3.html)
   - [Tang 2009](https://teichlab.github.io/scg_lib_structs/methods_html/tang2009.html)
   - [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html)
+  - [VASA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/VASA-seq.html)
   - [inDrop](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html)
 
 - ### Chromatin accessibility and protein-DNA interactions
@@ -104,7 +105,6 @@ Click the following links to view the methods. Notes:
   - [PHAGE-ATAC](https://www.biorxiv.org/content/10.1101/2020.10.01.322420v1)
   - [Spatial-ATAC-seq](https://www.biorxiv.org/content/10.1101/2021.06.06.447244v1)
   - [Spatial C&T](https://www.science.org/doi/10.1126/science.abg7216)
-  - [VASA-seq](https://www.biorxiv.org/content/10.1101/2021.09.15.460240v1)
   - [scTEM-seq](https://www.biorxiv.org/content/10.1101/2021.03.25.436351v1)
   - [DBiT-seq](https://www.sciencedirect.com/science/article/pii/S0092867420313908)
   - [scGET-seq](https://www.nature.com/articles/s41587-021-01031-1)
