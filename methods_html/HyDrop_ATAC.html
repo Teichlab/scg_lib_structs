@@ -3,21 +3,30 @@
 
 <head>
 <link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
-<title>HyDrop ATAC</title>
+<title>HyDrop-ATAC</title>
 </head>
 <body>
 
-<h1><a href="https://doi.org/10.7554/eLife.73971" target="_blank"><span style="color:red;">HyDrop ATAC</span></a></h1>
-<p><span style="font-size:1.1em;">The HyDrop protocol for single cell ATAC sequencing presented in <a href="https://doi.org/10.7554/eLife.73971" target="_blank">De Rop et al. 2022 <i>eLife</i></a>. Protocol can be found here: <a href="https://dx.doi.org/10.17504/protocols.io.b4xvqxn6" target="_blank"><span style="color:blue;">protocols.io</span></a>.</p>
+<h1><a href="https://elifesciences.org/articles/73971" target="_blank"><span style="color:red;">HyDrop-ATAC</span></a></h1>
+<p><span style="font-size:1.1em;">The HyDrop protocols were published in eLife on Feb 23th, 2022 (<a href="https://elifesciences.org/articles/73971" target="_blank">De Rop <i>et al.</i>  eLife 11:e73971</a>). The authors developed an open source droplet system, HyDrop, as a hybrid method between <a href="https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html" target="_blank">inDrop</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Drop-seq.html" target="_blank">Drop-Seq</a>. They optimised various steps during the library construction procedures and utilised a dissolvable hydrogel beads to improve barcoded primer release and diffusion.</span></p>
+
+<p><span style="font-size:1.1em;">Both scRNA-seq and scATAC-seq can be performed on the HyDrop platform. In this page, Hydrop-ATAC is presented. This page is basically a recreation of the Supplementary Files <a href="https://cdn.elifesciences.org/articles/73971/elife-73971-supp1-v4.docx" target="_blank">1</a> & <a href="https://cdn.elifesciences.org/articles/73971/elife-73971-supp2-v4.docx" target="_blank">2</a> from the publication. Detailed protocol can be found here: <a href="https://dx.doi.org/10.17504/protocols.io.b4xvqxn6" target="_blank">protocols.io</a>.</span></p>
+
+<p><span style="font-size:1.1em;">For scRNA-seq on the HyDrop platform, go to the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_RNA.html" target="_blank">HyDrop-RNA page</a> for a detailed step-by-step illustration.</span></p>
 
 <br></br>
 
 <h2>Adapter and primer sequences:</h2>
-<seq>
-<p>Barcoded beads-oligo: |--5'- TTTTTTTTAATACGACTCACTATAGGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>HYi7: 5' - <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp index]CTGTCCGCGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem> - 3'</p> 
-<p>HYi5: 5' - <p5>AATGATACGGCGACCACCGAGA</p5>TCTACAC[10-bp index]TCGTCGGCAGCGTCAGATGTG</lstem> - 3'</p> 
 
+<p><b><span style="color:red; font-size:1.1em;">*</span></b> <span style="font-size:1.1em;">The complete full list of oligo sequences can be found in this spreadsheet from their protocols.io page: <a href="../data/20210712_supp_methods_table_hydrop_oligonucleotide_list.xlsx" target="_blank">20210712_supp_methods_table_hydrop_oligonucleotide_list.xlsx</a>.</span></p>
+
+<br></br>
+
+<h3>Sequence used during the experiment:</h3>
+<seq>
+<p>Barcoded beads-oligo: |--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>HYi7: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp index]CTGTCCGCGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> - 3'</p> 
+<p>HYi5: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp index]<s5>TCGTCGGCAGCGTC</s5><me>AGATGTG</me> - 3'</p> 
 <p>Nextera Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
 <p>Nextera Index 2 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
 <p>Nextera Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
@@ -25,12 +34,102 @@
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
+<h3>Sequence used for barcoded bead generation (before the experiment):</h3>
+<seq>
+<p>Acrydite_primer: 5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> -3'</p>
+<p>20200130_plate-1-96: 5' - GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCG</t7> - 3'</p> 
+<p>20200130_plate-2-96: 5' - AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG - 3'</p>
+<p>20200130_plate-3-96-ATACseq: 5'- <s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG -3'</p>
+<p><b><span style="color:red;">*</span></b> The following oligos are only used for QC of the beads, not really used in the real experiments, so they are not drawn in the workflow in this page:</p>
+<p>Anti-Acrydite_FAM: 5'- /56-FAM/TTTTT<t7>GTACTCTGCGTTGATACCAC</t7> -3'</p>
+<p>Anti-ATAC_FAM: 5'- /56-FAM/AAAAAA<s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Anti-BC1_FAM: 5'- /56-FAM/TTTTTCTATCCGTCAGTAC -3'</p>
+<p>Anti-BC2_FAM: 5'- /56-FAM/TTTTTACACGTTGTGGCAG -3'</p>
+<p>Anti-BC3_FAM: 5'- /56-FAM/TTTTTCTCCTATCATAGGG -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step generation of barcoded beads:</h2>
+<h3>(1) Form dissolvable acrylimide gel beads together with Acrydite_primer:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> -3'
+</seq>
+</pre>
+
+<h3>(2) Split the gel beads into wells in 20200130_plate-1-96, and perform extension:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7>---->
+                                                                <----<t7>GCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
+</seq>
+</pre>
+
+<h3>(3) This is the product after the first extension:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
+</seq>
+</pre>
+
+<h3>(4) Pooling, denature by NaOH, and get rid of top strand:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
+</seq>
+</pre>
+
+<h3>(5) Split again into wells in 20200130_plate-2-96, and perform extension:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC---->
+                                                                                          <----GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA -5'
+</align>
+</pre>
+
+<h3>(6) This is the product of the second extension:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA -5'
+</align>
+</pre>
+
+<h3>(7) Pool again, denature by NaOH, get rid of top strand:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
+</align>
+</pre>
+
+<h3>(8) Split again into wells in 20200130_plate-3-96-ATACseq, and perform extension:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT---->
+                                                                                                                    <----GCTCATGGGA<cbc>[10-bp barcode3]</cbc><s7>CAGAGCACCCGAGCC</s7> -5'
+</align>
+</pre>
+
+<h3>(9) This is the product of the third extension:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA<cbc>[10-bp barcode3]</cbc><s7>CAGAGCACCCGAGCC</s7> -5'
+</align>
+</pre>
+
+<h3>(10) Pool again, denature by NaOH, get rid of the bottom strand, neutralise, wash and ready to use (96 x 96 x 96 different combination of barcodes 1, 2 & 3):</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
+</align>
+</pre>
 
 <br></br>
 
 <h2>Step-by-step library generation</h2>
-
-Steps adapted from <a href="https://cdn.elifesciences.org/articles/73971/elife-73971-supp3-v4.docx">Supplementary file 3</a> from De Rop et al. 2022 <i>eLife</i>.
 
 <h3>(1) Bulk Tn5 tagging by incubation of nuclei and Tn5:</h3> 
 <img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
@@ -52,8 +151,8 @@ Steps adapted from <a href="https://cdn.elifesciences.org/articles/73971/elife-7
 
 <i>Product 3 (different ends, amplifiable):</i>
 
-5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>TCGTCGGCAGCGTC</s5> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </seq>
 </pre>
 
@@ -63,47 +162,49 @@ Steps adapted from <a href="https://cdn.elifesciences.org/articles/73971/elife-7
 
 <pre>
 <seq>
-5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX----------------------------------------->
-    <------------------------------------------XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>TCGTCGGCAGCGTC</s5> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX------------------------------------------>
+    <-----------------------------------------XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </seq>
 </pre>
 
-<h3>(3.2) Linear PCR with cell barcode, only on bottom template from (3.1):</h3>
+<h3>(3.2) Linear PCR to add cell barcodes:</h3>
 
 <pre>
-<seq>
-|--5'- TTTTTTTTAATACGACTCACTATAGGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7> -3' -------------->
-                                                                                               <-------- 3'- <s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
-</seq>
+<align class="long">
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                  <----------------<s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'--|
+</align>
 </pre>
 
 
-<h3>(4) Product recovered from droplets:</h3>
+<h3>(4) Product recovered from the droplets:</h3>
 <pre>
-<seq>
-5'- TTTTTTTTAATACGACTCACTATAGGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>-3'
-    AAAAAAAATTATGCTGAGTGATATCCC<lstem>TTCGTCACCATAGTTGCGTCTCATG</lstem><cbc>NNNNNNNNNN</cbc>GTCGATGACG<cbc>NNNNNNNNNN</cbc>GCTCATGGGA<cbc>NNNNNNNNNN</cbc><s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>
-</seq>
+<align class="long">
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'
+</align>
 </pre>
 
-<h3>(5) PCR amplification with index primers HYi7 and HYi5 for library amplification:</h3>
+<h3>(5) PCR amplification with index primers HYi7 and HYi5 to get the library:</h3>
 <pre>
-<seq>
-5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp index]CTGTCCGCGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem>---------------->
-                    5'- TTTTTTTTAATACGACTCACTATAGGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>-3'
-                        AAAAAAAATTATGCTGAGTGATATCCC<lstem>TTCGTCACCATAGTTGCGTCTCATG</lstem><cbc>NNNNNNNNNN</cbc>GTCGATGACG<cbc>NNNNNNNNNN</cbc>GCTCATGGGA<cbc>NNNNNNNNNN</cbc><s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>
-                                                                                                                                                                    <----------------<me>GTGTAGA</me><s5>CTGCGACGGCTGCT</s5>[10-bp index]CACATCT<p5>AGAGCCACCAGCGGCATAGTAA</p5> -5'
-</seq>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp index]<s5>TCGTCGGCAGCGTC</s5><me>AGATGTG</me>-------------------->
+                                          5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
+                                          3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'
+                                                                                                                                                                                           <--------------------<t7>CATGAGACGCAACTATGGTGACGAA</t7>GG
+                                                                                                                                                                                                                                           CGCCTGTC[10-bp index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
 </pre>
 
 <h3>(6) Final library structure:</h3>
 <pre>
 <align class="small">
-5'-<p7>CAAGCAGAAGACGGCATACGAGAT</p7>NNNNNNNNNNCTGTCCGCGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>NNNNNNNNNNGTGTAGA<p5>TCTCGGTGGTCGCCGTATCATT</p5>-3'
-3'-<p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNNNNGACAGGCGCC<lstem>TTCGTCACCATAGTTGCGTCTCATG</lstem><cbc>NNNNNNNNNN</cbc>GTCGATGACG<cbc>NNNNNNNNNN</cbc>GCTCATGGGA<cbc>NNNNNNNNNN</cbc><s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>NNNNNNNNNNCACATCT<p5>AGAGCCACCAGCGGCATAGTAA</p5>-5'
-        <p7>Illumina P7</p7>          10-bp                                                    <cbc>3 * 10-bp cell barcode</cbc>                     <s7>s7</s7>              <me>ME</me>            gDNA           <me>ME</me>               <s5>s5</s5>        10-bp              <p5>Illumina P5</p5>
-                          sample index1                                                                                                                                                              sample index2
-                   (not currently sequenced)
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>            10-bp         <s5>s5</s5>              <me>ME</me>           gDNA           <me>ME</me>               <s7>s7</s7>          <cbc>10-bp</cbc>               <cbc>10-bp</cbc>               <cbc>10-bp</cbc>                                       10-bp          <p7>Illumina P7</p7>
+                              sample index                                                                              <cbc>barcode3</cbc>            <cbc>barcode2</cbc>            <cbc>barcode1</cbc>                                  sample index
+                                                                                                                                                                                                  (deprecated, not sequenced)
 </align>
 </pre>
 
@@ -111,37 +212,35 @@ Steps adapted from <a href="https://cdn.elifesciences.org/articles/73971/elife-7
 
 <h2>Library sequencing using Illumina primers</h2>
 
-Perfromed using Illumina NextSeq500 or NextSeq2000 in publication.
-
 <h3>(1) Nextera Read 1 sequencing primer is used to sequence the first read (bottom strand as template, 50 cycles, open chromatin read):</h3>
 <pre>
 <align class="small">
-5'-<p7>CAAGCAGAAGACGGCATACGAGAT</p7>NNNNNNNNNNCTGTCCGCGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>NNNNNNNNNNGTGTAGA<p5>TCTCGGTGGTCGCCGTATCATT</p5>-3'
-                                                                                                                                                             <-------<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>-5'
+                                       5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(2) Nextera Index 1 sequencing primer is used to sequence the cell barcodes (bottom strand as template, 52 cycles):</h3>
 <pre>
 <align class="small">
-                                                                        <-------------------------------------------------<s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>-5'
-3'-<p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNNNNGACAGGCGCC<lstem>TTCGTCACCATAGTTGCGTCTCATG</lstem><cbc>NNNNNNNNNN</cbc>GTCGATGACG<cbc>NNNNNNNNNN</cbc>GCTCATGGGA<cbc>NNNNNNNNNN</cbc><s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>NNNNNNNNNNCACATCT<p5>AGAGCCACCAGCGGCATAGTAA</p5>-5'
+                                                                                 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>--------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(3) Nextera Index 2 sequencing primer is used to sequence the sample index (top strand as template, 10 cycles):</h3>
 <pre>
 <align class="small">
-3'-<p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNNNNNNGACAGGCGCC<lstem>TTCGTCACCATAGTTGCGTCTCATG</lstem><cbc>NNNNNNNNNN</cbc>GTCGATGACG<cbc>NNNNNNNNNN</cbc>GCTCATGGGA<cbc>NNNNNNNNNN</cbc><s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>NNNNNNNNNNCACATCT<p5>AGAGCCACCAGCGGCATAGTAA</p5>-5'
-                                                                                                                                                                  5'-<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>-------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
 
 <h3>(4) Nextera Read 2 sequencing primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
 <pre>
 <align class="small">
-5'-<p7>CAAGCAGAAGACGGCATACGAGAT</p7>NNNNNNNNNNCTGTCCGCGG<lstem>AAGCAGTGGTATCAACGCAGAGTAC</lstem><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5>NNNNNNNNNNGTGTAGA<p5>TCTCGGTGGTCGCCGTATCATT</p5>-3'
-                                                                                                                       5'-<s7>CAGAGCACCCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                            <--------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
 

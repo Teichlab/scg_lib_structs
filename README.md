@@ -47,13 +47,13 @@ Click the following links to view the methods. Notes:
   - [dscATAC-seq/dsciATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html)
   - [scDNase-seq/scMNase-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDNase_scMNase.html)
   - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
+  - [HyDrop-ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_ATAC.html)
   - [snATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html)
   - [scTHS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTHS-seq.html)
   - [itChIP-seq](https://teichlab.github.io/scg_lib_structs/methods_html/itChIP-seq.html)
   - [Drop-ChIP](https://teichlab.github.io/scg_lib_structs/methods_html/Drop-ChIP.html)
   - [CoBATCH](https://teichlab.github.io/scg_lib_structs/methods_html/CoBATCH.html)
   - [scDamID](https://teichlab.github.io/scg_lib_structs/methods_html/scDamID.html)
-  - [HyDrop ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_ATAC.html)
 
 - ### Genomic DNA or DNA methylation
 
