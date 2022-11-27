@@ -24,8 +24,8 @@
 
 <h3>Sequence used during the experiment:</h3>
 <seq>
-<p>Barcoded beads-oligo: |--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>NNNNNNNNNN</cbc>CAGCTACTGC<cbc>NNNNNNNNNN</cbc>CGAGTACCCT<cbc>NNNNNNNNNN</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>HYi7: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp index]CTGTCCGCGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> - 3'</p> 
+<p>Barcoded beads-oligo: |--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>HYi7: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp index]CTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC - 3'</p> 
 <p>HYi5: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp index]<s5>TCGTCGGCAGCGTC</s5><me>AGATGTG</me> - 3'</p> 
 <p>Nextera Index 1 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
 <p>Nextera Index 2 sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
@@ -36,12 +36,12 @@
 </seq>
 <h3>Sequence used for barcoded bead generation (before the experiment):</h3>
 <seq>
-<p>Acrydite_primer: 5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> -3'</p>
-<p>20200130_plate-1-96: 5' - GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCG</t7> - 3'</p> 
+<p>Acrydite_primer: 5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'</p>
+<p>20200130_plate-1-96: 5' - GCAGTAGCTG<cbc>[10-bp barcode1]</cbc>GT<tso>ACTCTGCG</tso> - 3'</p> 
 <p>20200130_plate-2-96: 5' - AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG - 3'</p>
 <p>20200130_plate-3-96-ATACseq: 5'- <s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG -3'</p>
 <p><b><span style="color:red;">*</span></b> The following oligos are only used for QC of the beads, not really used in the real experiments, so they are not drawn in the workflow in this page:</p>
-<p>Anti-Acrydite_FAM: 5'- /56-FAM/TTTTT<t7>GTACTCTGCGTTGATACCAC</t7> -3'</p>
+<p>Anti-Acrydite_FAM: 5'- /56-FAM/TTTTTGT<tso>ACTCTGCGTTGATACCAC</tso> -3'</p>
 <p>Anti-ATAC_FAM: 5'- /56-FAM/AAAAAA<s7>CCGAGCCCACGAGAC</s7> -3'</p>
 <p>Anti-BC1_FAM: 5'- /56-FAM/TTTTTCTATCCGTCAGTAC -3'</p>
 <p>Anti-BC2_FAM: 5'- /56-FAM/TTTTTACACGTTGTGGCAG -3'</p>
@@ -54,37 +54,37 @@
 <h3>(1) Form dissolvable acrylimide gel beads together with Acrydite_primer:</h3>
 <pre>
 <seq>
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7> -3'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC -3'
 </seq>
 </pre>
 
 <h3>(2) Split the gel beads into wells in 20200130_plate-1-96, and perform extension:</h3>
 <pre>
 <seq>
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7>---->
-                                                                <----<t7>GCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC---->
+                                                                <----<tso>GCGTCTCA</tso>TG<cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
 </seq>
 </pre>
 
 <h3>(3) This is the product after the first extension:</h3>
 <pre>
 <seq>
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
-                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[10-bp barcode1]</cbc>GTCGATGACG -5'
 </seq>
 </pre>
 
 <h3>(4) Pooling, denature by NaOH, and get rid of top strand:</h3>
 <pre>
 <seq>
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC -3'
 </seq>
 </pre>
 
 <h3>(5) Split again into wells in 20200130_plate-2-96, and perform extension:</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC---->
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC---->
                                                                                           <----GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA -5'
 </align>
 </pre>
@@ -92,22 +92,22 @@
 <h3>(6) This is the product of the second extension:</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
-                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA -5'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA -5'
 </align>
 </pre>
 
 <h3>(7) Pool again, denature by NaOH, get rid of top strand:</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT -3'
 </align>
 </pre>
 
 <h3>(8) Split again into wells in 20200130_plate-3-96-ATACseq, and perform extension:</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT---->
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT---->
                                                                                                                     <----GCTCATGGGA<cbc>[10-bp barcode3]</cbc><s7>CAGAGCACCCGAGCC</s7> -5'
 </align>
 </pre>
@@ -115,15 +115,15 @@
 <h3>(9) This is the product of the third extension:</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
-                       3'- AAAAAAAATTATGCTGAGTGATATCCC<t7>TTCGTCACCATAGTTGCGTCTCATG</t7><cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA<cbc>[10-bp barcode3]</cbc><s7>CAGAGCACCCGAGCC</s7> -5'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
+                       3'- AAAAAAAATTATGCTGAGTGATATCCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[10-bp barcode1]</cbc>GTCGATGACG<cbc>[10-bp barcode2]</cbc>GCTCATGGGA<cbc>[10-bp barcode3]</cbc><s7>CAGAGCACCCGAGCC</s7> -5'
 </align>
 </pre>
 
 <h3>(10) Pool again, denature by NaOH, get rid of the bottom strand, neutralise, wash and ready to use (96 x 96 x 96 different combination of barcodes 1, 2 & 3):</h3>
 <pre>
 <align class="long">
-|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<t7>AAGCAGTGGTATCAACGCAGAGTAC</t7><cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
+|--5'- /5Acryd//iThioMC6-D/TTTTTTTTAATACGACTCACTATAGGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[10-bp barcode1]</cbc>CAGCTACTGC<cbc>[10-bp barcode2]</cbc>CGAGTACCCT<cbc>[10-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'
 </align>
 </pre>
 
@@ -173,7 +173,7 @@
 <align class="long">
 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
     <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
-                                                                  <----------------<s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'--|
+                                                                  <----------------<s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGGATATCACTCAGCATAATTTTTTTT -5'--|
 </align>
 </pre>
 
@@ -181,8 +181,8 @@
 <h3>(4) Product recovered from the droplets:</h3>
 <pre>
 <align class="long">
-5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
-3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc>GT<tso>ACTCTGCGTTGATACCACTGCTT</tso>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGGATATCACTCAGCATAATTTTTTTT -5'
 </align>
 </pre>
 
@@ -190,9 +190,9 @@
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp index]<s5>TCGTCGGCAGCGTC</s5><me>AGATGTG</me>-------------------->
-                                          5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
-                                          3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGGATATCACTCAGCATAATTTTTTTT -5'
-                                                                                                                                                                                           <--------------------<t7>CATGAGACGCAACTATGGTGACGAA</t7>GG
+                                          5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>[10-bp barcode3]</cbc>AGGGTACTCG<cbc>[10-bp barcode2]</cbc>GCAGTAGCTG<cbc>[10-bp barcode1]</cbc>GT<tso>ACTCTGCGTTGATACCACTGCTT</tso>CCCTATAGTGAGTCGTATTAAAAAAAA -3'
+                                          3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>[10-bp barcode3]</cbc>TCCCATGAGC<cbc>[10-bp barcode2]</cbc>CGTCATCGAC<cbc>[10-bp barcode1]</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGGATATCACTCAGCATAATTTTTTTT -5'
+                                                                                                                                                                                           <--------------------CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GG
                                                                                                                                                                                                                                            CGCCTGTC[10-bp index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
@@ -200,8 +200,8 @@
 <h3>(6) Final library structure:</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc>GT<tso>ACTCTGCGTTGATACCACTGCTT</tso>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
             <p5>Illumina P5</p5>            10-bp         <s5>s5</s5>              <me>ME</me>           gDNA           <me>ME</me>               <s7>s7</s7>          <cbc>10-bp</cbc>               <cbc>10-bp</cbc>               <cbc>10-bp</cbc>                                       10-bp          <p7>Illumina P7</p7>
                               sample index                                                                              <cbc>barcode3</cbc>            <cbc>barcode2</cbc>            <cbc>barcode1</cbc>                                  sample index
                                                                                                                                                                                                   (deprecated, not sequenced)
@@ -216,7 +216,7 @@
 <pre>
 <align class="small">
                                        5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>-------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -224,14 +224,14 @@
 <pre>
 <align class="small">
                                                                                  5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>--------------------------------------------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc><t7>CATGAGACGCAACTATGGTGACGAA</t7>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><cbc>NNNNNNNNNN</cbc>TCCCATGAGC<cbc>NNNNNNNNNN</cbc>CGTCATCGAC<cbc>NNNNNNNNNN</cbc>CA<tso>TGAGACGCAACTATGGTGACGAA</tso>GGCGCCTGTCNNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(3) Nextera Index 2 sequencing primer is used to sequence the sample index (top strand as template, 10 cycles):</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc>GT<tso>ACTCTGCGTTGATACCACTGCTT</tso>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
                                  <---------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
 </align>
 </pre>
@@ -239,7 +239,7 @@
 <h3>(4) Nextera Read 2 sequencing primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
 <pre>
 <align class="small">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc><t7>GTACTCTGCGTTGATACCACTGCTT</t7>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><cbc>NNNNNNNNNN</cbc>AGGGTACTCG<cbc>NNNNNNNNNN</cbc>GCAGTAGCTG<cbc>NNNNNNNNNN</cbc>GT<tso>ACTCTGCGTTGATACCACTGCTT</tso>CCGCGGACAGNNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
                                                                             <--------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
