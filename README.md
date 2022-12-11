@@ -63,6 +63,7 @@ Click the following links to view the methods. Notes:
   - [MALBAC](https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html)
   - [scRRBS](https://teichlab.github.io/scg_lib_structs/methods_html/scRRBS.html)
   - [LIANTI](https://teichlab.github.io/scg_lib_structs/methods_html/LIANTI.html)
+  - [s3-WGS](https://teichlab.github.io/scg_lib_structs/methods_html/s3-WGS.html)
 
 - ### Multi-Omics
 
