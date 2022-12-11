@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>s3-ATAC</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-021-00962-z" target="_blank">s3-ATAC</a></h1>
+
+<span style="font-size:1.1em;"><p>Due to semi-suppressive PCR (<a href="https://github.com/Teichlab/scg_lib_structs/issues/9#issuecomment-665438671" target="_blank">click here</a> to see a detailed explanation), only 50% of the tagmented material from the regular Tn5 are amplifiable. The <b>s3-ATAC</b> approach introduced uracil bases in the Tn5 adapters and used uracil intolerant and tolerant DNA polymerases for the gap fill-in and PCR amplification, respectively. In this way, every Tn5 cutting event is amplifiable. Combined with the combinatorial indexing strategy, it is a very clever technique that significantly increases the library complexities of many single cell libraries with a relatively easy workflow.</p></span>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p><b><span style="color:red;">*</span></b> Detailed oligo sequences and names can be found in their <a href="../data/s3_oligos.xlsx" target="_blank">Supplementary Tables 1-3</a> from the paper.</p>
+<p>Truseq_R2_SBS12_partial: 5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 index]</cbc><t7>/ideoxyU/</t7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>A14_ME_LNA (Nexetera_R1_A14 + U-ME): 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTA+TA+AG+AG+AC+AG</me>/3InvdT/ -3'</p>
+<p>Tn5 binding site 19-bp Mosaic End (ME) bottom: 5'- /Phos/<me>CTGTCTCTTATACACATCT</me> -3'</p>
+<p>PCR_i5_primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>PCR_i7_primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Index 2 sequencing primer (i5): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
+<p>Read 2 seuquencing primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+</seq>
+
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal Barcoded Truseq_R2_SBS12_partial and Tn5 binding site 19-bp Mosaic End (ME) bottom strand to assemble Tn5 transposome (Tn5 homodimer):</h3>
+<img src="../data/s3_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>(2) Sort certain number of nuclei into wells, and perform tagmentation using barcoded Tn5 transposome:</h3>
+<pre>
+<seq>
+<i>Only one product, the same sequence at both ends:</i>
+
+5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 index]</cbc><t7>/ideoxyU/</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                               <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>/ideoxyU/</t7><cbc>[8-bp Tn5 index]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(3) Pool all wells, re-distribute into wells in a new plate and perform gap fill-in using a uracil-intolerant DNA polymerase (<i>e.g.</i> the NPM from the Nextera XT kit):</h3>
+<pre>
+<seq>
+5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 index]</cbc><t7>/ideoxyU/</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me>
+                                               <me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>/ideoxyU/</t7><cbc>[8-bp Tn5 index]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(4) Add the A14_ME_LNA oligo for adapter switching:</h3>
+<pre>
+<seq>
+<i>The top strand:</i>
+
+5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 index]</cbc><t7>/ideoxyU/</t7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me>------------->
+                                                                                            /<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+                                                                                      3InvdT
+
+<i>The bottom strand:</i>
+                                     /3InvdT/
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>
+    <-------------<me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>/ideoxyU/</t7><cbc>[8-bp Tn5 index]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) This is the amplifiable products after adapter switching (Note that the products from the top and bottom strands are the same):</h3>
+<pre>
+<seq>
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>/ideoxyU/</t7><cbc>[8-bp Tn5 index]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(6) Add PCR_i5_primer and PCR_i7_primer and use a uracil-tolerant polymerase (<i>e.g.</i> NEBNext Q5U) for the library amplification:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5>------------->
+                                 3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>/ideoxyU/</t7><cbc>[8-bp Tn5 index]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+                                                                                                                              <--------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(7) Final library structure (cell barcodes are the combination of the 8-bp Tn5 + 8-bp i7 + 8-bp i5 barcodes):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me><t7>A</t7><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>T</t7><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+            <p5>Illumina P5</p5>            i5           <s5>s5</s5>              <me>ME</me>             gDNA               <me>ME</me>           <cbc>8 bp</cbc>             <s7>Truseq Read 2</s7>              i7          <p7>Illumina P7</p7>
+                                                                                                            <cbc>Tn5 barcode</cbc>                                                                             
+</align>
+</pre>
+
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add read 1 sequencing primer to sequence the first read (bottom strand as template, these are the gDNA reads, 85 cycles):</h3>
+<pre>
+<align class="long">
+                                     5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>T</t7><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 sequencing primer to sequence the i7 index (bottom strand as template, 10 cycles were used in the paper, the first 8 bp are i7):</h3>
+<pre>
+<align class="long">
+                                                                                                                  5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>--------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXX...XXXXXX<me>GACAGAGAATATGTGTAGA</me><t7>T</t7><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the i5 index (top strand as template, 10 cycles were used in the paper, the first 8 bp are i5):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me><t7>A</t7><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                               <---------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</align>
+</pre>
+
+<h3>(4) Add Read 2 sequencing primer to sequence the second read (top strand as template, 85 cycles, the first 8 cycles are the Tn5 barcodes):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXX...XXXXXX<me>CTGTCTCTTATACACATCT</me><t7>A</t7><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                    <--------------------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>
