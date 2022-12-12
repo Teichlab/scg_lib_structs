@@ -61,9 +61,9 @@ Click the following links to view the methods. Notes:
 
   - [scBS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scBS-seq.html)
   - [MALBAC](https://teichlab.github.io/scg_lib_structs/methods_html/MALBAC.html)
+  - [s3-WGS](https://teichlab.github.io/scg_lib_structs/methods_html/s3-WGS.html)
   - [scRRBS](https://teichlab.github.io/scg_lib_structs/methods_html/scRRBS.html)
   - [LIANTI](https://teichlab.github.io/scg_lib_structs/methods_html/LIANTI.html)
-  - [s3-WGS](https://teichlab.github.io/scg_lib_structs/methods_html/s3-WGS.html)
 
 - ### Multi-Omics
 
