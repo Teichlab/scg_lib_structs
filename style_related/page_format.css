@@ -27,15 +27,15 @@
 }
 
 @font-face {
- font-family: 'Fira Code';
- src: url('FiraCode-Regular.ttf') format("truetype");
+ font-family: 'Fira Mono';
+ src: url('FiraMono-Regular.ttf') format("truetype");
  font-weight: normal;
  font-style: normal;
 }
 
 @font-face {
- font-family: 'Fira Code';
- src: url('FiraCode-Bold.ttf') format("truetype");
+ font-family: 'Fira Mono';
+ src: url('FiraMono-Bold.ttf') format("truetype");
  font-weight: bold;
  font-style: normal;
 }
@@ -45,19 +45,19 @@ body {
 }
 
 seq {
-    font-family: 'Fira Code';
+    font-family: 'Fira Mono';
     font-size: 0.9em;
     text-indent: 2.7em;
 }
 
 align.small {
-    font-family: 'Fira Code';
+    font-family: 'Fira Mono';
     font-size: 0.9em;
     line-height: 65%;
 }
 
 align.long {
-    font-family:'Fira Code';
+    font-family:'Fira Mono';
     font-size: 0.8em;
     line-height: 70%;
 }
