@@ -130,6 +130,7 @@ Click the following links to view the methods. Notes:
   - [Microbe-seq](https://www.science.org/doi/10.1126/science.abm1483)
   - [SEC-seq](https://www.biorxiv.org/content/10.1101/2022.08.25.505190v1)
   - [scONE-seq](https://www.science.org/doi/10.1126/sciadv.abp8901)
+  - [BacDrop](https://pubmed.ncbi.nlm.nih.gov/36708705/)
 
 ## scRNA-seq technical comparisons
 
