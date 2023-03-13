@@ -132,6 +132,8 @@ Click the following links to view the methods. Notes:
   - [scONE-seq](https://www.science.org/doi/10.1126/sciadv.abp8901)
   - [BacDrop](https://pubmed.ncbi.nlm.nih.gov/36708705/)
   - [SPEAC-seq](https://www.science.org/doi/10.1126/science.abq4822)
+  - [DisCo](https://www.nature.com/articles/s41592-021-01391-1)
+  - [spinDrop](https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1)
 
 ## scRNA-seq technical comparisons
 
