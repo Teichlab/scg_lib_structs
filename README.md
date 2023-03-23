@@ -5,7 +5,7 @@ Collections of library structure and sequence of popular single cell genomic met
 
 Make sure you understand the basic configuration of the Illumina libraries, because most single cell sequencing methods are developed to be sequenced on the Illumina platforms. If you are not familiar with the Illumina sequencing libraries, [click here](https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html) to check some general information about Illumina library structures and the nature of library preparation.
 
-The pages contain step-by-step procedures of how the libraries are generated experimentally. For the computational preprocessing pipelines for each method, please see this accompanying [__ReadTheDocs documentation__](https://scg-lib-structs.readthedocs.io/en/latest/).
+The HTML pages listed below contain step-by-step procedures of how the libraries are generated experimentally. For the computational preprocessing pipelines for each method, please see this accompanying [__ReadTheDocs documentation__](https://scg-lib-structs.readthedocs.io/en/latest/). For the machine-readable format of the library structure, check [__seqspec__](https://github.com/IGVF/seqspec).
 
 ## How to use?
 
