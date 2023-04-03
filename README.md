@@ -134,6 +134,7 @@ Click the following links to view the methods. Notes:
   - [SPEAC-seq](https://www.science.org/doi/10.1126/science.abq4822)
   - [DisCo](https://www.nature.com/articles/s41592-021-01391-1)
   - [spinDrop](https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1)
+  - [sciPlex-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1)
 
 ## scRNA-seq technical comparisons
 
