@@ -136,6 +136,7 @@ Click the following links to view the methods. Notes:
   - [spinDrop](https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1)
   - [sciPlex-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1)
   - [FIPRESCI](https://doi.org/10.1186/s13059-023-02893-1)
+  - [SCITO-seq](https://www.nature.com/articles/s41592-021-01222-3)
 
 ## scRNA-seq technical comparisons
 
