@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>PIP-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-023-01685-z" target="_blank"><span style="color:red;">PIP-seq</span></a></h1>
+<p><span style="font-size:1.1em;">The PIP-seq method can be used to perform high-throughput droplet single cell RNA-seq without microfluidic device (well ... you still need one to generate the hydrogel beads). Mix your cells, RT reagents, barcoded hydrogel beads and oil in a tube, then a simple vortex. You are done with droplets generation and cell encapsulation. It is for real!</span></p>
+
+<p><span style="font-size:1.1em;">The barcode design is based on the previous study published in <i>Scientific Reports</i>: Modular barcode beads for microfluidic single cell genomics. <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Delley2021</a>.</span></p>
+
+<p><span style="font-size:1.1em;"><b>NOTE:</b> there are some differences between the paper version (published in <i>Nature Biotechnology</i>) and the commercial version (<a href="https://www.fluentbio.com/" target="_blank">FluentBio</a>). Both versions are shown here.</span></p>
+
+<br></br>
+
+<h1><a href="#paper" target="_self">The Paper Version</a>
+        / <a href="#fluentbio" target="_self">The FluentBio Version</a></h1>
+
+<br></br>
+
+<h1><a href="https://www.nature.com/articles/s41587-023-01685-z" target="_blank" name="paper"><span style="color:red">The Paper Version</span></a></h1>
+
+<h2>Adapter and primer sequences:</h2>
+
+<p><b><span style="color:red; font-size:1.1em;">*</span></b> <span style="font-size:1.1em;">The complete full list of oligo sequences can be found in the Supplementary Tables from the <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Delley2021</a> paper: <a href="../data/41598_2021_90255_MOESM4_ESM.xlsx" target="_blank">41598_2021_90255_MOESM4_ESM.xlsx</a>. Note that the sequences <b>pBB1</b>, <b>pBB2</b> and <b>pBB5</b> in the PIP-seq paper are slightly different from the Delley2021 paper. The sequence <b>pBB3</b> from the Delley2021 paper is not used in the PIP-seq paper. The <b>pBB4</b> sequence is the same in both papers. In addition, my educational guess is that the plate-1-BC from the Delley2021 paper is also modified a bit to make it compatible with standard Illumina TruSeq read 1 primer.</span></p>
+
+<h3>Sequence used during the PIP-seq experiment:</h3>
+<seq>
+<p>Barcoded beads-oligo: |--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV -3'</p>
+<p>PIPS_TSO: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>PIPS_WTA_primer: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
+<p>PIPs_P5library: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>*A*C -3'</p>
+<p>Nextera N7xx: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7 index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>TruSeq Read 1: 5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Nextera Read 2: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+<h3>Sequence used for barcoded bead generation (before the PIP-seq experiment):</h3>
+<seq>
+<p>pBB1: 5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCC</s5> -3'</p>
+<p>pBB2: 5'- /5Phos/<s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGA</s5>GGAGTCGT<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'</p>
+<p>plate-1-BC (Supp. Table 1 from Delley2021): 5'- /5Phos/<s5>GATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC -3'</p>
+<p>plate-1-SP (Supp. Table 2 from Delley2021): 5'- /5Phos/<cbc>[8-bp barcode1 rc]</cbc>[0-3 bp Spacer rc] -3'</p>
+<p>plate-2-BC (Supp. Table 3 from Delley2021): 5'- /5Phos/CTGT<cbc>[8-bp barcode2 rc]</cbc>GGTT -3'</p>
+<p>plate-2-SP (Supp. Table 4 from Delley2021): 5'- /5Phos/<cbc>[8-bp barcode2]</cbc> -3'</p>
+<p>plate-3-BC (Supp. Table 5 from Delley2021): 5'- /5Phos/ACAG<cbc>[8-bp barcode3]</cbc>CCTA -3'</p>
+<p>plate-3-Sp (Supp. Table 6 from Delley2021): 5'- /5Phos/<cbc>[8-bp barcode3 rc]</cbc> -3'</p>
+<p>pBB4: 5'- <pe3>CTCGAA</pe3>TAGG -3'</p>
+<p>pBB5: 5'- /5Phos/<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV -3'</p>
+<p><b><span style="color:red;">*</span></b> Plain barcodes (96) can be found here: <a href="../data/PIP-seq_barcode.txt" target="_blank">PIP-seq_barcode.txt</a>. The actual cell barcodes are the combinations of the same set of 96 barcodes.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step generation of barcoded beads:</h2>
+<h3>(1) Anneal plate-1-BC with plate-1-SP:</h3>
+<pre>
+<seq>
+5'- <s5>GATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC - 3'
+     3'- [0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(2) Anneal plate-2-BC with plate-2-SP:</h3>
+<pre>
+<seq>
+    5'- <cbc>[8-bp barcode2]</cbc> -3'
+3'- TTGG<cbc>[8-bp barcode2]</cbc>TGTC -5'
+</seq>
+</pre>
+
+<h3>(3) Anneal plate-3-BC with plate-3-SP:</h3>
+<pre>
+<seq>
+5'- ACAG<cbc>[8-bp barcode3]</cbc>CCTA -3'
+    3'- <cbc>[8-bp barcode3]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(4) Form dissolvable acrylamide gel beads together with pBB1 and anneal pBB2 to the bead oligo:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCC</s5>     -3'
+                  3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5> -5'
+</seq>
+</pre>
+
+<h3>(5) Split the gel beads into wells and add annealed plate-1 for barcode1 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC
+                  3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(6) Pooling and redistribute to a new 96-well plate and add annealed plate-2 for barcode2 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>
+                  3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC -5'
+</seq>
+</pre>
+
+<h3>(7) Pooling and redistribute to a new 96-well plate and add annealed plate-3 for barcode3 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA
+                  3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(8) Add pBB4 and pBB5 to add RT primer to the beads:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV
+                  3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3> -5'
+</align>
+</pre>
+
+<h3>(9) Denature by NaOH and get rid of the bottom strand. The beads oligos are ready to use for experiments:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV
+</align>
+</pre>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+
+<h3>(1) Cell encapsulation by vortexing, cell lysis by heat, mRNA capture, then add RT reagent for reverse transcription:</h3> 
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV
+                                                                                                                                                                              AAAAAAAAAAAAAAAABXXX...XXX -5'
+</seq>
+</pre>
+
+<h3>(2) The terminal transferase activity of MMLV adds extra Cs:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCC
+                                                                                                                                                                    (pA)BXXX...XXX -5'
+</seq>
+</pre>
+
+<h3>(3) TSO is already in the RT reagent and it will incorporate into the template:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCC----->
+                                                                                                                                                                    (pA)BXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(4) This is the first-strand cDNA after reverse transcription:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+</align>
+</pre>
+
+<h3>(5) Without purification, immediately add PIPS_WTA_primer for <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">single-primer semi-suppressive PCR</a>:</h3>
+<pre>
+<align class="long">
+                  5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>------------------>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                                    <--------------------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(6) Purify amplified double-stranded cDNA:</a>:</h3>
+<pre>
+<seq>
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(7) Use the Illumina Nextera XT kit for cDNA fragmentation:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i> Product 1 (left end of cDNA + Nextera s7, the only amplifiable fragment):</i>
+
+5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
+3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i> Product 2 (right end of cDNA + Nextera s7, not amplifiable, due to the PIPs_P5library primer ends with AC):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -3'
+
+
+<i> Products 3 - 7 (omitted, none of them are amplifiable due the primers used in the next round):</i>
+
+Left end of cDNA + Nextera s5
+Right end of cDNA + Nextera s5
+Nextera s5 or s7 + middle part of the cDNA + Nextera s5 or s7
+</seq>
+</pre>
+
+<h3>(8) Library Amplification using PIPs_P5library and Nextera N7xx primers:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC------------------>
+                                         5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXX         <me>CTGTCTCTTATACACATCT</me> -3'
+                                         3'- <tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                                                      <--------------<s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(9) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>AACC<cbc>NNNNNNNN</cbc>ACAG<cbc>NNNNNNNN</cbc>CCTA<pe3>TTCGAG</pe3><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                              <tso>TSO</tso>                          <s5>TruSeq Read 1</s5>          &darr;   <cbc>8-bp</cbc>        <cbc>8-bp</cbc>        <cbc>8-bp</cbc>               <umi>12-bp</umi>           cDNA            <me>ME</me>               <s7>s7</s7>        8-bp        <p7>Illumina P7</p7>
+                                                                                                          &darr; <cbc>barcode1</cbc>    <cbc>barcode2</cbc>    <cbc>barcode3</cbc>              <umi>UMI</umi>                                                   sample index
+                                                                                                          &darr;
+                                                                                                  0-3 bp Spacer to
+                                                                                                increase base complexity
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing using Illumina primers</h2>
+
+<h3>(1) Add TruSeq Read 1 sequencing primer to sequence the first read (bottom strand as template, cell barcodes and UMI, at least 57 cycles):</h3>
+<pre>
+<align class="small">
+                                                                    5'- <s5>ACAC</s5>
+                                                                            <s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 sequencing primer to sequence the sample index at the i7 side (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+                                                                                                                                                                            5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TGCTGAGG<s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Nextera Read 2 primer to sequence the second read (top strand as template, >67 cycles, these are cDNA reads):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>AACC<cbc>NNNNNNNN</cbc>ACAG<cbc>NNNNNNNN</cbc>CCTA<pe3>TTCGAG</pe3><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                                                         <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+<h1><a href="https://www.fluentbio.com/" target="_blank" name="fluentbio"><span style="color:red">The FluentBio Version</span></a></h1>
+
+<p><span style="font-size:1.1em;">The commercial kit comes with barcoded hydrogel beads, so you do not need to worry about generating them yourself. We can start immediately with cell encapsulation. The sequences here are based on educational guesses and will be corrected if they turned out to be wrong.</span></p>
+
+<h2>Adapter and primer sequences:</h2>
+    
+<h3>Sequence used during the PIP-seq experiment:</h3>
+<seq>
+<p><b><span style="color:red;">*</span></b> Barcoded beads-oligo (T2/20/100 PIPs, FB0003913/FB0003914/FB0003915):</p>
+<pre>
+    <seq>
+        |--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV -3'
+    </seq>
+</pre>
+<p>TSO (FB0001042/FB0003140/FB0003078): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
+<p>WTA Primer (FB0002006/FB0003084):</p>
+<pre>
+    <seq>
+        Forward: 5'- <s5>CTCTTTCCCTACACGACGCTC</s5> -3'
+        Reverse: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'
+    </seq>
+</pre>
+<p>Library Adapter Mix (FB0001605):</p>
+<pre>
+    <seq>
+        5'-/5Phos/ <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCC</s7> -3'
+        3'-       T<me>GACAGAGAATAT</me>                        -5'
+    </seq>
+</pre>
+<p>Library P5 Index (FB0001915-1918, FB0001666-1669): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>ACACTCTTTCCCTACACGACGC</s5> -3'</p>
+<p>Library P7 Index (FB0001626-1627, FB0001629-1633, FB0002092): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>TruSeq Read 1: 5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Index 1 sequencing primer (i7): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>Nextera Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Index 2 sequencing primer (i5): 5'- <s5>AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT</s5> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+<p><b><span style="color:red;">*</span></b> Plain barcodes can be found here: <a href="../data/PIP-seq_barcode1.txt" target="_blank">PIP-seq_barcode1.txt</a>, <a href="../data/PIP-seq_barcode2.txt" target="_blank">PIP-seq_barcode2.txt</a> and <a href="../data/PIP-seq_barcode3.txt" target="_blank">PIP-seq_barcode3.txt</a></p>
+</seq>
+    
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+
+<h3>(1) Cell encapsulation by vortexing, cell lysis by heat, mRNA capture, then add RT Additive Mix, RT Enzyme Mix reagent and TSO for reverse transcription:</h3> 
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV
+                                                                                                                                                                              AAAAAAAAAAAAAAAABXXX...XXX -5'
+</seq>
+</pre>
+
+<h3>(2) The terminal transferase activity of MMLV adds extra Cs:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCC
+                                                                                                                                                                    (pA)BXXX...XXX -5'
+</seq>
+</pre>
+
+<h3>(3) TSO is already in the RT reagent and it will incorporate into the template:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCC----->
+                                                                                                                                                                    (pA)BXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(4) This is the first-strand cDNA after reverse transcription:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+</align>
+</pre>
+
+<h3>(5) cDNA amplification with WTA buffer mix and WTA Primer:</h3>
+<pre>
+<align class="long">
+                                                5'- <s5>CTCTTTCCCTACACGACGCTC</s5>------------------->
+|--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+                                                                                                                                                                    <--------------------<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</align>
+</pre>
+
+<h3>(6) Purify amplified double-stranded cDNA:</a>:</h3>
+<pre>
+<seq>
+5'- <s5>CTCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso> -3'
+3'- <s5>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
+</seq>
+</pre>
+
+<h3>(7) cDNA fragmentation (by fragmentase??), end repair and A-tailing:</h3>
+<pre>
+<seq>
+<i> Product 1 (left end of cDNA):</i>
+
+5'-  <s5>CTCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXA -3'
+3'- A<s5>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXX  -5'
+
+
+<i> Product 2 (right end of cDNA):</i>
+
+5'-  XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>A  -3'
+3'- AXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso>   -5'
+
+
+<i> Products 3 (middle part of cDNA):</i>
+
+5'-  XXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXXXA -3'
+3'- AXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXXX  -5'
+
+</seq>
+</pre>
+
+<h3>(8) Add Library Adapter Mix for ligation:</h3>
+<pre>
+<seq>
+<i> Product 1 (left end of cDNA, assuming the 5' of the WTA Primer is blocked, the only amplifiable fragment):</i>
+
+5'-  <s5>CTCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCC</s7> -3'
+3'- A<s5>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXT<me>GACAGAGAATAT</me>   -5'
+
+
+<i> Product 2 (right end of cDNA, assuming the 5' of TSO is blocked, not amplifiable due to the primers used in the next round):</i>
+
+5'-               <me>TATAAGAGACAG</me>TXXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>  -5'
+3'- <s7>CCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>AXXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso>A -3'
+
+
+<i> Products 3 (middle part of cDNA, not amplifiable due to the primers used in the next round):</i>
+
+5'-               <me>TATAAGAGACAG</me>TXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCC</s7> -3'
+3'- <s7>CCGAGCC</s7><me>TCTACACATATTCTCTGTC</me>AXXXXXXXXXXXXXXXXXXXXXXXXXX...XXXXXXXXXXXXXXXXXXXXXXXXXXT<me>GACAGAGAATAT</me>  -5'
+
+</seq>
+</pre>
+
+<h3>(9) Library Amplification using Library P5 Index and Library P7 Index:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>ACACTCTTTCCCTACACGACGC</s5>------------------------->
+                                   5'-  <s5>CTCTTTCCCTACACGACGCTCTTCCGATCT</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[12-bp UMI]</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCC</s7> -3'
+                                   3'- A<s5>GAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>[Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3><umi>[12-bp UMI]</umi>(dA)VXXX...XXXT<me>GACAGAGAATAT</me>   -5'
+                                                                                                                                                        <--------------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(10) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>AACC<cbc>NNNNNNNN</cbc>ACAG<cbc>NNNNNNNN</cbc>CCTA<pe3>TTCGAG</pe3><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXXT<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>                            <s5>TruSeq Read 1</s5>          &darr;   <cbc>8-bp</cbc>        <cbc>8-bp</cbc>        <cbc>8-bp</cbc>               <umi>12-bp</umi>           cDNA             <me>ME</me>               <s7>s7</s7>        8-bp        <p7>Illumina P7</p7>
+                                                                           &darr; <cbc>barcode1</cbc>    <cbc>barcode2</cbc>    <cbc>barcode3</cbc>              <umi>UMI</umi>                                                    sample index
+                                                                           &darr;
+                                                                   0-3 bp Spacer to
+                                                               increase base complexity
+                                                (Not sure if this is present in the FluentBio version)
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing using Illumina primers</h2>
+
+<h3>(1) Add TruSeq Read 1 sequencing primer to sequence the first read (bottom strand as template, cell barcodes and UMI, at least 57 cycles):</h3>
+<pre>
+<align class="small">
+                                     5'- <s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>-------------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXXT<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 sequencing primer to sequence the sample index at the i7 side (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+                                                                                                                                              5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TTGG<cbc>NNNNNNNN</cbc>TGTC<cbc>NNNNNNNN</cbc>GGAT<pe3>AAGCTC</pe3><umi>NNNNNNNNNNNN</umi>(dA)VXXX...XXXT<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Index Read 2 primer to sequence the sample index at the i5 side (top strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>AACC<cbc>NNNNNNNN</cbc>ACAG<cbc>NNNNNNNN</cbc>CCTA<pe3>TTCGAG</pe3><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <-------<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5> -5'
+</align>
+</pre>
+
+<h3>(4) Add Nextera Read 2 primer to sequence the second read (top strand as template, >67 cycles, these are cDNA reads, the first base is T, in theory):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>AACC<cbc>NNNNNNNN</cbc>ACAG<cbc>NNNNNNNN</cbc>CCTA<pe3>TTCGAG</pe3><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                                                           <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+</body>
+</html>
