@@ -39,7 +39,7 @@ Click the following links to view the methods. Notes:
   - [Tang 2009](https://teichlab.github.io/scg_lib_structs/methods_html/tang2009.html)
   - [SPLiT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html)
   - [VASA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/VASA-seq.html)
-  - [PIP-seq](https://www.nature.com/articles/s41587-023-01685-z)
+  - [PIP-seq](https://teichlab.github.io/scg_lib_structs/methods_html/PIP-seq.html)
   - [inDrop](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html)
 
 - ### Chromatin accessibility and protein-DNA interactions
