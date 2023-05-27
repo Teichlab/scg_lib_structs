@@ -1,27 +1,27 @@
 @font-face {
- font-family: 'Computer Modern';
- src: url('cmunrm.ttf') format("truetype");
+ font-family: 'Computer Modern Sans Serif';
+ src: url('cmunss.ttf') format("truetype");
  font-weight: normal;
  font-style: normal;
 }
 
 @font-face {
- font-family: 'Computer Modern';
- src: url('cmunbi.ttf') format("truetype");
+ font-family: 'Computer Modern Sans Serif';
+ src: url('cmunso.ttf') format("truetype");
  font-weight: bold;
  font-style: italic;
 }
 
 @font-face {
- font-family: 'Computer Modern';
- src: url('cmunbx.ttf') format("truetype");
+ font-family: 'Computer Modern Sans Serif';
+ src: url('cmunsx.ttf') format("truetype");
  font-weight: bold;
  font-style: normal;
 }
 
 @font-face {
- font-family: 'Computer Modern';
- src: url('cmunti.ttf') format("truetype");
+ font-family: 'Computer Modern Sans Serif';
+ src: url('cmunsi.ttf') format("truetype");
  font-weight: normal;
  font-style: italic;
 }
@@ -41,7 +41,7 @@
 }
 
 body {
-  font-family: 'Computer Modern';
+  font-family: 'Computer Modern Sans Serif';
 }
 
 seq {
@@ -62,10 +62,10 @@ align.long {
     line-height: 70%;
 }
 
-h1 {font-family: 'Computer Modern';}
-h2 {font-family: 'Computer Modern';}
-h3 {font-family: 'Computer Modern';}
-h4 {font-family: 'Computer Modern';}
+h1 {font-family: 'Computer Modern Sans Serif';}
+h2 {font-family: 'Computer Modern Sans Serif';}
+h3 {font-family: 'Computer Modern Sans Serif';}
+h4 {font-family: 'Computer Modern Sans Serif';}
 
 bulge {color:#f3b44e;}
 cbc {color:#f768a1;}

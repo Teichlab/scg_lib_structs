@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>Delley2021</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank"><span style="color:red;">Delley2021</span></a></h1>
+
+<p><span style="font-size:1.1em;">This method does not have a name. It was published in <i>Scientific Reports</i>: <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Modular barcode beads for microfluidic single cell genomics [Delley2021].</a>. This method builds the foundation for <a href="https://teichlab.github.io/scg_lib_structs/methods_html/PIP-seq.html" target="_blank">PIP-seq</a>. The complete full list of oligo sequences can be found in the Supplementary Tables from the <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Delley2021</a> paper: <a href="../data/41598_2021_90255_MOESM4_ESM.xlsx" target="_blank">41598_2021_90255_MOESM4_ESM.xlsx</a>.</span></p>
+
+<p>As the paper suggested, this is not really about scRNA-seq or any specific assays. Instead, it provides a modular procedures to prepare barcoded beads for high-throughput droplet single-cell assays for anything you are interested in (RNA, DNA, chromatin accessibility etc.). The point here is that you use Steps (1) - (7) described below to prepare bead barcodes. In the last step, you use <b>pBB4</b> and <b>pBB5</b> to "functionalise" the beads depending on what you need. If you want to investigate gene expressions, your <b>pBB5</b> should contains UMI and oligo-dT, which is demonstrate on this page. If you are interested in chromatin accessibility, you can change <b>pBB5</b> by putting Nextera sequence on it. You can customise <b>pBB5</b> based on your own need.</p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>pBB1: 5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAAC</s5> -3'</p>
+<p>pBB2: 5'- /5Phos/<s5>TGACGTTCAGCAGGAATCGGCATTT</s5>GT<t7>CCCTATAGTGAGTCGTATTA</t7>GGTCATCGATAGAG -3'</p>
+<p>plate-1-BC (this is Supp. Table 1): 5'- /5Phos/<s5>GTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC -3'</p>
+<p>plate-1-SP (this is Supp. Table 2): 5'- /5Phos/<cbc>[8-bp barcode1 rc]</cbc>[0-3 bp Spacer rc] -3'</p>
+<p>plate-2-BC (this is Supp. Table 3): 5'- /5Phos/CTGT<cbc>[8-bp barcode2 rc]</cbc>GGTT -3'</p>
+<p>plate-2-SP (this is Supp. Table 4): 5'- /5Phos/<cbc>[8-bp barcode2]</cbc> -3'</p>
+<p>plate-3-BC (this is Supp. Table 5): 5'- /5Phos/ACAG<cbc>[8-bp barcode3]</cbc>CCTA -3'</p>
+<p>plate-3-Sp (this is Supp. Table 6): 5'- /5Phos/<cbc>[8-bp barcode3 rc]</cbc> -3'</p>
+<p>pBB4: 5'- <pe3>CTCGAA</pe3>TAGG -3'</p>
+<p>pBB5: 5'- /5Phos/<pe3>TTCGAG</pe3><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
+<p><b><span style="color:red;">*</span></b> Plain barcodes (96) can be found here: <a href="../data/delley2021_barcode.txt" target="_blank">delley2021_barcode.txt</a>. The actual cell barcodes are the combinations of the same set of 96 barcodes.</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step generation of barcoded beads:</h2>
+<h3>(1) Anneal plate-1-BC with plate-1-SP:</h3>
+<pre>
+<seq>
+5'- <s5>GTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC - 3'
+    3'- [0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(2) Anneal plate-2-BC with plate-2-SP:</h3>
+<pre>
+<seq>
+    5'- <cbc>[8-bp barcode2]</cbc> -3'
+3'- TTGG<cbc>[8-bp barcode2]</cbc>TGTC -5'
+</seq>
+</pre>
+
+<h3>(3) Anneal plate-3-BC with plate-3-SP:</h3>
+<pre>
+<seq>
+5'- ACAG<cbc>[8-bp barcode3]</cbc>CCTA -3'
+    3'- <cbc>[8-bp barcode3]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(4) Form dissolvable acrylamide gel beads together with pBB1 and anneal pBB2 to the bead oligo:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAAC</s5>     -3'
+                       3'- GAGATAGCTACTGG<t7>ATTATGCTGAGTGATATCCC</t7>TG<s5>TTTACGGCTAAGGACGACTTGCAGT</s5> -5'
+</seq>
+</pre>
+
+<h3>(5) Split the gel beads into wells and add annealed plate-1 for barcode1 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAACGTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC
+                       3'- GAGATAGCTACTGG<t7>ATTATGCTGAGTGATATCCC</t7>TG<s5>TTTACGGCTAAGGACGACTTGCAGT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(6) Pooling and redistribute to a new 96-well plate and add annealed plate-2 for barcode2 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAACGTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>
+                       3'- GAGATAGCTACTGG<t7>ATTATGCTGAGTGATATCCC</t7>TG<s5>TTTACGGCTAAGGACGACTTGCAGT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC -5'
+</seq>
+</pre>
+
+<h3>(7) Pooling and redistribute to a new 96-well plate and add annealed plate-3 for barcode3 ligation:</h3>
+<pre>
+<seq>
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAACGTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA
+                       3'- GAGATAGCTACTGG<t7>ATTATGCTGAGTGATATCCC</t7>TG<s5>TTTACGGCTAAGGACGACTTGCAGT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc> -5'
+</seq>
+</pre>
+
+<h3>(8) Add pBB4 and pBB5 to add RT primer to the beads:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAACGTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV
+                       3'- GAGATAGCTACTGG<t7>ATTATGCTGAGTGATATCCC</t7>TG<s5>TTTACGGCTAAGGACGACTTGCAGT</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>TTGG<cbc>[8-bp barcode2]</cbc>TGTC<cbc>[8-bp barcode3]</cbc>GGAT<pe3>AAGCTC</pe3> -5'
+</align>
+</pre>
+
+<h3>(9) Denature by NaOH and get rid of the bottom strand. The beads oligos are ready to use for experiments:</h3>
+<pre>
+<align class="long">
+|--5'- /5Acryd/ACTAACAATAAGCTCUAUCGATGACC<t7>TAATACGACTCACTATAGGG</t7>AC<s5>AAATGCCGATTCCTGCTGAACGTCA</s5>[0-3 bp Spacer]<cbc>[8-bp barcode1]</cbc>AACC<cbc>[8-bp barcode2]</cbc>ACAG<cbc>[8-bp barcode3]</cbc>CCTA<pe3>TTCGAG</pe3><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTV -3'
+</align>
+</pre>
+
+</body>
+</html>
