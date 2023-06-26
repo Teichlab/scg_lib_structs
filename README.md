@@ -121,7 +121,7 @@ Click the following links to view the methods. Notes:
   - [FLASH-seq](https://www.nature.com/articles/s41587-022-01312-3)
   - [Smart-seq3xpress](https://www.nature.com/articles/s41587-022-01311-4)
   - [sc-end5-seq](https://www.biorxiv.org/content/10.1101/2021.04.04.438388v2)
-  - [Slide-seq](https://www.science.org/doi/10.1126/science.aaw1219) / [Slide-seqV2](https://www.nature.com/articles/s41587-020-0739-1) / [Slide-DNA-seq](https://www.nature.com/articles/s41586-021-04217-4)
+  - [Slide-seq](https://www.science.org/doi/10.1126/science.aaw1219) / [Slide-seqV2](https://www.nature.com/articles/s41587-020-0739-1) / [Slide-DNA-seq](https://www.nature.com/articles/s41586-021-04217-4) / [Slide-tags](https://www.biorxiv.org/content/10.1101/2023.04.01.535228v1)
   - [CoTECH](https://www.nature.com/articles/s41592-021-01129-z)
   - [PairedTag](https://www.nature.com/articles/s41592-021-01060-3)
   - [GoT-ChA](https://www.biorxiv.org/content/10.1101/2022.05.11.491515v1)
