@@ -20,14 +20,14 @@
 
 <p><span style="font-size:1.1em;"><b>NOTE 4:</b> The third type, called <b>FluentBio PIPseq&trade; V3.0</b>, was used in many samples in the Clark2023 paper (for example, <a href="https://www.ncbi.nlm.nih.gov/sra/?term=SRR19184609" target="_blank">SRR19184609</a>, <a href="https://www.ncbi.nlm.nih.gov/sra/?term=SRR21853664" target="_blank">SRR21853664</a> and many others). <a href="https://www.fluentbio.com" target="_blank">FluentBio</a> is the company that provides the commercial version of the PIP-seq method. <b>FluentBio PIPseq&trade; V3.0</b> was the main library structure back in 2022. This is shown in this page and should be your starting point if you want to analyse the PIP-seq data by yourself.</span></p>
 
-<p><span style="font-size:1.1em;"><b>NOTE 5:</b> Early 2023, the company announced <b>FluentBio PIPseq&trade; V4.0</b>. There is no example data at this time of writing (2023 May 27). You can check <a href="https://www.fluentbio.com/fluent-biosciences-announces-pipseq-v4-0-chemistry-with-significant-performance-enhancements-and-the-highest-cell-capture-rate-in-the-single-cell-market-at-the-2023-agbt-conference/" target="_blank">their news from their website</a>. When example data are available, I will update here.</span></p>
+<p><span style="font-size:1.1em;"><b>NOTE 5:</b> Early 2023, the company announced <b>FluentBio PIPseq&trade; V4.0</b>. There is no example data at this time of writing (2023 May 27). You can check <a href="https://www.fluentbio.com/fluent-biosciences-announces-pipseq-v4-0-chemistry-with-significant-performance-enhancements-and-the-highest-cell-capture-rate-in-the-single-cell-market-at-the-2023-agbt-conference/" target="_blank">their news from their website</a>. When example data are available, I will update here. <b>Update (2023-July-02):</b> the V4 FASTQ files are available on the website, the whitelists are exactly the same as V3. The library structure is also extremely similar to V3, except there are 0 - 3 bases at the beginning of Read 1 in V4 to desync the sequencing cycles. See <a href="https://twitter.com/XiChenUoM/status/1671400417350017025" target="_blank">this twitter thread</a> for more details.</span></p>
 
 <p><span style="font-size:1.1em;"><b>NOTE 6:</b> About the name: PIP-seq or PIPseq&trade; ? Well ... PIP-seq is from the Clark2023 paper, and PIPseq&trade; is the commerical product.</span></p>
 
 <br></br>
 
 <h1><a href="#paper" target="_self">PIP-seq V2</a>
-        / <a href="#fluentbio" target="_self">FluentBio PIPseq&trade; V3.0</a></h1>
+        / <a href="#fluentbio" target="_self">FluentBio PIPseq&trade; V3.0 & V4.0</a></h1>
 
 <br></br>
 
@@ -259,9 +259,9 @@
 
 <br></br>
 
-<h1><a href="https://www.fluentbio.com/" target="_blank" name="fluentbio"><span style="color:red">FluentBio PIPseq&trade; V3.0</span></a></h1>
+<h1><a href="https://www.fluentbio.com/" target="_blank" name="fluentbio"><span style="color:red">FluentBio PIPseq&trade; V3.0 & V4.0</span></a></h1>
 
-<p><b><span style="color:red; font-size:1.1em;">*</span></b> <span style="font-size:1.1em;">The commercial kit comes with barcoded hydrogel beads, so you do not need to worry about generating them yourself. We can start immediately with cell encapsulation. The sequences here are based on educational guesses based on the <a href="https://www.fluentbio.com/datasets/" target="_blank">example data sets</a> from their website. In this version, the cell barcodes are the combination of four rounds of split-pool ligations. Plain files for the barcodes in each round can be downloaded as follows:</span></p>
+<p><b><span style="color:red; font-size:1.1em;">*</span></b> <span style="font-size:1.1em;">The commercial kit comes with barcoded hydrogel beads, so you do not need to worry about generating them yourself. We can start immediately with cell encapsulation. The sequences here are based on educational guesses based on the <a href="https://www.fluentbio.com/datasets/" target="_blank">example data sets</a> from their website. In this version, the cell barcodes are the combination of four rounds of split-pool ligations. The same set of four barcodes are used in V3.0 and V4.0. Therefore, the whitelist is the same for V3.0 and V4.0. Plain files for the barcodes in each round can be downloaded as follows:</span></p>
 
 <p><a href="../data/fb_v3_bc1.tsv" target="_blank">FluentBio PIPseq&trade; V3.0 Round 1 Barcodes (8bp, 96)</a></p>
 <p><a href="../data/fb_v3_bc2.tsv" target="_blank">FluentBio PIPseq&trade; V3.0 Round 2 Barcodes (6bp, 96)</a></p>
@@ -275,7 +275,9 @@
 <p>Barcoded beads-oligo (T2/20/100 PIPs, FB0003913/FB0003914/FB0003915):</p>
 <pre>
     <seq>
-        |--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[8-bp barcode1]</cbc>ATG<cbc>[6-bp barcode2]</cbc>GAG<cbc>[6-bp barcode3]</cbc>TCGAG<cbc>[8-bp barcode4]</cbc><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTV -3'
+        <b>V3.0:</b> |--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[8-bp barcode1]</cbc>ATG<cbc>[6-bp barcode2]</cbc>GAG<cbc>[6-bp barcode3]</cbc>TCGAG<cbc>[8-bp barcode4]</cbc><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTV -3'
+
+        <b>V4.0:</b> |--5'- /5Acryd/TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>ACGACTCC<s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>[None/T/GT/TGA]<cbc>[8-bp barcode1]</cbc>ATG<cbc>[6-bp barcode2]</cbc>GAG<cbc>[6-bp barcode3]</cbc>TCGAG<cbc>[8-bp barcode4]</cbc><umi>[12-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTV -3'
     </seq>
 </pre>
 <p>TSO (FB0001042/FB0003140/FB0003078): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
@@ -306,7 +308,7 @@
     
 <br></br>
 
-<h2>Step-by-step library generation</h2>
+<h2>Step-by-step library generation (only showing V3.0)</h2>
 
 <h3>(1) Cell encapsulation by vortexing, cell lysis by heat, mRNA capture, then add RT Additive Mix, RT Enzyme Mix reagent and TSO for reverse transcription:</h3> 
 <pre>
@@ -415,6 +417,8 @@
 <h3>(10) Final library structure:</h3>
 <pre>
 <align class="long">
+<b>V3.0:</b>
+
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNN</cbc>ATG<cbc>NNNNNN</cbc>GAG<cbc>NNNNNN</cbc>TCGAG<cbc>NNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNN</cbc>TAC<cbc>NNNNNN</cbc>CTC<cbc>NNNNNN</cbc>AGCTC<cbc>NNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)VXXX...XXXT<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
              <p5>Illumina P5</p5>           8-bp             <s5>TruSeq Read 1</s5>           <cbc>8-bp</cbc>      <cbc>6-bp</cbc>     <cbc>6-bp</cbc>        <cbc>8-bp</cbc>       <umi>12-bp</umi>         cDNA   &darr;        <me>ME</me>               <s7>s7</s7>         8-bp        <p7>Illumina P7</p7>
@@ -422,7 +426,16 @@
                                                                                                                                            &darr;
                                                                                                                             This means the second read will
                                                                                                                                 always start with a T
-                                                                           
+
+<b>V4.0:</b>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNN<s5>ACACTCTTTCCCTACACGACGCTCTTCCGATCT</s5>N.N<cbc>NNNNNNNN</cbc>ATG<cbc>NNNNNN</cbc>GAG<cbc>NNNNNN</cbc>TCGAG<cbc>NNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(dT)VXXX...XXXA<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNN<s5>TGTGAGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5>N.N<cbc>NNNNNNNN</cbc>TAC<cbc>NNNNNN</cbc>CTC<cbc>NNNNNN</cbc>AGCTC<cbc>NNNNNNNN</cbc><umi>NNNNNNNNNNNN</umi>(pA)VXXX...XXXT<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>           8-bp             <s5>TruSeq Read 1</s5>          &darr;   <cbc>8-bp</cbc>      <cbc>6-bp</cbc>     <cbc>6-bp</cbc>        <cbc>8-bp</cbc>       <umi>12-bp</umi>         cDNA   &darr;        <me>ME</me>               <s7>s7</s7>         8-bp        <p7>Illumina P7</p7>
+                                 i5 index                                  &darr; <cbc>barcode1</cbc>  <cbc>barcode2</cbc>  <cbc>barcode3</cbc>   <cbc>barcode4</cbc>      <umi>UMI</umi>                 &darr;                                  i7 index
+                                                                           &darr;                                                                  &darr;
+                                                                None, or T, or GT, or TGA                                   This means the second read will always start with a T,
+                                                                                                                        but the FASTQ files suggest otherwise. Maybe there is a dark cycle.
 </pre>
 
 <br></br>
