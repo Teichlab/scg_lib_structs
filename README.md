@@ -140,6 +140,7 @@ Click the following links to view the methods. Notes:
   - [SCITO-seq](https://www.nature.com/articles/s41592-021-01222-3)
   - [txci-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.05.11.540245v1)
   - [snRandom-seq](https://www.nature.com/articles/s41467-023-38409-5)
+  - [LAST-seq](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5)
 
 ## scRNA-seq technical comparisons
 
