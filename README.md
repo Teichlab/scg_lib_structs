@@ -141,6 +141,10 @@ Click the following links to view the methods. Notes:
   - [txci-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.05.11.540245v1)
   - [snRandom-seq](https://www.nature.com/articles/s41467-023-38409-5)
   - [LAST-seq](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5)
+  - [GAGE-seq](https://www.biorxiv.org/content/10.1101/2023.07.20.549578v1)
+  - [scCARE-seq](https://www.nature.com/articles/s41594-023-01066-9)
+  - [HiRES](https://www.science.org/doi/10.1126/science.adg3797)
+  - [LiMCA](https://www.researchsquare.com/article/rs-3210240/v1)
 
 ## scRNA-seq technical comparisons
 
