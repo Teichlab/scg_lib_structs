@@ -145,6 +145,8 @@ Click the following links to view the methods. Notes:
   - [scCARE-seq](https://www.nature.com/articles/s41594-023-01066-9)
   - [HiRES](https://www.science.org/doi/10.1126/science.adg3797)
   - [LiMCA](https://www.researchsquare.com/article/rs-3210240/v1)
+  - [nano-CT](https://www.nature.com/articles/s41587-022-01535-4)
+  - [NTT-seq](https://www.nature.com/articles/s41587-022-01588-5)
 
 ## scRNA-seq technical comparisons
 
