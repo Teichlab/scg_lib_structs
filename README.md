@@ -147,6 +147,7 @@ Click the following links to view the methods. Notes:
   - [LiMCA](https://www.researchsquare.com/article/rs-3210240/v1)
   - [nano-CT](https://www.nature.com/articles/s41587-022-01535-4)
   - [NTT-seq](https://www.nature.com/articles/s41587-022-01588-5)
+  - [BuTT-seq](https://genesdev.cshlp.org/content/37/9-10/432)
 
 ## scRNA-seq technical comparisons
 
