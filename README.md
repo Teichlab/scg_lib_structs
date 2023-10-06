@@ -149,6 +149,7 @@ Click the following links to view the methods. Notes:
   - [NTT-seq](https://www.nature.com/articles/s41587-022-01588-5)
   - [BuTT-seq](https://genesdev.cshlp.org/content/37/9-10/432)
   - [M3-seq](https://www.nature.com/articles/s41564-023-01462-3)
+  - [inDrops-2](https://www.biorxiv.org/content/10.1101/2023.09.26.559493v1)
 
 ## scRNA-seq technical comparisons
 
