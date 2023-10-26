@@ -210,6 +210,40 @@ Here I borrow from Feyman:
 
 ![](data/feyman.jpeg)
 
+## Citation
+
+If you find this repository useful and would like to cite this resource, please consider citing this repo and the `seqspec` preprint together:
+
+```
+@misc{xi_chen_teichlabscg_lib_structs_2023,
+	title = {Teichlab/scg\_lib\_structs: {Release} 26th {Oct} 2023},
+	copyright = {Creative Commons Attribution 4.0 International},
+	shorttitle = {Teichlab/scg\_lib\_structs},
+	url = {https://zenodo.org/doi/10.5281/zenodo.10042390},
+	abstract = {This is the first release to get a DOI so that people can cite the repo.},
+	urldate = {2023-10-26},
+	publisher = {Zenodo},
+	author = {Xi Chen and Patrick Roelli and Darío Hereñú and Pontus Höjer and Tim Stuart},
+	month = oct,
+	year = {2023},
+	doi = {10.5281/ZENODO.10042390},
+}
+
+@techreport{booeshaghi_machine-readable_2023,
+	type = {preprint},
+	title = {A machine-readable specification for genomics assays},
+	url = {http://biorxiv.org/lookup/doi/10.1101/2023.03.17.533215},
+	abstract = {Understanding the structure of sequenced fragments from genomics libraries is essential for accurate read preprocessing. Currently, different assays and sequencing technologies require custom scripts and programs that do not leverage the common structure of sequence elements present in genomics libraries. We present seqspec, a machine-readable specification for libraries produced by genomics assays that facilitates standardization of preprocessing and enables tracking and comparison of genomics assays. The specification and associated seqspec command line tool is available at https://github.com/IGVF/seqspec.},
+	language = {en},
+	urldate = {2023-10-26},
+	institution = {Bioinformatics},
+	author = {Booeshaghi, A. Sina and Chen, Xi and Pachter, Lior},
+	month = mar,
+	year = {2023},
+	doi = {10.1101/2023.03.17.533215},
+}
+```
+
 ## Feedback
 
 I would be very happy if you go through them and let me know what you think. If you spot some errors/mistakes, or I've missed some key methods. Feel free to raise an issue in the [GitHub repository](https://github.com/Teichlab/scg_lib_structs/issues), or contact me directly:
