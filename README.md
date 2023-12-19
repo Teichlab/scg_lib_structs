@@ -152,6 +152,7 @@ Click the following links to view the methods. Notes:
   - [inDrops-2](https://www.biorxiv.org/content/10.1101/2023.09.26.559493v1)
   - [scRCAT-seq](https://www.nature.com/articles/s41467-020-18976-7)
   - [Phospho-seq](https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full)
+  - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
 
 ## scRNA-seq technical comparisons
 
