@@ -153,6 +153,11 @@ Click the following links to view the methods. Notes:
   - [scRCAT-seq](https://www.nature.com/articles/s41467-020-18976-7)
   - [Phospho-seq](https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full)
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
+  - [CRISPR-sciATAC](https://www.nature.com/articles/s41587-021-00902-x)
+  - [scifi-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.09.17.558155v3)
+  - [CH-ATAC-seq](https://www.cell.com/developmental-cell/abstract/S1534-5807(24)00035-2)
+  - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
+  - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
 
 ## scRNA-seq technical comparisons
 
