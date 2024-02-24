@@ -50,6 +50,7 @@ Click the following links to view the methods. Notes:
   - [scDNase-seq/scMNase-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDNase_scMNase.html)
   - [sci-ATAC-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq3.html)
   - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
+  - [txci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/txci-ATAC-seq.html)
   - [HyDrop-ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_ATAC.html)
   - [snATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html)
   - [scTHS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTHS-seq.html)
@@ -137,7 +138,6 @@ Click the following links to view the methods. Notes:
   - [sciPlex-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1)
   - [FIPRESCI](https://doi.org/10.1186/s13059-023-02893-1)
   - [SCITO-seq](https://www.nature.com/articles/s41592-021-01222-3)
-  - [txci-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.05.11.540245v1)
   - [snRandom-seq](https://www.nature.com/articles/s41467-023-38409-5)
   - [LAST-seq](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5)
   - [GAGE-seq](https://www.biorxiv.org/content/10.1101/2023.07.20.549578v1)
@@ -194,7 +194,7 @@ Click the following links to view the methods. Notes:
 
 |                                  | Tn5 and adaptors | Staring cell number | Tagmentation | Single-cell/nucleus isolation | Library amplification |  Barcode addition  | Throughput |
 |:--------------------------------:|:----------------:|:-------------------:|:------------:|:-----------------------------:|:---------------------:|:------------------:|:----------:|
-|      sc-ATAC-seq/snATAC-seq      |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |          PCR          | Tn5 + PCR barcodes |   10,000   |
+|      sci-ATAC-seq/snATAC-seq     |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |          PCR          | Tn5 + PCR barcodes |   10,000   |
 |             scTHS-seq            |    Custom-made   |       500,000+      |     Bulk     |        FACS or dilution       |      IVT and PCR      | Tn5 + PCR barcodes |   10,000   |
 | Plate_scATAC-seq and Pi-ATAC-seq |      Nextera     |        5,000+       |     Bulk     |              FACS             |          PCR          |    PCR barcodes    |    1,000   |
 |            Fluidigm C1           |      Nextera     |     4,000-20,000    | Single cells |         Microfluidics         |          PCR          |    PCR barcodes    |     100    |

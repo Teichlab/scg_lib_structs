@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>txci-ATAC-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.biorxiv.org/content/10.1101/2023.05.11.540245v1" target="_blank">txci-ATAC-seq</a></h1>
+
+<p><span style="font-size:1.1em;">In txci-ATAC-seq, nuclei were first tagged with different indexed Tn5 in bulk and then were overloaded into the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html" target="_blank">10X Genomics Single Cell ATAC</a> platform. In this way, you get way more nuclei compared to a regular 10x scATAC-seq run. The idea is like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html" target="_blank">dsciATAC-seq</a>, but txci-ATAC-seq works on the 10X Genomics platform, and custom sequencing primers are not needed. The procedures described here are based on their <a href="https://www.protocols.io/view/ten-10-x-compatible-combinatorial-indexing-atac-se-c3urynv6.html" target="_blank">Protocols.io page</a>.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+
+<seq>
+<p>10x Genomics Beads-oligo: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Tn5ME-A: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Tn5ME-B: 5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 barcode]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Tn5MErev: 5'-/phos/ <me>CTGTCTCTTATACACATCT</me> -3'</p>
+<p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Nextera S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Short SBS primer (TruSeq Read 2 primer entry point): 5'- <s7>CGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Custom i7 TruSeq primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina Nextera Read 1 primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Illumina TruSeq Read 2 sequencing primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample Index sequencing primer: 5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>GEM barcode sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation:</h2>
+<h3>(1) Anneal "Tn5MErev+Tn5ME-A" and "Tn5MErev+Tn5ME-B" and use those to assemble the indexed Tn5 transposomes:</h3>
+<img src="../data/txci-ATAC_Tn5.svg" alt="Tn5 dimer" style="width:750px;">
+
+<h3>(2) Bulk nuclei tagging by the indexed Tn5 shown above. There are 3 different products (will create 9 bp gap):</h3>
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 barcode]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(3) Load to 10X machine, add SBS Short Primer to directly perform exponential PCR (not linear) which was shown to be the most effective to avoid barcode swapping:</h3>
+<pre>
+<seq>
+<i>Gap fill-in (72 C, 5 mins):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[8-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACG</s7> -3'
+3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+
+
+<i>Exponential PCR in GEM:</i>
+
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>---------->
+                                                   5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[8-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACG</s7> -3'
+                                                   3'- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+                                                                                                                           <----------<s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(4) Break emulsion and DNA purification. This is the product from above:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[8-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACG</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) Sample Index PCR using Illumina P5 and Custom i7 TruSeq primer:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[8-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACG</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[8-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGC</s7> -5'
+                                                                                                               <-------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[8-bp i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>              <cbc>16 bp</cbc>           <s5>s5</s5>              <me>ME</me>            gDNA          <me>ME</me>            <cbc>8 bp</cbc>            <s7>TruSeq Read 2</s7>             8 bp        <p7>Illumina P7</p7>
+                                   <cbc>GEM barcode</cbc>                                                              <cbc>Tn5 barcode</cbc>                               sample index
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Nextera Read 1 sequencing primer to sequence the first read (51 cycles, bottom strand as template, gDNA read):</h3>
+<pre>
+<seq>
+                                             5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence sample index (i7) (bottom strand as template, 8 cycles):</h3>
+<pre>
+<seq>
+                                                                                                                  5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, add GEM barcode sequencing primer to sequence the second index (i5) (top strand as template, 16 cycles, this is the GEM barcode):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</seq>
+</pre>
+
+<h3>(4) Add TruSeq Read 2 primer to sequence the second read (top strand as template, 78 cycles, the first 8 bp are the Tn5 barcodes, the last 51 bp are gDNA, the middle 19 bp are ME):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                                                                      <-------------------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+<br></br>
+
+</body>
+</html>
