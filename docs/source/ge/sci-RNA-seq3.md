@@ -277,35 +277,35 @@ If you understand the __sci-RNA-seq3__ experimental procedures described in [thi
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data from the above paper was produced using mouse embryos.
+>> Pointing to the directory of the star index. The public data from the above paper was produced using mouse embryos.
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix sci-rna-seq3/star_outs/`
 
->>> We want to keep everything organised. This parameter directs all output files into the `sci-rna-seq3/star_outs/` directory.
+>> We want to keep everything organised. This parameter directs all output files into the `sci-rna-seq3/star_outs/` directory.
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq3__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the sci-RNA-seq3 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html) if you are not sure.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq3__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the sci-RNA-seq3 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html) if you are not sure.
 
 `--soloType CB_UMI_Complex`
 
->>> Since Read 1 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also use `UMI-tools` to extract the cell barcode and UMI, but that's slow. It is better to use this option.
+>> Since Read 1 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also use `UMI-tools` to extract the cell barcode and UMI, but that's slow. It is better to use this option.
 
 `--soloAdapterSequence CAGAGC`
 
->>> The variable length (9 or 10 bp) of the __hairpin barcode__ at the beginning of __Read 1__ makes the situation complicated, because the absolute positions of the __RT barcode__ and __UMI__ in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. `CAGAGC` is the constant linker sequence in the middle, separating the __hairpin barcode__ and __UMI__.
+>> The variable length (9 or 10 bp) of the __hairpin barcode__ at the beginning of __Read 1__ makes the situation complicated, because the absolute positions of the __RT barcode__ and __UMI__ in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. `CAGAGC` is the constant linker sequence in the middle, separating the __hairpin barcode__ and __UMI__.
 
 `--soloCBposition` and `--soloUMIposition`
 
->>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 1__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 9 or 10 bp __hairpin barcode__, the absolute positions of __RT barcodes__ and __UMI__ in the middle are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
+>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 1__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 9 or 10 bp __hairpin barcode__, the absolute positions of __RT barcodes__ and __UMI__ in the middle are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_sci-RNA-seq3.jpg)
 
@@ -317,27 +317,27 @@ If you understand the __sci-RNA-seq3__ experimental procedures described in [thi
 
 `--soloCBwhitelist`
 
->>> Since the real cell barcodes consists of two non-consecutive parts: the __hairpin barcode__ and the __RT barcode__, the whitelist here is the combination of the two sub-lists. We should provide them separately and `star` will take care of the combinations.
+>> Since the real cell barcodes consists of two non-consecutive parts: the __hairpin barcode__ and the __RT barcode__, the whitelist here is the combination of the two sub-lists. We should provide them separately and `star` will take care of the combinations.
 
 `--soloCBmatchWLtype 1MM`
 
->>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
+>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
 
 `--soloCellFilter EmptyDrops_CR`
 
->>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq3__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq3__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq3 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq3__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq3__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq3 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 

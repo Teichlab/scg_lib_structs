@@ -1,5 +1,7 @@
 # Multi-omics
 
+This section describes how to preprocess popular single cell multi-modal omic data, that is, profiling multiple layers of omic data from the same single cell.
+
 ```{eval-rst}
 .. toctree::
    :maxdepth: 1

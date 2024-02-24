@@ -1,5 +1,7 @@
 # Gene expression
 
+This section describes how to preprocess popular single cell transcriptomic data, mostly from 3' single-cell RNA-seq (scRNA-seq) with some 5' and full-length scRNA-seq methods.
+
 ```{eval-rst}
 .. toctree::
    :maxdepth: 1

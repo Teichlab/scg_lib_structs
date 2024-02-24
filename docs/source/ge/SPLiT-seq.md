@@ -486,57 +486,57 @@ If you understand the __SPLiT-seq__ experimental procedures described in [this G
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data from the above paper was produced from mouse brains.
+>> Pointing to the directory of the star index. The public data from the above paper was produced from mouse brains.
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix split-seq/star_outs/`
 
->>> We want to keep everything organised. This parameter directs all output files into the `split-seq/star_outs/` directory.
+>> We want to keep everything organised. This parameter directs all output files into the `split-seq/star_outs/` directory.
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __SPLiT-seq__, cDNA reads come from Read 1, and the cell barcode and UMI come from Read 2. Check [the SPLiT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html) if you are not sure.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __SPLiT-seq__, cDNA reads come from Read 1, and the cell barcode and UMI come from Read 2. Check [the SPLiT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html) if you are not sure.
 
 `--soloType CB_UMI_Complex`
 
->>> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also extract them upfront into a new `fastq` file, but that's slow. It is better to use this option.
+>> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also extract them upfront into a new `fastq` file, but that's slow. It is better to use this option.
 
 `--soloCBposition` and `--soloUMIposition`
 
->>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __SPLiT-seq__, the UMI and cell barcodes are in fixed position in the __Read 2__. It is relatively straightforward to specify the parameter. See the image:
+>> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __SPLiT-seq__, the UMI and cell barcodes are in fixed position in the __Read 2__. It is relatively straightforward to specify the parameter. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_SPLiT-seq.jpg)
 
 `--soloCBwhitelist`
 
->>> Since the real cell barcodes consists of three non-consecutive parts: three rounds of barcodes. The whitelist here is the combination of those three lists. We should provide them separately in the specified order and `star` will take care of the combinations.
+>> Since the real cell barcodes consists of three non-consecutive parts: three rounds of barcodes. The whitelist here is the combination of those three lists. We should provide them separately in the specified order and `star` will take care of the combinations.
 
 `--soloCBmatchWLtype 1MM`
 
->>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
+>> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
 
 `--soloCellFilter EmptyDrops_CR`
 
->>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SPLiT-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI, and later the Illumina Read 2 sequence will be ligated to this end. Therefore, Read 2 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __SPLiT-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SPLiT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SPLiT-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI, and later the Illumina Read 2 sequence will be ligated to this end. Therefore, Read 2 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __SPLiT-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SPLiT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 Once that finishes, you could further merge some barcodes based on the information of the Round1 barcodes during the downstream analysis. We are not going to do it here.
 

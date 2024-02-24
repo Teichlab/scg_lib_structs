@@ -443,39 +443,39 @@ If you understand the __STRT-seq__ experimental procedures described in [this Gi
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data from the above paper was from mouse embryonic stem cells (mESC).
+>> Pointing to the directory of the star index. The public data from the above paper was from mouse embryonic stem cells (mESC).
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix`
 
->>> We want to keep everything organised. This parameter directs all output files into the `star_outs` directory within each method.
+>> We want to keep everything organised. This parameter directs all output files into the `star_outs` directory within each method.
 
 `--readFilesManifest` and `--readFilesIn`
 
->>> For the original version, we need to provide the manifest here. For the C1 version, we provide the prepared read files containing cell barcodes, UMIs and the 5' of cDNA.
+>> For the original version, we need to provide the manifest here. For the C1 version, we provide the prepared read files containing cell barcodes, UMIs and the 5' of cDNA.
 
 `--soloType`
 
->>> The original version has no UMIs, and each cell has its own file, It is in the same situation of __SMART-seq__, so we put `SmartSeq` here. For the C1 version, we have prepared the files with cell barcodes and UMIs, so we use `CB_UMI_Simple` here.
+>> The original version has no UMIs, and each cell has its own file, It is in the same situation of __SMART-seq__, so we put `SmartSeq` here. For the C1 version, we have prepared the files with cell barcodes and UMIs, so we use `CB_UMI_Simple` here.
 
 `--soloCBstart 1 --soloCBlen 8 --soloUMIstart 9 --soloUMIlen 5`
 
->>> This is for the C1 version. The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+>> This is for the C1 version. The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
 `--soloBarcodeMate 1`
 
->>> This is for the C1 version. This option is designed for the 5' sequencing methods, where one of the read contains not only cell barcodes + UMI, but useful cDNA as well. It tells the program that cell barcodes + UMI are in the first file in `--readFilesIn`. In this case, the public data is in single-end mode, so we only have one file.
+>> This is for the C1 version. This option is designed for the 5' sequencing methods, where one of the read contains not only cell barcodes + UMI, but useful cDNA as well. It tells the program that cell barcodes + UMI are in the first file in `--readFilesIn`. In this case, the public data is in single-end mode, so we only have one file.
 
 `--clip5pNbases`
 
->>> This option remove certain number of bases from the 5' of the read. In the original version, the cell barcodes are removed during the `cutadapt` demultiplexing step, but there are still a __GGG__ at the 5'. We need to ignore that. In the C1 version, the 5' of the read is 8 bp cell barcodes, 5 bp __UMI__ and __GGG__. Therefore, we need to remove __8 + 5 + 3 = 16 bp__.
+>> This option remove certain number of bases from the 5' of the read. In the original version, the cell barcodes are removed during the `cutadapt` demultiplexing step, but there are still a __GGG__ at the 5'. We need to ignore that. In the C1 version, the 5' of the read is 8 bp cell barcodes, 5 bp __UMI__ and __GGG__. Therefore, we need to remove __8 + 5 + 3 = 16 bp__.
 
 `--soloUMIdedup Exact NoDedup`
 
@@ -483,19 +483,19 @@ The original version does not have UMI in the reads. `Exact` means perform the d
 
 `--soloCBwhitelist`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. We have prepared this file in the previous section. This is for the C1 version.
+>> The plain text file containing all possible valid cell barcodes, one per line. We have prepared this file in the previous section. This is for the C1 version.
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In all versions of __STRT-seq__, the cDNA reads from the Read 1 file are in the same direction of the mRNA, i.e. the coding strand. Therefore, use `Forward` for all __STRT-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the STRT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In all versions of __STRT-seq__, the cDNA reads from the Read 1 file are in the same direction of the mRNA, i.e. the coding strand. Therefore, use `Forward` for all __STRT-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the STRT-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 

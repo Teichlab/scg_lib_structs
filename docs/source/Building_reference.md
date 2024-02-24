@@ -8,15 +8,15 @@ For the reference genomes, we are going to use the standard `mm10` build for mou
 
 We download them from the [UCSC Genome Browser](https://hgdownload.soe.ucsc.edu/downloads.html). Create a directory where you want to hold the data and reference. You can call this directory `scg_prep_test`. Everything we do will be inside this directory. Do the following:
 
-```console
+```bash
 # download and extract human fasta to the hg38 directory
 mkdir hg38
-wget -P hg38/ -c https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/hg38.analysisSet.fa.gz
+wget -P hg38/ -c 'https://hgdownload.soe.ucsc.edu/goldenPath/hg38/bigZips/analysisSet/hg38.analysisSet.fa.gz'
 gunzip hg38/hg38.analysisSet.fa.gz
 
 # download and extract mouse fasta to the mm10 directory
 mkdir mm10
-wget -P mm10/ -c https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.gz
+wget -P mm10/ -c 'https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.fa.gz'
 gunzip mm10/mm10.fa.gz
 
 # create the species mixing genome fasta
@@ -28,15 +28,15 @@ cat <(sed 's/chr/hg38_chr/' hg38/hg38.analysisSet.fa) \
 
 Now, we also need the annotation files. Here, we use the annotation from [GENCODE](https://www.gencodegenes.org).
 
-```console
+```bash
 # download human from https://www.gencodegenes.org/human/
 # We need the Comprehensive Gene Annotation GTF file
-wget -P hg38/ -c https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gtf.gz
+wget -P hg38/ -c 'https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_41/gencode.v41.annotation.gtf.gz'
 gunzip hg38/gencode.v41.annotation.gtf.gz
 
 # donwload mouse from https://www.gencodegenes.org/mouse/
 # We need the Comprehensive Gene Annotation GTF file
-wget -P mm10/ -c https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz
+wget -P mm10/ -c 'https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_mouse/release_M25/gencode.vM25.annotation.gtf.gz'
 gunzip mm10/gencode.vM25.annotation.gtf.gz
 
 # create the species mixing annotation file
@@ -49,7 +49,7 @@ cat <(sed 's/^chr/hg38_chr/' hg38/gencode.v41.annotation.gtf) \
 
 For scRNA-seq, we will use `starsolo`, so we need to build the index using `star` using 4 cores (change `--runThreadN` accordingly if using more or less cores):
 
-```console
+```bash
 # build human
 STAR --runThreadN 4 \
      --runMode genomeGenerate \
@@ -74,7 +74,7 @@ STAR --runThreadN 4 \
 
 For scATAC-seq, we will use `chromap`, so we index the genome again using `chromap` with 4 cores (change `-t` accordingly if using more or less cores):
 
-```console
+```bash
 # build human
 mkdir -p hg38/chromap_index
 chromap -i -t 4 -r hg38/hg38.analysisSet.fa -o hg38/chromap_index/genome.index

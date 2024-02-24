@@ -232,81 +232,81 @@ If you understand the __SNARE-seq__ experimental procedures described in [this G
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data we are analysing is from adult mouse cerebral cortex.
+>> Pointing to the directory of the star index. The public data we are analysing is from adult mouse cerebral cortex.
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix snare-seq/star_outs/`
 
->>> We want to keep everything organised. This directs all output files inside the `snare-seq/star_outs` directory.
+>> We want to keep everything organised. This directs all output files inside the `snare-seq/star_outs` directory.
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __SNARE-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the SNARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __SNARE-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the SNARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--soloType CB_UMI_Simple`
 
->>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
+>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
 
 `--soloCBstart 1 --soloCBlen 12 --soloUMIstart 13 --soloUMIlen 8`
 
->>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
 `--soloBarcodeReadLength 0`
 
->>> If we specify `--soloCBstart 1 --soloCBlen 12 --soloUMIstart 13 --soloUMIlen 8`, starsolo will make sure that the length of Read 1 is 12 + 8 = 20 bp. If not, it will throw an error. In this case, our `fastq` file contain 30 bp. Therefore, we need to turn off the length check by setting this parameter to 0.
+>> If we specify `--soloCBstart 1 --soloCBlen 12 --soloUMIstart 13 --soloUMIlen 8`, starsolo will make sure that the length of Read 1 is 12 + 8 = 20 bp. If not, it will throw an error. In this case, our `fastq` file contain 30 bp. Therefore, we need to turn off the length check by setting this parameter to 0.
 
 `--soloCBwhitelist None`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. __SNARE-seq__ uses the bead oligos from __Drop-seq__. Due to the way the bead oligos are generated, there is no well-defined cell barcodes, so no whitelist is available.
+>> The plain text file containing all possible valid cell barcodes, one per line. __SNARE-seq__ uses the bead oligos from __Drop-seq__. Due to the way the bead oligos are generated, there is no well-defined cell barcodes, so no whitelist is available.
 
 `--soloCellFilter EmptyDrops_CR`
 
->>> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+>> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SNARE-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __SNARE-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SNARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __SNARE-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __SNARE-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the SNARE-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 #### Explain chromap
 
 `-t 4`
 
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x mm10/chromap_index/genome.index`
 
->>> The `chromap` index file. The public data We are analysing is from adult mouse cerebral cortex.
+>> The `chromap` index file. The public data We are analysing is from adult mouse cerebral cortex.
 
 `-r mm10/mm10.fa`
 
->>> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+>> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, `-2` and `-b`
 
->>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `SRR9672090_1.fastq.gz` is the genomic Read 1 and should be passed to `-1`; `SRR9672090_2.fastq.gz` is the genomic Read 2 and should be passed to `-2`; `SRR9672090_3.fastq.gz` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `SRR9672090_1.fastq.gz` is the genomic Read 1 and should be passed to `-1`; `SRR9672090_2.fastq.gz` is the genomic Read 2 and should be passed to `-2`; `SRR9672090_3.fastq.gz` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--read-format bc:0:11`
 
->>> Note that `SRR9672090_3.fastq.gz` contains the cell barcode. The reads are 30-bp long, but only the first 12 bp are cell barcodes. Therefore, we tell `chromap` to only use the first 12 bp (`0:11`) of the barcode file (`bc`) as the cell barcode. Be aware that the position is 0-based (the first base of the read is 0, __NOT__ 1). Check the `chromap` manual if you are not sure.
+>> Note that `SRR9672090_3.fastq.gz` contains the cell barcode. The reads are 30-bp long, but only the first 12 bp are cell barcodes. Therefore, we tell `chromap` to only use the first 12 bp (`0:11`) of the barcode file (`bc`) as the cell barcode. Be aware that the position is 0-based (the first base of the read is 0, __NOT__ 1). Check the `chromap` manual if you are not sure.
 
 `-o snare-seq/chromap_outs/fragments.tsv`
 
->>> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+>> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ### From ATAC Fragments To Reads
 

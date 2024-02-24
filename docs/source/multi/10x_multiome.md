@@ -290,77 +290,77 @@ If you understand the __10x Chromium Single Cell Multiome ATAC + Gene Expression
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data we are analysing is from mouse brains.
+>> Pointing to the directory of the star index. The public data we are analysing is from mouse brains.
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix 10xMultiome/star_outs/`
 
->>> We want to keep everything organised. This directs all output files inside the `10xMultiome/star_outs` directory.
+>> We want to keep everything organised. This directs all output files inside the `10xMultiome/star_outs` directory.
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __10x Chromium Single Cell Multiome ATAC + Gene Expression__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the 10x Chromium Single Cell Multiome ATAC + Gene Expression GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_multiome.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __10x Chromium Single Cell Multiome ATAC + Gene Expression__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the 10x Chromium Single Cell Multiome ATAC + Gene Expression GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_multiome.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--soloType CB_UMI_Simple`
 
->>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
+>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
 
 `--soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 12`
 
->>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
 `--soloCBwhitelist 10xMultiome/gex_737K-arc-v1.txt`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. __10x Chromium Single Cell Multiome ATAC + Gene Expression__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-arc`.
+>> The plain text file containing all possible valid cell barcodes, one per line. __10x Chromium Single Cell Multiome ATAC + Gene Expression__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-arc`.
 
 `--soloCellFilter EmptyDrops_CR`
 
->>> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+>> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Chromium Single Cell Multiome ATAC + Gene Expression__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __10x Chromium Single Cell Multiome ATAC + Gene Expression__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the 10x Chromium Single Cell Multiome ATAC + Gene Expression GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_multiome.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Chromium Single Cell Multiome ATAC + Gene Expression__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __10x Chromium Single Cell Multiome ATAC + Gene Expression__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the 10x Chromium Single Cell Multiome ATAC + Gene Expression GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_multiome.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 #### Explain chromap
 
 `-t 4`
 
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x mm10/chromap_index/genome.index`
 
->>> The `chromap` index file. The public data We are analysing is from mouse brains.
+>> The `chromap` index file. The public data We are analysing is from mouse brains.
 
 `-r mm10/mm10.fa`
 
->>> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+>> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, `-2` and `-b`
 
->>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-2`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+>> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-2`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist 10xMultiome/atac_737K-arc-v1.txt`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-arc`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Therefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
+>> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-arc`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Therefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
 
 `-o 10xMultiome/chromap_outs/fragments.tsv`
 
->>> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+>> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ### From ATAC Fragments To Reads
 

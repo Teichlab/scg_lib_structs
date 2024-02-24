@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>sci-ATAC-seq</title>
+</head>
+<body>
+
+<h1><a href="https://www.science.org/doi/10.1126/science.aba7612" target="_blank">sci-ATAC-seq3</a></h1>
+
+<span style="font-size:1.1em;"><p>The sci-ATAC-seq3 uses the combinatorial indexing to identify single cells without single cell isolation, which uses the same idea as <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq</a>. The difference is that sci-ATAC-seq3 achieved the combinatorial indexing via split-pool ligation. In this way, it avoids using indexed Tn5 which is difficult to produce in many labs. Therefore, regular Tn5 that used in a typical ATAC-seq experiment can be used. Cells can be identified by the unique combination of the ligated barcodes and final library PCR index as usual (see below). The sequences described here are taken from their <a href="../data/aba7612_domcke_table-s7.xlsx" target="_blank">Supplementary Table 7</a> from the <i>Science</i> paper. The procedures described here are based on their <a href="https://www.protocols.io/view/sci-atac-seq3-ewov18xn7gr2/v1" target="_blank">Protocols.io page</a>.</p></span>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>3LV2_N5_Splint: 5'- <s5>GCCGACGA</s5><r1>CTGATTA/3ddC/</r1> -3'</p>
+<p>3LV2_N7_Splint: 5'- <s7>CACGAGAC</s7><r2>GACAAGT/3ddC/</r2> -3'</p>
+<p>3LV2_N5_Oligo_{A01..H12}_Plate{1..4} (96 x 4 = 384 oligos): 5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1> -3'</p>
+<p>3LV2_N7_Oligo_{A01..H12}_Plate{1..4} (96 x 4 = 384 oligos): 5'- <w1>CAGCACGGCGAGACT</w1><cbc>[10-bp N7 barcode]</cbc><r2>GACTTGTC</r2> -3'</p>
+<p>3LV2_P5_PCR_{A01..H12} (96 oligos): 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp i5]<cs1>CACCGCACGAGAGGT</cs1> -3'</p>
+<p>3LV2_P7_PCR_{A01..H12} (96 oligos): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[10-bp i7]<w1>CAGCACGGCGAGACT</w1> -3'</p>
+<p>Tn5 binding site 19-bp Mosaic End (ME) bottom: 5'- /Phos/<me>CTGTCTCTTATACACATCT</me> -3'</p>
+<p>Read 1 sequencing primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Index 1 sequencing primer: 5'- <me>CT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2> -3'</p>
+<p>Index 2 sequencing priemr: 5'- <me>ACACATCT</me><s5>GACGCTGCCGACGA</s5><r1>CTGATTAC</r1> -3'</p>
+<p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+</seq>
+
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Tagmentation on bulk nuclei in each individual wells (50k nuclei per well) using regular Tn5 from Illumina (will create 9-bp gap):</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h3>(2) Use T4 PNK to add phosphate to the 5' of the tagged fragments:</h3>
+<pre>
+<seq>
+<i>Product 1:</i>
+
+5'- p<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5>p -5'
+
+
+<i>Product 2:</i>
+
+5'- p<s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>p -5'
+
+
+<i>Product 3:</i>
+
+5'- p<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>p -5'
+</seq>
+</pre>
+
+<h3>(3) Add 3LV2_N5_Splint and 3LV2_N5_Oligo_{A01..H12}_Plate{1..4} oligos for N5 barcode ligation:</h3>
+<pre>
+<seq>
+<i>Product 1:</i>
+
+5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>      <s5>GCCGACGA</s5><r1>CTGATTAC</r1> -3'
+                                 3'- <r1>CATTAGTC</r1><s5>AGCAGCCG</s5>      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5><r1>GACTAATG</r1><cbc>[10-bp N5 barcode]</cbc><cs1>TGGAGAGCACGCCAC</cs1> -5'
+
+
+<i>Product 2 (unable to ligate, omitted afterwards):</i>
+
+5'- p<s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                    <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>p -5'
+
+
+<i>Product 3:</i>
+
+5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                 3'- <r1>CATTAGTC</r1><s5>AGCAGCCG</s5>      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>p -5'
+</seq>
+</pre>
+
+<h3>(4) Pool and redistribute to new plates with 3LV2_N7_Splint and 3LV2_N7_Oligo_{A01..H12}_Plate{1..4} oligos for N7 barcode ligation:</h3>
+<pre>
+<seq>
+<i>Product 1 (unable to ligate, omitted afterwards):</i>
+
+5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>      <s5>GCCGACGA</s5><r1>CTGATTAC</r1> -3'
+                                 3'- <r1>CATTAGTC</r1><s5>AGCAGCCG</s5>      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5><r1>GACTAATG</r1><cbc>[10-bp N5 barcode]</cbc><cs1>TGGAGAGCACGCCAC</cs1> -5'
+
+
+<i>Product 2 (the only amplifiable fragment):</i>
+
+5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>       <s7>CACGAGAC</s7><r2>GACAAGTC</r2> -3'
+                                 3'- <r1>CATTAGTC</r1><s5>AGCAGCCG</s5>      <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>[10-bp N7 barcode]</cbc><w1>TCAGAGCGGCACGAC</w1> -5'
+</seq>
+</pre>
+
+<h3>(5) Pool again and redistribute to new plates, reverse crosslink and use 3LV2_P5/7_PCR_{A01..H12} for final i5/i7 index addition and library amplification:</h3>
+<pre>
+<seq>
+<i> Gap fill-in (72C 5mins):</i>
+
+5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2><cbc>[10-bp N7 barcode]</cbc><w1>AGTCTCGCCGTGCTG</w1> -3'
+3'- <cs1>GTGGCGTGCTCTCCA</cs1><cbc>[10-bp N5 barcode]</cbc><r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>[10-bp N7 barcode]</cbc><w1>TCAGAGCGGCACGAC</w1> -5'
+
+
+<i> Amplification: </i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[10-bp i5]<cs1>CACCGCACGAGAGGT</cs1>---------->
+                                       5'- <cs1>CACCGCACGAGAGGT</cs1><cbc>[10-bp N5 barcode]</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2><cbc>[10-bp N7 barcode]</cbc><w1>AGTCTCGCCGTGCTG</w1> -3'
+                                       3'- <cs1>GTGGCGTGCTCTCCA</cs1><cbc>[10-bp N5 barcode]</cbc><r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>[10-bp N7 barcode]</cbc><w1>TCAGAGCGGCACGAC</w1> -5'
+                                                                                                                                                                              <-----------<w1>TCAGAGCGGCACGAC</w1>[10-bp i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<cs1>CACCGCACGAGAGGT</cs1><cbc>NNNNNNNNNN</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2><cbc>NNNNNNNNNN</cbc><w1>AGTCTCGCCGTGCTG</w1>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<cs1>GTGGCGTGCTCTCCA</cs1><cbc>NNNNNNNNNN</cbc><r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>NNNNNNNNNN</cbc><w1>TCAGAGCGGCACGAC</w1>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>          10-bp i5                  <cbc>10 bp</cbc>                 <s5>s5</s5>               <me>ME</me>           gDNA          <me>ME</me>                <s7>s7</s7>                <cbc>10 bp</cbc>                   10-bp i7       <p7>Illumina P7</p7>
+                                                          <cbc>N5 barcode</cbc>                                                                                            <cbc>N7 barcode</cbc>
+</align>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add Read 1 sequencing primer to sequence the first read (bottom strand as template, 50 cycles, these are the gDNA reads):</h3>
+<pre>
+<align class="long">
+                                                                        5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<cs1>GTGGCGTGCTCTCCA</cs1><cbc>NNNNNNNNNN</cbc><r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>NNNNNNNNNN</cbc><w1>TCAGAGCGGCACGAC</w1>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 sequencing primer to sequence the N7 barcode and i7 index (bottom strand as template, 35 cycles, the first 10 bp are N7 barcodes, and the last 10 bp are i7 indices, the middle 15 are dark cycles):</h3>
+<pre>
+<align class="long">
+                                                                                                                                   5'- <me>CT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2>----------ooooooooooooooo--------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>NNNNNNNNNN<cs1>GTGGCGTGCTCTCCA</cs1><cbc>NNNNNNNNNN</cbc><r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7><r2>CTGTTCAG</r2><cbc>NNNNNNNNNN</cbc><w1>TCAGAGCGGCACGAC</w1>NNNNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Index 2 sequencing primer to sequence the N5 barcode and i5 index (top strand as template, 35 cycles, the first 10 bp are N5 barcodes, and the last 10 bp are i5 indices, the middle 15 are dark cycles):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<cs1>CACCGCACGAGAGGT</cs1><cbc>NNNNNNNNNN</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2><cbc>NNNNNNNNNN</cbc><w1>AGTCTCGCCGTGCTG</w1>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------ooooooooooooooo----------<r1>CATTAGTC</r1><s5>AGCAGCCGTCGCAG</s5><me>TCTACACA</me> -5'
+</align>
+</pre>
+
+<h3>(4) Add Read 2 sequencing primer to sequence the second read (top strand as template, 50 cycles, these are the gDNA reads):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>NNNNNNNNNN<cs1>CACCGCACGAGAGGT</cs1><cbc>NNNNNNNNNN</cbc><r1>GTAATCAG</r1><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7><r2>GACAAGTC</r2><cbc>NNNNNNNNNN</cbc><w1>AGTCTCGCCGTGCTG</w1>NNNNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                              <-------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br></br>
+
+</body>
+</html>

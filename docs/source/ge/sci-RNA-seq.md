@@ -429,39 +429,39 @@ If you understand the __sci-RNA-seq__ experimental procedures described in [this
 
 `--runThreadN 4`
   
->>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+>> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mix_hg38_mm10/star_index`
 
->>> Pointing to the directory of the star index. The public data from the above paper was produced using the human and mouse mixture sample.
+>> Pointing to the directory of the star index. The public data from the above paper was produced using the human and mouse mixture sample.
 
 `--readFilesCommand zcat`
 
->>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+>> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix`
 
->>> We want to keep everything organised. This parameter directs all output files inside the specified directory.
+>> We want to keep everything organised. This parameter directs all output files inside the specified directory.
 
 `--readFilesIn`
 
->>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
 
 `--soloType CB_UMI_Simple`
 
->>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
+>> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
 
 `--soloCBstart 9 --soloCBlen 10 or 20 --soloUMIstart 1 --soloUMIlen 8`
 
->>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+>> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
 `--soloCBwhitelist`
 
->>> The plain text file containing all possible valid cell barcodes, one per line. In the previous section, we prepared two versions of whitelist. The choice depends on the strategy you use.
+>> The plain text file containing all possible valid cell barcodes, one per line. In the previous section, we prepared two versions of whitelist. The choice depends on the strategy you use.
 
 `--soloCellFilter EmptyDrops_CR`
 
->>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those barcodes should be much smaller, often orders of magnitude smaller, than those barcodes from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+>> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those barcodes should be much smaller, often orders of magnitude smaller, than those barcodes from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 ```{eval-rst}
 .. important::
@@ -471,15 +471,15 @@ If you understand the __sci-RNA-seq__ experimental procedures described in [this
 
 `--soloStrand Forward`
 
->>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+>> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->>> We want sorted `BAM` for easy handling by other programs.
+>> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 
