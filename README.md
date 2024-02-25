@@ -16,7 +16,7 @@ Click the following links to view the methods. Notes:
 
 - ### Gene expression
 
-  - [SMART-seq family (including SMART-seq, SMART-seq2 and SMART-seq3)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
+  - [SMART-seq family (including SMART-seq, SMART-seq2/3/3xpress and FLASH-seq)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
   - [STRT-seq family (including STRT-seq, STRT-seq-C1 and STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html)
   - [Quartz-seq family (including Quartz-seq and Quartz-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/Quartz-seq_family.html)
   - [CEL-seq family (including CEL-seq and CEL-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/CEL-seq_family.html)
@@ -119,8 +119,6 @@ Click the following links to view the methods. Notes:
   - [scSPLAT](https://www.biorxiv.org/content/10.1101/2021.10.14.464375v2)
   - [EpiDamID](https://www.biorxiv.org/content/10.1101/2021.10.26.465688v1)
   - [scRibo-seq](https://www.nature.com/articles/s41586-021-03887-4)
-  - [FLASH-seq](https://www.nature.com/articles/s41587-022-01312-3)
-  - [Smart-seq3xpress](https://www.nature.com/articles/s41587-022-01311-4)
   - [sc-end5-seq](https://www.biorxiv.org/content/10.1101/2021.04.04.438388v2)
   - [Slide-seq](https://www.science.org/doi/10.1126/science.aaw1219) / [Slide-seqV2](https://www.nature.com/articles/s41587-020-0739-1) / [Slide-DNA-seq](https://www.nature.com/articles/s41586-021-04217-4) / [Slide-tags](https://www.biorxiv.org/content/10.1101/2023.04.01.535228v1)
   - [CoTECH](https://www.nature.com/articles/s41592-021-01129-z)
@@ -154,6 +152,7 @@ Click the following links to view the methods. Notes:
   - [Phospho-seq](https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full)
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
   - [CRISPR-sciATAC](https://www.nature.com/articles/s41587-021-00902-x)
+  - [Spear-ATAC](https://www.nature.com/articles/s41467-021-23213-w)
   - [CH-ATAC-seq](https://www.cell.com/developmental-cell/abstract/S1534-5807(24)00035-2)
   - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
   - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
