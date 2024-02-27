@@ -53,6 +53,7 @@ Click the following links to view the methods. Notes:
   - [sci-ATAC-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq3.html)
   - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
   - [txci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/txci-ATAC-seq.html)
+  - [CH-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/CH-ATAC-seq.html)
   - [HyDrop-ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_ATAC.html)
   - [snATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/snATAC-seq.html)
   - [scTHS-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scTHS-seq.html)
@@ -152,7 +153,6 @@ Click the following links to view the methods. Notes:
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
   - [CRISPR-sciATAC](https://www.nature.com/articles/s41587-021-00902-x)
   - [Spear-ATAC](https://www.nature.com/articles/s41467-021-23213-w)
-  - [CH-ATAC-seq](https://www.cell.com/developmental-cell/abstract/S1534-5807(24)00035-2)
   - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
   - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
 
