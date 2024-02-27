@@ -40,6 +40,7 @@ Click the following links to view the methods. Notes:
   - [Tang 2009](https://teichlab.github.io/scg_lib_structs/methods_html/tang2009.html)
   - [PETRI-seq](https://teichlab.github.io/scg_lib_structs/methods_html/PETRI-seq.html)
   - [VASA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/VASA-seq.html)
+  - [FIPRESCI](https://teichlab.github.io/scg_lib_structs/methods_html/FIPRESCI.html)
   - [PIP-seq](https://teichlab.github.io/scg_lib_structs/methods_html/PIP-seq.html)
   - [inDrop](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html)
 
@@ -135,7 +136,6 @@ Click the following links to view the methods. Notes:
   - [DisCo](https://www.nature.com/articles/s41592-021-01391-1)
   - [spinDrop](https://www.biorxiv.org/content/10.1101/2023.01.12.523500v1)
   - [sciPlex-ATAC-seq](https://www.biorxiv.org/content/10.1101/2023.03.05.531201v1)
-  - [FIPRESCI](https://doi.org/10.1186/s13059-023-02893-1)
   - [SCITO-seq](https://www.nature.com/articles/s41592-021-01222-3)
   - [snRandom-seq](https://www.nature.com/articles/s41467-023-38409-5)
   - [LAST-seq](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-023-03025-5)

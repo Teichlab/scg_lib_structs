@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>FIPRESCI</title>
+</head>
+<body>
+
+<h1><a href="https://doi.org/10.1186/s13059-023-02893-1" target="_blank"><span style="color:red;">FIPRESCI</span></a></h1>
+<p><span style="font-size:1.1em;">FIPRESCI borrows the idea from <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scifi-RNA-seq.html" target="_blank">scifi-RNA-seq</a>, but it is designed to work on the 10X Genomics 5' system. It uses barcoded Tn5 to add the first round of index to the DNA/RNA hybrid after reverse transcription. Then cells are overloaded into the 10X system. In this way, it offers an ultra-high throughput way of profiling the 5' of RNAs in single cells. The full oligo sequences details are taken from the <a href="../data/13059_2023_2893_MOESM2_ESM.xlsx" target="_blank">Supplementary Table 1</a> from their Genome Biology publication.</span></p>
+
+<br></br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>Beads-TSO (PN-220112): |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>TTTCTTATATrGrGrG</cs1> -3'</p>
+<p>RT PolyT Primer (NEB S1327S): 5'- TTTTTTTTTTTTTTTTTTTTTTTVN -3'</p>
+<p>RT random Primer (Thermo Scientific SO142): 5'- NNNNNN -3'</p>
+<p>TN5_A_ME: 5'-/Phos/ <me>CTGTCTCTTATACACATCT</me> /3ddC/-3'</p>
+<p>TN5_R2_index: 5'- <s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp Tn5 barcode]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>S5R-P5-bio: 5'-/Bio/ <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5> -3'</p>
+<p>S5R-P5: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5> -3'</p>
+<p>S-P7-index: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina TruSeq Read 1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read 2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Sample index sequencing primer: 5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br></br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Reverse transcription with Poly-dT and random RT primer (omitted afterwards) using MMLV:</h3>
+<pre>
+<seq>
+    5'- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB(A)<sub>23</sub>
+                   <--------NNNNNNN        <-------V(T)<sub>23</sub> -5'
+</seq>
+</pre>
+
+<h3>(2) The terminal transferase activity of MMLV adds extra Cs:</h3>
+<pre>
+<seq>
+    5'- XXXXXXXXXXXXXXXXXXXXXXB(A)<sub>23</sub>
+     CCCXXXXXXXXXXXXXXXXXXXXXNV(T)<sub>23</sub> -5'
+</seq>
+</pre>
+
+<h3>(3) Anneal "TN5_A_ME+TN5_R2_index" and use those to assemble the barcoded Tn5 transposomes (this is a Tn5 homo-dimer). Then use the assembled transposome to tag the RNA/DNA hybrid (will create 9-bp gaps):</h3>
+<img src="../data/FIPRESCI_Tn5.svg" alt="Tn5 dimer" style="width:750px;">
+<pre>
+<seq>
+<i>Product 1 (middle of the transcript, cannot be captured by the 10X system, omitted afterwards):</i>
+
+5'- <s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp Tn5 barcode]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                          <me>TCTACACATATTCTCTGTC</me>      XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+
+
+<i>Product 2 (3' of the transcript, cannot be captured by the 10X system, omitted afterwards):</i>
+
+5'- <s7>GACGTGTGCTCTTCCGATCT</s7><cbc>[6-bp Tn5 barcode]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXX...XXXB(pA) -3'
+                                          <me>TCTACACATATTCTCTGTC</me>      XXX...XXXV(dT) -5'
+
+
+<i>Product 3 (5' of the transcript, can captured by the 10X system in the next step):</i>
+
+5'-   XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+   CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+
+
+</seq>
+</pre>
+
+<h3>(4) Pool all cells and overload to the 10X Genomics 5' system to captured cDNA by gel bead with barcoded TSO:</h3>
+<pre>
+<seq>
+|--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>TTTCTTATATGGG</cs1>XXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                         <-----------CCCXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+</seq>
+</pre>
+
+<h3>(5) cDNA cleanup and add S5R-P5-bio primer to enrich cDNA (single-primer linear PCR):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5>-------->
+                                 |--5'- <s5>CTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>TTTCTTATATGGG</cs1>XXXXXXXXX...XXXXXXXXX<me>CTGTCTCTTATACACATCT</me><cbc>[6-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7> -3'
+                                    3'- <s5>GATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>AAAGAATATACCC</cs1>XXXXXXXXX...XXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+</seq>
+</pre>
+
+<h3>(6) cDNA purification:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>TTTCTTATATGGG</cs1>XXXXXXXXX...XXXXXXXXX<me>CTGTCTCTTATACACATCT</me><cbc>[6-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>AAAGAATATACCC</cs1>XXXXXXXXX...XXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+</seq>
+</pre>
+
+<h3>(7) Add S5R-P5 and S-P7-index primer for library amplification:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTC</s5>-------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>TTTCTTATATGGG</cs1>XXXXXXXXX...XXXXXXXXX<me>CTGTCTCTTATACACATCT</me><cbc>[6-bp Tn5 barcode]</cbc><s7>AGATCGGAAGAGCACACGTC</s7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>[16-bp GEM barcode]</cbc><umi>[10-bp UMI]</umi><cs1>AAAGAATATACCC</cs1>XXXXXXXXX...XXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[6-bp Tn5 barcode]</cbc><s7>TCTAGCCTTCTCGTGTGCAG</s7> -5'
+                                                                                                                                             <---------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(8) Final library structure:</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><cs1>TTTCTTATATGGG</cs1>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><cs1>AAAGAATATACCC</cs1>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+          <p5>Illumina P5</p5>                   <s5>Truseq Read 1</s5>               <cbc>16-bp</cbc>       <umi>10 bp</umi>                   cDNA          <me>ME</me>          <cbc>6-bp</cbc>          <s7>Truseq Read 2</s7>             6-bp        <p7>Illumina P7</p7>
+                                                                 <cbc>GEM barcode</cbc>     <umi>UMI</umi>                                          <cbc>Tn5 barcode</cbc>                             Sample Index
+</seq>
+</pre>
+
+<br></br>
+
+<h2>Library sequencing:</h2>
+
+<h3>(1) Add TruSeq Read 1 primer to sequence the first read (bottom strand as template, sequence 16-bp GEM barcode and 10-bp UMI, spacer and cDNA, 150 cycles):</h3>
+<pre>
+<seq>
+                         5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>----------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><cs1>AAAGAATATACCC</cs1>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(2) Add Sample Index sequencing primer to sequence the sample index (bottom strand as template):</h3>
+<pre>
+<seq>
+                                                                                                                                    5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>----->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><cs1>AAAGAATATACCC</cs1>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNNN</cbc><s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(3) Cluster regeneration, add TruSeq Read 2 primer to sequence the second read (top strand as template, sequence Tn5 barcode and cDNA, 150 cycles):</h3>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5><cbc>NNNNNNNNNNNNNNNN</cbc><umi>NNNNNNNNNN</umi><cs1>TTTCTTATATGGG</cs1>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNNN</cbc><s7>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                        <------------------------------<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7> -5'
+</seq>
+</pre>
+
+</body>
+</html>
