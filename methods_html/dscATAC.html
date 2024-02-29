@@ -19,13 +19,13 @@
 
 <p><span style="font-size:1.1em;">dsciATAC-seq takes a step further. It builds on top of dscATAC-seq, but take the idea of combinatorial indexing strategy, like that used in <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html" target="_blank">sci-ATAC-seq</a>, and treat cells in different reactions with barcoded Tn5 and pooled all the reactions together before loading onto the machine to make emulsion. In this case, both beads and cells are overloaded. One can use the aformentioned strategy to figure out whether beads are from the same drop, and on top of that, use the Tn5 barcodes to figure out whether the reads are from the same single cells. In this way, the throughput becomes really high.</span></p>
 
-<br></br>
+<br>
 
 <h2>Adapter and primer sequences:</h2>
 
 <p><span style="font-size:1.1em;">Huge thanks to <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the following information and make this page possible.</span></p>
 
-<br></br>
+<br>
 
 <seq>
 <p>ATAC-v2.1 beads-p5-bc-nextera-read1: |--5'- TTTTTTTUUUTTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
@@ -41,7 +41,7 @@
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>
 
-<br></br>
+<br>
 
 <h2>Step-by-step library generation (only dscATAC-seq is shown here; dsciATAC-seq is the same, but with barcoded Tn5):</h2>
 <h3>(1) Bulk Tn5 tagging by incubation of nuclei and Tn5:</h3>
@@ -118,7 +118,7 @@
 </align>
 </pre>
 
-<br></br>
+<br>
 
 <h2>Library sequencing:</h2>
 
@@ -146,7 +146,7 @@
 </align>
 </pre>
 
-<br></br>
+<br>
 
 </body>
 </html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>Spear-ATAC</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41467-021-23213-w" target="_blank"><span style="color:red;">Spear-ATAC</span></a></h1>
+<p><info>Spear-ATAC is a multi-omic method to perform pooled sgRNA screen using single-cell ATAC-seq as readout. The data give you the chromatin accessibility profile of each single cell and the sgRNA information from the same cell. Unlike other methods that obtain the sgRNA information via the sgRNA transcripts, Spear-ATAC sequences the sgRNA directly from genomic DNA. This is achieved by introducing Nextera sequences that are commonly used in a typical ATAC-seq experiment into the lentivirus vector, flanking the sgRNA-Spacer. In this way, the primers used to amplify the ATAC-seq library will also pick up the genomic region containing the sgRNA-Spacer. The system also works on the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html" target="_blank">10X Single Cell ATAC system</a>. The oligo sequences here are taken from the <a href="../data/Spear-ATAC/41467_2021_23213_MOESM11_ESM.xlsx" target="_blank">Supplementary Data 8</a> from the Nature Communications paper.</info></p>
+
+<br>
+
+<h2>sgRNA cloning</h2>
+
+<p><info>You can start with the vector backbone of <b>pSP618</b> which the authors have deposited into <a href="https://www.addgene.org/169235/" target="_blank">Addgene #169235</a>:</info></p>
+<img src="../data/Spear-ATAC/addgene-plasmid-169235-sequence-328218.png" alt="sgRNA vector backbone" style="width:800px;">
+
+<p><info>The idea is the same as a regular sgRNA vector construction. We clone the sgRNA spacer into the plasmid between <i>BstXI</i> and <i>BlpI</i>. We order the oligo like this:</info></p>
+
+<pre>
+<seq>
+        |--<i>BstXI</i>---|                      |<i>BlpI</i> |
+5'- ctag<r1>CCACCTTGTTGG</r1><cbc>[sgRNA-Spacer]</cbc><hairp>GTTTAAGAGCTAAGC</hairp>ctag
+    gatc<r1>GGTGGAACAACC</r1><cbc>[sgRNA-Spacer]</cbc><hairp>CAAATTCTCGATTCG</hairp>gatc -5'
+
+</seq>
+</pre>
+
+<p><info>Digest and ligate to the vector backbone. During the screen, the vector will be integrated into the host genome. Here, I only write out the segment that is relevant to our library preparation:</info></p>
+
+<pre>
+<seq>
+                                                                                                                                                                                                 |<i>BlpI</i> |                      |--<i>BstXI</i>---|
+5'-[other part of the vector backbone]- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>AGAAAT<tso>CCAAGCCTATCATGTAAAATGTAGC</tso> -[other part of the vector backbone]-3'
+3'-[other part of the vector backbone]- <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>TCTTTA<tso>GGTTCGGATAGTACATTTTACATCG</tso> -[other part of the vector backbone]-5'
+                                              <s5>s5</s5>              <me>ME</me>                                                                                     <hairp>Perturb-seq sgRNA scaffold</hairp>                                                                                                              <cs1><------ mU6-F -------</cs1>          <me>ME</me>                <s7>s7</s7>
+</seq>
+</pre>
+
+<p><info>The <b><cbc>10-bp sgRNA barcode</cbc></b> is a unique barcode for each vector in the vector backbone. You can perform an upfront sgRNA library sequencing to associate the barcode to the <b><cbc>sgRNA-Spacer</cbc></b> and use the barcode as the identity of the sgRNA. Though this works in theory, it is still recommended to sequence the <b><cbc>sgRNA-Spacer</cbc></b> directly. See the workflow below. </info></p>
+
+<br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>oSP1735: 5'- <tso>GCTACATTTTACATGATAGGCTTGG</tso> -3'</p>
+<p>oSP2053: 5'-/Bio/ <w1>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</w1>AAGTATCCCTTGGAGAA<r1>CCACCTTG</r1> -3'</p>
+<p>oMCB1672: 5'- <hairp>GCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp> -3'</p>
+<p>Beads-oligo: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>SI-PCR Primer B (PN-2000128): 5'- <p5>AATGATACGGCGACCACCGAGA</p5> -3'</p>
+<p>i7 Sample Index Plate N, Set A (PN-3000262): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>P7-TruSeqR2: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp i7]<w1>GTGACTGGAGTTCAGACGTGTG</w1> -3'</p>
+<p>Nextera left primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Nextera right primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>Illumina Nextera Read 1 primer: 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Illumina Nextera Read 2 primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>ATAC sample index sequencing primer (index1): 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
+<p>sgRNA sample index sequencing primer (index1): 5'- <w1>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</w1> -3'</p>
+<p>Cell barcode sequencing primer (index2): 5'- <me>CTGTCTCTTATACACATCT</me><s5>GACGCTGCCGACGA</s5> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+</seq>
+
+<br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Bulk Tn5 tagging by incubation of nuclei and Tn5:</h3>
+<img src="../data/tn5_dimer.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+
+<h3>(2) There are 3 different products after step (1) (will create 9 bp gap):</h3>
+
+<h4>(2.1) DNA in the open chromatin region:</h4>
+<pre>
+<seq>
+<i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s5>CTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (s7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                   <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                  <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h4>(2.2) The integrated lentivirus vector</h4>
+<pre>
+<seq>
+<i>Only the relevant bits around the sgRNA is shown (may get tagged by Tn5 but the probability is low):</i>
+
+5'- ...<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>AGAAAT<tso>CCAAGCCTATCATGTAAAATGTAGC</tso>... -3'
+3'- ...<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>TCTTTA<tso>GGTTCGGATAGTACATTTTACATCG</tso>... -5'
+
+</seq>
+</pre>
+
+<h3>(3) Droplet capture and gap fill-in (the first step of PCR, 72 degree). The primer oSP1735 is added to the mix at this stage. This steps achieves cell barcodes addition:</h3>
+
+<h4>(3.1) DNA from open chromatin (this is a single-primer linear PCR):</h4>
+<pre>
+<seq>
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>-------------->
+                                                    5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+                                                        <s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h4>(3.2) DNA from the integrated lentivirus sgRNA vector (bead oligo + oSP1735, exponential amplification):</h4>
+<pre>
+<seq>
+|--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>-------------->
+                                                 5'- ...<s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>AGAAAT<tso>CCAAGCCTATCATGTAAAATGTAGC</tso>... -3'
+                                                 3'- ...<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>TCTTTA<tso>GGTTCGGATAGTACATTTTACATCG</tso>... -5'
+                                                                                                                                                                                                                                                                                                                                                                  <----------<tso>GGTTCGGATAGTACATTTTACATCG</tso> -5'
+
+</seq>
+</pre>
+
+<h3>(4) Break GEM and purify PCR products:</h3>
+<pre>
+<seq>
+<i>ATAC:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXXXXXXXXXXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>sgRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>AGAAAT<tso>CCAAGCCTATCATGTAAAATGTAGC</tso> -3'
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>TCTTTA<tso>GGTTCGGATAGTACATTTTACATCG</tso> -5'
+
+
+</seq>
+</pre>
+
+<h3>(5) Add SI-PCR Primer B (PN-2000128) and i7 Sample Index Plate N, Set A (PN-3000262) for library amplification:</h3>
+<pre>
+<seq>
+<i>ATAC:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>---------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                                                                 <----------------<s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+<i>sgRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>---------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>AGAAAT<tso>CCAAGCCTATCATGTAAAATGTAGC</tso> -3'
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>TCTTTA<tso>GGTTCGGATAGTACATTTTACATCG</tso> -5'
+                                                                                                                                                                                                                                                                                                                                    <----------------<s7>GGCTCGGGTGCTCTG</s7>
+                                                                                                                                                                                                                                                                                                                                                                    [8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h3>(6) Library purification:</h3>
+<pre>
+<align class="long">
+<i>ATAC (ready to sequence):</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+<i>sgRNA (the library is currently dominated by ATAC, we still need further PCR to specifically enrich the sgRNA library):</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</align>
+</pre>
+
+<h3>(7) sgRNA library enrichment using oSP2053 (has biotin tag). This is a single primer linear PCR:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTTATAGTCTCAAAACACACAATTACTTTACAGTTAG<cs1>GGTGAGTTTCCTTTTGTGCTG</cs1>TTT<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAATATCAGAGTTTTGTGTGTTAATGAAATGTCAATC<cs1>CCACTCAAAGGAAAACACGAC</cs1>AAA<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                                                                                                                     <---------<r1>GTTCCACC</r1>AAGAGGTTCCCTATGAA
+                                                                                                                                                                                                                                                                        <w1>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</w1> /Bio/-5'
+</align>
+</pre>
+
+<h3>(8) Streptavidin beads to pull out sgRNA and use P5 and indexed P7-TruSeqR2 primer to further enrich the sgRNA library:</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGA</p5>---------------->
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp cell barcode]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>[10-bp sgRNA barcode]</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTT<w1>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</w1>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp cell barcode]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>[10-bp sgRNA barcode]</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAA<w1>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</w1> -5'
+                                                                                                                                                                                                                                                                       <------------<w1>GTGTGCAGACTTGAGGTCAGTG</w1>[8-bp i7]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</align>
+</pre>
+
+<h3>(9) Final library structure:</h3>
+<pre>
+<align class="long">
+<i>ATAC:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <cbc>16-bp cell</cbc>         <s5>s5</s5>              <me>ME</me>           gDNA           <me>ME</me>               <s7>s7</s7>          8-bp            <p7>Illumina P7</p7>
+                                      <cbc>barcode</cbc>                                                                               sample index
+
+
+<i>sgRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNN</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTT<w1>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</w1>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNN</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAA<w1>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</w1>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>              <cbc>16-bp cell</cbc>         <s5>s5</s5>              <me>ME</me>           <cbc>10-bp</cbc>                                                              <hairp>Perturb-seq sgRNA scaffold</hairp>                                                                                  <w1>TruSeq Read 2</w1>             8-bp         <p7>Illumina P7</p7>
+                                      <cbc>barcode</cbc>                                   <cbc>sgRNA barcode</cbc>                                                                                                                                                                                            sample index
+</align>
+</pre>
+
+<br>
+
+<h2>ATAC Library sequencing (both read 1 and read 2 contain useful information about open chromatin):</h2>
+
+<h3>(1) Add Nextera Read 1 primer to sequence the first read (bottom strand as template, 50 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+                                             5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add ATAC sample index sequencing primer (index1) to sequence the sample index (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+                                                                                       5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Cell barcode sequencing primer (index2) to sequence the second index (i5) (top strand as template, 16 cycles, this is cell barcode):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</align>
+</pre>
+
+<h3>(4) Add Nextera Read 2 primer to sequence the second read (top strand as template, 50 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                    <------<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7> -5'
+</align>
+</pre>
+
+<br>
+
+<h2>sgRNA Library sequencing:</h2>
+
+<p><info>Note that even though the regular Nextera Read 1 primer in the sequencing kit can be used to sequence the 10-bp sgRNA barcode which would provide the identity of the sgRNA, it is still recommended to use <b> oMCB1672</b> to sequence the <cbc>sgRNA-Spacer</cbc>.</info></p>
+
+<h3>(1) Add oMCB1672 primer to get the first read (bottom strand as template, this is the <cbc>sgRNA-Spacer</cbc>:</h3>
+<pre>
+<align class="long">
+                                                                                                                                 5'- <hairp>GCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp>------------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNN</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAA<w1>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</w1>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add sgRNA sample index sequencing primer (index1) to sequence the sample index (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="long">
+                                                                                                                                                                                                                                                     5'- <w1>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</w1>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me><cbc>NNNNNNNNNN</cbc>GCTCCGACTCACATCTAAGCTCG<hairp>TTTTTCGTGGCTGAGCCACGGTGAAAAAGTTCAACTATTGCCTGATCGGAATAAATTTGAACGATACGACAAAGGTCGAATCGAGAATTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GGTTGTTCCACC</r1>AAGAGGTTCCCTATGAA<w1>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</w1>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Cluster regeneration, add Cell barcode sequencing primer (index2) to sequence the second index (i5) (top strand as template, 16 cycles, this is cell barcode):</h3>
+<pre>
+<align class="long">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me><cbc>NNNNNNNNNN</cbc>CGAGGCTGAGTGTAGATTCGAGC<hairp>AAAAAGCACCGACTCGGTGCCACTTTTTCAAGTTGATAACGGACTAGCCTTATTTAAACTTGCTATGCTGTTTCCAGCTTAGCTCTTAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CCAACAAGGTGG</r1>TTCTCCAAGGGATACTT<w1>AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC</w1>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                 <---------------<s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me> -5'
+</align>
+</pre>
+
+</body>
+</html>

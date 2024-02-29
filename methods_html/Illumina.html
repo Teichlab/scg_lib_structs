@@ -10,7 +10,7 @@
 <h1>About Illumina sequencing libraries</h1>
 
 <p><span style="font-size:1.1em;">The nature of Illumina sequencing is still sequencing by synthesis (SBS). Any SBS method requires the presence of adaptors, which are short double-stranded DNA oligos whose sequences are known to us. The adaptors are designed by scientists, and there are a few popular adaptor sequences that are used in the NGS field. The following three (actually two main types to be honest) are the most popular ones:</span></p>
-<br></br>
+<br>
 
 <h3>Truseq Single Index Library:</h3>
 <pre>
@@ -39,13 +39,13 @@
 </seq>
 </pre>
 
-<br></br>
+<br>
 
 <p><span style="font-size:1.1em;">There are some other adaptors that can be used, but they either become obsolete or not used usually. If you are interested, you can check the <a href='../data/illumina-adapter-sequences-1000000002694-14.pdf' target='_blank'>Illumina adapter sequences document</a> for full details. Basically, the nature of an Illumina library preparation is the process of adding those coloured adaptor seuqences to both sides of the DNA of your interest, which is the <b>"-insert-"</b> bit in the above examples. All the commercial kits you buy for the library preparation do EXACTLY that, no matter where your buy them, no matter what you want to sequence. In addition, you can also mix different types of adaptors due to the reaons mentioned in the <b>"Library sequencing"</b> section below. For example, you can use <b>Truseq Read 1</b> at the left hand side, and <b>Nextera Read 2</b> at the right hand side. Or you can use <b>Nextera Read 1</b> at the left hand side and <b>Truseq Read 2</b> at the right hand side. It is toally fine but not recommended for beginners. The "N"s in the above examples are the indices, or barcodes that discriminate different samples. The index at the right hand side is often called <b>"i7"</b>, or <b>index1</b>, which is the index in the <b>P7</b> primer; the index at the left hand side is called <b>"i5"</b>, or <b>index2</b>, which is the index in the <b>P5</b> primer. This is because the index <b>"i7"</b> is sequenced first before <b>"i5"</b> is sequenced.</span></p>
 
 <p><span style="font-size:1.1em;">Now, the mission is: how to add those adaptors? Well, this is where you can become creative. In <a href="https://www.nature.com/articles/nmeth.4558/", target="_blank">A profusion of confusion in NGS methods naming</a>, Hadfield and Retief mentioned over 300 NGS methods in their <a href="http://www.enseqlopedia.com/enseqlopedia", target="_blank">Enseqlopedia wiki</a>. In this GitHub repository, many single cell genomics methods are documented. ALL of them do and ONLY do one thing: <b>add those adaptors to the sides of the DNA they want to sequence</b>. Then, what is the difference among all those methods? They differ from how they add those adaptors. The purpose of this <b>"scg_lib_structs"</b> repository is simply to document how those single cell methods add the coloured adaptors.</span></p>
 
-<br></br>
+<br>
 
 <p><span style="font-size:1.1em;">Another important detail is that we should know the only required seqeuences are the following two:</span></p>
 
@@ -58,7 +58,7 @@
 
 <p><span style="font-size:1.1em;">If you use Illumina sequencing, you have to use and make sure they are at the sides of your DNA fragments, like shown in the three examples above. The adaptor sequences in the middle like <b>Truseq Read 1</b>, <b>Truseq Read 2</b>, <b>Nextera Read 1</b> and <b>Nextera Read 2</b> can be changed. If you change them, you have to add your own sequencing primers to the machine during sequencing. A few single cell genomic methods listed in this GitHub page used their own adaptors.</span></p>
 
-<br></br>
+<br>
 
 <h1>Library sequencing:</h1>
 

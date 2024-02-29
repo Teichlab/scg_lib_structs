@@ -80,6 +80,7 @@ Click the following links to view the methods. Notes:
   - [ISSAAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/ISSAAC-seq.html)
   - [SHARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html)
   - [SNARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SNARE-seq.html)
+  - [Spear-ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/Spear-ATAC.html)
   - [scNMT-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNMT-seq.html)
   - [scM&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scMandT.html)
   - [Paired-seq](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html)
@@ -152,7 +153,6 @@ Click the following links to view the methods. Notes:
   - [Phospho-seq](https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full)
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
   - [CRISPR-sciATAC](https://www.nature.com/articles/s41587-021-00902-x)
-  - [Spear-ATAC](https://www.nature.com/articles/s41467-021-23213-w)
   - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
   - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
 
