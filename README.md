@@ -18,6 +18,7 @@ Click the following links to view the methods. Notes:
 
   - [SMART-seq family (including SMART-seq, SMART-seq2/3/3xpress and FLASH-seq)](https://teichlab.github.io/scg_lib_structs/methods_html/SMART-seq_family.html)
   - [STRT-seq family (including STRT-seq, STRT-seq-C1 and STRT-seq-2i)](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html)
+  - [sci-RNA-seq family (including sci-RNA-seq and sci-RNA-seq3)](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html)
   - [Quartz-seq family (including Quartz-seq and Quartz-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/Quartz-seq_family.html)
   - [CEL-seq family (including CEL-seq and CEL-seq2)](https://teichlab.github.io/scg_lib_structs/methods_html/CEL-seq_family.html)
   - [10x Chromium Single Cell 3' V3 FeatureBarcoding](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3fb.html)
@@ -33,8 +34,6 @@ Click the following links to view the methods. Notes:
   - [scifi-RNA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scifi-RNA-seq.html)
   - [Microwell-seq](https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html)
   - [BD Rhapsody](https://teichlab.github.io/scg_lib_structs/methods_html/BD_Rhapsody.html)
-  - [sci-RNA-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq3.html)
-  - [sci-RNA-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html)
   - [HyDrop-RNA](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_RNA.html)
   - [Seq-Well S3](https://teichlab.github.io/scg_lib_structs/methods_html/SeqWell_S3.html)
   - [Tang 2009](https://teichlab.github.io/scg_lib_structs/methods_html/tang2009.html)

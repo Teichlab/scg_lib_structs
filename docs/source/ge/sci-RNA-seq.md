@@ -1,6 +1,6 @@
 # sci-RNA-seq
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) to see how __sci-RNA-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where fixed cells are used as the reaction chamber. mRNA molecules are marked by oligo-dT primer with distinct barcodes in 96 or 384 minibulk reactions in the plate format (the first plate). Then all cells are pooled and randomly distributed into a new 96- or 384-well plate (the second plate). Library preparation is performed using the Tn5-based Illumina Nextera strategy to add __i5__ and __i7__ indices. Single cells can be identified by the combination of the RT barcode and __i5 + i7__. In addition, another level of barcode can be added during the tagmentation by barcoded Tn5, but this documentation will just focus on two-level barcodes, without the Tn5 index.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html) to see how __sci-RNA-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where fixed cells are used as the reaction chamber. mRNA molecules are marked by oligo-dT primer with distinct barcodes in 96 or 384 minibulk reactions in the plate format (the first plate). Then all cells are pooled and randomly distributed into a new 96- or 384-well plate (the second plate). Library preparation is performed using the Tn5-based Illumina Nextera strategy to add __i5__ and __i7__ indices. Single cells can be identified by the combination of the RT barcode and __i5 + i7__. In addition, another level of barcode can be added during the tagmentation by barcoded Tn5, but this documentation will just focus on two-level barcodes, without the Tn5 index.
 
 ## For Your Own Experiments
 
@@ -283,7 +283,7 @@ As you can see, those reads are 18 bp in length. The first 8 bp are UMI and the 
 
 To generate the whitelist, you need the 10-bp RT barcodes, the __i7__ and __i5__ indices. Generate a combination of them as the pool of all possible cell barcodes.
 
-Unfortunately, in the [__sci-RNA-seq paper__](http://science.sciencemag.org/content/357/6352/661), I cannot seem to find the information of those oligos. However, in the [__sci-RNA-seq3 paper__](https://www.nature.com/articles/s41586-019-0969-x) which is an updated version of the original one, I can find 384 different 10-bp RT barcodes, 96 different 10-bp `i5` index and 96 different 10-bp `i7` index from the [Supplementary Table S11](https://teichlab.github.io/scg_lib_structs/data/41586_2019_969_MOESM3_ESM.xlsx) of the paper. The __sci-RNA-seq__ seem to use the same barcodes. We could collect the index sequences as tables as follows, and the names of the oligos are directly taken from the paper to be consistent (showing only 5 of the table to save space):
+Unfortunately, in the [__sci-RNA-seq paper__](http://science.sciencemag.org/content/357/6352/661), I cannot seem to find the information of those oligos. However, in the [__sci-RNA-seq3 paper__](https://www.nature.com/articles/s41586-019-0969-x) which is an updated version of the original one, I can find 384 different 10-bp RT barcodes, 96 different 10-bp `i5` index and 96 different 10-bp `i7` index from the [Supplementary Table S11](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/41586_2019_969_MOESM3_ESM.xlsx) of the paper. The __sci-RNA-seq__ seem to use the same barcodes. We could collect the index sequences as tables as follows, and the names of the oligos are directly taken from the paper to be consistent (showing only 5 of the table to save space):
 
 __RT Barcodes (10 bp)__
 
@@ -317,17 +317,17 @@ __i5 Barcodes (10 bp)__
 
 I have put those three tables into `csv` files and you can download them to have a look:
 
-[sci-RNA-seq3_RT_bc.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_RT_bc.csv)  
-[sci-RNA-seq3_p7.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_p7.csv)  
-[sci-RNA-seq3_p5.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_p5.csv)  
+[sci-RNA-seq3_RT_bc.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_RT_bc.csv)  
+[sci-RNA-seq3_p7.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_p7.csv)  
+[sci-RNA-seq3_p5.csv](https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_p5.csv)  
 
 Let's download them:
 
 ```console
 wget -P sci-rna-seq/data \
-    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_RT_bc.csv \
-    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_p7.csv \
-    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq3_p5.csv
+    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_RT_bc.csv \
+    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_p7.csv \
+    https://teichlab.github.io/scg_lib_structs/data/sci-RNA-seq_family/sci-RNA-seq3_p5.csv
 ```
 
 If you use the full capacity of those oligos, you could have a capacity of __384 * 96 * 96 = 3,538,944__ barcodes.
@@ -343,7 +343,7 @@ tail -n +2 sci-rna-seq/data/sci-RNA-seq3_RT_bc.csv | \
 
 ### Whitelist For Strategy 2
 
-In this strategy, you are going to process the data for all wells in an experiment or multiple experiments. The cells will be identified by the combination of __RT barcode + i7 + i5__. The sequence of `i7` and `i5` depends on the primers you used. In this case for the public data, we only need the `i7`, because that is the index used to index each well. Therefore, we need to generate all combinations of __RT barcode + i7__ for this specific data set. Again, the RT barcode is in the same direction of the Illumina TruSeq Read 1 sequence, so we should take the sequences as they are. However, the `i7` index is always sequenced using the bottom strand as the template, so we need to take the reverse complement of the sequence. Check the [__sci-RNA-seq GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are still confused:
+In this strategy, you are going to process the data for all wells in an experiment or multiple experiments. The cells will be identified by the combination of __RT barcode + i7 + i5__. The sequence of `i7` and `i5` depends on the primers you used. In this case for the public data, we only need the `i7`, because that is the index used to index each well. Therefore, we need to generate all combinations of __RT barcode + i7__ for this specific data set. Again, the RT barcode is in the same direction of the Illumina TruSeq Read 1 sequence, so we should take the sequences as they are. However, the `i7` index is always sequenced using the bottom strand as the template, so we need to take the reverse complement of the sequence. Check the [__sci-RNA-seq GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html) if you are still confused:
 
 ```bash
 for x in $(tail -n +2 sci-rna-seq/data/sci-RNA-seq3_RT_bc.csv | cut -f 2 -d,); do
@@ -425,7 +425,7 @@ STAR --runThreadN 4 \
 
 ## Explanation
 
-If you understand the __sci-RNA-seq__ experimental procedures described in [this GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html), the command above should be straightforward to understand.
+If you understand the __sci-RNA-seq__ experimental procedures described in [this GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html), the command above should be straightforward to understand.
 
 `--runThreadN 4`
   
@@ -445,7 +445,7 @@ If you understand the __sci-RNA-seq__ experimental procedures described in [this
 
 `--readFilesIn`
 
->> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
+>> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __sci-RNA-seq__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1 or the `CB_UMI` file you just prepared. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html) if you are not sure.
 
 `--soloType CB_UMI_Simple`
 
@@ -471,7 +471,7 @@ If you understand the __sci-RNA-seq__ experimental procedures described in [this
 
 `--soloStrand Forward`
 
->> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq.html) if you are not sure.
+>> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __sci-RNA-seq__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Illumina Read 1 sequence. Therefore, Read 1 consists of RT barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 2 comes from the coding strand. Therefore, use `Forward` for __sci-RNA-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the sci-RNA-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-RNA-seq_family.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
