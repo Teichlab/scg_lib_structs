@@ -46,13 +46,12 @@ Click the following links to view the methods. Notes:
 
 - ### Chromatin accessibility and protein-DNA interactions
 
+  - [sci-ATAC-seq family (including sci-ATAC-seq, sci-ATAC-seq3)](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html)
   - [Plate_scATAC-seq and Pi-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/plate_and_piATAC-seq.html)
   - [10x Chromium Single Cell ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html)
   - [dscATAC-seq/dsciATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html)
   - [scDNase-seq/scMNase-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDNase_scMNase.html)
   - [scifi-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scifi-ATAC-seq.html)
-  - [sci-ATAC-seq3](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq3.html)
-  - [sci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html)
   - [txci-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/txci-ATAC-seq.html)
   - [CH-ATAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/CH-ATAC-seq.html)
   - [HyDrop-ATAC](https://teichlab.github.io/scg_lib_structs/methods_html/HyDrop_ATAC.html)

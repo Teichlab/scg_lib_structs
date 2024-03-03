@@ -10,7 +10,7 @@
 
 <h1><a href="https://doi.org/10.1016/j.devcel.2024.01.015" target="_blank">CH-ATAC-seq</a></h1>
 
-<span style="font-size:1.1em;"><p>CH-ATAC-seq is like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq3.html" target="_blank">sci-ATAC-seq3</a> that uses combinatorial indexing to achieve single cell chromatin accessibility profiling. They difference is that CH-ATAC-seq uses barcoded Tn5 with to add the first-level barcode. Then subsequent rounds of barcodes are added through hybridisation. The oligo sequences here are taken from the <a href="../data/CH-ATAC-seq_SupplementaryTable1.xlsx" target="_blank">Supplementary Table 1</a> from the paper, which is designed to work on the BGI system.</p></span>
+<p><info>CH-ATAC-seq is like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq3.html" target="_blank">sci-ATAC-seq3</a> that uses combinatorial indexing to achieve single cell chromatin accessibility profiling. They difference is that CH-ATAC-seq uses barcoded Tn5 with to add the first-level barcode. Then subsequent rounds of barcodes are added through hybridisation. The oligo sequences here are taken from the <a href="../data/CH-ATAC-seq/CH-ATAC-seq_SupplementaryTable1.xlsx" target="_blank">Supplementary Table 1</a> from the paper, which is designed to work on the BGI system.</info></p>
 
 <br>
 
@@ -36,7 +36,7 @@
 
 <h2>Step-by-step library generation</h2>
 <h3>(1) Anneal "Tn5_ME+Tn5_barcode_primer" and "Tn5_ME+Tn5_Primer_C_oligo" and use those to assemble indexed Tn5 transposome:</h3>
-<img src="../data/CH-ATAC-seq_Tn5.svg" alt="Tn5 dimer" style="width:800px">
+<img src="../data/CH-ATAC-seq/CH-ATAC-seq_Tn5.svg" alt="Tn5 dimer" style="width:800px">
 
 <h3>(2) Bulk nuclei tagging by the indexed Tn5 shown above. There are 3 different products (will create 9 bp gap):</h3>
 <pre>

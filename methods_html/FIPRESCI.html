@@ -8,7 +8,7 @@
 <body>
 
 <h1><a href="https://doi.org/10.1186/s13059-023-02893-1" target="_blank"><span style="color:red;">FIPRESCI</span></a></h1>
-<p><span style="font-size:1.1em;">FIPRESCI borrows the idea from <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scifi-RNA-seq.html" target="_blank">scifi-RNA-seq</a>, but it is designed to work on the 10X Genomics 5' system. It uses barcoded Tn5 to add the first round of index to the DNA/RNA hybrid after reverse transcription. Then cells are overloaded into the 10X system. In this way, it offers an ultra-high throughput way of profiling the 5' of RNAs in single cells. The full oligo sequences details are taken from the <a href="../data/13059_2023_2893_MOESM2_ESM.xlsx" target="_blank">Supplementary Table 1</a> from their Genome Biology publication.</span></p>
+<p><info>FIPRESCI borrows the idea from <a href="https://teichlab.github.io/scg_lib_structs/methods_html/scifi-RNA-seq.html" target="_blank">scifi-RNA-seq</a>, but it is designed to work on the 10X Genomics 5' system. It uses barcoded Tn5 to add the first round of index to the DNA/RNA hybrid after reverse transcription. Then cells are overloaded into the 10X system. In this way, it offers an ultra-high throughput way of profiling the 5' of RNAs in single cells. The full oligo sequences details are taken from the <a href="../data/FIPRESCI/13059_2023_2893_MOESM2_ESM.xlsx" target="_blank">Supplementary Table 1</a> from their Genome Biology publication.</info></p>
 
 <br></br>
 
@@ -49,7 +49,7 @@
 </pre>
 
 <h3>(3) Anneal "TN5_A_ME+TN5_R2_index" and use those to assemble the barcoded Tn5 transposomes (this is a Tn5 homo-dimer). Then use the assembled transposome to tag the RNA/DNA hybrid (will create 9-bp gaps):</h3>
-<img src="../data/FIPRESCI_Tn5.svg" alt="Tn5 dimer" style="width:750px;">
+<img src="../data/FIPRESCI/FIPRESCI_Tn5.svg" alt="Tn5 dimer" style="width:750px;">
 <pre>
 <seq>
 <i>Product 1 (middle of the transcript, cannot be captured by the 10X system, omitted afterwards):</i>

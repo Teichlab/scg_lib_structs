@@ -1,11 +1,11 @@
 # sci-ATAC-seq
 
-Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html) to see how __sci-ATAC-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where nuclei are transposed in mini-bulk with indexed transposase Tn5 (__C15__ + __D15__). Then all nuclei are pooled and a fraction of the nuclei is randomly distributed into new wells. Library preparation is performed using a PCR primers with different indices (__i5__ + __i7__). Single cells can be identified by the combination of __D15 + i7 + C15 + i5__. You might wonder what `C15` and `D15` are, those are the primer in the published paper. Keep reading and you will see.
+Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html) to see how __sci-ATAC-seq__ libraries are generated experimentally. This is a split-pool based combinatorial indexing strategy, where nuclei are transposed in mini-bulk with indexed transposase Tn5 (__C15__ + __D15__). Then all nuclei are pooled and a fraction of the nuclei is randomly distributed into new wells. Library preparation is performed using a PCR primers with different indices (__i5__ + __i7__). Single cells can be identified by the combination of __D15 + i7 + C15 + i5__. You might wonder what `C15` and `D15` are, those are the primer in the published paper. Keep reading and you will see.
 
 ```{eval-rst}
 .. important::
 
-   The library of the **sci-ATAC-seq** is kind of complicated, especially for beginners. First, make sure you are familiar with different sequencing modes from different Illumina machines by looking at `this page <https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html>`_. Then make sure you understand how the actual sequencing is done for **sci-ATAC-seq** by checking `this GitHub page <https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html>`_ and the associated publications.
+   The library of the **sci-ATAC-seq** is kind of complicated, especially for beginners. First, make sure you are familiar with different sequencing modes from different Illumina machines by looking at `this page <https://teichlab.github.io/scg_lib_structs/methods_html/Illumina.html>`_. Then make sure you understand how the actual sequencing is done for **sci-ATAC-seq** by checking `this GitHub page <https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html>`_ and the associated publications.
 
 ```
 
@@ -29,7 +29,7 @@ Using older machines and chemistries like __MiSeq__, __HiSeq 2000__, __HiSeq 250
 | 3     | Index 2 (__i5__) | 10 normal + 21 dark + 8 normal cycles | This yields `I2_001.fastq.gz`, i5 + C15 index |
 | 4     | Read 2           | >50                                   | This yields `R2_001.fastq.gz`, Genomic insert |
 
-The reason for the dark cycles is to avoid sequencing those common adaptors with exact the same DNA sequences. Again, if you are not sure, check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html) to see the reason.
+The reason for the dark cycles is to avoid sequencing those common adaptors with exact the same DNA sequences. Again, if you are not sure, check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html) to see the reason.
 
 After the sequencing is done, you could just run the `bcl2fastq` without a `SampleSheet.csv`, like this:
 
@@ -127,12 +127,12 @@ Now we have the three `fastq` files `SRR5837698_1.fastq.gz`, `SRR5837698_2.fastq
 
 ## Prepare Whitelist
 
-This is the most confusing part of the pipeline, but if you understand the procedures in the __sci-ATAC-seq__ [GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html), you should be able to understand.
+This is the most confusing part of the pipeline, but if you understand the procedures in the __sci-ATAC-seq__ [GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html), you should be able to understand.
 
 ```{eval-rst}
 .. important::
 
-  For the exact primer sequences, check `Supplementary Table 12 <https://teichlab.github.io/scg_lib_structs/data/Cusanovich2018_Table_S12.xlsx>`_ from the Cusanovich 2018 *Nature* paper.
+  For the exact primer sequences, check `Supplementary Table 12 <https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/Cusanovich2018_Table_S12.xlsx>`_ from the Cusanovich 2018 *Nature* paper.
 
 ```
 
@@ -370,10 +370,10 @@ This is the P5 primer sequence: 5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNNNTCGTC
 
 The 36 bp cell barcode consists of the four parts listed above. To construct full whitelist, we need to get all possible combinations of `D15`, `i7`, `C15` and `i5`. In total, we should have a whitelist of __8 * 12 * 96 * 96 = 884736__ barcodes. However, the order of those four parts depends on Illumina machines. I have put those four tables into `csv` files and you can download them to have a look:
 
-[sci-ATAC-C15.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-C15.csv)  
-[sci-ATAC-D15.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-D15.csv)  
-[sci-ATAC-P5.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-P5.csv)  
-[sci-ATAC-P7.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-P7.csv)  
+[sci-ATAC-C15.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-C15.csv)  
+[sci-ATAC-D15.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-D15.csv)  
+[sci-ATAC-P5.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-P5.csv)  
+[sci-ATAC-P7.csv](https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-P7.csv)  
 
 ### Configuration 1
 
@@ -393,10 +393,10 @@ Now let's generate the whitelist using the above order:
 ```bash
 # download the tables
 wget -P sci-atac/data/ \
-    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-C15.csv \
-    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-D15.csv \
-    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-P5.csv \
-    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-P7.csv
+    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-C15.csv \
+    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-D15.csv \
+    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-P5.csv \
+    https://teichlab.github.io/scg_lib_structs/data/sci-ATAC-seq_family/sci-ATAC-P7.csv
 
 # generate combinations of them
 for w in $(tail -n +2 sci-atac/data/sci-ATAC-D15.csv | cut -f 3 -d,); do
@@ -494,7 +494,7 @@ Two new files `fragments.tsv.gz` and `fragments.tsv.gz.tbi` are generated. They 
 
 ### Explain chromap
 
-If you understand the __sci-ATAC-seq__ experimental procedures described in [this GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq.html) and the content in the previous sections, the command above should be straightforward to understand.
+If you understand the __sci-ATAC-seq__ experimental procedures described in [this GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/sci-ATAC-seq_family.html) and the content in the previous sections, the command above should be straightforward to understand.
 
 `-t 4`
 
