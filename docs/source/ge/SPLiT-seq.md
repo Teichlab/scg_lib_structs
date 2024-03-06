@@ -110,7 +110,7 @@ wget -P split-seq/data -c \
 
 ## Prepare Whitelist
 
-The full oligo sequences can be found in the [Supplementary Table S12](https://teichlab.github.io/scg_lib_structs/data/aam8999_tables12.xlsx) from the __SPLiT-seq__ paper. As you can see, there are a total of 96 different __Round2 barcodes__ and 96 different __Round3 barcodes__. For the sublibrary index, they provided 8 different ones (`BC_0076` - `BC_0083`), but you can cerntainly do more. For the __Round1 barcodes__, it is a bit more complicated. There are 96 of them (`Round1_01` - `Round1_96`). The first 48 are oligo-dT primers and the last 48 are random hexamers. They mix them into 48 different wells:
+The full oligo sequences can be found in the [Supplementary Table S12](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/aam8999_tables12.xlsx) from the __SPLiT-seq__ paper. As you can see, there are a total of 96 different __Round2 barcodes__ and 96 different __Round3 barcodes__. For the sublibrary index, they provided 8 different ones (`BC_0076` - `BC_0083`), but you can cerntainly do more. For the __Round1 barcodes__, it is a bit more complicated. There are 96 of them (`Round1_01` - `Round1_96`). The first 48 are oligo-dT primers and the last 48 are random hexamers. They mix them into 48 different wells:
 
 `Round1_01` and `Round1_49` are mixed in the same well;  
 `Round1_02` and `Round1_50` are mixed in the same well;  
@@ -120,7 +120,7 @@ The full oligo sequences can be found in the [Supplementary Table S12](https://t
 . . .  
 `Round1_48` and `Round1_96` are mixed in the same well.  
 
-Therefore, we actually have 48 different __Round1_barcodes__. If you use the oligos provided in the [Supplementary Table S12](https://teichlab.github.io/scg_lib_structs/data/aam8999_tables12.xlsx) from the __SPLiT-seq__ paper, you should have a capacity of __48 * 96 * 96 * 8 = 3,538,944__ combinations. For the preprocessing, we could treat the different __Round1 barcodes__ as if there are 96 different ones. During the downstream analysis after the preprocessing, we could merge them.
+Therefore, we actually have 48 different __Round1_barcodes__. If you use the oligos provided in the [Supplementary Table S12](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/aam8999_tables12.xlsx) from the __SPLiT-seq__ paper, you should have a capacity of __48 * 96 * 96 * 8 = 3,538,944__ combinations. For the preprocessing, we could treat the different __Round1 barcodes__ as if there are 96 different ones. During the downstream analysis after the preprocessing, we could merge them.
 
 I have collected the index table as follows, and the names of the oligos are directly taken from the paper to be consistent:
 
@@ -429,17 +429,17 @@ __Round3 Barcodes (8 bp)__
 
 I have put those three tables into `csv` files and you can download them to have a look:
 
-[SPLiT-seq_Round1_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round1_bc.csv)  
-[SPLiT-seq_Round2_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round2_bc.csv)  
-[SPLiT-seq_Round3_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round3_bc.csv)
+[SPLiT-seq_Round1_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round1_bc.csv)  
+[SPLiT-seq_Round2_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round2_bc.csv)  
+[SPLiT-seq_Round3_bc.csv](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round3_bc.csv)
 
 Let's download them:
 
 ```console
 wget -P split-seq/data \
-    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round1_bc.csv \
-    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round2_bc.csv \
-    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq_Round3_bc.csv
+    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round1_bc.csv \
+    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round2_bc.csv \
+    https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/SPLiT-seq_Round3_bc.csv
 ```
 
 Now we need to generate the whitelist of those three rounds of barcodes. Those barcodes are sequenced in __Read 2__ using the top strand as the template. They are in the same direction of the Illumina TruSeq Read 2 sequence. Therefore, we should take their sequences as they are. In addition, if you check the [__SPLiT-seq GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/SPLiT-seq.html), you will see that the __Round3 barcode__ is sequenced first, then __Round2 barcode__ and finally __Round1 barcode__. Therefore, we should pass the whitelist to `starsolo` in that order. See the next section for more details.
@@ -512,7 +512,7 @@ If you understand the __SPLiT-seq__ experimental procedures described in [this G
 
 >> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __SPLiT-seq__, the UMI and cell barcodes are in fixed position in the __Read 2__. It is relatively straightforward to specify the parameter. See the image:
 
-![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_SPLiT-seq.jpg)
+![](https://teichlab.github.io/scg_lib_structs/data/SPLiT-seq/Star_CB_UMI_Complex_SPLiT-seq.jpg)
 
 `--soloCBwhitelist`
 
