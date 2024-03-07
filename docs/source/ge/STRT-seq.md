@@ -193,17 +193,17 @@ where the authors developed those methods for the first time.
 
 ### The Original Version
 
-The raw data for the original version can be found from [__the PRJNA140307 ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA140307?show=reads). I have prepared the read information, and you can [__download here__](https://teichlab.github.io/scg_lib_structs/data/filereport_read_run_PRJNA140307.tsv). The authors already demultiplexed for us. They were using single-end sequencing mode, so there is one file per cell. To mimic what we get directly from the machine, we could merge all of them into one file.
+The raw data for the original version can be found from [__the PRJNA140307 ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA140307?show=reads). I have prepared the read information, and you can [__download here__](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/filereport_read_run_PRJNA140307.tsv). The authors already demultiplexed for us. They were using single-end sequencing mode, so there is one file per cell. To mimic what we get directly from the machine, we could merge all of them into one file.
 
 ```bash
 # get individual fastq files and merge into one file
 mkdir -p strt-seq/data
-wget -P strt-seq/data https://teichlab.github.io/scg_lib_structs/data/filereport_read_run_PRJNA140307.tsv
+wget -P strt-seq/data https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/filereport_read_run_PRJNA140307.tsv
 wget -i <(cut -f 8 strt-seq/data/filereport_read_run_PRJNA140307.tsv | tail -n +2 | awk '{print "ftp://" $0}') \
      -O /dev/stdout >> trt-seq/data/STRT-seq.fastq.gz
 ```
 
-Now we need to demultiplex the `fastq` file into individual files based on the first 6 bp. In this way, each cell has one file. Here, we use `cutadapt`. The cell barcode information can be found in this [__Supplementary Information__](https://teichlab.github.io/scg_lib_structs/data/STRT_GenomeRes_2011_SI.pdf) from the Genome Res. paper. We need the barcode in `fasta` format:
+Now we need to demultiplex the `fastq` file into individual files based on the first 6 bp. In this way, each cell has one file. Here, we use `cutadapt`. The cell barcode information can be found in this [__Supplementary Information__](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/STRT_GenomeRes_2011_SI.pdf) from the Genome Res. paper. We need the barcode in `fasta` format:
 
 ```
 >bc01
@@ -219,10 +219,10 @@ TTGGAC
 . . .
 ```
 
-I have already prepared the `fasta` file and you can [__download from here__](https://teichlab.github.io/scg_lib_structs/data/STRT_bc.fa), and pass the `fasta` to `cutadapt`:
+I have already prepared the `fasta` file and you can [__download from here__](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/STRT_bc.fa), and pass the `fasta` to `cutadapt`:
 
 ```console
-wget -P strt-seq/data https://teichlab.github.io/scg_lib_structs/data/STRT_bc.fa
+wget -P strt-seq/data https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/STRT_bc.fa
 cutadapt -j 4 -g ^file:strt-seq/data/STRT_bc.fa \
          --no-indels \
          -o "strt-seq/data/demul-{name}.fastq.gz" \
@@ -233,12 +233,12 @@ It should finish without any problem, and we should have 97 more files under `st
 
 ### The C1 Version
 
-The raw data for the C1 version can be found from [__the PRJNA203208 ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA203208?show=reads). I have prepared the read information as a TSV file including the barcode as the last column, and you can [__download here__](https://teichlab.github.io/scg_lib_structs/data/filereport_read_run_PRJNA203208.tsv). Again, the authors already demultiplexed for us. They were using single-end sequencing mode, so there is one file per cell.
+The raw data for the C1 version can be found from [__the PRJNA203208 ENA page__](https://www.ebi.ac.uk/ena/browser/view/PRJNA203208?show=reads). I have prepared the read information as a TSV file including the barcode as the last column, and you can [__download here__](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/filereport_read_run_PRJNA203208.tsv). Again, the authors already demultiplexed for us. They were using single-end sequencing mode, so there is one file per cell.
 
 ```bash
 mkdir -p strt-seq-c1/data
 wget -P strt-seq-c1/data \
-    https://teichlab.github.io/scg_lib_structs/data/filereport_read_run_PRJNA203208.tsv
+    https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/filereport_read_run_PRJNA203208.tsv
 
 # there are two types of libraries
 # the one with the string "single" in the cell name is the regular one
@@ -283,7 +283,7 @@ done > islam2011_manifest.tsv
 
 ### The C1 Version
 
-In this version, cDNA from individual cells are tagmented by barcoded Tn5 separately. The Tn5 barcode serves as the cell barcode. You can find the full sequence from the [__Supplementary Table 2__](https://teichlab.github.io/scg_lib_structs/data/41592_2014_BFnmeth2772_MOESM268_ESM.xlsx) from the Isalm2014 paper in Nature Methods. There are 96 different 8-bp Tn5 barcodes:
+In this version, cDNA from individual cells are tagmented by barcoded Tn5 separately. The Tn5 barcode serves as the cell barcode. You can find the full sequence from the [__Supplementary Table 2__](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/41592_2014_BFnmeth2772_MOESM268_ESM.xlsx) from the Isalm2014 paper in Nature Methods. There are 96 different 8-bp Tn5 barcodes:
 
 | Name      | Sequence | Reverse complement |
 |-----------|----------|--------------------|
@@ -386,13 +386,13 @@ In this version, cDNA from individual cells are tagmented by barcoded Tn5 separa
 
 I have prepared the full tables in `csv` format for you to download:
 
-[STRT-seq_C1_bc.csv](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_C1_bc.csv)  
+[STRT-seq_C1_bc.csv](https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/STRT-seq_C1_bc.csv)  
 
 If we check carefully about the oligo orientation in the [__STRT-seq C1 GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/STRT-seq_family.html#STRT-seq-C1), we can see that the Tn5 barcodes are sequenced using the bottom strand as the template. Therefore, the barcode reads are actually reverse complement to the primer sequence. We should use the reverse complement as the whitelist:
 
 ```console
 wget -P strt-seq-c1/data \
-    https://teichlab.github.io/scg_lib_structs/data/STRT-seq_C1_bc.csv
+    https://teichlab.github.io/scg_lib_structs/data/STRT-seq_family/STRT-seq_C1_bc.csv
 
 tail -n +2 strt-seq-c1/data/STRT-seq_C1_bc.csv | \
     cut -f 3 -d, > strt-seq-c1/data/whitelist.txt
