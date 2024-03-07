@@ -275,7 +275,7 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 
 ```console
 # download the whitelist 
-wget -P zheng2017/data/ https://teichlab.github.io/scg_lib_structs/data/737K-april-2014_rc.txt.gz
+wget -P zheng2017/data/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-april-2014_rc.txt.gz
 gunzip zheng2017/data/737K-april-2014_rc.txt.gz
 ```
 

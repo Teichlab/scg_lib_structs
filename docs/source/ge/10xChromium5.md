@@ -96,7 +96,7 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 
 ```console
 # download the whitelist 
-wget -P masuda2022/10x5p https://teichlab.github.io/scg_lib_structs/data/737K-august-2016.txt.gz
+wget -P masuda2022/10x5p https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-august-2016.txt.gz
 gunzip masuda2022/10x5p/737K-august-2016.txt.gz
 ```
 

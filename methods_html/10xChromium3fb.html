@@ -9,31 +9,31 @@
 
 <h1><a href="https://support.10xgenomics.com/single-cell-gene-expression" target="_blank"><span style="color:red;">10x Chromium Single Cell 3' V3 with Feature Barcoding</span></a></h1>
 
-<p><span style="font-size:1.1em;"><a href="https://support.10xgenomics.com/single-cell-gene-expression/library-prep" target="_blank">In the V3 chemistry</a>, the oligo beads are modifidied to support feature barcoding. Each bead has three types of oligos, one for gene expression (<a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">click here</a> to see how it works) and the other two for feature barcoding. <span style="color:red;">NOTE: the cell barcodes used for RNA and Feature are different in the same drop. You need a mapping file to tell you the mapping between RNA cell barcodes and Feature cell barcodes. This file can be found from the Cellrange software. The path is cellranger-6.0.2/lib/python/cellranger/barcodes/translation/3M-february-2018.txt.gz (<b>not to be confused with the file of the exact the same name in the directory one level above</b>). I copied this file and renamed it to this repository. You can download <a href="../data/translation_3M-february-2018.txt.gz" target="_blank">from here</a>.</span> Feature Barcoding allows you to profile <a href="../data/CG000185_ChromiumSingleCell3__FeatureBarcode_CellSurfaceProtein_Rev_B.pdf" target="_blank">surface protein</a> abundance by using oligo-conjugated antibodies (basically <a href="https://www.nature.com/articles/nmeth.4380" target="_blank">CITE-seq</a>) and <a href="../data/CG000184_ChromiumSingleCellSingleCell3v3_FeatureBarcodingtechnology_CRISPR_RevA.pdf" target="_blank">CRISPR screening</a> by capture sgRNA on top of gene expression. The antibody part is relatively easy to do and understand. I feel it is necessary to explain a bit more about the CRISPR screening part. At least I did not understand it when I first saw the kit. Now I will try to explain. I'm not an expert on CRISPR, so please correct me if I am wrong.</span></p>
+<p><info><a href="https://support.10xgenomics.com/single-cell-gene-expression/library-prep" target="_blank">In the V3 chemistry</a>, the oligo beads are modifidied to support feature barcoding. Each bead has three types of oligos, one for gene expression (<a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">click here</a> to see how it works) and the other two for feature barcoding. <span style="color:red;">NOTE: the cell barcodes used for RNA and Feature are different in the same drop. You need a mapping file to tell you the mapping between RNA cell barcodes and Feature cell barcodes. This file can be found from the Cellrange software. The path is cellranger-6.0.2/lib/python/cellranger/barcodes/translation/3M-february-2018.txt.gz (<b>not to be confused with the file of the exact the same name in the directory one level above</b>). I copied this file and renamed it to this repository. You can download <a href="../data/10X-Genomics/translation_3M-february-2018.txt.gz" target="_blank">from here</a>.</span> Feature Barcoding allows you to profile <a href="../data/10X-Genomics/CG000185_ChromiumSingleCell3__FeatureBarcode_CellSurfaceProtein_Rev_B.pdf" target="_blank">surface protein</a> abundance by using oligo-conjugated antibodies (basically <a href="https://www.nature.com/articles/nmeth.4380" target="_blank">CITE-seq</a>) and <a href="../data/10X-Genomics/CG000184_ChromiumSingleCellSingleCell3v3_FeatureBarcodingtechnology_CRISPR_RevA.pdf" target="_blank">CRISPR screening</a> by capture sgRNA on top of gene expression. The antibody part is relatively easy to do and understand. I feel it is necessary to explain a bit more about the CRISPR screening part. At least I did not understand it when I first saw the kit. Now I will try to explain. I'm not an expert on CRISPR, so please correct me if I am wrong.</info></p>
 
-<p><span style="font-size:1.1em;">The sgRNA has two parts: a 17-20 nt so-called Protospacer (or just Spacer) that determines the specificity of the target, followed by a constant region called sgRNA scaffold that forms different loop structures. Your sgRNA structure is like this (picture taken from <a href="https://www.cell.com/molecular-cell/fulltext/S1097-2765(14)00751-5" target="_blank">Briner et al. 2014</a>):</span></p>
+<p><info>The sgRNA has two parts: a 17-20 nt so-called Protospacer (or just Spacer) that determines the specificity of the target, followed by a constant region called sgRNA scaffold that forms different loop structures. Your sgRNA structure is like this (picture taken from <a href="https://www.cell.com/molecular-cell/fulltext/S1097-2765(14)00751-5" target="_blank">Briner et al. 2014</a>):</info></p>
 <img src="../data/sgRNA_structure.png" alt="sgRNA structure" style="width:600px;">
 
 <br>
 
-<p><span style="font-size:1.1em;">Your sgRNA is often driven and transcribed by a U6 promoter from a vector backbone. There are a few different vector backbones for CRISPR screening. The exact sgRNA scaffold sequences vary among them. If you use the following backbones:</span></p>
-<p><span style="font-size:1.1em;">GeCKOv2 from Feng Zhang's lab, <a href="https://www.nature.com/articles/nmeth.3047" target="_blank">Sanjana et al., 2014</a>, <a href="https://www.addgene.org/52961/" target="_blank">addgene #52961</a></span></p>
-<p><span style="font-size:1.1em;">Genome-wide Mouse Lentiviral CRISPR gRNA Library v1 from Kosuke Yusa's lab, <a href="https://www.nature.com/articles/nbt.2800" target="_blank">Koike-Yusa et al., 2014</a>, <a href="https://www.addgene.org/pooled-library/yusa-crispr-knockout-mouse-v1/" target="_blank">addgene #50946</a></span></p>
-<p><span style="font-size:1.1em;">CROP-seq from Christoph Bock's lab, <a href="https://www.nature.com/articles/nmeth.4177" target="_blank">Datlinger et al., 2017</a>, <a href="https://www.addgene.org/86708/" target="_blank">addgene #86708</a></span></p>
+<p><info>Your sgRNA is often driven and transcribed by a U6 promoter from a vector backbone. There are a few different vector backbones for CRISPR screening. The exact sgRNA scaffold sequences vary among them. If you use the following backbones:</info></p>
+<p><info>GeCKOv2 from Feng Zhang's lab, <a href="https://www.nature.com/articles/nmeth.3047" target="_blank">Sanjana et al., 2014</a>, <a href="https://www.addgene.org/52961/" target="_blank">addgene #52961</a></info></p>
+<p><info>Genome-wide Mouse Lentiviral CRISPR gRNA Library v1 from Kosuke Yusa's lab, <a href="https://www.nature.com/articles/nbt.2800" target="_blank">Koike-Yusa et al., 2014</a>, <a href="https://www.addgene.org/pooled-library/yusa-crispr-knockout-mouse-v1/" target="_blank">addgene #50946</a></info></p>
+<p><info>CROP-seq from Christoph Bock's lab, <a href="https://www.nature.com/articles/nmeth.4177" target="_blank">Datlinger et al., 2017</a>, <a href="https://www.addgene.org/86708/" target="_blank">addgene #86708</a></info></p>
 
 <br>
 
-<p><span style="font-size:1.1em;">Then, your sgRNA scaffold sequence will be:</span></p>
+<p><info>Then, your sgRNA scaffold sequence will be:</info></p>
 <seq>
 5'- <lstem>GUUUUA</lstem><bulge>GA</bulge><ustem>GCUA</ustem>GAAA<ustem>UAGC</ustem><bulge>AAGU</bulge><lstem>UAAAAU</lstem>AA<nexus>GGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp>UUUUUU -3'
 </seq>
 
-<p><span style="font-size:1.1em;">and your final sgRNA transcripts will be like this:</span></p>
+<p><info>and your final sgRNA transcripts will be like this:</info></p>
 <img src="../data/sgRNA_seq1.svg" alt="sgRNA sequence 1" style="width:600px;">
 
 <br>
 
-<p><span style="font-size:1.1em;">However, if you use the Perturb-seq backbone from Jonathan Weissman's lab (<a href="https://www.ncbi.nlm.nih.gov/pubmed/27984733", target="_blank">Adamson et al. 2016</a>, <a href="https://www.addgene.org/85967/">addgene #85967</a>), then your sgRNA scaffold sequence will be:</span></p>
+<p><info>However, if you use the Perturb-seq backbone from Jonathan Weissman's lab (<a href="https://www.ncbi.nlm.nih.gov/pubmed/27984733", target="_blank">Adamson et al. 2016</a>, <a href="https://www.addgene.org/85967/">addgene #85967</a>), then your sgRNA scaffold sequence will be:</info></p>
 
 <seq>
 5'- GUUUAAGA<lstem>GCUA</lstem><bulge>A</bulge><ustem>GCUG</ustem>GAAA<ustem>CAGC</ustem><bulge>A</bulge><lstem>UAGC</lstem>A<nexus>AGUUUAAAUAAGGCUAGUCCGU</nexus><hairp>UAUCAACUUGAAAAAGUGGCACCGAGUCGGUGC</hairp>UUUUUUU -3'
@@ -41,10 +41,10 @@
 
 <br>
 
-<p><span style="font-size:1.1em;">Comapring to other backbones, Perturb-seq has a slightly differnt Lower/Upper stem and Nexus sequences, and it has a very small bulge. The rest are the same as the others. Your final sgRNA transcripts will be like this:</span></p>
+<p><info>Comapring to other backbones, Perturb-seq has a slightly differnt Lower/Upper stem and Nexus sequences, and it has a very small bulge. The rest are the same as the others. Your final sgRNA transcripts will be like this:</info></p>
 <img src="../data/sgRNA_purterb.svg" alt="sgRNA sequence 2" style="width:800px;">
 
-<p><span style="font-size:1.1em;">Based on the <a href="../data/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, it seems they assume you are using the Perturb-seq backbone, but I guess other backbones can also work. Here, I will just use the Perturb-seq sgRNA scaffold as an example to be consistent. You need to add a sequence that is reverse complementary (rc) to the Capture Sequence that is on the V3 beads. You have two choices (pick one of them):</span></p>
+<p><info>Based on the <a href="../data/10X-Genomics/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, it seems they assume you are using the Perturb-seq backbone, but I guess other backbones can also work. Here, I will just use the Perturb-seq sgRNA scaffold as an example to be consistent. You need to add a sequence that is reverse complementary (rc) to the Capture Sequence that is on the V3 beads. You have two choices (pick one of them):</info></p>
 
 <pre>
 <seq>
@@ -56,14 +56,14 @@ Capture Sequence 2 rc: 5'- <cs2>GCTCACCTATTAGCGGCTAAGG</cs2> -3'
 
 <br>
 
-<p><span style="font-size:1.1em;">Okay, now, where to put that sequence? Again, in the <a href="../data/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, they suggest two locations (pick one location):</span></p>
+<p><info>Okay, now, where to put that sequence? Again, in the <a href="../data/10X-Genomics/CG000197_GuideRNA_SpecificationsCompatible_withFeatureBarcodingtechnology_forCRISPRScreening_Rev-A.pdf" target="_blank">10x guide on sgRNA</a>, they suggest two locations (pick one location):</info></p>
 
 <br>
 
-<p><span style="font-size:1.1em;">Choice (1): in the first hairpin structure (called Hairpin 2 in their guide), like this:</span></p>
-<img src="../data/sgRNA_purterb_10x_cs_loc1.svg", alt="sgRNA sequence 3", style="width:800px;">
+<p><info>Choice (1): in the first hairpin structure (called Hairpin 2 in their guide), like this:</info></p>
+<img src="../data/10X-Genomics/sgRNA_purterb_10x_cs_loc1.svg", alt="sgRNA sequence 3", style="width:800px;">
 
-<p><span style="font-size:1.1em;">Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</span></p>
+<p><info>Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</info></p>
 
 <pre>
 <seq>
@@ -75,10 +75,10 @@ Capture Sequence 2 rc: 5'- <cs2>GCTCACCTATTAGCGGCTAAGG</cs2> -3'
 
 <br>
 
-<p><span style="font-size:1.1em;">Choice (2): just before the terminal sequence UUUUUUU, like this:</span></p>
-<img src="../data/sgRNA_purterb_10x_cs_loc2.svg", alt="sgRNA sequence 3", style="width:800px;">
+<p><info>Choice (2): just before the terminal sequence UUUUUUU, like this:</info></p>
+<img src="../data/10X-Genomics/sgRNA_purterb_10x_cs_loc2.svg", alt="sgRNA sequence 3", style="width:800px;">
 
-<p><span style="font-size:1.1em;">Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</span></p>
+<p><info>Then, you sgRNA transcripts will be one of the following two (depends on which Capture Sequence rc you pick):</info></p>
 
 <pre>
 <seq>
@@ -90,7 +90,7 @@ Capture Sequence 2 rc: 5'- <cs2>GCTCACCTATTAGCGGCTAAGG</cs2> -3'
 
 <br>
 
-<p><span style="font-size:1.1em;">Okay, now, finally, we are ready to start the experiments ... almost. In this page, I assume you choose to insert the Capture Sequence rc to just before the terminal sequence. I feel this way is easier and safer (but both locations should work). In addition, to make things simpler, I omitted the gene expression libary construction here, because you can find that information on <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">this page</a>. I will also draw the surface protein profiling and CRISPR screening experiments together to make the page a bit shorter, althougth I doubt people do those two things together (EDIT on 19-Dec-2021: Okay, I was so wrong and these people are just so smart: check <a href="https://www.nature.com/articles/s41592-019-0392-0" target="_blank">here</a> and <a href="https://www.nature.com/articles/s41588-021-00779-1" target="_blank">here</a>). If this is too confusing, I will separate them in future.</span></p>
+<p><info>Okay, now, finally, we are ready to start the experiments ... almost. In this page, I assume you choose to insert the Capture Sequence rc to just before the terminal sequence. I feel this way is easier and safer (but both locations should work). In addition, to make things simpler, I omitted the gene expression libary construction here, because you can find that information on <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html" target="_blank">this page</a>. I will also draw the surface protein profiling and CRISPR screening experiments together to make the page a bit shorter, althougth I doubt people do those two things together (EDIT on 19-Dec-2021: Okay, I was so wrong and these people are just so smart: check <a href="https://www.nature.com/articles/s41592-019-0392-0" target="_blank">here</a> and <a href="https://www.nature.com/articles/s41588-021-00779-1" target="_blank">here</a>). If this is too confusing, I will separate them in future.</info></p>
 
 
 <br>

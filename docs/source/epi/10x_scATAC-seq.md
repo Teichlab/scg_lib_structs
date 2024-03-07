@@ -129,7 +129,7 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 ```console
 # download the whitelist
 
-wget -P 10xscATAC/pbmc500/ https://teichlab.github.io/scg_lib_structs/data/737K-cratac-v1.txt.gz
+wget -P 10xscATAC/pbmc500/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-cratac-v1.txt.gz
 gunzip 10xscATAC/pbmc500/737K-cratac-v1.txt.gz
 
 # reverse complement the whitelist

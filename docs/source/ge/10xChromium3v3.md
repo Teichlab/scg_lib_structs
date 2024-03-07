@@ -98,7 +98,7 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 
 ```console
 # download the whitelist
-wget -P mereu2020/10xV3 wget https://teichlab.github.io/scg_lib_structs/data/3M-february-2018.txt.gz
+wget -P mereu2020/10xV3 wget https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/3M-february-2018.txt.gz
 gunzip mereu2020/10xV3/3M-february-2018.txt.gz
 ```
 
