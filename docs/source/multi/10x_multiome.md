@@ -207,12 +207,12 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 ```console
 # download the GEX expression whitelist
 
-wget -P 10xMultiome/ https://teichlab.github.io/scg_lib_structs/data/gex_737K-arc-v1.txt.gz
+wget -P 10xMultiome/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/gex_737K-arc-v1.txt.gz
 gunzip 10xMultiome/gex_737K-arc-v1.txt.gz
 
 # download the atac whitelist
 
-wget -P 10xMultiome/ https://teichlab.github.io/scg_lib_structs/data/atac_737K-arc-v1.txt.gz
+wget -P 10xMultiome/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/atac_737K-arc-v1.txt.gz
 gunzip 10xMultiome/atac_737K-arc-v1.txt.gz
 
 # reverse complement the atac whitelist

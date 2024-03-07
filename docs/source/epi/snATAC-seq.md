@@ -172,7 +172,7 @@ This is the most confusing part of the pipeline, but if you understand the proce
 ```{eval-rst}
 .. important::
 
-  The data we are using in this documentation is from the `SnapATAC <https://www.nature.com/articles/s41467-021-21583-9>`_ paper. The protocol is the same as the `original snATAC-seq paper <https://www.nature.com/articles/s41593-018-0079-3>`_, but there are some minor modifications of the oligos. For the Tn5 barcode sequences, you need to check the `Supplementary Table S4 <https://teichlab.github.io/scg_lib_structs/data/41467_2021_21583_MOESM1_ESM.pdf>`_ from the **SnapATAC** paper. For the PCR primer (i5 and i7), you need to check the `Supplementary Table S5 <https://teichlab.github.io/scg_lib_structs/data/41593_2018_79_MOESM5_ESM.xlsx>`_ from the **original snATAC-seq paper**.
+  The data we are using in this documentation is from the `SnapATAC <https://www.nature.com/articles/s41467-021-21583-9>`_ paper. The protocol is the same as the `original snATAC-seq paper <https://www.nature.com/articles/s41593-018-0079-3>`_, but there are some minor modifications of the oligos. For the Tn5 barcode sequences, you need to check the `Supplementary Table S4 <https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/41467_2021_21583_MOESM1_ESM.pdf>`_ from the **SnapATAC** paper. For the PCR primer (i5 and i7), you need to check the `Supplementary Table S5 <https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/41593_2018_79_MOESM5_ESM.xlsx>`_ from the **original snATAC-seq paper**.
 
 ```
 
@@ -298,10 +298,10 @@ This is the i5 primer sequence: 5'- AATGATACGGCGACCACCGAGATCTACACNNNNNNNNTCGTCGG
 
 The 32 bp cell barcode consists of the four parts listed above. To construct full whitelist, we need to get all possible combinations of `T7`, `i7`, `T5` and `i5`. In total, we should have a whitelist of __8 * 12 * 32 * 48 = 147456__ barcodes. However, the order of those four parts depends on Illumina machines. I have put those four tables into `csv` files and you can download them to have a look:
 
-[snATAC-T5.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-T5.csv)  
-[snATAC-T7.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-T7.csv)  
-[snATAC-i5.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-i5.csv)  
-[snATAC-i7.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-i7.csv)  
+[snATAC-T5.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-T5.csv)  
+[snATAC-T7.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-T7.csv)  
+[snATAC-i5.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-i5.csv)  
+[snATAC-i7.csv](https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-i7.csv)  
 
 ### Configuration 1
 
@@ -321,10 +321,10 @@ Now let's generate the whitelist using the above order:
 ```bash
 # download the tables
 wget -P snATAC-seq/data/ \
-    https://teichlab.github.io/scg_lib_structs/data/snATAC-T5.csv \
-    https://teichlab.github.io/scg_lib_structs/data/snATAC-T7.csv \
-    https://teichlab.github.io/scg_lib_structs/data/snATAC-i5.csv \
-    https://teichlab.github.io/scg_lib_structs/data/snATAC-i7.csv
+    https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-T5.csv \
+    https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-T7.csv \
+    https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-i5.csv \
+    https://teichlab.github.io/scg_lib_structs/data/snATAC-seq/snATAC-i7.csv
 
 # generate combinations of them
 for w in $(tail -n +2 snATAC-seq/data/snATAC-T7.csv | cut -f 3 -d,); do
