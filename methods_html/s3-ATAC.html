@@ -9,15 +9,15 @@
 
 <h1><a href="https://www.nature.com/articles/s41587-021-00962-z" target="_blank">s3-ATAC</a></h1>
 
-<span style="font-size:1.1em;"><p>Due to semi-suppressive PCR (<a href="https://github.com/Teichlab/scg_lib_structs/issues/9#issuecomment-665438671" target="_blank">click here</a> to see a detailed explanation), only 50% of the tagmented material from the regular Tn5 are amplifiable. The <b>s3-ATAC</b> approach introduced uracil bases in the Tn5 adapters and used uracil intolerant and tolerant DNA polymerases for the gap fill-in and PCR amplification, respectively. In this way, every Tn5 cutting event is amplifiable. Combined with the combinatorial indexing strategy, it is a very clever technique that significantly increases the library complexities of many single cell libraries with a relatively easy workflow.</p></span>
+<p><info>Due to semi-suppressive PCR (<a href="https://github.com/Teichlab/scg_lib_structs/issues/9#issuecomment-665438671" target="_blank">click here</a> to see a detailed explanation), only 50% of the tagmented material from the regular Tn5 are amplifiable. The <b>s3-ATAC</b> approach introduced uracil bases in the Tn5 adapters and used uracil intolerant and tolerant DNA polymerases for the gap fill-in and PCR amplification, respectively. In this way, every Tn5 cutting event is amplifiable. Combined with the combinatorial indexing strategy, it is a very clever technique that significantly increases the library complexities of many single cell libraries with a relatively easy workflow.</info></p>
 
 <br>
 
 <h2>Adapter and primer sequences:</h2>
 <seq>
-<p><b><span style="color:red;">*</span></b> Detailed oligo sequences and names can be found in their <a href="../data/s3_oligos.xlsx" target="_blank">Supplementary Tables 1-3</a> from the paper.</p>
+<p><b><span style="color:red;">*</span></b> Detailed oligo sequences and names can be found in their <a href="../data/High-Content-sci/s3_oligos.xlsx" target="_blank">Supplementary Tables 1-3</a> from the paper.</p>
 <p>Truseq_R2_SBS12_partial: 5'- <s7>CGTGTGCTCTTCCGATCT</s7><cbc>[8-bp Tn5 index]</cbc><t7>/ideoxyU/</t7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>A14_ME_LNA (Nexetera_R1_A14 + U-ME): 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTA+TA+AG+AG+AC+AG</me>/3InvdT/ -3'</p>
+<p>A14_ME_LNA (Nextera_R1_A14 + U-ME): 5'- <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTA+TA+AG+AG+AC+AG</me>/3InvdT/ -3'</p>
 <p>Tn5 binding site 19-bp Mosaic End (ME) bottom: 5'- /Phos/<me>CTGTCTCTTATACACATCT</me> -3'</p>
 <p>PCR_i5_primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>[i5]<s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>PCR_i7_primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[i7]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
@@ -32,7 +32,7 @@
 
 <h2>Step-by-step library generation</h2>
 <h3>(1) Anneal Barcoded Truseq_R2_SBS12_partial and Tn5 binding site 19-bp Mosaic End (ME) bottom strand to assemble Tn5 transposome (Tn5 homodimer):</h3>
-<img src="../data/s3_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
+<img src="../data/High-Content-sci/s3_Tn5.svg" alt="Tn5 dimer" style="width:800px;height:450px;">
 
 <h3>(2) Sort certain number of nuclei into wells, and perform tagmentation using barcoded Tn5 transposome:</h3>
 <pre>

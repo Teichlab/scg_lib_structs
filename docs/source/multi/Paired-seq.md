@@ -186,7 +186,7 @@ After that, we are ready to begin the preprocessing.
 
 ## Prepare Whitelist
 
-Cells are barcoded for the first time by either barcoded (3 bp) Tn5 for DNA or oligo-dT primers, followed by three more rounds of ligation. Each round will add 7-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same set of 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of themselves. Here is the information from the [Supplementary Table 2](https://teichlab.github.io/scg_lib_structs/data/41594_2019_323_MOESM3_ESM.xlsx) from the [__Paired-seq__ paper](https://www.nature.com/articles/s41594-019-0323-x):
+Cells are barcoded for the first time by either barcoded (3 bp) Tn5 for DNA or oligo-dT primers, followed by three more rounds of ligation. Each round will add 7-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same set of 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of themselves. Here is the information from the [Supplementary Table 2](https://teichlab.github.io/scg_lib_structs/data/Paired-seq/41594_2019_323_MOESM3_ESM.xlsx) from the [__Paired-seq__ paper](https://www.nature.com/articles/s41594-019-0323-x):
 
 __Round 1 barcodes (eight 3-bp Tn5 or oligo-dT barcodes)__
 
@@ -304,15 +304,15 @@ __Round 2, 3 and 4 barcodes (7 bp)__
 
 I have prepared the above two tables as `csv` files for you, and you can download them:
 
-[paired-seq_bc01.csv](https://teichlab.github.io/scg_lib_structs/data/paired-seq_bc01.csv)  
-[paired-seq_bc02-03-04.csv](https://teichlab.github.io/scg_lib_structs/data/paired-seq_bc02-03-04.csv)
+[paired-seq_bc01.csv](https://teichlab.github.io/scg_lib_structs/data/Paired-seq/paired-seq_bc01.csv)  
+[paired-seq_bc02-03-04.csv](https://teichlab.github.io/scg_lib_structs/data/Paired-seq/paired-seq_bc02-03-04.csv)
 
 Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times and with those 8 barcodes in the first round: a total of __96 * 96 * 96 * 8 = 7,077,888__ barcodes. Since the barcodes are sequenced as __Read 2__, which uses the top strand as the template, we should use the barcode sequences as they are to construct the whitelist. In addition, the order of the barcodes in __Read 2__ is Round 4 -> Round 3 -> Round 2 -> Round 1. Therefore, we need to generate the whitelist in this order. Again, if you are confused, check the [Paired-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html).
 
 ```bash
 # download the barcode files
-wget -P paired-seq/data https://teichlab.github.io/scg_lib_structs/data/paired-seq_bc01.csv \
-    https://teichlab.github.io/scg_lib_structs/data/paired-seq_bc02-03-04.csv
+wget -P paired-seq/data https://teichlab.github.io/scg_lib_structs/data/Paired-seq/paired-seq_bc01.csv \
+    https://teichlab.github.io/scg_lib_structs/data/Paired-seq/paired-seq_bc02-03-04.csv
 
 # generate whitelist for chromap
 for w in $(tail -n +2 paired-seq/data/paired-seq_bc02-03-04.csv | cut -f 2 -d,); do
@@ -424,7 +424,7 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 >> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
 
-![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_Paired-seq.jpg)
+![](https://teichlab.github.io/scg_lib_structs/data/Paired-seq/Star_CB_UMI_Complex_Paired-seq.jpg)
 
 `--soloCBwhitelist`
 

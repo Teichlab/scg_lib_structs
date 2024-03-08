@@ -9,15 +9,15 @@
 
 <h1><a href="http://science.sciencemag.org/content/343/6172/776" target="_blank">MARS-seq</a> / <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a></h1>
 
-<p><span style="font-size:1.1em;"> (1) I think the sequence of "2nd RT Primer" in Supplementary Table S7 in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</span></p>
+<p><info> (1) I think the sequence of "2nd RT Primer" in <a href="../data/MARS-seq/jaitin-sm.pdf" target="_blank">Supplementary Table S7</a> in the original publication (Science 343, 776-779 (2014)) might be in the wrong orientation (i.e. they showed the sequence from 3' -> 5').</info></p>
 
-<p><span style="font-size:1.1em;"> (2) The author claimed in the Supplementary Method (Page 8) that UMIs are 4-8 bp in length, but from the oligo sequence in Supplementary Table 7, they are only 4 bp in length. 4 bp were drawn in this workflow here.</span></p>
+<p><info> (2) The author claimed in the Supplementary Method (Page 8) that UMIs are 4-8 bp in length, but from the oligo sequence in <a href="../data/MARS-seq/jaitin-sm.pdf" target="_blank">Supplementary Table S7</a>, they are only 4 bp in length. 4 bp were drawn in this workflow here.</info></p>
 
-<p><span style="font-size:1.1em;"> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in Supplementary Table 8, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</span></p>
+<p><info> (3) The author claimed in the Supplementary Method (Page 8) that plate barcodes are 6 bp in length, but from the oligo sequence in <a href="../data/MARS-seq/jaitin-sm.pdf" target="_blank">Supplementary Table S8</a>, they seem to be 7 bp in length (4bp + 3 Ns). Maybe only 6 bp was only used to identify a plate. I'm not entirely sure about this.</info></p>
 
-<p><span style="font-size:1.1em;"> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The cell barcodes and UMIs are longer in MARS-seq2.0. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details.</span></p>
+<p><info> (4) In May, 2019, <a href="https://www.nature.com/articles/s41596-019-0164-4" target="_blank">MARS-seq2.0</a> was published in Nature Protocol, and the oligos used in the protocol is almost the same to the original MARS-seq. The cell barcodes and UMIs are longer in MARS-seq2.0. The improvements are mainly related to throughput, robustness, noise reduction and costs. Check the publication for more details. The exact sequences for the RT1 primers and ligation adaptor primers can be found in the <a href="../data/MARS-seq/41596_2019_164_MOESM4_ESM.xlsx" target="_blank">Supplementary Table 1</a> and <a href="../data/MARS-seq/41596_2019_164_MOESM5_ESM.xlsx" target="_blank">Supplementary Table 2</a> of the Nature Protocols paper.</info></p>
 
-<p><span style="font-size:1.1em;"> (5) Oligos used in the original MARS-seq were shown in this workflow.</span></p>
+<p><info> (5) Oligos used in the original MARS-seq were shown in this workflow.</info></p>
 
 <br>
 
@@ -36,8 +36,8 @@
 <p>2nd RT primer: 5'- <s5>CTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P5_Rd1_PCR primer: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
 <p>P7_Rd2_PCR primer: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
-<p>Illumina Truse Read1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
-<p>Illumina Truse Read2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
+<p>Illumina TruSeq Read1 primer: 5'- <p5>ACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5> -3'</p>
+<p>Illumina TruSeq Read2 primer: 5'- <s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
 <p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
 </seq>

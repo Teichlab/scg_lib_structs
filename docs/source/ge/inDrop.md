@@ -213,7 +213,7 @@ wget -P mereu2020/indrop -c \
 
 ## Prepare Whitelist
 
-The full oligo sequences can be found in the [Supplementary Table S2](https://teichlab.github.io/scg_lib_structs/data/41596_2017_BFnprot2016154_MOESM456_ESM.xlsx) and [Supplementary Table S3](https://teichlab.github.io/scg_lib_structs/data/41596_2017_BFnprot2016154_MOESM457_ESM.xlsx) from the [__inDrop Nature Protocols paper__](https://www.nature.com/articles/nprot.2016.154). As you can see, there are a total of 384 different __Barcode1__ with 8 - 11 bp in length, and 384 different __Barcode2__. The oligos are added to the gel beads by primer extension during the split-pool procedures. The cell barcodes are basically the combination of __Barcode1__ and __Barcode2__. There will be a total of __384 * 384 = 147456__ possible cell barcodes. I have organised the oligo information into two tables here (only showing 5 records):
+The full oligo sequences can be found in the [Supplementary Table S2](https://teichlab.github.io/scg_lib_structs/data/inDrop/41596_2017_BFnprot2016154_MOESM456_ESM.xlsx) and [Supplementary Table S3](https://teichlab.github.io/scg_lib_structs/data/inDrop/41596_2017_BFnprot2016154_MOESM457_ESM.xlsx) from the [__inDrop Nature Protocols paper__](https://www.nature.com/articles/nprot.2016.154). As you can see, there are a total of 384 different __Barcode1__ with 8 - 11 bp in length, and 384 different __Barcode2__. The oligos are added to the gel beads by primer extension during the split-pool procedures. The cell barcodes are basically the combination of __Barcode1__ and __Barcode2__. There will be a total of __384 * 384 = 147456__ possible cell barcodes. I have organised the oligo information into two tables here (only showing 5 records):
 
 __Barcode1__
 
@@ -235,15 +235,15 @@ __Barcode2__
 
 __You should notice that `Barcode1` has variable lengths, but the first 8 bp are exactly the same as `Barcode2`__. I have prepared the full tables in `csv` format for you to download:
 
-[inDrop_Barcode1.csv](https://teichlab.github.io/scg_lib_structs/data/inDrop_Barcode1.csv)  
-[inDrop_Barcode2.csv](https://teichlab.github.io/scg_lib_structs/data/inDrop_Barcode2.csv)
+[inDrop_Barcode1.csv](https://teichlab.github.io/scg_lib_structs/data/inDrop/inDrop_Barcode1.csv)  
+[inDrop_Barcode2.csv](https://teichlab.github.io/scg_lib_structs/data/inDrop/inDrop_Barcode2.csv)
 
 Let's download them to generate the whitelist:
 
 ```console
 wget -P mereu2020/indrop \
-    https://teichlab.github.io/scg_lib_structs/data/inDrop_Barcode1.csv \
-    https://teichlab.github.io/scg_lib_structs/data/inDrop_Barcode2.csv
+    https://teichlab.github.io/scg_lib_structs/data/inDrop/inDrop_Barcode1.csv \
+    https://teichlab.github.io/scg_lib_structs/data/inDrop/inDrop_Barcode2.csv
 ```
 
 Now we need to generate the whitelist of those two sets of barcodes. Read very carefully of the [__inDrop GitHub page__](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html). Pay attention to the oligo orientation. The barcode sequences that we get from the [__inDrop Nature Protocols paper__](https://www.nature.com/articles/nprot.2016.154) are the sequences in the adaptors, which are used to generate the bead oligos. Therefore, the sequences on the bead oligos are reverse complement to the actual barcodes. Now, you can see that in the __V1__ and __V2__ configuration, __Barcode1__ and __Barcode2__ are in the same read and in the same direction of the bead oligo. Therefore, we should use the reverse complement of the barcode sequences for the whitelists. In the __V3__ configuration, __Barcode1__ is sequenced in the opposite direction of the bead oligo with only 8 cycles, so we need to use the first 8 bp of __Barcode1__ as they are. __Barcode2__ is sequenced in the same direction of the bead oligo, so we should take the reverse complement of the barcode sequence. In addition, since we stitch __Barcode1__, __Barcode2__ and __UMI__ together into the `CB_UMI.fastq.gz`, we should generate all possible combinations of the __Barcode1_8bp + Barcode2 rc__ as the whitelist. Here is how you could do this:
@@ -331,7 +331,7 @@ If you understand the __inDrop__ experimental procedures described in [this GitH
 
 >> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __inDrop V1 & 2__, the __Barcode1__ has variable lengths, the absolute positions of __Barcode2__ and __UMI__ are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
 
-![](https://teichlab.github.io/scg_lib_structs/data/Star_CB_UMI_Complex_inDrop.jpg)
+![](https://teichlab.github.io/scg_lib_structs/data/inDrop/Star_CB_UMI_Complex_inDrop.jpg)
 
 `--soloCBwhitelist`
 

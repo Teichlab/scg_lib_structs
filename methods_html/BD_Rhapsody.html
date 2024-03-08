@@ -9,7 +9,7 @@
 
 <h1><a href="https://www.nature.com/articles/s41592-018-0255-0" target="_blank">BD Rhapsody WTA</a></h1>
 
-<p><span style="font-size:1.1em;">BD Rhapsody WTA is a nanowell-based commercial system like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html" target="_blank">Microwell-seq</a>. They use similar split-pool approach to generate their oligos on magnetic beads. The first publication (V1 version) is in <i>Nature Methods</i> 16, 75-78 (2019). In 2022, BD introduced a new version of beads , called Enhanced Beads, which have slightly different oilgo design. The barcodes are the same, but the linker sequences are much shorter than the V1 version. Note: I don't have the full sequence details from each step of the protocol. Sequences presented here are based on educational guess from the sequencing data. The final library structure should be accurate though. Click <a href="../data/GMX_BD-Rhapsody-Single-Cell-Analysis-System-Instrument_UG_EN.pdf" target="_blank">here</a> for the guide to use the machine, and click <a href="../data/GMX_BD-Rhapsody-WTA-alpha-Protocol_UG_EN.pdf" target="_blank">here</a> to see the off-machine protocol.</span></p>
+<p><info>BD Rhapsody WTA is a nanowell-based commercial system like <a href="https://teichlab.github.io/scg_lib_structs/methods_html/Microwell-seq.html" target="_blank">Microwell-seq</a>. They use similar split-pool approach to generate their oligos on magnetic beads. The first publication (V1 version) is in <i>Nature Methods</i> 16, 75-78 (2019). In 2022, BD introduced a new version of beads , called Enhanced Beads, which have slightly different oilgo design. The barcodes are the same, but the linker sequences are much shorter than the V1 version. Note: I don't have the full sequence details from each step of the protocol. Sequences presented here are based on educational guess from the sequencing data. The final library structure should be accurate though. Click <a href="../data/BD/GMX_BD-Rhapsody-Single-Cell-Analysis-System-Instrument_UG_EN.pdf" target="_blank">here</a> for the guide to use the machine, and click <a href="../data/BD/GMX_BD-Rhapsody-WTA-alpha-Protocol_UG_EN.pdf" target="_blank">here</a> to see the off-machine protocol.</info></p>
 
 <br>
 
@@ -20,7 +20,7 @@
 <p><b>Enhanced Bead (introduced in 2022):</b> |--5'-CCCCCCTCTCTCTCT<s5>ACACGACGCTCTTCCGATCT</s5>[VB]<cbc>[CLS1]</cbc><pe1>GTGA</pe1><cbc>[CLS2]</cbc><pe2>GACA</pe2><cbc>[CLS3]</cbc><umi>[8-bp UMI]</umi>(T)<sub>18</sub> -3'</p>
 <p>-- Cells are determined as different combination of <cbc>[CLS1]</cbc>, <cbc>[CLS2]</cbc> and <cbc>[CLS3]</cbc>, each is 9-bp long.</p>
 <p>-- There are 97 different sequences each, so you have a total of 97x97x97 = 912,673 different combinations.</p>
-<p>-- Click here to see the sequences of <a href="../data/BD_CLS1.txt", target="_blank">CLS1</a>, <a href="../data/BD_CLS2.txt", target="_blank">CLS2</a>, and <a href="../data/BD_CLS3.txt", target="_blank">CLS3</a>.</p>
+<p>-- Click here to see the sequences of <a href="../data/BD/BD_CLS1.txt", target="_blank">CLS1</a>, <a href="../data/BD/BD_CLS2.txt", target="_blank">CLS2</a>, and <a href="../data/BD/BD_CLS3.txt", target="_blank">CLS3</a>.</p>
 <p>-- VB means "Variable Bases" which only exists in the Enhanced Beads. It has four possible bases: <b>None</b>, <b>A</b>, <b>GT</b> or <b>TCA</b>.</p>
 <p>Randomer in the kit: 5'- <s7>TCAGACGTGTGCTCTTCCGATCT</s7>NNNNNNNNN -3'</p>
 <p>Pre-amp forward primer: 5'- <s5>GACGCTCTTCCGATCT</s5> -3'</p>

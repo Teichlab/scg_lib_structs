@@ -9,12 +9,12 @@
 
 <h1><a href="https://www.nature.com/articles/nbt.3383" target="_blank">Drop-ChIP</a></h1>
 
-<p><span style="font-size:1.1em;">Drop-ChIP was pulished in Nature Biotechnology 33, 165–1172 (2015), by Assaf Rotem, Oren Ram and Noam Shoresh in the labs of David Weitz and Bradely Bernstein. This page will only demonstrate the molecular biology of library construction. To look at the real equipment and how the experiments were carried out, see the Supplementary Information from the original publication and the <a href="https://pubs.broadinstitute.org/drop-chip/index.php" target="_blank">Drop-ChIP webpage</a>.</span></p>
+<p><info>Drop-ChIP was published in Nature Biotechnology 33, 165-1172 (2015), by Assaf Rotem, Oren Ram and Noam Shoresh in the labs of David Weitz and Bradely Bernstein. This page will only demonstrate the molecular biology of library construction. To look at the real equipment and how the experiments were carried out, see the Supplementary Information from the original publication and the <a href="https://pubs.broadinstitute.org/drop-chip/index.php" target="_blank">Drop-ChIP webpage</a>.</info></p>
 
 <br>
 
 <h2>Adapter and primer sequences:</h2>
-<p style="font-size:1.2em;">Barcoded adapters (BA). These are double stranded DNA and there are 1,152 of them. Click <a href="../data/drop_chip_barcode_adapters.txt" target="_blank">here</a> to see all of them:</p>
+<p><info>Barcoded adapters (BA). These are double stranded DNA and there are 1,152 of them. Click <a href="../data/Drop-ChIP/drop_chip_barcode_adapters.txt" target="_blank">here</a> to see all of them:</info></p>
 <pre>
 <seq>
 5'- <w1>TTAA</w1>NNNNNNNN<s7>GTATCC</s7><t7>GGGGGACC</t7><w1>TTAATTAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7>NNNNNNNN<w1>TTAA</w1> -3'
@@ -24,7 +24,7 @@
 </seq>
 </pre>
 
-<p style="font-size:1.2em;"><sup>*</sup>Illumina Truseq forked adapters:</p>
+<p><info><sup>*</sup>Illumina Truseq forked adapters:</info></p>
 <pre>
 <seq>
         5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><tso>TCTTTCCCTACACGAC</tso>
@@ -34,7 +34,7 @@
 </seq>
 </pre>
 
-<p style="font-size:1.2em;">Other adapters/primers used:</p>
+<p><info>Other adapters/primers used:</info></p>
 
 <seq>
 <p>SC-PCR1: 5'- <w1>TAA</w1><s5>GGTGGGGG</s5><s7>GGATAC</s7> -3'</p>
@@ -47,8 +47,8 @@
 </seq>
 
 
-<p style="color:red;font-size:1.3em;"><b>*</b> It was not entirely clear what adapters were used in the protocol. These are educational guess, not confirmed!!! However, based on the sequenicng data, these are likely to be the case. See the sequence immediately after the 'grep'ed sequence, one of them (GATCGGAAGAGCACA...) that's Truseq adapters (the others are probably bacoded adapters (BA) concatemers):</p>
-<img src="../data/grep.png" alt="grep sequence" style="width:804px;height:628px;">
+<p><span style="color:red;font-size:1.3em;"><b>*</b> It was not entirely clear what adapters were used in the protocol. These are educational guess, not confirmed!!! However, based on the sequenicng data, these are likely to be the case. See the sequence immediately after the 'grep'ed sequence, one of them (GATCGGAAGAGCACA...) that's Truseq adapters (the others are probably bacoded adapters (BA) concatemers):</span></p>
+<img src="../data/Drop-ChIP/grep.png" alt="grep sequence" style="width:804px;height:628px;">
 
 <br>
 

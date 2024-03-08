@@ -9,7 +9,7 @@
 
 <h1><a href="https://www.nature.com/articles/s41587-019-0290-0" target="_blank">SNARE-seq</a></h1>
 
-<p><span style="font-size:1.1em">SNARE-seq was published by Chen <i>et al.</i> in <a href="https://www.nature.com/articles/s41587-019-0290-0" target="_blank">Nature Biotechnology 37, 1452-1457</a>. It was a droplet based technology to profile chromatin accessibility and gene expression from the same cells. The droplet beads are the same as version B of the beads from the <a href="http://www.cell.com/abstract/S0092-8674(15)00549-8" target="_blank">Drop-seq</a> method. After tagmentation, it uses a splint oligo, named "Nextera-R1-rc-polyA" to capture the tagmented open chromatin DNA to the beads. Half of the splint oligo is poly A, which is reverse complementary to the bead oligos (oligo-dT); the other half of the splint oligo is reverse complentary to the tagmentation sequence.</span></p>
+<p><info>SNARE-seq was published by Chen <i>et al.</i> in <a href="https://www.nature.com/articles/s41587-019-0290-0" target="_blank">Nature Biotechnology 37, 1452-1457</a>. It was a droplet based technology to profile chromatin accessibility and gene expression from the same cells. The droplet beads are the same as version B of the beads from the <a href="http://www.cell.com/abstract/S0092-8674(15)00549-8" target="_blank">Drop-seq</a> method. After tagmentation, it uses a splint oligo, named "Nextera-R1-rc-polyA" to capture the tagmented open chromatin DNA to the beads. Half of the splint oligo is poly A, which is reverse complementary to the bead oligos (oligo-dT); the other half of the splint oligo is reverse complementary to the tagmentation sequence.</info></p>
 
 <br>
 
@@ -20,7 +20,7 @@
 <p>Nextera-R1-bk: 5'-/phos/ <s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me> /3InvdT/-3'</p>
 <p>Nextera-Ad2-bk: 5'-/phos <s7>CCGAGCCCACGAGAC</s7> /3InvdT/-3'</p>
 <p>Template Switching Oligo (TSO): 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso>GAATrGrGrG -3'</p>
-<p>TSO PCR: 5′- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3′</p>
+<p>TSO PCR: 5'- <tso>AAGCAGTGGTATCAACGCAGAGT</tso> -3'</p>
 <p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Nextera N/S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
@@ -86,7 +86,7 @@
 <h3>(3) Break droplets (i.e. droplets are merely used as a cell capture chamber), add Nextera-R1-bk and Nextera-Ad2-bk to block free oligos (not shown here), reverse transcription and ligation of chromatin DNA to the beads. Since the reverse transcription and ligation are done in the same reaction, and the reverse transcriptase has intrinsic DNA dependent DNA polymerase activity, the gaps of the captured chromatin DNA will be filled in (I think ... not entirely sure though):</h3>
 <pre>
 <seq>
- <i>mRNA (the terminal tranferase acitivity of MMLV adds extra Cs, which allows TSO to be incoporated):</i>
+ <i>mRNA (the terminal transferase activity of MMLV adds extra Cs, which allows TSO to be incorporated):</i>
 
      |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCC----->
                                                                   <-------(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'
@@ -106,7 +106,7 @@
 <h3>(4) Note for the ATAC library, there is no phosphate at the 5' end of s5, so the top strand will have a gap. There is a phosphate at the 5' end of the Nextera-R1-rc-polyA. Therefore, the gap at the bottom strand will be filled by extension and ligation. The bottom strand will serve as the template for PCR in the next step. Thank Luciano Martelotto and Song Chen for the clarification:</h3>
 <pre>
 <seq>
- <i>mRNA (the terminal tranferase acitivity of MMLV adds extra Cs, which allows TSO to be incoporated):</i>
+ <i>mRNA (the terminal transferase activity of MMLV adds extra Cs, which allows TSO to be incorporated):</i>
 
      |--5'- TTTTTTT<tso>AAGCAGTGGTATCAACGCAGAGT</tso>AC<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXX...XXXCCCATTC<tso>ACTCTGCGTTGATACCACTGCTT</tso>
             AAAAAAA<tso>TTCGTCACCATAGTTGCGTCTCA</tso>TG<cbc>[12-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXX...XXXGGGTAAG<tso>TGAGACGCAACTATGGTGACGAA</tso> -5'

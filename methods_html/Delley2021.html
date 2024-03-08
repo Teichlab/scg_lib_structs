@@ -9,9 +9,9 @@
 
 <h1><a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank"><span style="color:red;">Delley2021</span></a></h1>
 
-<p><span style="font-size:1.1em;">This method does not have a name. It was published in <i>Scientific Reports</i>: <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Modular barcode beads for microfluidic single cell genomics [Delley2021].</a>. This method builds the foundation for <a href="https://teichlab.github.io/scg_lib_structs/methods_html/PIP-seq.html" target="_blank">PIP-seq</a>. The complete full list of oligo sequences can be found in the Supplementary Tables from the <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Delley2021</a> paper: <a href="../data/41598_2021_90255_MOESM4_ESM.xlsx" target="_blank">41598_2021_90255_MOESM4_ESM.xlsx</a>.</span></p>
+<p><info>This method does not have a name. It was published in <i>Scientific Reports</i>: <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Modular barcode beads for microfluidic single cell genomics [Delley2021].</a>. This method builds the foundation for <a href="https://teichlab.github.io/scg_lib_structs/methods_html/PIP-seq.html" target="_blank">PIP-seq</a>. The complete full list of oligo sequences can be found in the Supplementary Tables from the <a href="https://www.nature.com/articles/s41598-021-90255-x" target="_blank">Delley2021</a> paper: <a href="../data/PIP-seq/41598_2021_90255_MOESM4_ESM.xlsx" target="_blank">41598_2021_90255_MOESM4_ESM.xlsx</a>.</info></p>
 
-<p>As the paper suggested, this is not really about scRNA-seq or any specific assays. Instead, it provides a modular procedures to prepare barcoded beads for high-throughput droplet single-cell assays for anything you are interested in (RNA, DNA, chromatin accessibility etc.). The point here is that you use Steps (1) - (7) described below to prepare bead barcodes. In the last step, you use <b>pBB4</b> and <b>pBB5</b> to "functionalise" the beads depending on what you need. If you want to investigate gene expressions, your <b>pBB5</b> should contains UMI and oligo-dT, which is demonstrate on this page. If you are interested in chromatin accessibility, you can change <b>pBB5</b> by putting Nextera sequence on it. You can customise <b>pBB5</b> based on your own need.</p>
+<p><info>As the paper suggested, this is not really about scRNA-seq or any specific assays. Instead, it provides a modular procedures to prepare barcoded beads for high-throughput droplet single-cell assays for anything you are interested in (RNA, DNA, chromatin accessibility etc.). The point here is that you use Steps (1) - (7) described below to prepare bead barcodes. In the last step, you use <b>pBB4</b> and <b>pBB5</b> to "functionalise" the beads depending on what you need. If you want to investigate gene expressions, your <b>pBB5</b> should contains UMI and oligo-dT, which is demonstrate on this page. If you are interested in chromatin accessibility, you can change <b>pBB5</b> by putting Nextera sequence on it. You can customise <b>pBB5</b> based on your own need.</info></p>
 
 <br>
 
@@ -27,7 +27,7 @@
 <p>plate-3-Sp (this is Supp. Table 6): 5'- /5Phos/<cbc>[8-bp barcode3 rc]</cbc> -3'</p>
 <p>pBB4: 5'- <pe3>CTCGAA</pe3>TAGG -3'</p>
 <p>pBB5: 5'- /5Phos/<pe3>TTCGAG</pe3><umi>[8-bp UMI]</umi>TTTTTTTTTTTTTTTTTTTTTTTTV -3'</p>
-<p><b><span style="color:red;">*</span></b> Plain barcodes (96) can be found here: <a href="../data/delley2021_barcode.txt" target="_blank">delley2021_barcode.txt</a>. The actual cell barcodes are the combinations of the same set of 96 barcodes.</p>
+<p><b><span style="color:red;">*</span></b> Plain barcodes (96) can be found here: <a href="../data/PIP-seq/delley2021_barcode.txt" target="_blank">delley2021_barcode.txt</a>. The actual cell barcodes are the combinations of the same set of 96 barcodes.</p>
 </seq>
 
 <br>

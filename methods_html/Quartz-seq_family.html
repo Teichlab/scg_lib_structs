@@ -10,7 +10,7 @@
 <h1><a href="#Quartz-seq" target="_self">Quartz-seq</a>
 / <a href="#Quartz-seq2" target="_self">Quartz-seq2</a></h1>
 
-<p><span style="font-size:1.1em;">The detailed step-by-step experimental protocols of Quartz-seq and Quartz-seq2 can be found at the <a href="https://bit.riken.jp/protocols" target="_blank">RIKEN's website</a>. Quartz-seq cosntructs the library of each single cell spearately, so it has low plexity. The indices are from Illumina Truseq adapters. The presence of T7 promoter sequence is only for Quartz-chip. Quartz-seq2 increased the throughput by using barcoded RT primer (1536 barcoded RT primers) to profile 3' end of cDNA. The cell barcode sequence can be found <a href="../data/Quartz-seq2_cell_barcodes.txt" target="_blank">here</a>.</span></p>
+<p><info>The detailed step-by-step experimental protocols of Quartz-seq and Quartz-seq2 can be found at the <a href="https://bit.riken.jp/protocols" target="_blank">RIKEN's website</a>. Quartz-seq constructs the library of each single cell separately, so it has low plexity. The indices are from Illumina Truseq adapters. The presence of T7 promoter sequence is only for Quartz-chip. Quartz-seq2 increased the throughput by using barcoded RT primer (1536 barcoded RT primers) to profile 3' end of cDNA. The cell barcode sequence can be found <a href="../data/Quartz-seq2_cell_barcodes.txt" target="_blank">here</a>.</info></p>
 
 <br>
 
@@ -20,7 +20,7 @@
 <seq>
 <p>RT primer (WTA): 5'- <tso>TATAGAATTCGCGGCCGCTCGCGA</tso><t7>TAATACGACTCACTATAGGG</t7>CGTTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
 <p>Tagging primer: 5'- <tso>TATAGAATTCGCGGCCGCTCGCGA</tso>TTTTTTTTTTTTTTTTTTTTTTTT -3'</p>
-<p>Suppression primer: 5′- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T -3′</p>
+<p>Suppression primer: 5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T -3'</p>
 <p>TRSU: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATC*T</s5> -3'</p>
 <p>TRSI (indexed oligo): 5'- <s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTT*G</p7> -3'</p>
 
@@ -114,7 +114,7 @@
 <h3>(6) Adding Suppression primer for single primer cDNA amplification:<a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">( i.e. semi-suppressive PCR )</a></h3>
 <pre>
 <seq>
-5′- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
+5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
        5'- <tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXX(pA)CG<t7>CCCTATAGTGAGTCGTATTA</t7><tso>TCGCGAGCGGCCGCGAATTCTATA</tso>
            <tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX(dT)GC<t7>GGGATATCACTCAGCATAAT</t7><tso>AGCGCTCGCCGGCGCTTAAGATAT</tso> -5'
 					                           <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G-(NH<sub>2</sub>) -5'

@@ -27,7 +27,7 @@ The 2nd read (__i7__) has the following information, which will be used to ident
 |--------|---------------------------------------------------------------------------------------------------------------------|
 | 99 bp  | TCGGACGATCATGGG + 8 bp `LB` + CAAGTATGCAGCGCGCTCAAGCACGTGGAT + 8 bp `LB` AGTCGTACGCCGATGCGAAACATCGGCCAC + 8 bp `LB` |
 
-After sequencing, you need to run `bcl2fastq` by yourself with a `SampleSheet.csv`. Here is an example of `SampleSheet.csv` of a NextSeq run with two different samples using the `Ad1.09` and `Ad1.17` primers from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538) as sample and modality index:
+After sequencing, you need to run `bcl2fastq` by yourself with a `SampleSheet.csv`. Here is an example of `SampleSheet.csv` of a NextSeq run with two different samples using the `Ad1.09` and `Ad1.17` primers from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/SHARE-seq/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538) as sample and modality index:
 
 ```text
 [Header],,,,,,,,,,,
@@ -186,7 +186,7 @@ After that, we are ready to begin the preprocessing.
 
 ## Prepare Whitelist
 
-There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same set of 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of themselves. Here is the information from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538):
+There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode__ to the molecules. There are 96 different __Ligation Barcodes__ in each round. The same set of 96 __Ligation Barcodes__ are used in each round. Single cells can be identified by the combination of themselves. Here is the information from the [Supplementary Table 1](https://teichlab.github.io/scg_lib_structs/data/SHARE-seq/1-s2.0-S0092867420312538-mmc1.xlsx) from the [__SHARE-seq__ paper](https://www.sciencedirect.com/science/article/pii/S0092867420312538):
 
 | WellPosition | Name          | Sequence | Reverse complement |
 |--------------|---------------|----------|:------------------:|
@@ -287,11 +287,11 @@ There are three rounds of ligation. Each round will add 8-bp __Ligation Barcode_
 | G12          | Round1/2/3_95 | GATGAATC |      GATTCATC      |
 | H12          | Round1/2/3_96 | GCCAAGAC |      GTCTTGGC      |
 
-Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcodes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can download by [__click here__](https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv).
+Since during each ligation round, the same set of __Ligation Barcodes__ (96) are used. Therefore, the whitelist is basically the combination of those 96 barcodes themselves for three times: a total of __96 * 96 * 96 = 884736__ barcodes. Since the barcodes are sequenced as the `i7` index, which uses the bottom strand as the template, we should use the reverse complement to construct the whitelist. Again, if you are confused, check the [SHARE-seq GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html). I have put the above table into a `csv` file so that you can download by [__click here__](https://teichlab.github.io/scg_lib_structs/data/SHARE-seq/share-seq_ligationBC.csv).
 
 ```bash
 # download the ligation barcode file
-wget -P share-seq/data https://teichlab.github.io/scg_lib_structs/data/share-seq_ligationBC.csv
+wget -P share-seq/data https://teichlab.github.io/scg_lib_structs/data/SHARE-seq/share-seq_ligationBC.csv
 
 # generate whitelist
 for x in $(tail -n +2 share-seq/data/share-seq_ligationBC.csv | cut -f 4 -d,); do
