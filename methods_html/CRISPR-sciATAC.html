@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<link rel="stylesheet" type="text/css" href="../style_related/page_format.css">
+<title>CRISPR-sciATAC</title>
+</head>
+<body>
+
+<h1><a href="https://www.nature.com/articles/s41587-021-00902-x" target="_blank"><span style="color:red;">CRISPR-sciATAC</span></a></h1>
+<info>
+<p>CRISPR-sciATAC is a multi-omic method to perform pooled sgRNA screen using single-cell ATAC-seq as readout. The data give you the chromatin accessibility profile of each single cell and the sgRNA information from the same cell. You can think of this as the the pooled version of <a href="https://doi.org/10.1016/j.cell.2018.11.022" target="_blank">Purterb-ATAC</a>. It uses the <a href="https://www.nature.com/articles/nmeth.4177" target="_blank">CROP-seq</a> vector backbone for the sgRNA, meaning it profiles the sgRNA via the transcripts. The authors also identified a new ViPar transposase with mutations P50K and M53Q, which they called TnY, and it gives higher yield during protein purification and has similar tagmentation activity compared to the commonly used Tn5. Then they use TnY with the combinatorial indexing strategy to achieve high cell throughput.</p>
+
+<p>The workflow drawn in the page is based on their <a href="../data/CRISPR-sciATAC/41587_2021_902_MOESM1_ESM.pdf" target="_blank">Supplementary Figure 1</a>. The full barcoded oligo sequences can be found from their <a href="../data/CRISPR-sciATAC/41587_2021_902_MOESM4_ESM.xlsx" target="_blank">Supplementary Table 2</a>.</p>
+</info>
+
+<br>
+
+<h2>sgRNA cloning</h2>
+
+<p><info>You can start with the vector backbone of <b>CROPseq-Guide-Puro</b> which the CROP-seq authors have deposited into <a href="https://www.addgene.org/86708/" target="_blank">Addgene #86708</a>:</info></p>
+<img src="../data/CRISPR-sciATAC/addgene-plasmid-86708-sequence-317051-Map.png" alt="sgRNA vector backbone" style="width:800px;">
+
+<p><info>The idea is the same as a regular sgRNA vector construction. We clone the sgRNA spacer into the plasmid between the two <i>BsmBI</i> sites. We order the oligos and anneal them like this:</info></p>
+
+<pre>
+<seq>
+5'- <r1>CACCG</r1><cbc>[sgRNA-Spacer]</cbc>
+        <r1>C</r1><cbc>[sgRNA-Spacer]</cbc><hairp>CAAA</hairp> -5'
+
+</seq>
+</pre>
+
+<p><info>Digest and ligate to the vector backbone. During the screen, the transcripts that we are interested in are transcribed by the <i>EF-1a</i> promoter. The transcripts are in the following structure (note the full U6 promoter sequence is too long (241 bp) to write in full, so I only write the relevant bits here):</info></p>
+
+<pre>
+<seq>
+                                                                                                                                                                               
+5'-[PuroR]-[WPRE]-<cs1>...UGCAUAUACGAUACAAGGCUGUUAG...UUGUGGAAAGGAC</cs1><r1>GAAACACCG</r1><cbc>[sgRNA-Spacer]</cbc><hairp>GUUUUAGAGCUAGAAAUAGCAAGUUAAAAUAAGGCUAGUCCGUUAUCAACUUGAAAAAGUGGCACCGAGUCGGUGCUUUUU</hairp>-[Poly-A] -3'
+                  <cs1>|-------------- U6 promoter ---------------|</cs1>                                                       <hairp>CROP-seq sgRNA scaffold</hairp>
+</seq>
+</pre>
+
+<br>
+
+<h2>Adapter and primer sequences:</h2>
+<seq>
+<p>pMENT (ME): 5'-/Phos/ <me>CTGTCTCTTATACACATCT</me> -3'</p>
+<p>T5 tagment sciATAC: 5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Barcoded T7 tagment ATAC: 5'- <s7>GTCTCGTGGGCTCGGCTGTCCCTGTCC</s7><cbc>[8-bp barcode1]</cbc><w1>GCGATCGAGGACGGC</w1><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Barcoded RTi sgRNA: 5'- <r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc><hairp>TTTTTCAAGTTGATAA</hairp> -3'</p>
+<p>Barcoded P5i ATAC PCR1: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[8-bp barcode2]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p>Barcoded P7i ATAC PCR1: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><cbc>[8-bp barcode3]</cbc><s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p><b><w1>*</w1></b> U6 outer sgRNA PCR1: 5'- <cs1>TGCATATACGAT</cs1><w1>C</w1><cs1>ACAAGGCTGTTAG</cs1> -3'</p>
+<p>Barcoded P5i sgRNA PCR1: 5'- <nexus>CGCCGTCCAGCTGA</nexus><cbc>[8-bp barcode2]</cbc><r3>CCGGGAGCTGCATGT</r3> -3'</p>
+<p>Staggered P5 sgRNA PCR2: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><lstem>TCTTTCCCTACACGACGCTCTTCCGATCT</lstem>[None/A/TA/GTA/NNNNNNNN]<nexus>CGCCGTCCAGCTGA</nexus> -3'</p>
+<p>Barcoded P7i sgRNA PCR2: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7><cbc>[8-bp barcode3]</cbc><cs1>TTGTGGAAAGGAC</cs1><r1>GAAACAC</r1> -3'</p>
+<p>Read 1 ATACseq: 5'- <tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me> -'3</p>
+<p>Index 1 ATACseq: 5'- <me>CTGTCTCTTATACACATCT</me><w1>GCCGTCCTCGATCGC</w1> -3'</p>
+<p>Read 2 ATACseq: 5'- <w1>GCGATCGAGGACGGC</w1><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>TruSeq Read 1: 5'- <p5>ACAC</p5><lstem>TCTTTCCCTACACGACGCTCTTCCGATCT</lstem> -3'</p>
+<p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
+<p>Illumina P7 adapter: 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7> -3'</p>
+<p><b><w1>*</w1></b> Here, I think there is an extra C (marked in <w1>red</w1>) in the primer that will not anneal. This might be a mistake, but I'm not sure. It does not affect the final library structure.</p>
+</seq>
+
+<br>
+
+<h2>Step-by-step library generation</h2>
+<h3>(1) Anneal <i>pMENT (ME)</i> with <i>T5 tagment sciATAC</i> and <i>Barcoded T7 tagment ATAC</i>, respectively, to form the barcoded TnY:</h3>
+<img src="../data/CRISPR-sciATAC/barcoded_TnY.svg" alt="TnY dimer" style="width:800px;height:450px;">
+
+<h3>(2) Open chromatin TnY tagging by incubation of nuclei and barcoded TnY, and use the barcoded RTi sgRNA to capture the sgRNA transcript.</h3>
+
+<h4>(2.1) DNA in the open chromatin region is tagged by TnY. There are 3 different products (will create 9 bp gap):</h4>
+<pre>
+<seq>
+<i>Product 1 (T5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><tso>CTCCGCCTCTGCCAC</tso>GCAACCAA<s5>CGCACCTCTGCGACGGCTGCT</s5> -5'
+
+
+<i>Product 2 (T7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
+
+5'- <s7>GTCTCGTGGGCTCGGCTGTCCCTGTCC</s7><cbc>[8-bp barcode1]</cbc><w1>GCGATCGAGGACGGC</w1><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                             <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>[8-bp barcode1]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+
+
+<i>Product 3 (different ends, amplifiable):</i>
+
+5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>[8-bp barcode1]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+</seq>
+</pre>
+
+<h4>(2.2) The mRNA transcript that contains the sgRNA information:</h4>
+<pre>
+<seq>
+<i>Anneal RT primer and reverse transcription:</i>
+
+  5'- <r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc>
+                                    <hairp>TTTTTCAAGTTGATAA</hairp>---------------------->
+3'- [Poly-A]-<hairp>UUUUUCGUGGCUGAGCCACGGUGAAAAAGUUCAACUAUUGCCUGAUCGGAAUAAAAUUGAACGAUAAAGAUCGAGAUUUUG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GCCACAAAG</r1><cs1>CAGGAAAGGUGUU...GAUUGUCGGAACAUAGCAUAUACGU...</cs1>-[WPRE]-[PuroR] -5'
+
+
+<i>This the first strand cDNA:</i>
+
+5'- <r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc><hairp>TTTTTCAAGTTGATAACGGACTAGCCTTATTTTAACTTGCTATTTCTAGCTCTAAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CGGTGTTTC</r1><cs1>GTCCTTTCCACAA...CTAACAGCCTTGTATCGTATATGCA...</cs1>-[WPRE]-[PuroR] -3'
+
+</seq>
+</pre>
+
+<h3>(3) Stop reactions, pool nuclei redistribute into new plates, purify DNA and use a mixture of four primers (P5i ATAC PCR1, P7i ATAC PCR1, U6 outer sgRNA PCR1 and P5i sgRNA PCR1) together to amplify ATAC and sgRNA fragments:</h3>
+
+<h4>(3.1) ATAC fragments are amplified by <i>P5i ATAC PCR1</i> + <i>P7i ATAC PCR1</i>. Gaps need be filled first (72 degree 5 mins):</h4>
+<pre>
+<seq>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[8-bp barcode2]</cbc><s5>TCGTCGGCAGCGTC</s5>----------->
+                                            5'- <s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                                                            <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>[8-bp barcode1]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7> -5'
+                                                                                                                                                                                            <----------<s7>GGCTCGGGTGCTCTG</s7><cbc>[8-bp barcode3]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</seq>
+</pre>
+
+<h4>(3.2) sgRNA cDNA is amplified by <i>U6 outer sgRNA PCR1</i> and <i>P5i sgRNA PCR1</i>:</h4>
+<pre>
+<seq>
+5'- <nexus>CGCCGTCCAGCTGA</nexus><cbc>[8-bp barcode2]</cbc><r3>CCGGGAGCTGCATGT</r3>--------->
+                             5'- <r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc><hairp>TTTTTCAAGTTGATAACGGACTAGCCTTATTTTAACTTGCTATTTCTAGCTCTAAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CGGTGTTTC</r1><cs1>GTCCTTTCCACAA...CTAACAGCCTTGTATCGTATATGCA...</cs1>-[WPRE]-[PuroR] -3'
+                                                                                                                                                      <---------<cs1>GATTGTCGGAACATAGCATATACGT</cs1> -5'
+                                                                                                                                                                             <w1>C</w1> <- this is the extra C that won't anneal, not sure if this is a mistake
+
+</seq>
+</pre>
+
+<h3>(4) These are the PCR products:</h3>
+<pre>
+<seq>
+<i>ATAC (ready to sequence):</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[8-bp barcode2]</cbc><s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><w1>GCCGTCCTCGATCGC</w1><cbc>[8-bp barcode1]</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><cbc>[8-bp barcode3]</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[8-bp barcode2]</cbc><s5>AGCAGCCGTCGCAGAGGTGCG</s5>TTGGTTGC<tso>GTGGCAGAGGCGGAG</tso><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>[8-bp barcode1]</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><cbc>[8-bp barcode3]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+
+
+<i>sgRNA (need another round of PCR, see the next step):</i>
+
+5'- <nexus>CGCCGTCCAGCTGA</nexus><cbc>[8-bp barcode2]</cbc><r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc><hairp>TTTTTCAAGTTGATAACGGACTAGCCTTATTTTAACTTGCTATTTCTAGCTCTAAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CGGTGTTTC</r1><cs1>GTCCTTTCCACAA...CTAACAGCCTTGT</cs1><w1>G</w1><cs1>ATCGTATATGCA</cs1>
+    <nexus>GCGGCAGGTCGACT</nexus><cbc>[8-bp barcode2]</cbc><r3>GGCCCTCGACGTACA</r3><cbc>[8-bp barcode1]</cbc><hairp>AAAAAGTTCAACTATTGCCTGATCGGAATAAAATTGAACGATAAAGATCGAGATTTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GCCACAAAG</r1><cs1>CAGGAAAGGTGTT...GATTGTCGGAACA</cs1><w1>C</w1><cs1>TAGCATATACGT</cs1> -5'
+
+
+</seq>
+</pre>
+
+<h3>(5) Take a fraction (2 uL) from the reaction above and use <i>Staggered P5 sgRNA PCR2</i> + <i>P7i sgRNA PCR2</i> to amplify sgRNA fragment:</h3>
+<pre>
+<seq>
+<i>sgRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><lstem>TCTTTCCCTACACGACGCTCTTCCGATCT</lstem>[None/A/TA/GTA/NNNNNNNN]<nexus>CGCCGTCCAGCTGA</nexus>---------------->
+                                                                                  5'- <nexus>CGCCGTCCAGCTGA</nexus><cbc>[8-bp barcode2]</cbc><r3>CCGGGAGCTGCATGT</r3><cbc>[8-bp barcode1]</cbc><hairp>TTTTTCAAGTTGATAACGGACTAGCCTTATTTTAACTTGCTATTTCTAGCTCTAAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CGGTGTTTC</r1><cs1>GTCCTTTCCACAA...CTAACAGCCTTGT</cs1><w1>G</w1><cs1>ATCGTATATGCA</cs1>
+                                                                                      <nexus>GCGGCAGGTCGACT</nexus><cbc>[8-bp barcode2]</cbc><r3>GGCCCTCGACGTACA</r3><cbc>[8-bp barcode1]</cbc><hairp>AAAAAGTTCAACTATTGCCTGATCGGAATAAAATTGAACGATAAAGATCGAGATTTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GCCACAAAG</r1><cs1>CAGGAAAGGTGTT...GATTGTCGGAACA</cs1><w1>C</w1><cs1>TAGCATATACGT</cs1> -5'
+                                                                                                                                                                                                              <------------<r1>CACAAAG</r1><cs1>CAGGAAAGGTGTT</cs1>
+                                                                                                                                                                                                                                               <cbc>[8-bp barcode3]</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+
+</seq>
+</pre>
+
+<h3>(6) Final library structure:</h3>
+<pre>
+<align class="long">
+<i>ATAC:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNN</cbc><s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><w1>GCCGTCCTCGATCGC</w1><cbc>NNNNNNNN</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><cbc>NNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNN</cbc><s5>AGCAGCCGTCGCAGAGGTGCG</s5>TTGGTTGC<tso>GTGGCAGAGGCGGAG</tso><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>             <cbc>8-bp</cbc>           <s5>s5</s5>                                          <me>ME</me>           gDNA           <me>ME</me>                         <cbc>8-bp</cbc>             <s7>s7</s7>                <cbc>8-bp</cbc>        <p7>Illumina P7</p7>
+                                 <cbc>barcode2</cbc>                                                                                                          <cbc>barcode1</cbc>                           <cbc>barcode3</cbc>
+
+
+<i>sgRNA:</i>
+
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><lstem>TCTTTCCCTACACGACGCTCTTCCGATCT</lstem>...<nexus>CGCCGTCCAGCTGA</nexus><cbc>NNNNNNNN</cbc><r3>CCGGGAGCTGCATGT</r3><cbc>NNNNNNNN</cbc><hairp>TTTTTCAAGTTGATAACGGACTAGCCTTATTTTAACTTGCTATTTCTAGCTCTAAAAC</hairp><cbc>[sgRNA-Spacer]</cbc><r1>CGGTGTTTC</r1><cs1>GTCCTTTCCACAA</cs1><cbc>NNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><lstem>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</lstem>...<nexus>GCGGCAGGTCGACT</nexus><cbc>NNNNNNNN</cbc><r3>GGCCCTCGACGTACA</r3><cbc>NNNNNNNN</cbc><hairp>AAAAAGTTCAACTATTGCCTGATCGGAATAAAATTGAACGATAAAGATCGAGATTTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GCCACAAAG</r1><cs1>CAGGAAAGGTGTT</cs1><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+           <p5>Illumina P5</p5>                  <lstem>TruSeq Read 1</lstem>          |                 <cbc>8-bp</cbc>                   <cbc>8-bp</cbc>                  <hairp>CROP-seq sgRNA scaffold</hairp>                                                         <cbc>8-bp</cbc>          <p7>Illumina P7</p7>
+                                                        variable bases:        <cbc>barcode2</cbc>               <cbc>barcode1</cbc>                                                                                              <cbc>barcode3</cbc>
+                                                  None, A, TA, GTA or 8 Ns
+</align>
+</pre>
+
+<br>
+
+<h2>ATAC Library sequencing using MiSeq (slightly different from modern Illumina sequencing schemes in terms of how the i5 index is sequenced):</h2>
+
+<h3>(1) Add Read 1 ATACseq primer to sequence the first read (bottom strand as template, 45 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+                                                                  5'- <tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNN</cbc><s5>AGCAGCCGTCGCAGAGGTGCG</s5>TTGGTTGC<tso>GTGGCAGAGGCGGAG</tso><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(2) Add Index 1 ATACseq primer to sequence barcode1 + barcode3 (bottom strand as template, 43 cycles, the first 8 bp are barcode1 and the last 8 bp are barcode3):</h3>
+<pre>
+<align class="small">
+                                                                                                             5'- <me>CTGTCTCTTATACACATCT</me><w1>GCCGTCCTCGATCGC</w1>------------------------------------------>
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNN</cbc><s5>AGCAGCCGTCGCAGAGGTGCG</s5>TTGGTTGC<tso>GTGGCAGAGGCGGAG</tso><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(3) Bend over and anneal to P5 on the flow cell to sequence the barcode2 (bottom strand as template, 8 cycles):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNN</cbc><s5>AGCAGCCGTCGCAGAGGTGCG</s5>TTGGTTGC<tso>GTGGCAGAGGCGGAG</tso><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1><cbc>NNNNNNNN</cbc><s7>CCTGTCCCTGTCGGCTCGGGTGCTCTG</s7><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+<h3>(4) Cluster regeneration, add Read 2 ATACseq primer to sequence the second read (top strand as template, 45 cycles, open chromatin read):</h3>
+<pre>
+<align class="small">
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNN</cbc><s5>TCGTCGGCAGCGTCTCCACGC</s5>AACCAACG<tso>CACCGTCTCCGCCTC</tso><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><w1>GCCGTCCTCGATCGC</w1><cbc>NNNNNNNN</cbc><s7>GGACAGGGACAGCCGAGCCCACGAGAC</s7><cbc>NNNNNNNN</cbc><p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
+                                                                                                          <------<me>GACAGAGAATATGTGTAGA</me><w1>CGGCAGGAGCTAGCG</w1> -5'
+</align>
+</pre>
+
+<br>
+
+<h2>sgRNA Library sequencing:</h2>
+
+<h3>There is only one single step here: add Illumina TruSeq Read 1 primer to get the first read (bottom strand as template, 162 cycles, the read contains everything, including <cbc>sgRNA-Spacer</cbc> and three rounds of barcodes):</h3>
+<pre>
+<align class="long">
+                         5'- <p5>ACAC</p5><lstem>TCTTTCCCTACACGACGCTCTTCCGATCT</lstem>----------------------------------------------------------------------------------------------------------------------------------------------------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><lstem>AGAAAGGGATGTGCTGCGAGAAGGCTAGA</lstem>...<nexus>GCGGCAGGTCGACT</nexus><cbc>NNNNNNNN</cbc><r3>GGCCCTCGACGTACA</r3><cbc>NNNNNNNN</cbc><hairp>AAAAAGTTCAACTATTGCCTGATCGGAATAAAATTGAACGATAAAGATCGAGATTTTG</hairp><cbc>[sgRNA-Spacer]</cbc><r1>GCCACAAAG</r1><cs1>CAGGAAAGGTGTT</cs1><cbc>NNNNNNNN</cbc><p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+</align>
+</pre>
+
+</body>
+</html>

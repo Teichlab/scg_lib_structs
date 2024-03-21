@@ -74,6 +74,7 @@ Click the following links to view the methods. Notes:
 
   - [10x Chromium Single Cell Multiome ATAC + Gene Expression](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_multiome.html)
   - [scNOMe-seq/scCOOL-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scNOMe_scCOOL.html)
+  - [CRISPR-sciATAC](https://teichlab.github.io/scg_lib_structs/methods_html/CRISPR-sciATAC.html)
   - [scDam&T-seq](https://teichlab.github.io/scg_lib_structs/methods_html/scDamT-seq.html)
   - [ISSAAC-seq](https://teichlab.github.io/scg_lib_structs/methods_html/ISSAAC-seq.html)
   - [SHARE-seq](https://teichlab.github.io/scg_lib_structs/methods_html/SHARE-seq.html)
@@ -150,7 +151,6 @@ Click the following links to view the methods. Notes:
   - [scRCAT-seq](https://www.nature.com/articles/s41467-020-18976-7)
   - [Phospho-seq](https://www.biorxiv.org/content/10.1101/2023.03.27.534442v1.full)
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
-  - [CRISPR-sciATAC](https://www.nature.com/articles/s41587-021-00902-x)
   - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
   - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
 
