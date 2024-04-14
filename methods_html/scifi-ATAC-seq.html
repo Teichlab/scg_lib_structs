@@ -7,18 +7,19 @@
 </head>
 <body>
 
-<h1><a href="https://www.biorxiv.org/content/10.1101/2023.09.17.558155v3" target="_blank">scifi-ATAC-seq</a></h1>
+<h1><a href="https://doi.org/10.1186/s13059-024-03235-5" target="_blank">scifi-ATAC-seq</a></h1>
 
-<p><info>The idea of scifi-ATAC-seq is very similar to <a href="https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html" target="_blank">dsciATAC-seq</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/txci-ATAC-seq.html" target="_blank">txci-ATAC-seq</a>. It works on the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html" target="_blank">10X Genomics Single Cell ATAC</a> platform, but it does require custom sequencing primer and recipe. The procedure was based on the information from the preprint.</info></p>
+<p><info>The idea of scifi-ATAC-seq is very similar to <a href="https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html" target="_blank">dsciATAC-seq</a> and <a href="https://teichlab.github.io/scg_lib_structs/methods_html/txci-ATAC-seq.html" target="_blank">txci-ATAC-seq</a>. It works on the <a href="https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium_scATAC.html" target="_blank">10X Genomics Single Cell ATAC</a> platform, but it does require custom sequencing primer and recipe. The procedure was based on the information from <a href="https://www.biorxiv.org/content/10.1101/2023.09.17.558155v3" target="_blank">the preprint</a>.</info></p>
 
 <br>
 
 <h2>Adapter and primer sequences:</h2>
 
 <seq>
+<p><b><w1>*</w1></b> The exact sequences of barcodes and other oligos can be found in their <a href="../data/scifi-ATAC-seq/13059_2024_3235_MOESM2_ESM.xlsx" target="_blank">Supplementary Table S1</a></p>
 <p>10x Genomics Beads-oligo: |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
-<p>Tn5-ME-A: 5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
-<p>Tn5-ME-B: 5'- <s7>GTCTCGTGGGCTCGG</s7>TGAATGTGTAGAAGACAGA<cbc>[4-bp Tn5 index B]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Tn5-ME-A: 5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
+<p>Tn5-ME-B: 5'- <s7>GTCTCGTGGGCTCGG</s7>TGAATGTGTAGAAGACAGA<cbc>[5-bp Tn5 index B]</cbc><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Tn5ME-bottom: 5'-/phos/ <me>CTGTCTCTTATACACATCT</me> -3'</p>
 <p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Nextera S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
@@ -43,20 +44,20 @@
 <seq>
 <i>Product 1 (s5 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
 
-5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index A]</cbc>CAGGAGTAATAGTGTATAG<s5>CTGCGACGGCTGCT</s5> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index A]</cbc>CAGGAGTAATAGTGTATAG<s5>CTGCGACGGCTGCT</s5> -5'
 
 
 <i>Product 2 (s7 at both ends, not amplifiable due to <a href="http://www.nature.com/nmeth/journal/v7/n7/full/nmeth.1470.html" target="_blank">semi-suppressiev PCR</a>):</i>
 
-5'- <s7>GTCTCGTGGGCTCGG</s7>TGAATGTGTAGAAGACAGA<cbc>[4-bp Tn5 index B]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                                                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <s7>GTCTCGTGGGCTCGG</s7>TGAATGTGTAGAAGACAGA<cbc>[5-bp Tn5 index B]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                        <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 
 
 <i>Product 3 (different ends, amplifiable):</i>
 
-5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
-                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXXXXXXXXXXX...XXX         <me>CTGTCTCTTATACACATCT</me>
+                                                       <me>TCTACACATATTCTCTGTC</me>         XXX...XXXXXXXXXXXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 </seq>
 </pre>
 
@@ -65,23 +66,23 @@
 <seq>
 <i>Gap fill-in (72 C, 5 mins):</i>
 
-5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[4-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7> -3'
-3'- <s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[4-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[5-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7> -3'
+3'- <s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[5-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 
 
 <i>Single-primer linear PCR for GEM barcode addition:</i>
 
 |--5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>---------->
-                                                   5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[4-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7> -3'
-                                                   3'- <s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[4-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+                                                   5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[5-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7> -3'
+                                                   3'- <s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[5-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 </seq>
 </pre>
 
 <h3>(4) Break emulsion and DNA purification. This is the product from above:</h3>
 <pre>
 <seq>
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[4-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[4-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[5-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[5-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 </seq>
 </pre>
 
@@ -89,8 +90,8 @@
 <pre>
 <align class="long">
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------->
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[4-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[4-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[4-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[4-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>[16-bp GEM barcode]</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>[5-bp Tn5 index A]</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>[5-bp Tn5 index B]</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>[16-bp GEM barcode]</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>[5-bp Tn5 index A]</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>[5-bp Tn5 index B]</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
                                                                                                                                                                           <----------------<s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
@@ -98,10 +99,10 @@
 <h3>(6) Final library structure:</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
-    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-             <p5>Illumina P5</p5>              <cbc>16 bp</cbc>           <s5>s5</s5>                          <cbc>4 bp</cbc>       <me>ME</me>            gDNA          <me>ME</me>          <cbc>4 bp</cbc>                         <s7>s7</s7>         8 bp        <p7>Illumina P7</p7>
-                                   <cbc>GEM barcode</cbc>                                 <cbc>Tn5 Index A</cbc>                                        <cbc>Tn5 Index B</cbc>                            sample index
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+    <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+             <p5>Illumina P5</p5>              <cbc>16 bp</cbc>           <s5>s5</s5>                          <cbc>5 bp</cbc>        <me>ME</me>            gDNA          <me>ME</me>          <cbc>5 bp</cbc>                          <s7>s7</s7>         8 bp        <p7>Illumina P7</p7>
+                                   <cbc>GEM barcode</cbc>                                 <cbc>Tn5 Index A</cbc>                                        <cbc>Tn5 Index B</cbc>                             sample index
 </align>
 </pre>
 
@@ -109,35 +110,35 @@
 
 <h2>Library sequencing:</h2>
 
-<h3>(1) Add 1_Read1 sequencing primer to sequence the first read (presumably 74 cycles, bottom strand as template, the first 4 bp are the Tn5 Index A, the last 51 bp are gDNA, the middle 19 bp are ME):</h3>
+<h3>(1) Add 1_Read1 sequencing primer to sequence the first read (at least 74 cycles, bottom strand as template, the first 5 bp are the Tn5 Index A, the last >50 bp are gDNA, the middle 19 bp are ME):</h3>
 <pre>
 <align class="long">
                                              5'- <s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC------------------------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(2) Add 2_Index1 sequencing primer to sequence sample index (i7) (bottom strand as template, 8 cycles):</h3>
 <pre>
 <align class="long">
-                                                                                                                                     5'- TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>------->
-3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                       5'- TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>------->
+3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG<cbc>NNNNN</cbc><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><cbc>NNNNN</cbc>AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7>NNNNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
 <h3>(3) Cluster regeneration, add 3_Index2 sequencing primer to sequence the second index (i5) (top strand as template, 16 cycles, this is the GEM barcode):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
                                  <---------------<s5>AGCAGCCGTCGCAG</s5>CTATACACTATTACTCCTG -5'
 </align>
 </pre>
 
-<h3>(4) Add 4_Read2 sequencing primer to sequence the second read (top strand as template, presumably 74 cycles, the first 4 bp are the Tn5 Index B, the last 51 bp are gDNA, the middle 19 bp are ME):</h3>
+<h3>(4) Add 4_Read2 sequencing primer to sequence the second read (top strand as template, at least 74 cycles, the first 5 bp are the Tn5 Index B, the last >50 bp are gDNA, the middle 19 bp are ME):</h3>
 <pre>
 <align class="long">
-5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
-                                                                                                             <---------------------------AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
+5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><cbc>NNNNNNNNNNNNNNNN</cbc><s5>TCGTCGGCAGCGTC</s5>GATATGTGATAATGAGGAC<cbc>NNNNN</cbc><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><cbc>NNNNN</cbc>TCTGTCTTCTACACATTCA<s7>CCGAGCCCACGAGAC</s7>NNNNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7>
+                                                                                                               <---------------------------AGACAGAAGATGTGTAAGT<s7>GGCTCGGGTGCTCTG</s7> -5'
 </align>
 </pre>
 

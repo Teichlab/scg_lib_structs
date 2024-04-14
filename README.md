@@ -153,6 +153,11 @@ Click the following links to view the methods. Notes:
   - [RamDA-seq](https://www.nature.com/articles/s41467-018-02866-0)
   - [SIMPLE-seq](https://www.nature.com/articles/s41587-024-02148-9)
   - [scTAPS](https://www.biorxiv.org/content/10.1101/2024.02.12.579864v1)
+  - [MUSIC](https://www.nature.com/articles/s41586-024-07239-w)
+  - [Direct-seq](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02044-w)
+  - [Strand-seq](https://www.nature.com/articles/nmeth.2206)
+  - [Drop-BS](https://www.nature.com/articles/s41467-023-40411-w)
+  - [CROPseq-multi](https://www.biorxiv.org/content/10.1101/2024.03.17.585235v1)
 
 ## scRNA-seq technical comparisons
 
