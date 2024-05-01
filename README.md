@@ -237,18 +237,22 @@ If you find this repository useful and would like to cite this resource, please 
 	doi = {10.5281/ZENODO.10042390},
 }
 
-@techreport{booeshaghi_machine-readable_2023,
-	type = {preprint},
-	title = {A machine-readable specification for genomics assays},
-	url = {http://biorxiv.org/lookup/doi/10.1101/2023.03.17.533215},
-	abstract = {Understanding the structure of sequenced fragments from genomics libraries is essential for accurate read preprocessing. Currently, different assays and sequencing technologies require custom scripts and programs that do not leverage the common structure of sequence elements present in genomics libraries. We present seqspec, a machine-readable specification for libraries produced by genomics assays that facilitates standardization of preprocessing and enables tracking and comparison of genomics assays. The specification and associated seqspec command line tool is available at https://github.com/IGVF/seqspec.},
-	language = {en},
-	urldate = {2023-10-26},
-	institution = {Bioinformatics},
-	author = {Booeshaghi, A. Sina and Chen, Xi and Pachter, Lior},
-	month = mar,
-	year = {2023},
-	doi = {10.1101/2023.03.17.533215},
+@article{booeshaghi.pachter.Bioinformatics2024,
+  title = {A Machine-Readable Specification for Genomics Assays},
+  author = {Booeshaghi, Ali Sina and Chen, Xi and Pachter, Lior},
+  editor = {Kendziorski, Christina},
+  year = {2024},
+  month = mar,
+  journal = {Bioinformatics},
+  volume = {40},
+  number = {4},
+  pages = {btae168},
+  issn = {1367-4811},
+  doi = {10.1093/bioinformatics/btae168},
+  urldate = {2024-05-01},
+  abstract = {Motivation: Understanding the structure of sequenced fragments from genomics libraries is essential for accurate read preprocessing. Currently, different assays and sequencing technologies require custom scripts and programs that do not leverage the common structure of sequence elements present in genomics libraries.},
+  copyright = {https://creativecommons.org/licenses/by/4.0/},
+  langid = {english}
 }
 ```
 
