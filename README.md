@@ -158,6 +158,7 @@ Click the following links to view the methods. Notes:
   - [Strand-seq](https://www.nature.com/articles/nmeth.2206)
   - [Drop-BS](https://www.nature.com/articles/s41467-023-40411-w)
   - [CROPseq-multi](https://www.biorxiv.org/content/10.1101/2024.03.17.585235v1)
+  - [ChAIR](https://www.biorxiv.org/content/10.1101/2024.05.03.592322v1.full)
 
 ## scRNA-seq technical comparisons
 
