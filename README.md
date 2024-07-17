@@ -159,6 +159,8 @@ Click the following links to view the methods. Notes:
   - [Drop-BS](https://www.nature.com/articles/s41467-023-40411-w)
   - [CROPseq-multi](https://www.biorxiv.org/content/10.1101/2024.03.17.585235v1)
   - [ChAIR](https://www.biorxiv.org/content/10.1101/2024.05.03.592322v1.full)
+  - [SPATAC-seq](https://www.nature.com/articles/s41556-024-01449-0)
+  - [snapTotal-seq](https://www.nature.com/articles/s41467-024-50291-3)
 
 ## scRNA-seq technical comparisons
 
