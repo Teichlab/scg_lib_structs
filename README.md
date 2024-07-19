@@ -161,6 +161,8 @@ Click the following links to view the methods. Notes:
   - [ChAIR](https://www.biorxiv.org/content/10.1101/2024.05.03.592322v1.full)
   - [SPATAC-seq](https://www.nature.com/articles/s41556-024-01449-0)
   - [snapTotal-seq](https://www.nature.com/articles/s41467-024-50291-3)
+  - [easySHARE-seq](https://www.biorxiv.org/content/10.1101/2024.02.26.581705v1.full)
+  - [EasySci](https://www.nature.com/articles/s41588-023-01572-y)
 
 ## scRNA-seq technical comparisons
 
