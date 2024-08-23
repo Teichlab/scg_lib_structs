@@ -163,7 +163,7 @@ Click the following links to view the methods. Notes:
   - [snapTotal-seq](https://www.nature.com/articles/s41467-024-50291-3)
   - [easySHARE-seq](https://www.biorxiv.org/content/10.1101/2024.02.26.581705v1.full)
   - [EasySci](https://www.nature.com/articles/s41588-023-01572-y)
-  - -[OAK](https://www.biorxiv.org/content/10.1101/2024.01.23.576918v1)
+  - [OAK](https://www.biorxiv.org/content/10.1101/2024.01.23.576918v1)
   - [BAG DNA RNA](https://www.biorxiv.org/content/10.1101/2023.10.04.560973v1)
 
 ## scRNA-seq technical comparisons
