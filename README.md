@@ -165,6 +165,8 @@ Click the following links to view the methods. Notes:
   - [EasySci](https://www.nature.com/articles/s41588-023-01572-y)
   - [OAK](https://www.biorxiv.org/content/10.1101/2024.01.23.576918v1)
   - [BAG DNA RNA](https://www.biorxiv.org/content/10.1101/2023.10.04.560973v1)
+  - [CAP-seq](https://www.biorxiv.org/content/10.1101/2024.09.10.612220v1)
+  - [wellDA-seq](https://www.biorxiv.org/content/10.1101/2024.09.06.611519v1)
 
 ## scRNA-seq technical comparisons
 
