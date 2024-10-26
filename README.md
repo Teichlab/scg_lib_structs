@@ -167,6 +167,8 @@ Click the following links to view the methods. Notes:
   - [BAG DNA RNA](https://www.biorxiv.org/content/10.1101/2023.10.04.560973v1)
   - [CAP-seq](https://www.biorxiv.org/content/10.1101/2024.09.10.612220v1)
   - [wellDA-seq](https://www.biorxiv.org/content/10.1101/2024.09.06.611519v1)
+  - [microSPLiT](https://www.nature.com/articles/s41596-024-01007-w) <- need to check updates
+  - [ProBac-seq](https://www.nature.com/articles/s41596-024-01002-1)
 
 ## scRNA-seq technical comparisons
 
