@@ -185,27 +185,27 @@ If you understand the __10x Genomics Single Cell ATAC__ experimental procedures 
 
 `-t 4`
 
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x hg38/chromap_index/genome.index`
 
->> The `chromap` index file. We are dealing with human samples in this case.
+> The `chromap` index file. We are dealing with human samples in this case.
 
 `-r hg38/hg38.analysisSet.fa`
 
->> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, `-2` and `-b`
 
->> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-2`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, `R1` is the genomic Read 1 and should be passed to `-1`; `R3` is actually the genomic Read 2 and should be passed to `-2`; `R2` is the cell barcode read and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist 10xscATAC/pbmc500/737K-cratac-v1.txt`
 
->> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-atac`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Therefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
+> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell ATAC__ is a commercial platform. The whitelist is taken from their commercial software `cellranger-atac`. In this example data, sequencing is done using __NovaSeq 6000 (v1.0)__. Therefore, we use the original whitelist. In other cases, you might want to use the reverse complementary version of the whitelist.
 
 `-o 10xscATAC/chromap_outs/fragments.tsv`
 
->> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ## Fragments To Reads
 

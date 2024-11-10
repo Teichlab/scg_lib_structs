@@ -498,27 +498,27 @@ If you understand the __sci-ATAC-seq__ experimental procedures described in [thi
 
 `-t 4`
 
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x dm6/chromap_index/genome.index`
 
->> The `chromap` index file. We are dealing with fly samples in this case.
+> The `chromap` index file. We are dealing with fly samples in this case.
 
 `-r dm6/dm6.fa`
 
->> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, `-2` and `-b`
 
->> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, we are uisng the truncated version (31 bp) of the cell barcode reads here. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. For the reason described previously, we are uisng the truncated version (31 bp) of the cell barcode reads here. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist sci-atac/data/whitelist_config1_base3-33.txt`
 
->> The plain text file containing all possible valid cell barcodes. For the reason described in the previous sections, we are using the truncated version (31 bp) of the whitelist because the sequencing machines used to generate the data was __NextSeq__ based on the publication.
+> The plain text file containing all possible valid cell barcodes. For the reason described in the previous sections, we are using the truncated version (31 bp) of the whitelist because the sequencing machines used to generate the data was __NextSeq__ based on the publication.
 
 `-o sci-atac/chromap_outs/fragments.tsv`
 
->> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ## Fragments To Reads
 

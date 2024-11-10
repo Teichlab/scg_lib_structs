@@ -126,55 +126,55 @@ If you understand the __10x Genomics Single Cell 5' V2__ experimental procedures
 
 `--runThreadN 4`
   
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir hg38/star_index`
 
->> Pointing to the directory of the star index. The data is from human samples.
+> Pointing to the directory of the star index. The data is from human samples.
 
 `--readFilesCommand zcat`
 
->> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix masuda2022/star_outs/`
 
->> We want to keep everything organised. This directs all output files inside the `masuda2022/star_outs` directory.
+> We want to keep everything organised. This directs all output files inside the `masuda2022/star_outs` directory.
 
 `--readFilesIn masuda2022/10x5p/ERR4667456_2.fastq.gz masuda2022/10x5p/ERR4667456_1.fastq.gz`
 
->> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __10x Genomics Single Cell 5' V2__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the 10x Genomics Single Cell 5' V2 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) if you are not sure.
+> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __10x Genomics Single Cell 5' V2__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the 10x Genomics Single Cell 5' V2 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) if you are not sure.
 
 `--soloType CB_UMI_Simple`
 
->> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
+> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter.
 
 `--soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10`
 
->> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
 `--soloBarcodeReadLength 0`
 
->> The length of the cell barcode + UMI (Read 1) is 16 + 10 = 26 bp. Therefore, `star` by default makes sure that reads from the Read 1 file is 26-bp long. However, the data we are analysing have 28 bp in length. The last two bp of Read 1 is all `TT`. This option turns off the length check and make sure the program runs without throwing an error.
+> The length of the cell barcode + UMI (Read 1) is 16 + 10 = 26 bp. Therefore, `star` by default makes sure that reads from the Read 1 file is 26-bp long. However, the data we are analysing have 28 bp in length. The last two bp of Read 1 is all `TT`. This option turns off the length check and make sure the program runs without throwing an error.
 
 `--soloCBwhitelist masuda2022/10x5p/737K-august-2016.txt`
 
->> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell 5' V2__ is a commercial platform. The whitelist is taken from their commercial software `cellranger`.
+> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell 5' V2__ is a commercial platform. The whitelist is taken from their commercial software `cellranger`.
 
 `--soloCellFilter EmptyDrops_CR`
 
->> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Reverse`
 
->> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Genomics Single Cell 5' V2__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured at the 5' end by the TSO with an Illumina Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the coding strand. Read 2 comes from the first strand, complementary to the coding strand. Therefore, use `Reverse` for __10x Genomics Single Cell 5' V2__ data. Check [the 10x Genomics Single Cell 5' V2 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) if you are not sure.
+> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Genomics Single Cell 5' V2__, the cDNA reads are from the Read 2 file. During the experiment, the mRNA molecules are captured at the 5' end by the TSO with an Illumina Read 1 sequence. Therefore, Read 1 consists of cell barcodes and UMI comes from the coding strand. Read 2 comes from the first strand, complementary to the coding strand. Therefore, use `Reverse` for __10x Genomics Single Cell 5' V2__ data. Check [the 10x Genomics Single Cell 5' V2 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium5.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->> We want sorted `BAM` for easy handling by other programs.
+> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 

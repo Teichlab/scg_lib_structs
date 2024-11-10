@@ -422,31 +422,31 @@ If you understand the __snATAC-seq__ experimental procedures described in [this 
 
 `-t 4`
 
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x mm10/chromap_index/genome.index`
 
->> The `chromap` index. The data we are analysing is from mouse.
+> The `chromap` index. The data we are analysing is from mouse.
 
 `-r mm10/mm10.fa`
 
->> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, `-2` and `-b`
 
->> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+> They are Read 1 (genomic), Read 2 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. Therefore, you normally have two genomic reads for each genomic fragment: Read 1 and Read 2. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist snATAC-seq/data/whitelist_config2_GSE126724.txt`
 
->> For the reason described previously, we are using the file `whitelist_config2_GSE126724.txt` specifically generated for this data set. However, in your own case, it should be either `whitelist_config1.txt` or `whitelist_config2.txt`, depending on your sequencing machines.
+> For the reason described previously, we are using the file `whitelist_config2_GSE126724.txt` specifically generated for this data set. However, in your own case, it should be either `whitelist_config1.txt` or `whitelist_config2.txt`, depending on your sequencing machines.
 
 `--bc-error-threshold 2`
 
->> Max Hamming distance allowed to correct a barcode. The default is 1. In this case, we have 32 bp cell barcodes, which is a bit long. Therefore, we would like to allow a bit more errors.
+> Max Hamming distance allowed to correct a barcode. The default is 1. In this case, we have 32 bp cell barcodes, which is a bit long. Therefore, we would like to allow a bit more errors.
 
 `-o snATAC-seq/chromap_outs/fragments.tsv`
 
->> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ## Fragments To Reads
 

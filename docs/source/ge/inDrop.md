@@ -297,65 +297,65 @@ If you understand the __inDrop__ experimental procedures described in [this GitH
 
 `--runThreadN 4`
   
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mix_hg38_mm10/star_index`
 
->> Pointing to the directory of the star index. The public data from the above paper was produced using the HCA reference sample, which consists of human PBMCs (60%), and HEK293T (6%), mouse colon (30%), NIH3T3 (3%) and dog MDCK cells (1%). Therefore, we need to use the species mixing reference genome. We also need to add the dog genome, but the dog cells only take 1% of all cells, so I did not bother in this documentation.
+> Pointing to the directory of the star index. The public data from the above paper was produced using the HCA reference sample, which consists of human PBMCs (60%), and HEK293T (6%), mouse colon (30%), NIH3T3 (3%) and dog MDCK cells (1%). Therefore, we need to use the species mixing reference genome. We also need to add the dog genome, but the dog cells only take 1% of all cells, so I did not bother in this documentation.
 
 `--readFilesCommand zcat`
 
->> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix mereu2020/star_outs/`
 
->> We want to keep everything organised. This parameter directs all output files into the `mereu2020/star_outs/` directory.
+> We want to keep everything organised. This parameter directs all output files into the `mereu2020/star_outs/` directory.
 
 `--readFilesIn`
 
->> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __inDrop V2__, cDNA reads come from Read 1, and the cell barcode and UMI come from Read 2. Check [the inDrop GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html) if you are not sure.
+> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second file should contain cell barcode and UMI. In __inDrop V2__, cDNA reads come from Read 1, and the cell barcode and UMI come from Read 2. Check [the inDrop GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html) if you are not sure.
 
 `--soloType CB_UMI_Complex`
 
->> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also extract them upfront into a new `fastq` file, but that's slow. It is better to use this option.
+> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also extract them upfront into a new `fastq` file, but that's slow. It is better to use this option.
 
 `--soloAdapterSequence GAGTGATTGCTTGTGACGCCTT`
 
->> The 8 - 11 bp variable length of __Barcode1__ at the beginning of __Read 2__ makes the situation complicated, because the absolute positions of __Barcode2__ and __UMI__ in each read will vary. However, by specifying an adaptor sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. See below.
+> The 8 - 11 bp variable length of __Barcode1__ at the beginning of __Read 2__ makes the situation complicated, because the absolute positions of __Barcode2__ and __UMI__ in each read will vary. However, by specifying an adaptor sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. See below.
 
 `--soloAdapterMismatchesNmax 3`
 
->> The number of mismatches are tolerated during the adapter finding. The adapter here is a bit long, so I want a bit relaxed matching, but you may want to try a few different options, like 1 (the default) or 2.
+> The number of mismatches are tolerated during the adapter finding. The adapter here is a bit long, so I want a bit relaxed matching, but you may want to try a few different options, like 1 (the default) or 2.
 
 `--soloCBposition` and `--soloUMIposition`
 
->> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __inDrop V1 & 2__, the __Barcode1__ has variable lengths, the absolute positions of __Barcode2__ and __UMI__ are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
+> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. in __inDrop V1 & 2__, the __Barcode1__ has variable lengths, the absolute positions of __Barcode2__ and __UMI__ are variable. Therefore, using Read start as anchor will not work for them. We need to use the adaptor as the anchor, and specify the positions relative to the anchor. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/inDrop/Star_CB_UMI_Complex_inDrop.jpg)
 
 `--soloCBwhitelist`
 
->> Since the real cell barcodes consists of two non-consecutive parts: two sets of barcodes. The whitelist here is the combination of those two lists. We should provide them separately in the specified order and `star` will take care of the combinations.
+> Since the real cell barcodes consists of two non-consecutive parts: two sets of barcodes. The whitelist here is the combination of those two lists. We should provide them separately in the specified order and `star` will take care of the combinations.
 
 `--soloCBmatchWLtype 1MM`
 
->> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
+> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
 
 `--soloCellFilter EmptyDrops_CR`
 
->> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __inDrop V2__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and Read 2 sequencing primer. Therefore, Read 2 consists of cell barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __inDrop V2__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the inDrop GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html) if you are not sure.
+> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __inDrop V2__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and Read 2 sequencing primer. Therefore, Read 2 consists of cell barcodes and UMI. They come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __inDrop V2__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the inDrop GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/inDrop.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->> We want sorted `BAM` for easy handling by other programs.
+> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 

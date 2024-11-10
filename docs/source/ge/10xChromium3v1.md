@@ -6,12 +6,12 @@ Check [this GitHub page](https://teichlab.github.io/scg_lib_structs/methods_html
 
 The `V1` chemistry is already obsolete, but I'm still providing the preprocessing pipeline for the sake of keeping a record. Although it is highly unlikely that you will do this on your own in future, but just in case, this is the configuration:
 
-| Order | Read             | Cycle | Description                                           |
-|-------|------------------|-------|-------------------------------------------------------|
-| 1     | Read 1           | >50   | This normally yields `R1_001.fastq.gz`, cDNA reads    |
-| 2     | Index 1 (__i7__) | 14    | This normally yields `I1_001.fastq.gz`, Cell barcodes |
-| 3     | Index 2 (__i5__) | 8     | This normally yields `I2_001.fastq.gz`, Sample index  |
-| 4     | Read 2           | 10    | This normally yields `R2_001.fastq.gz`, UMI           |
+| Order | Read             | Cycle | Description   | Comment                                                                            |
+|-------|------------------|-------|---------------|------------------------------------------------------------------------------------|
+| 1     | Read 1           | >50   | cDNA reads    | Normally, this yields `R1_001.fastq.gz`.                                           |
+| 2     | Index 1 (__i7__) | 14    | Cell barcodes | Normally, this yields `I1_001.fastq.gz`, but here, it is called `R2_001.fastq.gz`. |
+| 3     | Index 2 (__i5__) | 8     | Sample index  | Normally, this yields `I2_001.fastq.gz`, but here, it is called `I1_001.fastq.gz`. |
+| 4     | Read 2           | 10    | UMI           | Normally, this yields `R2_001.fastq.gz`, but here, it is called `R3_001.fastq.gz`. |
 
 Look at the order of the sequencing, as you can see, the first (`R1`), the 2nd (`I1`) and the 4th (`R2`) reads are all important for us. Therefore, you would like to get all of them for each sample based on sample index, that is, the 3rd read (`I2`). You could prepare a `SampleSheet.csv` with the sample index information. Here is an example of `SampleSheet.csv` of a NextSeq run with a sample using standard `i5` indexing primers:
 
@@ -63,10 +63,10 @@ You can check the [bcl2fastq manual](https://support.illumina.com/sequencing/seq
 Therefore, you will get four fastq file per sample. Using the examples above, these are the files you should get:
 
 ```bash
-Sample01_S1_I1_001.fastq.gz # 8 bp: sample index
+Sample01_S1_I1_001.fastq.gz # 8 bp: sample index, this is actually I2 in a conventional sense
 Sample01_S1_R1_001.fastq.gz # 75 bp: cDNA reads
-Sample01_S1_R2_001.fastq.gz # 14 bp: cell barcodes
-Sample01_S1_R3_001.fastq.gz # 10 bp: UMI
+Sample01_S1_R2_001.fastq.gz # 14 bp: cell barcodes, this is actually I1 in a conventional sense
+Sample01_S1_R3_001.fastq.gz # 10 bp: UMI, this is actually R2 in a conventional sense
 ```
 
 We can safely ignore the `I1` files, but the naming here is really different from our normal usage. The `R1` files are good. The `R2` files here actually mean `I1` in our normal usage. The `R3` files here actually mean `R2` in our normal usage. Anyway, __DO NOT get confused__.
@@ -88,186 +88,237 @@ The data is from the following paper:
 
 ```{eval-rst}
 .. note::
-  Zheng GXY, Terry JM, Belgrader P, Ryvkin P, Bent ZW, Wilson R, Ziraldo SB, Wheeler TD, McDermott GP, Zhu J, Gregory MT, Shuga J, Montesclaros L, Underwood JG, Masquelier DA, Nishimura SY, Schnall-Levin M, Wyatt PW, Hindson CM, Bharadwaj R, Wong A, Ness KD, Beppu LW, Deeg HJ, McFarland C, Loeb KR, Valente WJ, Ericson NG, Stevens EA, Radich JP, Mikkelsen TS, Hindson BJ, Bielas JH (2017) **Massively parallel digital transcriptional profiling of single cells.** *Nat Commun* 8:14049. https://doi.org/10.1038/ncomms14049
+  Pijuan-Sala B, Griffiths JA, Guibentif C, Hiscock TW, Jawaid W, Calero-Nieto FJ, Mulas C, Ibarra-Soria X, Tyser RCV, Ho DLL, Reik W, Srinivas S, Simons BD, Nichols J, Marioni JC, Göttgens B (2019) **A single-cell molecular map of mouse gastrulation and early organogenesis.** *Nature* 566:490–495. https://doi.org/10.1038/s41586-019-0933-9
 ```
 
-where the technology was officially described for the first time. Data can be access from the [10x website](https://www.10xgenomics.com/resources/datasets?query=&page=1&configure%5Bfacets%5D%5B0%5D=chemistryVersionAndThroughput&configure%5Bfacets%5D%5B1%5D=pipeline.version&configure%5BhitsPerPage%5D=500). Here, we are using the human HEK293T + mouse NIH3T3 mixture data, which contains roughly 1000 cells:
+where the authors profiled the gene expression levels of single cells from mouse embryos during gastrulation stages. This is a milestone paper that provides a molecular map of cell fate specifications spanning the time window of gastrulation when three germ layers are formed. The data contains over 100,000 cells from early-, mid- and late-gastrulation, including nine time points from E6.5 to E8.5. Note that the 10x Genomics V1 chemistry has already become obsolete. This mouse gastrulation project was conceived in the very early stage of single-cell sequencing era, so the V1 chemistry was used. The data can be found under the accession code [E-MTAB-6967](https://www.ebi.ac.uk/biostudies/arrayexpress/studies/E-MTAB-6967) from ArrayExpress. Since the whole data set is huge, we are just going to use the first sample `Sample 1` which corresponds to `embryo pool 1` as the demonstration.
+
+This sample was sequenced on the Illumina HiSeq 2500 machine across many different runs and lanes. On top of that, 10x Genomics uses different sample indices even though there is only one sample. Therefore, there are many files associated with `embryo pool 1`, a total of 96 files for this sample alone. We organise them into subdirectories based on their run number. The trick is to take the file [E-MTAB-6967.sdrf.txt](https://www.ebi.ac.uk/biostudies/files/E-MTAB-6967/E-MTAB-6967.sdrf.txt) located at the right-hand side of the ArrayExpress page and use scripts to parse out the URLs to download them systematically. Anyway, I just put the whole `wget` commands here, and you can see that I'm ignoring the `I1` files:
 
 ```console
-mkdir -p zheng2017/data
-wget -P zheng2017/data -c https://cf.10xgenomics.com/samples/cell-exp/1.1.0/293t_3t3/293t_3t3_fastqs.tar
-tar xf zheng2017/data/293t_3t3_fastqs.tar -C zheng2017/data/
-```
-After the extraction, you should see the following files:
-
-```console
-scg_prep_test/zheng2017/data/
-├── 293t_3t3_fastqs.tar
-└── fastqs
-    ├── flowcell1
-    │   ├── read-I1_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-    │   ├── read-I1_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-    │   ├── read-I1_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-    │   ├── read-I1_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-    │   ├── read-I1_si-CACAACTA_lane-001-chunk-001.fastq.gz
-    │   ├── read-I1_si-CACAACTA_lane-002-chunk-000.fastq.gz
-    │   ├── read-I1_si-CACAACTA_lane-003-chunk-003.fastq.gz
-    │   ├── read-I1_si-CACAACTA_lane-004-chunk-002.fastq.gz
-    │   ├── read-I1_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-    │   ├── read-I1_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-    │   ├── read-I1_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-    │   ├── read-I1_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-    │   ├── read-I1_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-    │   ├── read-I1_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-    │   ├── read-I1_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-    │   ├── read-I1_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-    │   ├── read-I2_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-    │   ├── read-I2_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-    │   ├── read-I2_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-    │   ├── read-I2_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-    │   ├── read-I2_si-CACAACTA_lane-001-chunk-001.fastq.gz
-    │   ├── read-I2_si-CACAACTA_lane-002-chunk-000.fastq.gz
-    │   ├── read-I2_si-CACAACTA_lane-003-chunk-003.fastq.gz
-    │   ├── read-I2_si-CACAACTA_lane-004-chunk-002.fastq.gz
-    │   ├── read-I2_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-    │   ├── read-I2_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-    │   ├── read-I2_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-    │   ├── read-I2_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-    │   ├── read-I2_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-    │   ├── read-I2_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-    │   ├── read-I2_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-    │   ├── read-I2_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-    │   ├── read-RA_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-    │   ├── read-RA_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-    │   ├── read-RA_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-    │   ├── read-RA_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-    │   ├── read-RA_si-CACAACTA_lane-001-chunk-001.fastq.gz
-    │   ├── read-RA_si-CACAACTA_lane-002-chunk-000.fastq.gz
-    │   ├── read-RA_si-CACAACTA_lane-003-chunk-003.fastq.gz
-    │   ├── read-RA_si-CACAACTA_lane-004-chunk-002.fastq.gz
-    │   ├── read-RA_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-    │   ├── read-RA_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-    │   ├── read-RA_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-    │   ├── read-RA_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-    │   ├── read-RA_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-    │   ├── read-RA_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-    │   ├── read-RA_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-    │   └── read-RA_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-    └── flowcell2
-        ├── read-I1_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-        ├── read-I1_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-        ├── read-I1_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-        ├── read-I1_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-        ├── read-I1_si-CACAACTA_lane-001-chunk-001.fastq.gz
-        ├── read-I1_si-CACAACTA_lane-002-chunk-000.fastq.gz
-        ├── read-I1_si-CACAACTA_lane-003-chunk-003.fastq.gz
-        ├── read-I1_si-CACAACTA_lane-004-chunk-002.fastq.gz
-        ├── read-I1_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-        ├── read-I1_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-        ├── read-I1_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-        ├── read-I1_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-        ├── read-I1_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-        ├── read-I1_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-        ├── read-I1_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-        ├── read-I1_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-        ├── read-I2_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-        ├── read-I2_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-        ├── read-I2_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-        ├── read-I2_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-        ├── read-I2_si-CACAACTA_lane-001-chunk-001.fastq.gz
-        ├── read-I2_si-CACAACTA_lane-002-chunk-000.fastq.gz
-        ├── read-I2_si-CACAACTA_lane-003-chunk-003.fastq.gz
-        ├── read-I2_si-CACAACTA_lane-004-chunk-002.fastq.gz
-        ├── read-I2_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-        ├── read-I2_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-        ├── read-I2_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-        ├── read-I2_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-        ├── read-I2_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-        ├── read-I2_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-        ├── read-I2_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-        ├── read-I2_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-        ├── read-RA_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-        ├── read-RA_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-        ├── read-RA_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-        ├── read-RA_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-        ├── read-RA_si-CACAACTA_lane-001-chunk-001.fastq.gz
-        ├── read-RA_si-CACAACTA_lane-002-chunk-000.fastq.gz
-        ├── read-RA_si-CACAACTA_lane-003-chunk-003.fastq.gz
-        ├── read-RA_si-CACAACTA_lane-004-chunk-002.fastq.gz
-        ├── read-RA_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-        ├── read-RA_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-        ├── read-RA_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-        ├── read-RA_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-        ├── read-RA_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-        ├── read-RA_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-        ├── read-RA_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-        └── read-RA_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-
-3 directories, 97 files
+mkdir -p pijuan-sala2019/data/22089 pijuan-sala2019/data/22108 pijuan-sala2019/data/22109 pijuan-sala2019/data/22111
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22089 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22089_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22108 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22108_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22109 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22109_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+wget -P pijuan-sala2019/data/22111 -c ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/experiment/MTAB/E-MTAB-6967/22111_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
 ```
 
-In reality, it is better to run `bcl2fastq` with the `--create-fastq-for-index-reads` flag without a `SampleSheet.csv`. You should get four fastq files per experiment:
+Since we have so many downloads, we should check the `md5` to make sure the download is successful. However, I cannot find the `md5` information, so let's just proceed. You should see the following files:
 
 ```console
-Undetermined_S0_I1_001.fastq.gz    # cell barcodes (14 bp)
-Undetermined_S0_I2_001.fastq.gz    # sample index (8 bp)
-Undetermined_S0_R1_001.fastq.gz    # cDNA reads (98 bp)
-Undetermined_S0_R2_001.fastq.gz    # UMI (10 bp)
-```
+scg_prep_test/pijuan-sala2019/data/
+├── 22089
+│   ├── 22089_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   ├── 22089_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   ├── 22089_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   ├── 22089_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   ├── 22089_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   ├── 22089_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   ├── 22089_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   ├── 22089_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   ├── 22089_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   ├── 22089_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   ├── 22089_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   ├── 22089_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   ├── 22089_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   ├── 22089_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   ├── 22089_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   ├── 22089_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   ├── 22089_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   ├── 22089_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   ├── 22089_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   ├── 22089_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   ├── 22089_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   ├── 22089_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   ├── 22089_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   └── 22089_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+├── 22108
+│   ├── 22108_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   ├── 22108_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   ├── 22108_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   ├── 22108_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   ├── 22108_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   ├── 22108_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   ├── 22108_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   ├── 22108_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   ├── 22108_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   ├── 22108_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   ├── 22108_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   ├── 22108_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   ├── 22108_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   ├── 22108_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   ├── 22108_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   ├── 22108_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   ├── 22108_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   ├── 22108_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   ├── 22108_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   ├── 22108_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   ├── 22108_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   ├── 22108_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   ├── 22108_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   └── 22108_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+├── 22109
+│   ├── 22109_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   ├── 22109_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   ├── 22109_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   ├── 22109_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   ├── 22109_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   ├── 22109_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   ├── 22109_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   ├── 22109_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   ├── 22109_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   ├── 22109_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   ├── 22109_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   ├── 22109_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   ├── 22109_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   ├── 22109_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   ├── 22109_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   ├── 22109_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   ├── 22109_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   ├── 22109_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   ├── 22109_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   ├── 22109_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   ├── 22109_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   ├── 22109_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   ├── 22109_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   └── 22109_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+├── 22111
+│   ├── 22111_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   ├── 22111_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   ├── 22111_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   ├── 22111_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   ├── 22111_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   ├── 22111_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   ├── 22111_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   ├── 22111_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   ├── 22111_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   ├── 22111_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   ├── 22111_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   ├── 22111_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   ├── 22111_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   ├── 22111_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   ├── 22111_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   ├── 22111_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   ├── 22111_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   ├── 22111_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   ├── 22111_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   ├── 22111_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   ├── 22111_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   ├── 22111_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   ├── 22111_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   └── 22111_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+└── E-MTAB-6967.sdrf.txt
 
-However, the files from the 10x website are __NOT__ like that because they demultiplexed the sample based on `I2`. They used different sample indices even though there is only one sample. The sample was also split into different flow cells and lanes. That is why there are so many files, but essentially, they are all from the same sample.
-
-We can safely ignore all the `I2` files, and just look at the `I1` (cell barcodes) and `RA` (cDNA + UMI) files. If you look at the content of any `RA` file, you will realise that they are interleaved `fastq` files, containing cDNA and UMI reads next to each other. For example, these are the first 16 lines (4 records) of `flowcell1/read-RA_si-AGGCTGGT_lane-001-chunk-001.fastq.gz`:
-
-```console
-@NB500915:156:HYKFKBGXX:1:11101:14387:1086 1:N:0:0
-TTCCTGGCCGCCAGAAGATCCACATCTCAAAGAAGTGGGGCTTCACCAAGTTCAATGCTGATGAATTTGAAGACATGGTGGCTGAAAAGCGGCTCATC
-+
-/AAAAEEE/EEAEEAEEEEAEEEEEEEEEEEEEEEEEEEEEEEEEAEEEEEEEEEEEAEEEEEEEEEEEEAEE/EEEEEEEEAEA/EEEEEEEEA/EA
-@NB500915:156:HYKFKBGXX:1:11101:14387:1086 4:N:0:0
-GCACGNGNTN
-+
-A//AA#A#E#
-@NB500915:156:HYKFKBGXX:1:11101:25884:1109 1:N:0:0
-GACCTTTTGGCATGGCCCAGACTGGGGTGCCCTTTGGGGAAGTAAGCATGGTCCGGGACTGGTTGGGCATTGTGGGGCGTGTGCTGACCCATACCCAA
-+
-AAA/AEEEEEEAEEEAE/EE/EEEEEEEEEAEEEEEE/EEEEEEEEEEEEA</AEE</AEE<A<EEEEEEEAEAA/E/////AE/E/E6E/E/<////
-@NB500915:156:HYKFKBGXX:1:11101:25884:1109 4:N:0:0
-GTAGTTTTGG
-+
-A////AEEEE
+4 directories, 97 files
 ```
 
 ## Reformat FastQ Files
 
-To use `starsolo`, we need to prepare `fastq` files into a file containing cDNA reads and a file with cell barcode + UMI. To get the cDNA reads, we need every other read from the `RA` file:
+To use `starsolo`, we need to prepare `FASTQ` files into a file containing cDNA reads and a file with cell barcode + UMI. The cDNA reads are just all those files that match `*_R1_001.fastq.gz`. To get the CB+UMI reads, we need to stitch `R2` and `R3` together. That is, append the 10-bp UMI in `R3` to the 14-bp cell barcodes in `R2`. Since there are so many files, we also combine the same type of files for simplicity, even though it takes more space:
 
 ```bash
-mkdir -p zheng2017/data/combined_fastqs
+# for cDNA reads, combine them
+cat pijuan-sala2019/data/*/*_R1_001.fastq.gz > pijuan-sala2019/data/cDNA_reads.fastq.gz
 
-# for cDNA reads
-# get the lines whose line number (NR) mod 8 is between 1 and 4
-zcat zheng2017/data/fastqs/flowcell1/read-RA_si-*.gz \
-     zheng2017/data/fastqs/flowcell2/read-RA_si-*.gz | \
-     awk 'NR%8>=1&&NR%8<=4' | \
-     gzip > zheng2017/data/combined_fastqs/cDNA_reads.fastq.gz
+# stitch R2 and R3
+paste <(zcat pijuan-sala2019/data/*/*_R2_001.fastq.gz) <(zcat pijuan-sala2019/data/*/*_R3_001.fastq.gz) | \
+    awk -F "\t" '{if (NR%4==1||NR%4==3) {print $1} else {print $1 $2}}' | \
+    gzip > pijuan-sala2019/data/CB_UMI.fastq.gz
 ```
 
-Then, we should append the UMI from the `RA` file to the cell barcode `I1`. This can be achieved using a one liner, but if you are not comfortable, you can split it into different steps for readability.
-
-```bash
-# for UMI reads
-# get the lines whose line number (NR) mod 8 is 5, 6, 7 or 0
-paste <(zcat zheng2017/data/fastqs/flowcell1/read-I1_si-*.gz \
-             zheng2017/data/fastqs/flowcell2/read-I1_si-*.gz) \
-      <(zcat zheng2017/data/fastqs/flowcell1/read-RA_si-*.gz \
-             zheng2017/data/fastqs/flowcell2/read-RA_si-*.gz | \
-             awk 'NR%8==5||NR%8==6||NR%8==7||NR%8==0') | \
-      awk -F '\t' '{ if(NR%4==1||NR%4==3) {print $1} else {print $1 $2} }' | \
-      gzip > zheng2017/data/combined_fastqs/CB_UMI_reads.fastq.gz
-```
-
-The files `cDNA_reads.fastq.gz` and `CB_UMI_reads.fastq.gz` are just what we need.
+The resulting files `cDNA_reads.fastq.gz` and `CB_UMI_reads.fastq.gz` are just what we need.
 
 ## Prepare Whitelist
 
@@ -275,8 +326,8 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 
 ```console
 # download the whitelist 
-wget -P zheng2017/data/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-april-2014_rc.txt.gz
-gunzip zheng2017/data/737K-april-2014_rc.txt.gz
+wget -P pijuan-sala2019/data/ https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-april-2014_rc.txt.gz
+gunzip pijuan-sala2019/data/737K-april-2014_rc.txt.gz
 ```
 
 ## From FastQ To Count Matrix
@@ -285,13 +336,13 @@ Now we could start the preprocessing by simply doing:
 
 ```console
 STAR --runThreadN 4 \
-     --genomeDir mix_hg38_mm10/star_index \
+     --genomeDir mm10/star_index \
      --readFilesCommand zcat \
-     --outFileNamePrefix zheng2017/star_outs/ \
-     --readFilesIn zheng2017/data/combined_fastqs/cDNA_reads.fastq.gz zheng2017/data/combined_fastqs/CB_UMI_reads.fastq.gz \
+     --outFileNamePrefix pijuan-sala2019/star_outs/ \
+     --readFilesIn pijuan-sala2019/data/cDNA_reads.fastq.gz pijuan-sala2019/data/CB_UMI_reads.fastq.gz \
      --soloType CB_UMI_Simple \
      --soloCBstart 1 --soloCBlen 14 --soloUMIstart 15 --soloUMIlen 10 \
-     --soloCBwhitelist zheng2017/data/737K-april-2014_rc.txt \
+     --soloCBwhitelist pijuan-sala2019/data/737K-april-2014_rc.txt \
      --soloCellFilter EmptyDrops_CR \
      --soloStrand Forward \
      --outSAMattributes CB UB \
@@ -304,161 +355,161 @@ If you understand the __10x Genomics Single Cell 3' V1__ experimental procedures
 
 `--runThreadN 4`
   
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
-`--genomeDir mix_hg38_mm10/star_index`
+`--genomeDir mm10/star_index`
 
->> Pointing to the directory of the star index. The public data from the 10x website is human HEK293T + mouse NIH3T3 cell mixtures. Therefore, we need to use the species mixing reference genome.
+> Pointing to the directory of the star index. The public data from the paper is investigating mouse gastrulation. Therefore, we need to use the mouse reference genome.
 
 `--readFilesCommand zcat`
 
->> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
-`--outFileNamePrefix zheng2017/star_outs/`
+`--outFileNamePrefix pijuan-sala2019/star_outs/`
 
->> We want to keep everything organised. This directs all output files inside the `zheng2017/star_outs` directory.
+> We want to keep everything organised. This directs all output files inside the `pijuan-sala2019/star_outs` directory.
 
-`--readFilesIn zheng2017/data/combined_fastqs/cDNA_reads.fastq.gz zheng2017/data/combined_fastqs/CB_UMI_reads.fastq.gz`
+`--readFilesIn pijuan-sala2019/data/cDNA_reads.fastq.gz pijuan-sala2019/data/CB_UMI_reads.fastq.gz`
 
->> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. We have gone through all the trouble to generate those files using the procedures described above.
+> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. We have gone through all the trouble to generate those files using the procedures described above.
 
 `--soloType CB_UMI_Simple`
 
->> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter. That is why went through those procedures to reformat the `fastq` files.
+> Most of the time, you should use this option, and specify the configuration of cell barcodes and UMI in the command line (see immediately below). Sometimes, it is actually easier to prepare the cell barcode and UMI file upfront so that we could use this parameter. That is why went through those procedures to reformat the `fastq` files.
 
 `--soloCBstart 1 --soloCBlen 14 --soloUMIstart 15 --soloUMIlen 10`
 
->> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+> The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
-`--soloCBwhitelist zheng2017/data/737K-april-2014_rc.txt`
+`--soloCBwhitelist pijuan-sala2019/data/737K-april-2014_rc.txt`
 
->> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell 3' V1__ is a commercial platform. The whitelist is taken from their commercial software `cellranger`.
+> The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell 3' V1__ is a commercial platform. The whitelist is taken from their commercial software `cellranger`.
 
 `--soloCellFilter EmptyDrops_CR`
 
->> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter. 
+> Experiments are never perfect. Even for droplets that do not contain any cell, you may still get some reads. In general, the number of reads from those droplets should be much smaller, often orders of magnitude smaller, than those droplets with cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter. 
 
 `--soloStrand Forward`
 
->> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Genomics Single Cell 3' V1__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing the Illumina Read 2 sequence. Therefore, Read 2 comes from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __10x Genomics Single Cell 3' V1__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear.
+> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __10x Genomics Single Cell 3' V1__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing the Illumina Read 2 sequence. Therefore, Read 2 comes from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __10x Genomics Single Cell 3' V1__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear.
 
 `--outSAMattributes CB UB`
 
->> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->> We want sorted `BAM` for easy handling by other programs.
+> We want sorted `BAM` for easy handling by other programs.
 
 If everything goes well, your directory should look the same as the following:
 
 ```console
-scg_prep_test/zheng2017
+scg_prep_test/pijuan-sala2019/
 ├── data
-│   ├── 293t_3t3_fastqs.tar
+│   ├── 22089
+│   │   ├── 22089_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   │   ├── 22089_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   │   ├── 22089_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   │   ├── 22089_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   │   ├── 22089_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   │   ├── 22089_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   │   ├── 22089_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   │   ├── 22089_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   │   ├── 22089_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   │   ├── 22089_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   │   ├── 22089_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   │   ├── 22089_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   │   ├── 22089_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   │   ├── 22089_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   │   ├── 22089_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   │   ├── 22089_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   │   ├── 22089_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   │   ├── 22089_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   │   ├── 22089_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   │   ├── 22089_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   │   ├── 22089_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   │   ├── 22089_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   │   ├── 22089_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   │   └── 22089_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+│   ├── 22108
+│   │   ├── 22108_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   │   ├── 22108_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   │   ├── 22108_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   │   ├── 22108_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   │   ├── 22108_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   │   ├── 22108_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   │   ├── 22108_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   │   ├── 22108_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   │   ├── 22108_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   │   ├── 22108_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   │   ├── 22108_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   │   ├── 22108_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   │   ├── 22108_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   │   ├── 22108_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   │   ├── 22108_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   │   ├── 22108_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   │   ├── 22108_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   │   ├── 22108_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   │   ├── 22108_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   │   ├── 22108_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   │   ├── 22108_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   │   ├── 22108_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   │   ├── 22108_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   │   └── 22108_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+│   ├── 22109
+│   │   ├── 22109_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   │   ├── 22109_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   │   ├── 22109_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   │   ├── 22109_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   │   ├── 22109_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   │   ├── 22109_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   │   ├── 22109_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   │   ├── 22109_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   │   ├── 22109_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   │   ├── 22109_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   │   ├── 22109_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   │   ├── 22109_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   │   ├── 22109_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   │   ├── 22109_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   │   ├── 22109_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   │   ├── 22109_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   │   ├── 22109_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   │   ├── 22109_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   │   ├── 22109_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   │   ├── 22109_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   │   ├── 22109_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   │   ├── 22109_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   │   ├── 22109_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   │   └── 22109_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
+│   ├── 22111
+│   │   ├── 22111_1_AAACGGCG_S1_L001_R1_001.fastq.gz
+│   │   ├── 22111_1_AAACGGCG_S1_L001_R2_001.fastq.gz
+│   │   ├── 22111_1_AAACGGCG_S1_L001_R3_001.fastq.gz
+│   │   ├── 22111_1_CCTACCAT_S2_L001_R1_001.fastq.gz
+│   │   ├── 22111_1_CCTACCAT_S2_L001_R2_001.fastq.gz
+│   │   ├── 22111_1_CCTACCAT_S2_L001_R3_001.fastq.gz
+│   │   ├── 22111_1_GGCGTTTC_S3_L001_R1_001.fastq.gz
+│   │   ├── 22111_1_GGCGTTTC_S3_L001_R2_001.fastq.gz
+│   │   ├── 22111_1_GGCGTTTC_S3_L001_R3_001.fastq.gz
+│   │   ├── 22111_1_TTGTAAGA_S4_L001_R1_001.fastq.gz
+│   │   ├── 22111_1_TTGTAAGA_S4_L001_R2_001.fastq.gz
+│   │   ├── 22111_1_TTGTAAGA_S4_L001_R3_001.fastq.gz
+│   │   ├── 22111_2_AAACGGCG_S45_L002_R1_001.fastq.gz
+│   │   ├── 22111_2_AAACGGCG_S45_L002_R2_001.fastq.gz
+│   │   ├── 22111_2_AAACGGCG_S45_L002_R3_001.fastq.gz
+│   │   ├── 22111_2_CCTACCAT_S46_L002_R1_001.fastq.gz
+│   │   ├── 22111_2_CCTACCAT_S46_L002_R2_001.fastq.gz
+│   │   ├── 22111_2_CCTACCAT_S46_L002_R3_001.fastq.gz
+│   │   ├── 22111_2_GGCGTTTC_S47_L002_R1_001.fastq.gz
+│   │   ├── 22111_2_GGCGTTTC_S47_L002_R2_001.fastq.gz
+│   │   ├── 22111_2_GGCGTTTC_S47_L002_R3_001.fastq.gz
+│   │   ├── 22111_2_TTGTAAGA_S48_L002_R1_001.fastq.gz
+│   │   ├── 22111_2_TTGTAAGA_S48_L002_R2_001.fastq.gz
+│   │   └── 22111_2_TTGTAAGA_S48_L002_R3_001.fastq.gz
 │   ├── 737K-april-2014_rc.txt
-│   ├── combined_fastqs
-│   │   ├── CB_UMI_reads.fastq.gz
-│   │   └── cDNA_reads.fastq.gz
-│   └── fastqs
-│       ├── flowcell1
-│       │   ├── read-I1_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I1_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I1_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I1_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I1_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I1_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I1_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I1_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I1_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I1_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I1_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I1_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I1_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I1_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I1_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I1_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I2_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I2_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I2_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I2_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I2_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I2_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I2_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I2_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I2_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I2_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I2_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I2_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│       │   ├── read-I2_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│       │   ├── read-I2_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│       │   ├── read-I2_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│       │   ├── read-I2_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-│       │   ├── read-RA_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│       │   ├── read-RA_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│       │   ├── read-RA_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│       │   ├── read-RA_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│       │   ├── read-RA_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│       │   ├── read-RA_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│       │   ├── read-RA_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│       │   ├── read-RA_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│       │   ├── read-RA_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│       │   ├── read-RA_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│       │   ├── read-RA_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│       │   ├── read-RA_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│       │   ├── read-RA_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│       │   ├── read-RA_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│       │   ├── read-RA_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│       │   └── read-RA_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-│       └── flowcell2
-│           ├── read-I1_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│           ├── read-I1_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│           ├── read-I1_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│           ├── read-I1_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│           ├── read-I1_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│           ├── read-I1_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│           ├── read-I1_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│           ├── read-I1_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│           ├── read-I1_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│           ├── read-I1_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│           ├── read-I1_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│           ├── read-I1_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│           ├── read-I1_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│           ├── read-I1_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│           ├── read-I1_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│           ├── read-I1_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-│           ├── read-I2_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│           ├── read-I2_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│           ├── read-I2_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│           ├── read-I2_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│           ├── read-I2_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│           ├── read-I2_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│           ├── read-I2_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│           ├── read-I2_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│           ├── read-I2_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│           ├── read-I2_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│           ├── read-I2_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│           ├── read-I2_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│           ├── read-I2_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│           ├── read-I2_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│           ├── read-I2_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│           ├── read-I2_si-TCATCAAG_lane-004-chunk-002.fastq.gz
-│           ├── read-RA_si-AGGCTGGT_lane-001-chunk-001.fastq.gz
-│           ├── read-RA_si-AGGCTGGT_lane-002-chunk-000.fastq.gz
-│           ├── read-RA_si-AGGCTGGT_lane-003-chunk-003.fastq.gz
-│           ├── read-RA_si-AGGCTGGT_lane-004-chunk-002.fastq.gz
-│           ├── read-RA_si-CACAACTA_lane-001-chunk-001.fastq.gz
-│           ├── read-RA_si-CACAACTA_lane-002-chunk-000.fastq.gz
-│           ├── read-RA_si-CACAACTA_lane-003-chunk-003.fastq.gz
-│           ├── read-RA_si-CACAACTA_lane-004-chunk-002.fastq.gz
-│           ├── read-RA_si-GTTGGTCC_lane-001-chunk-001.fastq.gz
-│           ├── read-RA_si-GTTGGTCC_lane-002-chunk-000.fastq.gz
-│           ├── read-RA_si-GTTGGTCC_lane-003-chunk-003.fastq.gz
-│           ├── read-RA_si-GTTGGTCC_lane-004-chunk-002.fastq.gz
-│           ├── read-RA_si-TCATCAAG_lane-001-chunk-001.fastq.gz
-│           ├── read-RA_si-TCATCAAG_lane-002-chunk-000.fastq.gz
-│           ├── read-RA_si-TCATCAAG_lane-003-chunk-003.fastq.gz
-│           └── read-RA_si-TCATCAAG_lane-004-chunk-002.fastq.gz
+│   ├── CB_UMI.fastq.gz
+│   └── cDNA_reads.fastq.gz
+├── E-MTAB-6967.sdrf.txt
 └── star_outs
     ├── Aligned.sortedByCoord.out.bam
     ├── Log.final.out
@@ -468,17 +519,17 @@ scg_prep_test/zheng2017
     └── Solo.out
         ├── Barcodes.stats
         └── Gene
-            ├── Features.stats
-            ├── filtered
-            │   ├── barcodes.tsv
-            │   ├── features.tsv
-            │   └── matrix.mtx
-            ├── raw
-            │   ├── barcodes.tsv
-            │   ├── features.tsv
-            │   └── matrix.mtx
-            ├── Summary.csv
-            └── UMIperCellSorted.txt
+            ├── Features.stats
+            ├── filtered
+            │   ├── barcodes.tsv
+            │   ├── features.tsv
+            │   └── matrix.mtx
+            ├── raw
+            │   ├── barcodes.tsv
+            │   ├── features.tsv
+            │   └── matrix.mtx
+            ├── Summary.csv
+            └── UMIperCellSorted.txt
 
-10 directories, 115 files
+13 directories, 127 files
 ```

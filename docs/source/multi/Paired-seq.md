@@ -390,91 +390,91 @@ If you understand the __Paired-seq__ experimental procedures described in [this 
 
 `--runThreadN 4`
   
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `--genomeDir mm10/star_index`
 
->> Pointing to the directory of the star index. The public data we are analysing is from the cerebral cortex of an adult mouse.
+> Pointing to the directory of the star index. The public data we are analysing is from the cerebral cortex of an adult mouse.
 
 `--readFilesCommand zcat`
 
->> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
+> Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
 `--outFileNamePrefix paired-seq/star_outs/`
 
->> We want to keep everything organised. This directs all output files inside the `paired-seq/star_outs` directory.
+> We want to keep everything organised. This directs all output files inside the `paired-seq/star_outs` directory.
 
 `--readFilesIn`
 
->> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __Paired-seq__, cDNA reads come from Read 1. The cell barcode and UMI, together with three linker sequences, come from Read 2. Check [the Paired-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+> If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __Paired-seq__, cDNA reads come from Read 1. The cell barcode and UMI, together with three linker sequences, come from Read 2. Check [the Paired-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) if you are not sure. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--soloType CB_UMI_Complex`
 
->> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also use `UMI-tools` to extract the cell barcode and UMI like the ATAC modality, but that's slow. It is better to use this option. See below.
+> Since Read 2 not only has cell barcodes and UMI, the common linker sequences are also there. The cell barcodes are non-consecutive, separated by the linker sequences. In this case, we have to use the `CB_UMI_Complex` option. Of course, we could also use `UMI-tools` to extract the cell barcode and UMI like the ATAC modality, but that's slow. It is better to use this option. See below.
 
 `--soloAdapterSequence ATCCACGTGCTTGAGAGGCCAGAGCATTCGTC`
 
->> The 0 - 3 random bases in the middle of __Read 2__ makes the situation complicated, because the absolute positions of the cell barcode and UMI in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. I choose this linker sequence as the adaptor because it is the longest. However, the other two linker sequences can be used as well. See below.
+> The 0 - 3 random bases in the middle of __Read 2__ makes the situation complicated, because the absolute positions of the cell barcode and UMI in each read will vary. However, by specifying an adapter sequence, we could use this sequence as an anchor, and tell the program where cell barcodes and UMI are located relatively to the anchor. I choose this linker sequence as the adaptor because it is the longest. However, the other two linker sequences can be used as well. See below.
 
 `--soloAdapterMismatchesNmax 3`
 
->> The number of mismatches are tolerated during the adapter finding. The adapter here is a bit long, so I want a bit relaxed matching, but you may want to try a few different options, like 1 (the default) or 2.
+> The number of mismatches are tolerated during the adapter finding. The adapter here is a bit long, so I want a bit relaxed matching, but you may want to try a few different options, like 1 (the default) or 2.
 
 `--soloCBposition` and `--soloUMIposition`
 
->> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
+> These options specify the locations of cell barcode and UMI in the 2nd fastq files we passed to `--readFilesIn`. In this case, it is __Read 2__. Read the [STAR manual](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) for more details. I have drawn a picture to help myself decide the exact parameters. There are some freedom here depending on what you are using as anchors. Due to the 3 random bases in the middle, using Read start as anchor will not work for the barcodes in the middle. We need to use the adapter as the anchor, and specify the positions relative to the anchor. See the image:
 
 ![](https://teichlab.github.io/scg_lib_structs/data/Paired-seq/Star_CB_UMI_Complex_Paired-seq.jpg)
 
 `--soloCBwhitelist`
 
->> Since the real cell barcodes consists of four non-consecutive parts, the whitelist here is the combination of the four sub-lists. We should provide them separately and `star` will take care of the combinations.
+> Since the real cell barcodes consists of four non-consecutive parts, the whitelist here is the combination of the four sub-lists. We should provide them separately and `star` will take care of the combinations.
 
 `--soloCBmatchWLtype 1MM`
 
->> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
+> How stringent we want the cell barcode reads to match the whitelist. The default option (`1MM_Multi`) does not work here. We choose this one here for simplicity, but you might want to experimenting different parameters to see what the difference is.
 
 `--soloCellFilter EmptyDrops_CR`
 
->> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
+> Experiments are never perfect. Even for barcodes that do not capture the molecules inside the cells, you may still get some reads due to various reasons, such as ambient RNA or DNA and leakage. In general, the number of reads from those cell barcodes should be much smaller, often orders of magnitude smaller, than those barcodes that come from real cells. In order to identify true cells from the background, you can apply different algorithms. Check the `star` manual for more information. We use `EmptyDrops_CR` which is the most frequently used parameter.
 
 `--soloStrand Forward`
 
->> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __Paired-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 2 sequence. Therefore, Read 2 consists of cell barcodes and UMI come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __Paired-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the Paired-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) if you are not sure.
+> The choice of this parameter depends on where the cDNA reads come from, i.e. the reads from the first file passed to `--readFilesIn`. You need to check the experimental protocol. If the cDNA reads are from the same strand as the mRNA (the coding strand), this parameter will be `Forward` (this is the default). If they are from the opposite strand as the mRNA, which is often called the first strand, this parameter will be `Reverse`. In the case of __Paired-seq__, the cDNA reads are from the Read 1 file. During the experiment, the mRNA molecules are captured by barcoded oligo-dT primer containing UMI and the Read 2 sequence. Therefore, Read 2 consists of cell barcodes and UMI come from the first strand, complementary to the coding strand. Read 1 comes from the coding strand. Therefore, use `Forward` for __Paired-seq__ data. This `Forward` parameter is the default, because many protocols generate data like this, but I still specified it here to make it clear. Check [the Paired-seq GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/Paired-seq.html) if you are not sure.
 
 `--outSAMattributes CB UB`
 
->> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
+> We want the cell barcode and UMI sequences in the `CB` and `UB` attributes of the output, respectively. The information will be very helpful for downstream analysis. 
 
 `--outSAMtype BAM SortedByCoordinate`
 
->> We want sorted `BAM` for easy handling by other programs.
+> We want sorted `BAM` for easy handling by other programs.
 
 #### Explain chromap
 
 `-t 4`
 
->> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
+> Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
 `-x mm10/chromap_index/genome.index`
 
->> The `chromap` index file. The public data we are analysing is from the cerebral cortex of an adult mouse.
+> The `chromap` index file. The public data we are analysing is from the cerebral cortex of an adult mouse.
 
 `-r mm10/mm10.fa`
 
->> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
+> Reference genome sequence in `fasta` format. This is basically the file which you used to create the `chromap` index file.
 
 `-1`, and `-b`
 
->> They are Read 1 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. However, the Read 2 in __Paired-seq__ only contains cell barcodes and UMI. Therefore, the ATAC-seq is essentially single-end. `R1` is the genomic Read 1 and should be passed to `-1`; The `CB` file we just prepared contains the cell barcode and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
+> They are Read 1 (genomic) and cell barcode read, respectively. For ATAC-seq, the sequencing is usually done in pair-end mode. However, the Read 2 in __Paired-seq__ only contains cell barcodes and UMI. Therefore, the ATAC-seq is essentially single-end. `R1` is the genomic Read 1 and should be passed to `-1`; The `CB` file we just prepared contains the cell barcode and should be passed to `-b`. Multiple input files are supported and they can be listed in a comma-separated manner. In that case, they must be in the same order.
 
 `--barcode-whitelist paired-seq/data/whitelist.txt`
 
->> The plain text file containing all possible valid cell barcodes, one per line. This is the whitelist we just prepared in the previous section. It contains all possible combination of the 96 8-bp barcodes for three times. A total of 96 * 96 * 96 * 8 = 7,077,888 barcodes are in this file.
+> The plain text file containing all possible valid cell barcodes, one per line. This is the whitelist we just prepared in the previous section. It contains all possible combination of the 96 8-bp barcodes for three times. A total of 96 * 96 * 96 * 8 = 7,077,888 barcodes are in this file.
 
 `-o paired-seq/chromap_outs/fragments.tsv`
 
->> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
+> Direct the mapped fragments to a file. The format is described in the [10x Genomics website](https://support.10xgenomics.com/single-cell-atac/software/pipelines/latest/output/fragments).
 
 ```{eval-rst}
 .. important::
