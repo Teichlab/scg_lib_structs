@@ -113,6 +113,7 @@ STAR --runThreadN 4 \
      --readFilesIn setty2019/data/Run4_SI-GA-H11_R2.fastq.gz setty2019/data/Run4_SI-GA-H11_R1.fastq.gz \
      --soloType CB_UMI_Simple \
      --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10 \
+     --soloBarcodeReadLength 0 \
      --soloCBwhitelist setty2019/data/737K-august-2016.txt \
      --soloCellFilter EmptyDrops_CR \
      --soloStrand Forward \
@@ -151,6 +152,10 @@ If you understand the __10x Genomics Single Cell 3' V2__ experimental procedures
 `--soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10`
 
 > The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
+
+`--soloBarcodeReadLength 0`
+
+> Normally, when we specify the positions and lengths of cell barcodes and UMIs using `--soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10`, the program checks if the read length matches the input. In this case, we have 16 bp cell barcodes and 10 bp UMIs. Therefore, the program expects the reads in the files containing the cell barcodes and UMIs (in this case: `R1.fastq.gz`) are 16 + 10 = 26 bp in length. However, in the study we are using, it seems the authors used 50 bp PE mode. It is possible the library was sequenced together with other libraries that require 50 bp PE. In this case, the program will throw an error and stop because 50 != 26. To prevent this from happening, we need to specify `--soloBarcodeReadLength 0`, which turns off the length check.
 
 `--soloCBwhitelist setty2019/data/737K-august-2016.txt`
 
