@@ -79,15 +79,16 @@ For the purpose of demonstration, we will use the __10x Genomics Single Cell 3' 
 
 ```{eval-rst}
 .. note::
-  Mereu E, Lafzi A, Moutinho C, Ziegenhain C, McCarthy DJ, Álvarez-Varela A, Batlle E, Sagar, Grün D, Lau JK, Boutet SC, Sanada C, Ooi A, Jones RC, Kaihara K, Brampton C, Talaga Y, Sasagawa Y, Tanaka K, Hayashi T, Braeuning C, Fischer C, Sauer S, Trefzer T, Conrad C, Adiconis X, Nguyen LT, Regev A, Levin JZ, Parekh S, Janjic A, Wange LE, Bagnoli JW, Enard W, Gut M, Sandberg R, Nikaido I, Gut I, Stegle O, Heyn H (2020) **Benchmarking single-cell RNA-sequencing protocols for cell atlas projects.** *Nat Biotechnol* 38:747–755. https://doi.org/10.1038/s41587-020-0469-4
+  Setty M, Kiseliovas V, Levine J, Gayoso A, Mazutis L, Pe'er D (2019) **Characterization of cell fate probabilities in single-cell data with Palantir.** *Nat Biotechnol* 37:451-460. https://doi.org/10.1038/s41587-019-0068-4
+
 ```
 
-where the authors benchmarked quite a few different scRNA-seq methods using a standardised sample: a mixture of different human, mouse and dog cells. We are going to use the data from the __10x Genomics Single Cell 3' V2__ method. There are quite a few experiments with this technology, and specifically, we will just use the [10X 2x 5K cells 250K reads](https://www.ebi.ac.uk/ena/browser/view/PRJNA551745?show=reads) experiment as an example. You can download the `fastq` file from [this ENA page](https://www.ebi.ac.uk/ena/browser/view/PRJNA551745?show=reads). There are two runs, but I'm just downloading the first run for the demonstration.
+where the authors developed a computational method called `Palantir` to perform trajectory analysis on scRNA-seq data. They used the method on human bone marrow scRNA-seq to study haematopoietic differentiation. The library prepration method is __10x Genomics Single Cell 3' V2__. There are quite a few samples in this study, and you can find the raw `FASTQ` files via the accession code [PRJEB37166](https://www.ebi.ac.uk/ena/browser/view/PRJEB37166) from **ENA**. The full metadata can be obtained from the [Human Cell Atlas data portal](https://explore.data.humancellatlas.org/projects/091cf39b-01bc-42e5-9437-f419a66c8a45/project-metadata). Note that the `FASTQ` files are also available from the Human Cell Atlas website, but I found it is easier to download from the **ENA** webpage. Here, for the demonstration, we will just use the `HS_BM_P1_cells_1` sample from the donor `HS_BM_P1`. We could download them as follows:
 
 ```console
-mkdir -p mereu2020/10xV2
-wget -P mereu2020/10xV2 -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR962/006/SRR9621416/SRR9621416_1.fastq.gz
-wget -P mereu2020/10xV2 -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR962/006/SRR9621416/SRR9621416_2.fastq.gz
+mkdir -p setty2019/data
+wget -P setty2019/data -c ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR736/ERR7363162/Run4_SI-GA-H11_R1.fastq.gz
+wget -P setty2019/data -c ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR736/ERR7363162/Run4_SI-GA-H11_R2.fastq.gz
 ```
 
 ## Prepare Whitelist
@@ -96,8 +97,8 @@ The barcodes on the gel beads of the 10x Genomics platform are well defined. We 
 
 ```console
 # download the whitelist 
-wget -P mereu2020/10xV2 https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-august-2016.txt.gz
-gunzip mereu2020/10xV2/737K-august-2016.txt.gz
+wget -P setty2019/data https://teichlab.github.io/scg_lib_structs/data/10X-Genomics/737K-august-2016.txt.gz
+gunzip setty2019/data/737K-august-2016.txt.gz
 ```
 
 ## From FastQ To Count Matrix
@@ -106,13 +107,13 @@ Now we could start the preprocessing by simply doing:
 
 ```console
 STAR --runThreadN 4 \
-     --genomeDir mix_hg38_mm10/star_index \
+     --genomeDir hg38/star_index \
      --readFilesCommand zcat \
-     --outFileNamePrefix mereu2020/star_outs/ \
-     --readFilesIn mereu2020/10xV2/SRR9621416_2.fastq.gz mereu2020/10xV2/SRR9621416_1.fastq.gz \
+     --outFileNamePrefix setty2019/star_outs/ \
+     --readFilesIn setty2019/data/Run4_SI-GA-H11_R2.fastq.gz setty2019/data/Run4_SI-GA-H11_R1.fastq.gz \
      --soloType CB_UMI_Simple \
      --soloCBstart 1 --soloCBlen 16 --soloUMIstart 17 --soloUMIlen 10 \
-     --soloCBwhitelist mereu2020/10xV2/737K-august-2016.txt \
+     --soloCBwhitelist setty2019/data/737K-august-2016.txt \
      --soloCellFilter EmptyDrops_CR \
      --soloStrand Forward \
      --outSAMattributes CB UB \
@@ -127,19 +128,19 @@ If you understand the __10x Genomics Single Cell 3' V2__ experimental procedures
   
 > Use 4 cores for the preprocessing. Change accordingly if using more or less cores.
 
-`--genomeDir mix_hg38_mm10/star_index`
+`--genomeDir hg38/star_index`
 
-> Pointing to the directory of the star index. The public data from the above paper was produced using the HCA reference sample, which consists of human PBMCs (60%), and HEK293T (6%), mouse colon (30%), NIH3T3 (3%) and dog MDCK cells (1%). Therefore, we need to use the species mixing reference genome. We also need to add the dog genome, but the dog cells only take 1% of all cells, so I did not bother in this documentation.
+> Pointing to the directory of the star index. The public data from the above paper was produced using CD34+ cells from bone marrow sorted by FACS from human donors. Therefore, we are using the human reference.
 
 `--readFilesCommand zcat`
 
 > Since the `fastq` files are in `.gz` format, we need the `zcat` command to extract them on the fly.
 
-`--outFileNamePrefix mereu2020/star_outs/`
+`--outFileNamePrefix setty2019/star_outs/`
 
-> We want to keep everything organised. This directs all output files inside the `mereu2020/star_outs` directory.
+> We want to keep everything organised. This directs all output files inside the `setty2019/star_outs/` directory.
 
-`--readFilesIn mereu2020/10xV2/SRR9621416_2.fastq.gz mereu2020/10xV2/SRR9621416_1.fastq.gz`
+`--readFilesIn setty2019/data/Run4_SI-GA-H11_R2.fastq.gz setty2019/data/Run4_SI-GA-H11_R1.fastq.gz`
 
 > If you check the manual, we should put two files here. The first file is the reads that come from cDNA, and the second the file should contain cell barcode and UMI. In __10x Genomics Single Cell 3' V2__, cDNA reads come from Read 2, and the cell barcode and UMI come from Read 1. Check [the 10x Genomics Single Cell 3' V2 GitHub Page](https://teichlab.github.io/scg_lib_structs/methods_html/10xChromium3.html) if you are not sure.
 
@@ -151,7 +152,7 @@ If you understand the __10x Genomics Single Cell 3' V2__ experimental procedures
 
 > The name of the parameter is pretty much self-explanatory. If using `--soloType CB_UMI_Simple`, we can specify where the cell barcode and UMI start and how long they are in the reads from the first file passed to `--readFilesIn`. Note the position is 1-based (the first base of the read is 1, NOT 0).
 
-`--soloCBwhitelist mereu2020/10xV2/737K-august-2016.txt`
+`--soloCBwhitelist setty2019/data/737K-august-2016.txt`
 
 > The plain text file containing all possible valid cell barcodes, one per line. __10x Genomics Single Cell 3' V2__ is a commercial platform. The whitelist is taken from their commercial software `cellranger`.
 
@@ -174,11 +175,12 @@ If you understand the __10x Genomics Single Cell 3' V2__ experimental procedures
 If everything goes well, your directory should look the same as the following:
 
 ```console
-scg_prep_test/mereu2020/
-├── 10xV2
+scg_prep_test/setty2019/
+├── data
 │   ├── 737K-august-2016.txt
-│   ├── SRR9621416_1.fastq.gz
-│   └── SRR9621416_2.fastq.gz
+│   ├── Run4_SI-GA-H11_R1.fastq.gz
+│   └── Run4_SI-GA-H11_R2.fastq.gz
+├── filereport_read_run_PRJEB37166_tsv.txt
 └── star_outs
     ├── Aligned.sortedByCoord.out.bam
     ├── Log.final.out
@@ -188,17 +190,17 @@ scg_prep_test/mereu2020/
     └── Solo.out
         ├── Barcodes.stats
         └── Gene
-            ├── Features.stats
-            ├── filtered
-            │   ├── barcodes.tsv
-            │   ├── features.tsv
-            │   └── matrix.mtx
-            ├── raw
-            │   ├── barcodes.tsv
-            │   ├── features.tsv
-            │   └── matrix.mtx
-            ├── Summary.csv
-            └── UMIperCellSorted.txt
+            ├── Features.stats
+            ├── filtered
+            │   ├── barcodes.tsv
+            │   ├── features.tsv
+            │   └── matrix.mtx
+            ├── raw
+            │   ├── barcodes.tsv
+            │   ├── features.tsv
+            │   └── matrix.mtx
+            ├── Summary.csv
+            └── UMIperCellSorted.txt
 
 6 directories, 18 files
 ```

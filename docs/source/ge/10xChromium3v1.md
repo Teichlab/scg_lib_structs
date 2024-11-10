@@ -531,5 +531,5 @@ scg_prep_test/pijuan-sala2019/
             ├── Summary.csv
             └── UMIperCellSorted.txt
 
-13 directories, 127 files
+7 directories, 115 files
 ```
