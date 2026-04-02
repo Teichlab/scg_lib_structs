@@ -9,9 +9,9 @@
 
 <h1><a href="https://www.bio-rad.com/3scRNA-seq" target="_blank">ddSEQ Single-Cell 3' RNA-Seq Kit</a></h1>
 
-<p><a href="https://www.bio-rad.com/en-us/product/ddseq-single-cell-3-rna-seq-kit-omnition-analysis-software?ID=b4738e36-858d-e6a0-61d9-8d96d3d521b8" target="_blank">Bio-Rad Single-Cell ddSEQ 3' RNA-Seq</a> is a droplet based assay and uses the ddSEQ Single-Cell Isolator, the same instrument as discontinued SureCell 3' WTA for ddSEQ, but it's an entirely new assay. It leverages the overloading of beads similar to <a href="https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html" target="_blank">Bio-Rad ddSEQ Single-Cell ATAC-Seq</a> to ensure that transcriptomic information from encapsulated cells is captured within the droplet to maximize cell utilization. Deconvolution Oligo (DO) chemistry allows for the connection of all beads within a given droplet. During library preparation, two types of libraries are generated, (1) cDNA libraries which contain information from each cell mRNA and (2) Deconvolution Oligo (DO) libraries which are formed from the dimerisation of DOs within the same droplet. Both types of libraries are generated simultaneously during droplet formation and separated via magnetic bead-based size selection during the library preparation process. The final ddSEQ 3' RNA-Seq libraries (cDNA and DO) are dual-indexed and sequenced using paired-end sequencing. Secondary data analysis: alignment, bead merging, and cell calling are performed using the open-source <a href="https://github.com/BioRadOpenSource/omnition" target="_blank">Omnition Analysis Software</a>.</p>
+<p><info><a href="https://www.bio-rad.com/en-us/product/ddseq-single-cell-3-rna-seq-kit-omnition-analysis-software?ID=b4738e36-858d-e6a0-61d9-8d96d3d521b8" target="_blank">Bio-Rad Single-Cell ddSEQ 3' RNA-Seq</a> is a droplet based assay and uses the ddSEQ Single-Cell Isolator, the same instrument as discontinued SureCell 3' WTA for ddSEQ, but it's an entirely new assay. It leverages the overloading of beads similar to <a href="https://teichlab.github.io/scg_lib_structs/methods_html/dscATAC.html" target="_blank">Bio-Rad ddSEQ Single-Cell ATAC-Seq</a> to ensure that transcriptomic information from encapsulated cells is captured within the droplet to maximize cell utilization. Deconvolution Oligo (DO) chemistry allows for the connection of all beads within a given droplet. During library preparation, two types of libraries are generated, (1) cDNA libraries which contain information from each cell mRNA and (2) Deconvolution Oligo (DO) libraries which are formed from the dimerisation of DOs within the same droplet. Both types of libraries are generated simultaneously during droplet formation and separated via magnetic bead-based size selection during the library preparation process. The final ddSEQ 3' RNA-Seq libraries (cDNA and DO) are dual-indexed and sequenced using paired-end sequencing. Secondary data analysis: alignment, bead merging, and cell calling are performed using the open-source <a href="https://github.com/BioRadOpenSource/omnition" target="_blank">Omnition Analysis Software</a>.</info></p>
 
-<p>The following steps are based on the information from the the ddSEQ 3' scRNA-Seq User Guide, version 1.0, DIR No. 10000167449, Ver B. You can download the PDF from <a href="../data/ddSEQ_3pRNA/10000167449.pdf" target="_blank">this link</a>. To make things clear at the beginning, I'm pasting Figures 4 and 5 from the user guide to show how the Deconvolution Oligos (DOs) work in principle. There are two types (actually three different sequences) of oligos on the surface of a particular bead, like this:</p>
+<p><info>The following steps are based on the information from the the ddSEQ 3' scRNA-Seq User Guide, version 1.0, DIR No. 10000167449, Ver B. You can download the PDF from <a href="../data/ddSEQ_3pRNA/10000167449.pdf" target="_blank">this link</a>. To make things clear at the beginning, I'm pasting Figures 4 and 5 from the user guide to show how the Deconvolution Oligos (DOs) work in principle. There are two types (actually three different sequences) of oligos on the surface of a particular bead, like this:</info></p>
 
 <br>
 
@@ -19,7 +19,7 @@
 
 <br>
 
-<p>On each bead, the oligos are: 1) Poly(T) oligos to capture mRNA; 2) Deconvolution Oligo A and 3) Deconvolution Oligo B. DOs A and B are reverse complementary to each other at their 3' ends, so that they will form dimer to connect beads within the same droplet, like this:</p>
+<p><info>On each bead, the oligos are: 1) Poly(T) oligos to capture mRNA; 2) Deconvolution Oligo A and 3) Deconvolution Oligo B. DOs A and B are reverse complementary to each other at their 3' ends, so that they will form dimer to connect beads within the same droplet, like this:</info></p>
 
 <br>
 
@@ -28,11 +28,12 @@
 
 <br>
 
-<p>Every oligo on a particular bead has the same bead barcode to identify the bead, and a UMI to differentiate oligos. The DO-A and DO-B will almost be guaranteed to form dimer. Note that DO-A and DO-B from the same bead can form dimers, and DO-A and DO-B from different beads can form dimers as well. If multiple beads are captured inside a single droplet, it is almost guaranteed that dimers from any two beads inside the same droplet will form dimers. It is rare and negligible that a single bead does not form dimers with other beads. After sequencing, we can see which bead barcodes are connected, meaning they are from the same droplet.</p>
+<p><info>Every oligo on a particular bead has the same bead barcode to identify the bead, and a UMI to differentiate oligos. The DO-A and DO-B will almost be guaranteed to form dimer. Note that DO-A and DO-B from the same bead can form dimers, and DO-A and DO-B from different beads can form dimers as well. If multiple beads are captured inside a single droplet, it is almost guaranteed that dimers from any two beads inside the same droplet will form dimers. It is rare and negligible that a single bead does not form dimers with other beads. After sequencing, we can see which bead barcodes are connected, meaning they are from the same droplet.</info></p>
 
 <h2>Adapter and primer sequences:</h2>
 
-<b>Note:</b> Many thanks to <b>Dr Adnan Chowdhury</b>, <b>Dr Errile Pusod</b> and their team from Bio-Rad for providing the oligo sequences and the library construction roadmap, which makes this page possible.
+<info><b>Note:</b> Many thanks to <b>Dr Adnan Chowdhury</b>, <b>Dr Errile Pusod</b> and their team from Bio-Rad for providing the oligo sequences and the library construction roadmap, which makes this page possible.</info>
+
 <seq>
 <p>For one particular bead, there are three oligos attached. They only differ at the last 21 - 27 bp:</p>
 
