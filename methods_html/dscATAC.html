@@ -7,9 +7,9 @@
 </head>
 <body>
 
-<h1><a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">dscATAC-seq/dsciATAC-seq (SureCell ATAC-seq)</a></h1>
+<h1><a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">dscATAC-seq/dsciATAC-seq (ddSEQ scATAC-seq)</a></h1>
 
-<p><info>dscATAC-seq and dsciATAC-seq are droplet-based scATAC-seq methods. They were published in <i>Nature Biotechnology</i> on 2019 Jun 24 (<a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al. Nat Biotechnol. 37, 916-924.</a>), and the kit for this method is <a href="http://www.bio-rad.com/en-uk/product/surecell-atac-seq-library-prep-kit?ID=PEXSR1MC1ORV" target="_blank">SureCell ATAC-seq Library Prep Kit</a>.</info></p>
+<p><info>dscATAC-seq and dsciATAC-seq are droplet-based scATAC-seq methods. They were published in <i>Nature Biotechnology</i> on 2019 Jun 24 (<a href="https://www.nature.com/articles/s41587-019-0147-6" target="_blank">Lareau et al. Nat Biotechnol. 37, 916-924.</a>), and the kit for this method is <a href="http://www.bio-rad.com/en-uk/product/surecell-atac-seq-library-prep-kit?ID=PEXSR1MC1ORV" target="_blank">ddSEQ Single-Cell ATAC-seq Library Prep Kit</a>, formerly known as SureCell ATAC-seq Library Prep Kit.</info></p>
 
 <p><info>For beginners who are new to droplet technology, it might not be clear what improvement dscATAC-seq has made. I will briefly explain here. In the droplet technologies, you have beads with barcodes going into droplets, and this follows a Poisson distribution with a certain mean. You also have cells going into droplets, and this also follows a Poisson distribution with a different mean. These two loading processes are independent, so you will have droplets with no beads no cells, with beads but no cells, with cells but no beads. Only a small proportion of the droplets contain exactly one bead and one cell. That's why in many droplet technologies, you load 100k cells, but eventually only get back 1-2k cells after sequencing.</info></p>
 
@@ -23,18 +23,25 @@
 
 <h2>Adapter and primer sequences:</h2>
 
-<p><span style="font-size:1.1em;">Huge thanks to <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the following information and make this page possible.</span></p>
+<p><info>Thank <a href="https://github.com/caleblareau" target="_blank">@caleblareau</a> for sharing the information that initiated this page. Many thanks to <b>Dr Adnan Chowdhury</b>, <b>Dr Errile Pusod</b> and their team from Bio-Rad for providing the updated oligo information.</info></p>
 
 <br>
 
 <seq>
-<p>ATAC-v2.1 beads-p5-bc-nextera-read1: |--5'- TTTTTTTUUUTTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
-<p><b><span style="color:red">*</span></b> The bead barcode in this protocol is based on the combination of the barcode1+barcode2+barcode3, 7-bp each, and 21-bp in total. The full oligos are generated in a split-pool manner. The Phase Block is there to make sure each sequencing cycle has decent base complexity. The full sequences (including different version history) can be found from <a href="../data/dscATAC/dscATAC_dsciATAC_bead_structures.xlsx" target="_blank">this excel file</a> from the <a href="https://github.com/caleblareau/bap" target="_blank">bap GitHub repository</a>.</p>
+<p>Bead-P5 adapter-Custom Read 1-CBC-A14 adapter: |--5'- TTTTTTTUUUTTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5> -3'</p>
+<p><b><span style="color:red">*</span></b> The bead barcode in this protocol is based on the combination of the barcode1+barcode2+barcode3, 7-bp each, and 21-bp in total. The full oligos are generated in a split-pool manner. The Phase Block is (None | A | CG | GCC | NVGC), where N is any nucleotide and V is either A,C, or G, which is used to make sure each sequencing cycle has decent base complexity. The full sequences can be found from <a href="../data/dscATAC/dscATAC_dsciATAC_bead_structures_Bio-Rad_Update.xlsx" target="_blank">this excel file</a>.</p>
 <p>Nextera Tn5 binding site (19-bp Mosaic End (ME)): 5'- <me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Nextera S5xx primer entry point (s5): 5'- <s5>TCGTCGGCAGCGTC</s5> -3'</p>
 <p>Nextera N7xx primer entry point (s7): 5'- <s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>SureCell ddSEQ Sample Index (12009360): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
-<p>Read 1 sequencing primer: 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
+<p>ddSEQ Single-Cell ATAC-Seq Index Kit (Cat. no. 12009360): 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[8-bp sample index]<s7>GTCTCGTGGGCTCGG</s7> -3'</p>
+<p>ATAC Primer Mix included in the ddSEQ Single-Cell ATAC-Seq Reagent Box B (Cat. no. 12009357), which contains two primers:</p>
+<pre>
+    <seq>
+        Forward primer: 5'- <p5>AATGATACGGCGACCAC</p5> -3'
+        Reverse primer: 5'- <p7>CAAGCAGAAGACGGCAT</p7> -3'
+    </seq>
+</pre>
+<p>ATAC Sequencing Primer (supplied with Reagent Box B Cat. no. 12009357): 5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso> -3'</p>
 <p>Read 2 sequencing primer: 5'- <s7>GTCTCGTGGGCTCGG</s7><me>AGATGTGTATAAGAGACAG</me> -3'</p>
 <p>Sample Index sequencing primer: 5'- <me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7> -3'</p>
 <p>Illumina P5 adapter: 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5> -3'</p>
@@ -69,7 +76,7 @@
 </seq>
 </pre>
 
-<h3>(3) Add SureCell Sample Index, droplet capture, NEB USER Enzyme treatment to cut U to release oligos from the beads into drops (the first step of Barcoding and Amplification of Fragments, 37 degree 30mins), gap fill-in (the third step, 72 degree 5mins), and amplification. This steps achieves bead barcodes and sample index addition:</h3>
+<h3>(3) Add ddSEQ Single-Cell ATAC-Seq Index Kit (Cat. no. 12009360), droplet capture, NEB USER Enzyme treatment to cut U to release oligos from the beads into drops (the first step of Barcoding and Amplification of Fragments, 37 degree 30 mins), gap fill-in (the third step, 72 degree 5mins), and amplification. This steps achieves bead barcodes and sample index addition:</h3>
 <pre>
 <align class="long">
 |--5'- TTTTTTT   TTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5>------------------>
@@ -87,13 +94,13 @@
 </align>
 </pre>
 
-<h3>(5) Second amplification using ATAC Primer Mix (I assume this is the mix of Illumina P5 and P7 primers):</h3>
+<h3>(5) Second amplification using ATAC Primer Mix included in the ddSEQ Single-Cell ATAC-Seq Reagent Box B (Cat. no. 12009357):</h3>
 <pre>
 <align class="long">
-     5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5>------------------->
+     5'- <p5>AATGATACGGCGACCAC</p5>------------------->
 5'- TTTTT<p5>AATGATACGGCGACCACCGAGATCTACAC</p5>GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>TATGCATGAC</pe1><cbc>[7-bp barcode2]</cbc><pe2>AGTCACTGAG</pe2><cbc>[7-bp barcode3]</cbc><s5>TCGTCGGCAGCGTC</s5><me>AGATGTGTATAAGAGACAG</me>XXX...XXX<me>CTGTCTCTTATACACATCT</me><s7>CCGAGCCCACGAGAC</s7>[8-bp sample index]<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- AAAAA<p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5>CGGACAGGCGCC<tso>TTCGTCACCATAGTTGCGTCTCATG</tso><cbc>[7-bp barcode1]</cbc>[0-4bp Phase Block]<pe1>ATACGTACTG</pe1><cbc>[7-bp barcode2]</cbc><pe2>TCAGTGACTC</pe2><cbc>[7-bp barcode3]</cbc><s5>AGCAGCCGTCGCAG</s5><me>TCTACACATATTCTCTGTC</me>XXX...XXX<me>GACAGAGAATATGTGTAGA</me><s7>GGCTCGGGTGCTCTG</s7>[8-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
-                                                                                                                                                                                                                                          <-------------------<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
+                                                                                                                                                                                                                                                 <-------------------<p7>TACGGCAGAAGACGAAC</p7> -5'
 </align>
 </pre>
 
@@ -122,7 +129,7 @@
 
 <h2>Library sequencing:</h2>
 
-<h3>(1) Add Read 1 sequencing primer to sequence the first read (118 cycles, bottom strand as template, the first 74 - 84 bases include barcode1+barcode2+barcode3 and Tn5 barcode if using dsciATAC-seq. After that, it will be gDNA insert):</h3>
+<h3>(1) Add ATAC Sequencing Primer (supplied with Reagent Box B Cat. no. 12009357) to sequence the first read (118 cycles, bottom strand as template, the first 74 - 84 bases include barcode1+barcode2+barcode3 and Tn5 barcode if using dsciATAC-seq. After that, it will be gDNA insert):</h3>
 <pre>
 <align class="long">
                              5'- GCCTGTCCGCGG<tso>AAGCAGTGGTATCAACGCAGAGTAC</tso>-------------------------------------------------------------------------------->
