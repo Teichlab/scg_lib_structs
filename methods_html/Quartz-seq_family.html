@@ -27,10 +27,10 @@
 <p>Prepare indexed Truseq adapters by annealing TRSU and TRSI (formed the Y-shaped adapters):</p>
 <pre>
 <seq>
-	   5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>
-			                                    <s5>GCTCTTCCGATC*T</s5> -3'
-	                                                    <s7>CGAGAAGGCTAG</s7>
-    3'- <p7>G*TTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNN<s7>CACTGACCTCAAGTCTGCACA</s7>
+               5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>
+                                                                <s5>GCTCTTCCGATC*T</s5> -3'
+                                                                <s7>CGAGAAGGCTAG</s7>
+        3'- <p7>G*TTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNN<s7>CACTGACCTCAAGTCTGCACA</s7>
 </seq>
 </pre>
 
@@ -117,7 +117,7 @@
 5'- (NH<sub>2</sub>)-G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
        5'- <tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXX(pA)CG<t7>CCCTATAGTGAGTCGTATTA</t7><tso>TCGCGAGCGGCCGCGAATTCTATA</tso>
            <tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX(dT)GC<t7>GGGATATCACTCAGCATAAT</t7><tso>AGCGCTCGCCGGCGCTTAAGATAT</tso> -5'
-					                           <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G-(NH<sub>2</sub>) -5'
+                                                                   <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G-(NH<sub>2</sub>) -5'
 </seq>
 </pre>
 
@@ -147,8 +147,8 @@
 <pre>
 <align class="small">
       5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGAC</s5>                                                   <s7>ACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
-	                                               <s5>GCTCTTCCGATCT</s5>XXXXXXXXXXX...XXXXXXXXXXXA<s7>GATCGGAAGAGC</s7>
-						       <s7>CGAGAAGGCTAG</s7>AXXXXXXXXXXX...XXXXXXXXXXX<s5>TCTAGCCTTCTCG</s5>
+                                                       <s5>GCTCTTCCGATCT</s5>XXXXXXXXXXX...XXXXXXXXXXXA<s7>GATCGGAAGAGC</s7>
+                                                       <s7>CGAGAAGGCTAG</s7>AXXXXXXXXXXX...XXXXXXXXXXX<s5>TCTAGCCTTCTCG</s5>
 3'- <p7>GTTCGTCTTCTGCCGTATGCTCTA</p7>NNNNNN<s7>CACTGACCTCAAGTCTGCACA</s7>                                                   <s5>CAGCACATCCCTTTCT</s5><p5>CACATCTAGAGCCACCAGCGGCATAGTAA</p5> -5'
 </align>
 </pre>
@@ -175,7 +175,7 @@
 5'- <p5>AATGATACGGCGACCACCGAGATCTACAC</p5><s5>TCTTTCCCTACACGACGCTCTTCCGATCT</s5>XXXXXXXXXXX...XXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGTG</p5><s5>AGAAAGGGATGTGCTGCGAGAAGGCTAG</s5>AXXXXXXXXXXX...XXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
            <p5>Illumina P5</p5>                <s5>TruSeq Read 1</s5>                      cDNA                      <s7>TruSeq Read 2</s7>          cell       <p7>Illumina P7</p7>
-		                                                                                                          index
+                                                                                                                         index
 </align>
 </pre>
 
@@ -310,7 +310,7 @@
 5′- G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>T---------->
  5'- <tso>TATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(dT)XXXXX...XXXXX(pA)<tso>TCGCGAGCGGCCGCGAATTCTATA</tso>
      <tso>ATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>[15-bp cell barcode]</cbc><umi>[8-bp UMI]</umi>(pA)XXXXX...XXXXX(dT)<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso> -5'
-					                                <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G -5'
+                                                                        <---------T<tso>AGCGCTCGCCGGCGCTTAAGATAT</tso>G -5'
 </seq>
 </pre>
 
@@ -391,7 +391,7 @@
                                                5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>T
                                                                                 T<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso><span style="color:red">AC</span>                           <s7>GTCGTGTA</s7>
 5'- <p7>CAAGCAGAAGACGGCATACGAGAT</p7>[6-bp sample index]<s7>GTGACTGGAGTTCAGACGTGTGCTCTTCCGATCT</s7>G<tso>TATAGAATTCGCGGCCGCTCGCGA</tso>(dT)XXXXX...XXXXXA<s7>GATCGGAAGAGC</s7>
-                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'	                
+                                                                    <s7>CGAGAAGGCTAG</s7>AC<tso>ATATCTTAAGCGCCGGCGAGCGCT</tso>(pA)XXXXX...XXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>[6-bp sample index]<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'                    
                                                             <s7>ATGTGCTG</s7>                                                                                                              <p7>GAGCATACGGCAGAAGACGAAC</p7> -5'
 </align>
 
@@ -403,7 +403,7 @@
 5'- <p5>AATGATACGGCGACCACCGAGATCTACA</p5>TT<tso>GTATAGAATTCGCGGCCGCTCGCGAT</tso>AC<cbc>NNNNNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(dT)XXXXXXXXXXX...XXXXXXXXXXXA<s7>GATCGGAAGAGCACACGTCTGAACTCCAGTCAC</s7>NNNNNN<p7>ATCTCGTATGCCGTCTTCTGCTTG</p7> -3'
 3'- <p5>TTACTATGCCGCTGGTGGCTCTAGATGT</p5>AA<tso>CATATCTTAAGCGCCGGCGAGCGCTA</tso>TG<cbc>NNNNNNNNNNNNNNN</cbc><umi>NNNNNNNN</umi>(pA)XXXXXXXXXXX...XXXXXXXXXXX<s7>TCTAGCCTTCTCGTGTGCAGACTTGAGGTCAGTG</s7>NNNNNN<p7>TAGAGCATACGGCAGAAGACGAAC</p7> -5'
            <p5>Illumina P5</p5>                                             <cbc>15-bp</cbc>     <umi>8bp UMI</umi>               cDNA                      <s7>TruSeq Read 2</s7>            6bp       <p7>Illumina P7</p7>
-		                                               <cbc>cell barcode</cbc>                                                                      sample index
+                                                       <cbc>cell barcode</cbc>                                                                              sample index
 </align>
 </pre>
 
